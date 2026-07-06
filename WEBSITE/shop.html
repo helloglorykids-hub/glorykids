@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | Children's Ministry Lessons</title>
+  <meta name="description" content="Shop Bible lesson packs, curriculum bundles, activity sheets, and more. Instant PDF downloads for children's ministry." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── SHOP-SPECIFIC STYLES ─────────────────────────── */
+    body { background: var(--gray-50); }
+
+    /* HERO */
+    .shop-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--primary-dark) 60%, var(--primary) 100%);
+      padding: 7rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .shop-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 40%, rgba(245,158,11,0.15), transparent 55%),
+                  radial-gradient(ellipse at 20% 80%, rgba(249,115,22,0.1), transparent 50%);
+    }
+    .shop-hero > .container { position: relative; z-index: 1; }
+    .shop-hero__badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4);
+      color: var(--gold); font-family: var(--font-heading);
+      font-size: 0.8rem; font-weight: 700; padding: 0.4rem 1rem;
+      border-radius: var(--radius-full); margin-bottom: 1.25rem;
+    }
+    .shop-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      color: white; margin-bottom: 1rem; line-height: 1.1;
+    }
+    .shop-hero h1 span { color: var(--gold); }
+    .shop-hero p { color: rgba(255,255,255,0.75); font-size: 1.1rem; max-width: 560px; margin: 0 auto 2rem; }
+    .shop-hero__trust {
+      display: flex; align-items: center; justify-content: center; gap: 2rem;
+      flex-wrap: wrap; margin-top: 1.5rem;
+    }
+    .shop-hero__trust-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500;
+    }
+    .shop-hero__trust-item span { font-size: 1.1rem; }
+
+    /* FILTER BAR */
+    .shop-filter-bar {
+      background: white; border-bottom: 1px solid var(--gray-200);
+      padding: 1rem 0; position: sticky; top: 72px; z-index: 50;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .shop-filter-bar .container {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .shop-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .shop-filter-btn {
+      padding: 0.5rem 1.1rem;
+      border: 1.5px solid var(--gray-200);
+      background: white;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
+      color: var(--gray-600); cursor: pointer; transition: var(--transition);
+    }
+    .shop-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .shop-filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+    .shop-search {
+      position: relative; flex-shrink: 0;
+    }
+    .shop-search input {
+      padding: 0.55rem 1rem 0.55rem 2.5rem;
+      border: 1.5px solid var(--gray-200); border-radius: var(--radius-full);
+      font-family: var(--font-body); font-size: 0.875rem; outline: none;
+      width: 220px; transition: var(--transition); background: var(--gray-50);
+    }
+    .shop-search input:focus { border-color: var(--primary); background: white; width: 280px; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+    .shop-search__icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; pointer-events: none; }
+
+    /* FEATURED PRODUCT */
+    .featured-product {
+      background: linear-gradient(135deg, var(--primary-light), var(--gold-light));
+      border: 2px solid var(--primary-lighter);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2.5rem; align-items: center;
+      margin-bottom: 3rem; position: relative; overflow: hidden;
+    }
+    @media(max-width:768px) { .featured-product { grid-template-columns: 1fr; } }
+    .featured-product::before {
+      content: '⭐ BEST SELLER';
+      position: absolute; top: 1.25rem; right: -2rem;
+      background: var(--gold); color: white;
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800;
+      padding: 0.35rem 3rem; transform: rotate(35deg);
+      letter-spacing: 0.1em;
+    }
+    .featured-product__mock {
+      background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(124,58,237,0.35);
+      position: relative;
+    }
+    .featured-product__mock-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+    .featured-product__mock-title { color: white; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .featured-product__mock-sub { color: rgba(255,255,255,0.7); font-size: 0.8rem; }
+    .featured-product__mock-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: white;
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800;
+      padding: 0.3rem 1rem; border-radius: var(--radius-full);
+      white-space: nowrap;
+    }
+    .featured-product__pages-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.85); font-size: 0.72rem; font-weight: 600;
+      padding: 0.3rem 0.7rem; border-radius: var(--radius-full); margin-top: 0.85rem;
+    }
+    .featured-product__info h2 { font-size: 1.75rem; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.2; }
+    .featured-product__info p  { color: var(--gray-600); line-height: 1.7; margin-bottom: 1.25rem; }
+    .featured-product__includes { list-style: none; padding: 0; margin: 0 0 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .featured-product__includes li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.875rem; color: var(--gray-700); }
+    .featured-product__includes li::before { content: '✓'; color: var(--primary); font-weight: 800; flex-shrink: 0; }
+    .featured-product__price-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .featured-product__price { font-family: var(--font-heading); font-size: 2rem; font-weight: 900; color: var(--primary); }
+    .featured-product__price-orig { font-size: 1rem; color: var(--gray-400); text-decoration: line-through; }
+    .featured-product__save-chip {
+      background: #DCFCE7; color: #15803D;
+      font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700;
+      padding: 0.3rem 0.7rem; border-radius: var(--radius-full);
+    }
+
+    /* SECTION TITLE */
+    .shop-section-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .shop-section-head h2 { font-size: 1.5rem; color: var(--navy); margin: 0; }
+    .shop-section-head p  { color: var(--gray-500); font-size: 0.875rem; margin: 0.25rem 0 0; }
+    .shop-section-head a  { font-size: 0.82rem; color: var(--primary); font-weight: 600; white-space: nowrap; }
+
+    /* PRODUCT GRID */
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
+    @media(max-width:900px)  { .product-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:480px)  { .product-grid { grid-template-columns: 1fr; } }
+
+    /* PRODUCT CARD */
+    .product-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+    .product-card__badge {
+      position: absolute; top: 0.85rem; left: 0.85rem; z-index: 5;
+      font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800;
+      padding: 0.3rem 0.75rem; border-radius: var(--radius-full);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .badge--new      { background: var(--primary); color: white; }
+    .badge--sale     { background: var(--coral); color: white; }
+    .badge--popular  { background: var(--gold); color: white; }
+    .badge--bundle   { background: var(--navy); color: white; }
+    .badge--free     { background: #10B981; color: white; }
+
+    .product-card__cover {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      position: relative; flex-shrink: 0;
+    }
+    .product-card__cover-inner {
+      text-align: center;
+    }
+    .product-card__cover-title {
+      font-family: var(--font-heading); font-weight: 800; font-size: 0.75rem;
+      color: white; margin-top: 0.5rem; opacity: 0.9;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .product-card__pdf-chip {
+      position: absolute; bottom: 0.6rem; right: 0.6rem;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+      color: white; font-size: 0.65rem; font-weight: 700;
+      padding: 0.2rem 0.55rem; border-radius: var(--radius-full);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .product-card__body { padding: 1.25rem; flex: 1; display: flex; flex-direction: column; }
+    .product-card__category {
+      font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--primary); margin-bottom: 0.35rem;
+    }
+    .product-card__title {
+      font-family: var(--font-heading); font-size: 1rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 0.4rem; line-height: 1.3;
+    }
+    .product-card__desc { font-size: 0.82rem; color: var(--gray-500); line-height: 1.55; margin-bottom: 0.85rem; flex: 1; }
+    .product-card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .product-card__chip {
+      display: inline-flex; align-items: center; gap: 0.25rem;
+      background: var(--gray-100); color: var(--gray-600);
+      font-size: 0.7rem; font-weight: 600;
+      padding: 0.25rem 0.6rem; border-radius: var(--radius-full);
+    }
+    .product-card__footer {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; padding-top: 0.85rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .product-card__price { font-family: var(--font-heading); font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+    .product-card__price-orig { font-size: 0.78rem; color: var(--gray-400); text-decoration: line-through; margin-top: 1px; }
+    .product-card__buy {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: var(--primary); color: white;
+      font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700;
+      padding: 0.55rem 1.1rem; border-radius: var(--radius-full);
+      border: none; cursor: pointer; transition: var(--transition); text-decoration: none;
+      white-space: nowrap;
+    }
+    .product-card__buy:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .product-card__buy--gold { background: var(--gold); }
+    .product-card__buy--gold:hover { background: #D97706; }
+
+    /* BUNDLE BANNER */
+    .bundle-banner {
+      background: linear-gradient(135deg, var(--navy), var(--primary-dark));
+      border-radius: var(--radius-xl); padding: 2.5rem 3rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+      margin-bottom: 3rem; position: relative; overflow: hidden;
+    }
+    @media(max-width:700px) { .bundle-banner { grid-template-columns: 1fr; } }
+    .bundle-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(245,158,11,0.15), transparent 60%);
+    }
+    .bundle-banner > * { position: relative; z-index: 1; }
+    .bundle-banner__kicker { color: var(--gold); font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .bundle-banner h2 { color: white; font-size: 1.625rem; margin-bottom: 0.5rem; }
+    .bundle-banner p  { color: rgba(255,255,255,0.7); font-size: 0.9rem; line-height: 1.65; margin: 0; }
+    .bundle-banner__pricing { text-align: center; flex-shrink: 0; }
+    .bundle-banner__price { font-family: var(--font-heading); font-size: 3rem; font-weight: 900; color: var(--gold); line-height: 1; }
+    .bundle-banner__orig  { color: rgba(255,255,255,0.45); text-decoration: line-through; font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .bundle-banner__save  { background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4); color: var(--gold); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: var(--radius-full); margin-bottom: 1rem; display: inline-block; }
+
+    /* CART DRAWER */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 500; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+    .cart-overlay.open { opacity: 1; visibility: visible; }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 420px; max-width: 100vw;
+      background: white; z-index: 501;
+      transform: translateX(100%); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+      box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-drawer__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem; border-bottom: 1px solid var(--gray-100);
+      flex-shrink: 0;
+    }
+    .cart-drawer__title { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
+    .cart-count-badge {
+      background: var(--primary); color: white;
+      font-size: 0.7rem; font-weight: 800;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .cart-drawer__close {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--gray-100); border: none; cursor: pointer;
+      font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+      transition: var(--transition);
+    }
+    .cart-drawer__close:hover { background: var(--gray-200); }
+    .cart-drawer__items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; }
+    .cart-empty {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; text-align: center; padding: 2rem;
+    }
+    .cart-empty__icon { font-size: 3.5rem; margin-bottom: 1rem; }
+    .cart-empty h3 { color: var(--navy); margin-bottom: 0.5rem; }
+    .cart-empty p  { color: var(--gray-500); font-size: 0.875rem; }
+    .cart-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item__icon {
+      width: 56px; height: 56px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; flex-shrink: 0;
+    }
+    .cart-item__info { flex: 1; }
+    .cart-item__name  { font-family: var(--font-heading); font-size: 0.875rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+    .cart-item__type  { font-size: 0.72rem; color: var(--gray-400); }
+    .cart-item__price { font-family: var(--font-heading); font-weight: 800; color: var(--primary); font-size: 0.95rem; margin-top: 0.3rem; }
+    .cart-item__remove {
+      background: none; border: none; cursor: pointer;
+      color: var(--gray-300); font-size: 1.1rem; line-height: 1;
+      transition: color 0.15s; padding: 0.25rem;
+    }
+    .cart-item__remove:hover { color: var(--rose); }
+    .cart-drawer__footer {
+      border-top: 1px solid var(--gray-100); padding: 1.25rem 1.5rem;
+      flex-shrink: 0; background: var(--gray-50);
+    }
+    .cart-subtotal {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-heading); font-weight: 700;
+      font-size: 1rem; color: var(--navy); margin-bottom: 0.35rem;
+    }
+    .cart-subtotal span:last-child { color: var(--primary); font-size: 1.1rem; }
+    .cart-note { font-size: 0.75rem; color: var(--gray-400); margin-bottom: 1rem; }
+    .cart-checkout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; border: none;
+      border-radius: var(--radius-lg);
+      padding: 1rem; font-family: var(--font-heading);
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: var(--transition); box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .cart-checkout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+    .cart-checkout-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .cart-payfast-note {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      margin-top: 0.85rem; font-size: 0.72rem; color: var(--gray-400);
+    }
+
+    /* FLOATING CART BUTTON */
+    .cart-fab {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--primary); color: white;
+      border: none; border-radius: var(--radius-full);
+      padding: 1rem 1.5rem;
+      font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; box-shadow: 0 6px 24px rgba(124,58,237,0.4);
+      display: flex; align-items: center; gap: 0.6rem;
+      transition: var(--transition); z-index: 100;
+      transform: scale(0); opacity: 0;
+    }
+    .cart-fab.visible { transform: scale(1); opacity: 1; }
+    .cart-fab:hover { background: var(--primary-dark); transform: scale(1.05); }
+    .cart-fab__count {
+      background: var(--gold); color: white;
+      font-size: 0.7rem; font-weight: 800;
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* CHECKOUT MODAL */
+    .checkout-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      z-index: 600; display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem; opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+    .checkout-overlay.open { opacity: 1; visibility: visible; }
+    .checkout-modal {
+      background: white; border-radius: var(--radius-xl);
+      width: 100%; max-width: 560px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      transform: scale(0.95); transition: transform 0.3s ease;
+    }
+    .checkout-overlay.open .checkout-modal { transform: scale(1); }
+    .checkout-modal__header {
+      padding: 1.75rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .checkout-modal__header h3 { font-size: 1.25rem; color: var(--navy); margin: 0; }
+    .checkout-modal__body { padding: 1.5rem 2rem; }
+    .checkout-modal__footer { padding: 1.25rem 2rem 1.75rem; }
+    .checkout-order-summary {
+      background: var(--gray-50); border-radius: var(--radius-lg);
+      padding: 1.1rem 1.25rem; margin-bottom: 1.5rem;
+    }
+    .checkout-order-summary h4 { font-size: 0.8rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
+    .checkout-order-item { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem; }
+    .checkout-order-item:last-child { margin-bottom: 0; }
+    .checkout-order-total {
+      display: flex; justify-content: space-between;
+      font-family: var(--font-heading); font-weight: 800; color: var(--navy);
+      font-size: 1rem; padding-top: 0.85rem; margin-top: 0.85rem;
+      border-top: 1px solid var(--gray-200);
+    }
+    .checkout-order-total span:last-child { color: var(--primary); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.single { grid-template-columns: 1fr; }
+    @media(max-width:480px) { .form-row { grid-template-columns: 1fr; } }
+    .checkout-field label { display: block; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; color: var(--gray-700); margin-bottom: 0.4rem; }
+    .checkout-field input, .checkout-field select {
+      width: 100%; padding: 0.75rem 1rem;
+      border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg);
+      font-family: var(--font-body); font-size: 0.875rem; outline: none;
+      background: var(--gray-50); transition: var(--transition); box-sizing: border-box;
+    }
+    .checkout-field input:focus, .checkout-field select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+    .payfast-info {
+      background: linear-gradient(135deg, #EFF6FF, #F0FDF4);
+      border: 1px solid #BFDBFE; border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem; margin-bottom: 1.5rem;
+      display: flex; gap: 0.75rem; align-items: flex-start;
+    }
+    .payfast-info__icon { font-size: 1.5rem; flex-shrink: 0; }
+    .payfast-info h4 { font-size: 0.875rem; color: var(--navy); margin-bottom: 0.25rem; }
+    .payfast-info p  { font-size: 0.78rem; color: var(--gray-500); margin: 0; line-height: 1.55; }
+    .payfast-methods { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .payfast-method-chip {
+      background: white; border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 0.25rem 0.6rem;
+      font-size: 0.68rem; font-weight: 700; color: var(--gray-600);
+    }
+    .checkout-pay-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; border: none; border-radius: var(--radius-lg);
+      padding: 1.1rem; font-family: var(--font-heading);
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+      transition: var(--transition); box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .checkout-pay-btn:hover { transform: translateY(-1px); }
+    .checkout-secure {
+      text-align: center; margin-top: 0.85rem;
+      font-size: 0.72rem; color: var(--gray-400);
+      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+
+    /* SUCCESS MODAL */
+    .success-modal {
+      background: white; border-radius: var(--radius-xl);
+      width: 100%; max-width: 480px;
+      padding: 3rem 2.5rem; text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+    .success-modal__icon { font-size: 4rem; margin-bottom: 1rem; }
+    .success-modal h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .success-modal p { color: var(--gray-500); margin-bottom: 2rem; line-height: 1.65; }
+    .success-modal__downloads { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+    .download-btn {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: var(--primary-light); border: 1.5px solid var(--primary-lighter);
+      color: var(--primary); border-radius: var(--radius-lg);
+      padding: 0.85rem 1.25rem; font-family: var(--font-heading);
+      font-size: 0.875rem; font-weight: 700; cursor: pointer;
+      transition: var(--transition); text-decoration: none; text-align: left;
+    }
+    .download-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .download-btn__icon { font-size: 1.5rem; flex-shrink: 0; }
+
+    /* TESTIMONIALS STRIP */
+    .shop-testimonials {
+      background: var(--primary-dark);
+      border-radius: var(--radius-xl); padding: 2.5rem;
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-bottom: 3rem;
+    }
+    @media(max-width:768px) { .shop-testimonials { grid-template-columns: 1fr; } }
+    .shop-testimonial { }
+    .shop-testimonial__stars { color: var(--gold); margin-bottom: 0.5rem; font-size: 0.85rem; letter-spacing: 2px; }
+    .shop-testimonial__text  { color: rgba(255,255,255,0.85); font-size: 0.875rem; line-height: 1.65; font-style: italic; margin-bottom: 0.75rem; }
+    .shop-testimonial__author { display: flex; align-items: center; gap: 0.6rem; }
+    .shop-testimonial__avatar { font-size: 1.5rem; }
+    .shop-testimonial__name   { color: white; font-size: 0.82rem; font-weight: 700; display: block; }
+    .shop-testimonial__role   { color: rgba(255,255,255,0.5); font-size: 0.72rem; }
+
+    /* GUARANTEE STRIP */
+    .guarantee-strip {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1rem; margin-bottom: 3rem;
+    }
+    @media(max-width:768px) { .guarantee-strip { grid-template-columns: repeat(2,1fr); } }
+    .guarantee-item {
+      background: white; border-radius: var(--radius-lg);
+      padding: 1.25rem; text-align: center;
+      border: 1px solid var(--gray-100); box-shadow: var(--shadow-sm);
+    }
+    .guarantee-item__icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    .guarantee-item h4 { font-size: 0.875rem; color: var(--navy); margin-bottom: 0.25rem; }
+    .guarantee-item p  { font-size: 0.75rem; color: var(--gray-500); margin: 0; line-height: 1.5; }
+
+    /* HIDDEN PAYFAST FORM */
+    #payfast-form { display: none; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 6rem; right: 2rem;
+      background: var(--navy); color: white;
+      padding: 0.85rem 1.25rem; border-radius: var(--radius-lg);
+      font-family: var(--font-heading); font-size: 0.875rem; font-weight: 600;
+      box-shadow: var(--shadow-xl); z-index: 700;
+      transform: translateY(20px); opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="page-loader" class="page-loader">
+  <div class="page-loader__spinner"></div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li><a href="glory-kids-membership.html" class="nav__link">Membership</a></li>
+        <li><a href="curriculum-packs.html" class="nav__link">Curriculum</a></li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li><a href="shop.html" class="nav__link active">Shop</a></li>
+        <li><a href="blog.html" class="nav__link">Blog</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════ SHOP HERO ══════════════════════════ -->
+<section class="shop-hero">
+  <div class="container">
+    <div class="shop-hero__badge">📦 Instant PDF Downloads</div>
+    <h1>Resources That <span>Transform</span><br>Children's Ministry</h1>
+    <p>Professional, print-ready lesson packs, curriculum bundles, and activity sheets. Download instantly and teach with confidence.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="#products" class="btn btn--gold btn--lg">Browse All Products →</a>
+      <a href="glory-kids-membership.html" class="btn btn--outline btn--lg" style="color:white;border-color:rgba(255,255,255,0.35);">✨ Save More with Membership</a>
+    </div>
+    <div class="shop-hero__trust">
+      <div class="shop-hero__trust-item"><span>✅</span> Instant download</div>
+      <div class="shop-hero__trust-item"><span>🔒</span> Secure checkout via PayFast</div>
+      <div class="shop-hero__trust-item"><span>🖨️</span> Print-ready PDFs</div>
+      <div class="shop-hero__trust-item"><span>🌍</span> Used in 50+ countries</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FILTER BAR ════════════════════════ -->
+<div class="shop-filter-bar">
+  <div class="container">
+    <div class="shop-filters">
+      <button class="shop-filter-btn active" onclick="filterProducts('all', this)">All Products</button>
+      <button class="shop-filter-btn" onclick="filterProducts('lessons', this)">📖 Lesson Packs</button>
+      <button class="shop-filter-btn" onclick="filterProducts('curriculum', this)">✨ Curriculum Series</button>
+      <button class="shop-filter-btn" onclick="filterProducts('activities', this)">🎨 Activity Sheets</button>
+      <button class="shop-filter-btn" onclick="filterProducts('bundles', this)">📦 Bundles</button>
+    </div>
+    <div class="shop-search">
+      <span class="shop-search__icon">🔍</span>
+      <input type="text" placeholder="Search products..." oninput="searchProducts(this.value)" />
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
+<main id="products" style="padding: 3rem 0;">
+  <div class="container">
+
+    <!-- FEATURED PRODUCT -->
+    <div class="featured-product reveal" data-category="bundles">
+      <div class="featured-product__mock">
+        <div class="featured-product__mock-badge">🏆 Most Popular</div>
+        <span class="featured-product__mock-icon">📖</span>
+        <div class="featured-product__mock-title">Complete Lesson Bundle</div>
+        <div class="featured-product__mock-sub">50 Bible Lessons · All Ages</div>
+        <div class="featured-product__pages-chip">📄 500+ Pages of Content</div>
+      </div>
+      <div class="featured-product__info">
+        <h2>Complete Bible Lesson Bundle — 50 Lessons</h2>
+        <p>Our best-selling collection. 50 fully scripted Bible lessons covering Old Testament, New Testament, Heroes of Faith, and the Life of Jesus. Every lesson includes a teacher's guide, discussion questions, memory verse activities, and take-home page.</p>
+        <ul class="featured-product__includes">
+          <li>50 fully scripted lesson plans</li>
+          <li>Teacher's guide + prep notes for every lesson</li>
+          <li>Memory verse activities & printable cards</li>
+          <li>Discussion questions (ages 3–12)</li>
+          <li>Take-home family devotional pages</li>
+          <li>Print-ready PDF — instant download</li>
+        </ul>
+        <div class="featured-product__price-row">
+          <div>
+            <div class="featured-product__price">R349</div>
+            <div class="featured-product__price-orig">R699</div>
+          </div>
+          <div class="featured-product__save-chip">Save 50%</div>
+          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'bundle-50',name:'Complete Bible Lesson Bundle (50 Lessons)',price:349,icon:'📖',color:'#4F46E5',type:'PDF Bundle'})">
+            🛒 Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GUARANTEE STRIP -->
+    <div class="guarantee-strip">
+      <div class="guarantee-item">
+        <div class="guarantee-item__icon">⚡</div>
+        <h4>Instant Download</h4>
+        <p>Receive your PDFs immediately after payment. No waiting, no shipping.</p>
+      </div>
+      <div class="guarantee-item">
+        <div class="guarantee-item__icon">🖨️</div>
+        <h4>Print-Ready</h4>
+        <p>A4 & US Letter formatted. Works with any home or office printer.</p>
+      </div>
+      <div class="guarantee-item">
+        <div class="guarantee-item__icon">🔄</div>
+        <h4>Lifetime Access</h4>
+        <p>Re-download anytime. Lost your files? We'll resend them free.</p>
+      </div>
+      <div class="guarantee-item">
+        <div class="guarantee-item__icon">💬</div>
+        <h4>Ministry Support</h4>
+        <p>Questions about adapting a lesson? Our team is here to help.</p>
+      </div>
+    </div>
+
+    <!-- LESSON PACKS -->
+    <div class="shop-section-head">
+      <div>
+        <h2>📖 Lesson Packs</h2>
+        <p>Fully scripted, print-ready Bible lesson PDFs</p>
+      </div>
+    </div>
+    <div class="product-grid">
+
+      <!-- Product 1 -->
+      <div class="product-card reveal" data-category="lessons" data-name="old testament heroes 10 lesson pack">
+        <div class="product-card__badge badge--popular">Popular</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#7C3AED,#4F46E5);">
+          <div class="product-card__cover-inner">
+            <div>🦁</div>
+            <div class="product-card__cover-title">OT Heroes Pack</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · Old Testament</div>
+          <div class="product-card__title">Old Testament Heroes — 10 Lesson Pack</div>
+          <div class="product-card__desc">Abraham, Moses, David, Elijah, Daniel & more. Each lesson includes full script, discussion questions, and memory verse activity.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 10 Lessons</span>
+            <span class="product-card__chip">👶 Ages 5–12</span>
+            <span class="product-card__chip">🖨️ Print-Ready</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R149</div>
+              <div class="product-card__price-orig">R249</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'ot-heroes',name:'Old Testament Heroes — 10 Lesson Pack',price:149,icon:'🦁',color:'#4F46E5',type:'PDF · 10 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="product-card reveal" data-category="lessons" data-name="life of jesus 8 lesson pack">
+        <div class="product-card__badge badge--new">New</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#F59E0B,#F97316);">
+          <div class="product-card__cover-inner">
+            <div>✝️</div>
+            <div class="product-card__cover-title">Life of Jesus Pack</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · New Testament</div>
+          <div class="product-card__title">Life of Jesus — 8 Lesson Pack</div>
+          <div class="product-card__desc">Birth, miracles, parables, crucifixion & resurrection. Chronological journey through the life of Christ designed for children.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 8 Lessons</span>
+            <span class="product-card__chip">👶 Ages 4–10</span>
+            <span class="product-card__chip">🖨️ Print-Ready</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R129</div>
+              <div class="product-card__price-orig">R199</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'life-jesus',name:'Life of Jesus — 8 Lesson Pack',price:129,icon:'✝️',color:'#F59E0B',type:'PDF · 8 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="product-card reveal" data-category="lessons" data-name="power of prayer 6 lesson pack">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#10B981,#0EA5E9);">
+          <div class="product-card__cover-inner">
+            <div>🙏</div>
+            <div class="product-card__cover-title">Power of Prayer Pack</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · Prayer</div>
+          <div class="product-card__title">Power of Prayer — 6 Lesson Pack</div>
+          <div class="product-card__desc">Help children discover the joy of prayer. Covers why we pray, how to pray, answered prayers in the Bible, and building a prayer habit.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 6 Lessons</span>
+            <span class="product-card__chip">👶 Ages 5–12</span>
+            <span class="product-card__chip">🖨️ Print-Ready</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R99</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'prayer-pack',name:'Power of Prayer — 6 Lesson Pack',price:99,icon:'🙏',color:'#10B981',type:'PDF · 6 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="product-card reveal" data-category="lessons" data-name="christmas easter holiday lessons">
+        <div class="product-card__badge badge--sale">Sale</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#EF4444,#EC4899);">
+          <div class="product-card__cover-inner">
+            <div>🎄</div>
+            <div class="product-card__cover-title">Holiday Pack</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · Holiday</div>
+          <div class="product-card__title">Christmas & Easter Mega Pack</div>
+          <div class="product-card__desc">8 Christmas lessons + 6 Easter lessons packed with crafts, drama scripts, memory verses, and family devotionals. Perfect for special services.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 14 Lessons</span>
+            <span class="product-card__chip">👶 Ages 3–12</span>
+            <span class="product-card__chip">🎭 Drama Scripts</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R179</div>
+              <div class="product-card__price-orig">R299</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'holiday-pack',name:'Christmas & Easter Mega Pack',price:179,icon:'🎄',color:'#EF4444',type:'PDF · 14 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 5 -->
+      <div class="product-card reveal" data-category="lessons" data-name="new testament miracles 5 lessons">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#8B5CF6,#EC4899);">
+          <div class="product-card__cover-inner">
+            <div>🌊</div>
+            <div class="product-card__cover-title">Miracles of Jesus</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · New Testament</div>
+          <div class="product-card__title">Miracles of Jesus — 5 Lesson Pack</div>
+          <div class="product-card__desc">Walking on water, feeding 5000, healing the blind, raising Lazarus, and the wedding at Cana. Awe-inspiring lessons about Jesus's power.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 5 Lessons</span>
+            <span class="product-card__chip">👶 Ages 5–11</span>
+            <span class="product-card__chip">🖨️ Print-Ready</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R89</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'miracles',name:'Miracles of Jesus — 5 Lesson Pack',price:89,icon:'🌊',color:'#8B5CF6',type:'PDF · 5 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 6 -->
+      <div class="product-card reveal" data-category="lessons" data-name="fruit of the spirit character lessons">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#0EA5E9,#10B981);">
+          <div class="product-card__cover-inner">
+            <div>🍎</div>
+            <div class="product-card__cover-title">Fruit of the Spirit</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Lesson Pack · Character</div>
+          <div class="product-card__title">Fruit of the Spirit — 9 Lesson Pack</div>
+          <div class="product-card__desc">One lesson per fruit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control. Practical character building.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 9 Lessons</span>
+            <span class="product-card__chip">👶 Ages 4–10</span>
+            <span class="product-card__chip">🌱 Character</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R139</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'fruit-spirit',name:'Fruit of the Spirit — 9 Lesson Pack',price:139,icon:'🍎',color:'#0EA5E9',type:'PDF · 9 Lessons'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ACTIVITY SHEETS -->
+    <div class="shop-section-head">
+      <div>
+        <h2>🎨 Activity Sheets</h2>
+        <p>Crafts, coloring pages, games, and take-home sheets</p>
+      </div>
+    </div>
+    <div class="product-grid">
+
+      <div class="product-card reveal" data-category="activities" data-name="bible coloring pages mega pack">
+        <div class="product-card__badge badge--popular">Popular</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#F97316,#F59E0B);">
+          <div class="product-card__cover-inner">
+            <div>🖍️</div>
+            <div class="product-card__cover-title">Coloring Mega Pack</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Activity Sheets · Coloring</div>
+          <div class="product-card__title">Bible Coloring Pages — 100 Page Mega Pack</div>
+          <div class="product-card__desc">100 beautifully illustrated Bible scenes for children to color. OT & NT stories, memory verse borders, character portraits, and holiday themes.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 100 Pages</span>
+            <span class="product-card__chip">👶 Ages 2–10</span>
+            <span class="product-card__chip">🖨️ A4 & Letter</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R119</div>
+              <div class="product-card__price-orig">R199</div>
+            </div>
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'coloring-mega',name:'Bible Coloring Pages — 100 Page Mega Pack',price:119,icon:'🖍️',color:'#F97316',type:'PDF · 100 Pages'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="activities" data-name="bible memory verse cards printable">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#EC4899,#8B5CF6);">
+          <div class="product-card__cover-inner">
+            <div>📜</div>
+            <div class="product-card__cover-title">Memory Verse Cards</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Activity Sheets · Memory Verse</div>
+          <div class="product-card__title">Memory Verse Card Pack — 52 Verses</div>
+          <div class="product-card__desc">One verse for every week of the year. Beautiful illustrated cards, wallet-sized version, and wristband template. Perfect for Sunday school rewards.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 52 Cards</span>
+            <span class="product-card__chip">👶 All Ages</span>
+            <span class="product-card__chip">🎴 Printable</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R79</div>
+            </div>
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'memory-verses',name:'Memory Verse Card Pack — 52 Verses',price:79,icon:'📜',color:'#EC4899',type:'PDF · 52 Cards'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="activities" data-name="bible craft templates kids sunday school">
+        <div class="product-card__badge badge--new">New</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#10B981,#0EA5E9);">
+          <div class="product-card__cover-inner">
+            <div>✂️</div>
+            <div class="product-card__cover-title">Craft Templates</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Activity Sheets · Crafts</div>
+          <div class="product-card__title">Bible Craft Templates — 30 Projects</div>
+          <div class="product-card__desc">Cut-and-paste, fold-and-build, and colouring crafts. Each template includes step-by-step instructions and supply list. Zero art skills needed!</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">✂️ 30 Projects</span>
+            <span class="product-card__chip">👶 Ages 3–10</span>
+            <span class="product-card__chip">📋 Instructions</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R99</div>
+            </div>
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'craft-templates',name:'Bible Craft Templates — 30 Projects',price:99,icon:'✂️',color:'#10B981',type:'PDF · 30 Projects'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CURRICULUM SERIES -->
+    <div class="shop-section-head">
+      <div>
+        <h2>✨ Curriculum Series</h2>
+        <p>Multi-week series with everything you need</p>
+      </div>
+    </div>
+    <div class="product-grid">
+
+      <div class="product-card reveal" data-category="curriculum" data-name="god's big story 12 week curriculum series">
+        <div class="product-card__badge badge--bundle">Bundle</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#1E1B4B,#4F46E5);">
+          <div class="product-card__cover-inner">
+            <div>📖</div>
+            <div class="product-card__cover-title">God's Big Story</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Curriculum Series · 12 Weeks</div>
+          <div class="product-card__title">God's Big Story — 12-Week Curriculum</div>
+          <div class="product-card__desc">The complete meta-narrative of the Bible told for children. Creation to Revelation. Includes lesson plans, activity sheets, memory verses, parent emails, and a leader guide.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 12 Weeks</span>
+            <span class="product-card__chip">👶 Ages 5–12</span>
+            <span class="product-card__chip">📧 Parent Emails</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R249</div>
+              <div class="product-card__price-orig">R399</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'gods-big-story',name:\"God's Big Story — 12-Week Curriculum\",price:249,icon:'📖',color:'#1E1B4B',type:'PDF Curriculum · 12 Weeks'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="curriculum" data-name="heroes of faith 10 week curriculum">
+        <div class="product-card__badge badge--popular">Popular</div>
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#B45309,#F59E0B);">
+          <div class="product-card__cover-inner">
+            <div>🦸</div>
+            <div class="product-card__cover-title">Heroes of Faith</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Curriculum Series · 10 Weeks</div>
+          <div class="product-card__title">Heroes of Faith — 10-Week Curriculum</div>
+          <div class="product-card__desc">Abraham, Noah, Esther, David, Ruth, and more. Each week profiles a biblical hero with character lessons kids can apply to their lives today.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 10 Weeks</span>
+            <span class="product-card__chip">👶 Ages 6–12</span>
+            <span class="product-card__chip">🌟 Character</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R219</div>
+              <div class="product-card__price-orig">R349</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'heroes-faith',name:'Heroes of Faith — 10-Week Curriculum',price:219,icon:'🦸',color:'#B45309',type:'PDF Curriculum · 10 Weeks'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card reveal" data-category="curriculum" data-name="little ones big god preschool curriculum 8 week">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#DB2777,#F97316);">
+          <div class="product-card__cover-inner">
+            <div>🌈</div>
+            <div class="product-card__cover-title">Little Ones, Big God</div>
+          </div>
+          <div class="product-card__pdf-chip">📄 PDF</div>
+        </div>
+        <div class="product-card__body">
+          <div class="product-card__category">Curriculum Series · Preschool</div>
+          <div class="product-card__title">Little Ones, Big God — 8-Week Preschool Series</div>
+          <div class="product-card__desc">Designed for ages 2–5. Simple truths, big visuals, movement activities, simple crafts, and songs. Perfect for nursery or early childhood ministry.</div>
+          <div class="product-card__meta">
+            <span class="product-card__chip">📄 8 Weeks</span>
+            <span class="product-card__chip">👶 Ages 2–5</span>
+            <span class="product-card__chip">🎵 Songs Included</span>
+          </div>
+          <div class="product-card__footer">
+            <div>
+              <div class="product-card__price">R199</div>
+            </div>
+            <button class="product-card__buy" onclick="addToCart({id:'little-ones',name:'Little Ones, Big God — 8-Week Preschool Series',price:199,icon:'🌈',color:'#DB2777',type:'PDF Curriculum · 8 Weeks'})">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BUNDLE BANNER -->
+    <div class="bundle-banner reveal">
+      <div>
+        <div class="bundle-banner__kicker">💰 Best Value</div>
+        <h2>The Ultimate Ministry Bundle — Everything in One</h2>
+        <p>Every lesson pack, every curriculum series, every activity sheet in our store. One payment, unlimited use in your ministry forever. Perfect for new churches or growing kids' programs.</p>
+        <div style="margin-top:1.5rem;">
+          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'ultimate-bundle',name:'Ultimate Ministry Bundle — All Products',price:699,icon:'📦',color:'#1E1B4B',type:'Complete PDF Library'})">
+            🛒 Add to Cart — R699
+          </button>
+          <span style="margin-left:1rem;color:rgba(255,255,255,0.6);font-size:0.85rem;">R1,899 if bought separately</span>
+        </div>
+      </div>
+      <div class="bundle-banner__pricing">
+        <div class="bundle-banner__orig">R1,899 separately</div>
+        <div class="bundle-banner__price">R699</div>
+        <div class="bundle-banner__save">Save 63%</div>
+        <div style="color:rgba(255,255,255,0.55);font-size:0.72rem;">One-time payment · Instant download</div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="shop-testimonials reveal">
+      <div class="shop-testimonial">
+        <div class="shop-testimonial__stars">★★★★★</div>
+        <div class="shop-testimonial__text">"The Old Testament Heroes pack was incredible. My kids were engaged the entire lesson — they didn't want to stop! Professional quality at an amazing price."</div>
+        <div class="shop-testimonial__author">
+          <div class="shop-testimonial__avatar">👩</div>
+          <div>
+            <span class="shop-testimonial__name">Sarah M.</span>
+            <span class="shop-testimonial__role">Children's Director, Cape Town</span>
+          </div>
+        </div>
+      </div>
+      <div class="shop-testimonial">
+        <div class="shop-testimonial__stars">★★★★★</div>
+        <div class="shop-testimonial__text">"Downloaded the Complete Bundle on a Friday night and taught on Sunday morning. The lessons are so well structured — even a first-time teacher can run them."</div>
+        <div class="shop-testimonial__author">
+          <div class="shop-testimonial__avatar">👨</div>
+          <div>
+            <span class="shop-testimonial__name">Pastor James K.</span>
+            <span class="shop-testimonial__role">Lead Pastor, Johannesburg</span>
+          </div>
+        </div>
+      </div>
+      <div class="shop-testimonial">
+        <div class="shop-testimonial__stars">★★★★★</div>
+        <div class="shop-testimonial__text">"We've used the God's Big Story curriculum for two school terms. Parents keep telling us how much their children are talking about the lessons at home."</div>
+        <div class="shop-testimonial__author">
+          <div class="shop-testimonial__avatar">👩</div>
+          <div>
+            <span class="shop-testimonial__name">Michelle T.</span>
+            <span class="shop-testimonial__role">Sunday School Co-ordinator, Durban</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERSHIP CTA -->
+    <div style="background:linear-gradient(135deg,var(--primary-light),var(--gold-light));border-radius:var(--radius-xl);padding:2.5rem;text-align:center;border:2px solid var(--primary-lighter);">
+      <div style="font-size:2rem;margin-bottom:0.75rem;">✨</div>
+      <h2 style="color:var(--navy);margin-bottom:0.5rem;">Buy Once — or Get Everything for $29.99/mo</h2>
+      <p style="color:var(--gray-600);max-width:560px;margin:0 auto 1.5rem;line-height:1.7;">
+        Glory Kids Membership gives you access to <strong>500+ lessons</strong>, all curriculum series, activity sheets, video guides, and new content every week — for less than a cup of coffee a day.
+      </p>
+      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg">✨ Join Glory Kids — $29.99/mo →</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER (consistent with rest of site) -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo"><span class="footer__logo-icon">✝</span> Children's<span>Ministry</span>Lessons</div>
+        <p class="footer__desc">Equipping children's ministry leaders with world-class Bible resources.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Shop</h4>
+        <a href="#" class="footer__link" onclick="filterProducts('lessons',null);return false;">Lesson Packs</a>
+        <a href="#" class="footer__link" onclick="filterProducts('curriculum',null);return false;">Curriculum Series</a>
+        <a href="#" class="footer__link" onclick="filterProducts('activities',null);return false;">Activity Sheets</a>
+        <a href="#" class="footer__link" onclick="filterProducts('bundles',null);return false;">Bundles</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Resources</h4>
+        <a href="free-lessons.html" class="footer__link">Free Lessons</a>
+        <a href="glory-kids-membership.html" class="footer__link">Membership</a>
+        <a href="curriculum-packs.html" class="footer__link">Curriculum</a>
+        <a href="blog.html" class="footer__link">Blog</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Help</h4>
+        <a href="contact.html" class="footer__link">Contact Us</a>
+        <a href="#" class="footer__link">Refund Policy</a>
+        <a href="#" class="footer__link">Terms of Use</a>
+        <a href="#" class="footer__link">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Children's Ministry Lessons. All rights reserved.</p>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:0.25rem;">Payments secured by PayFast · PDF downloads for personal & ministry use</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════ CART DRAWER ══════════════════════════ -->
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-drawer__header">
+    <div class="cart-drawer__title">
+      🛒 Your Cart
+      <span class="cart-count-badge" id="cart-count-badge">0</span>
+    </div>
+    <button class="cart-drawer__close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-drawer__items" id="cart-items">
+    <div class="cart-empty">
+      <div class="cart-empty__icon">🛒</div>
+      <h3>Your cart is empty</h3>
+      <p>Add some products to get started!</p>
+    </div>
+  </div>
+  <div class="cart-drawer__footer" id="cart-footer" style="display:none;">
+    <div class="cart-subtotal">
+      <span>Subtotal</span>
+      <span id="cart-total">R0</span>
+    </div>
+    <div class="cart-note">💡 PDF downloads — no shipping costs</div>
+    <button class="cart-checkout-btn" onclick="openCheckout()">
+      🔒 Proceed to Checkout
+    </button>
+    <div class="cart-payfast-note">
+      <span>Secured by</span>
+      <strong style="color:var(--primary);">PayFast</strong>
+      <span>· Visa · Mastercard · EFT · Instant EFT</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ CHECKOUT MODAL ══════════════════════ -->
+<div class="checkout-overlay" id="checkout-overlay">
+  <!-- Checkout Form -->
+  <div class="checkout-modal" id="checkout-modal">
+    <div class="checkout-modal__header">
+      <h3>🔒 Secure Checkout</h3>
+      <button class="cart-drawer__close" onclick="closeCheckout()">✕</button>
+    </div>
+    <div class="checkout-modal__body">
+      <!-- Order Summary -->
+      <div class="checkout-order-summary">
+        <h4>Order Summary</h4>
+        <div id="checkout-order-items"></div>
+        <div class="checkout-order-total">
+          <span>Total</span>
+          <span id="checkout-total">R0</span>
+        </div>
+      </div>
+
+      <!-- Contact Details -->
+      <div class="form-row">
+        <div class="checkout-field">
+          <label>First Name *</label>
+          <input type="text" id="co-first" placeholder="Sarah" required />
+        </div>
+        <div class="checkout-field">
+          <label>Last Name *</label>
+          <input type="text" id="co-last" placeholder="Mitchell" required />
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="checkout-field">
+          <label>Email Address * <small style="font-weight:500;color:var(--gray-400)">(PDFs sent here)</small></label>
+          <input type="email" id="co-email" placeholder="you@example.com" required />
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="checkout-field">
+          <label>Church / Organisation <small style="font-weight:500;color:var(--gray-400)">(optional)</small></label>
+          <input type="text" id="co-church" placeholder="Grace Community Church" />
+        </div>
+      </div>
+
+      <!-- PayFast Info -->
+      <div class="payfast-info">
+        <div class="payfast-info__icon">🔒</div>
+        <div>
+          <h4>Secure Payment via PayFast</h4>
+          <p>You'll be redirected to PayFast's secure payment page to complete your purchase. We never see or store your card details.</p>
+          <div class="payfast-methods">
+            <span class="payfast-method-chip">💳 Visa</span>
+            <span class="payfast-method-chip">💳 Mastercard</span>
+            <span class="payfast-method-chip">🏦 Instant EFT</span>
+            <span class="payfast-method-chip">📱 Capitec Pay</span>
+            <span class="payfast-method-chip">🏧 SCode</span>
+            <span class="payfast-method-chip">💵 SnapScan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-modal__footer">
+      <button class="checkout-pay-btn" onclick="submitToPayFast()">
+        🔒 Pay Now via PayFast
+      </button>
+      <div class="checkout-secure">
+        🔐 Your payment is encrypted and secured by PayFast
+      </div>
+    </div>
+  </div>
+
+  <!-- Success State (hidden) -->
+  <div class="success-modal" id="success-modal" style="display:none;">
+    <div class="success-modal__icon">🎉</div>
+    <h3>Payment Successful!</h3>
+    <p>Thank you for your purchase! Your PDF downloads are ready. We've also sent download links to your email address.</p>
+    <div class="success-modal__downloads" id="download-links"></div>
+    <button class="btn btn--outline" onclick="closeCheckout(); resetCart();" style="margin-top:0.5rem;width:100%;">
+      Continue Shopping
+    </button>
+  </div>
+</div>
+
+<!-- FLOATING CART FAB -->
+<div class="cart-fab" id="cart-fab" onclick="openCart()">
+  🛒 Cart
+  <span class="cart-fab__count" id="fab-count">0</span>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HIDDEN PAYFAST FORM (submits to PayFast) -->
+<form id="payfast-form" method="POST" action="https://www.payfast.co.za/eng/process">
+  <!-- ⚠️ Replace MERCHANT_ID and MERCHANT_KEY with your real PayFast credentials -->
+  <input type="hidden" name="merchant_id"  id="pf-merchant-id"  value="MERCHANT_ID" />
+  <input type="hidden" name="merchant_key" id="pf-merchant-key" value="MERCHANT_KEY" />
+  <input type="hidden" name="return_url"   value="https://childrensministrylessons.com/shop-thank-you.html" />
+  <input type="hidden" name="cancel_url"   value="https://childrensministrylessons.com/shop.html" />
+  <input type="hidden" name="notify_url"   value="https://childrensministrylessons.com/api/payfast-notify" />
+  <input type="hidden" name="name_first"   id="pf-name-first"  value="" />
+  <input type="hidden" name="name_last"    id="pf-name-last"   value="" />
+  <input type="hidden" name="email_address" id="pf-email"       value="" />
+  <input type="hidden" name="amount"       id="pf-amount"      value="" />
+  <input type="hidden" name="item_name"    id="pf-item-name"   value="" />
+  <input type="hidden" name="item_description" id="pf-item-desc" value="" />
+  <input type="hidden" name="custom_str1"  id="pf-custom"      value="" />
+</form>
+
+<!-- SCRIPTS -->
+<script src="app.js"></script>
+<script>
+  /* ══════════════════════════════════════════════════════════════
+     SHOP CART & CHECKOUT LOGIC
+     ══════════════════════════════════════════════════════════════ */
+
+  // ── PAYFAST CONFIGURATION ───────────────────────────────────────
+  // Replace these with your real PayFast merchant details
+  const PAYFAST_MERCHANT_ID  = 'MERCHANT_ID';   // Your PayFast Merchant ID
+  const PAYFAST_MERCHANT_KEY = 'MERCHANT_KEY';  // Your PayFast Merchant Key
+  // For testing use sandbox: https://sandbox.payfast.co.za/eng/process
+  // For live use:             https://www.payfast.co.za/eng/process
+
+  // ── CART STATE ───────────────────────────────────────────────────
+  let cart = JSON.parse(localStorage.getItem('shop_cart') || '[]');
+
+  function saveCart() {
+    localStorage.setItem('shop_cart', JSON.stringify(cart));
+  }
+
+  function addToCart(product) {
+    const existing = cart.find(i => i.id === product.id);
+    if (existing) {
+      showToast('✅ Already in cart! Open cart to checkout.');
+      openCart();
+      return;
+    }
+    cart.push(product);
+    saveCart();
+    renderCart();
+    updateCartBadges();
+    showToast('✅ Added to cart: ' + product.name.split('—')[0].trim());
+    openCart();
+  }
+
+  function removeFromCart(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    renderCart();
+    updateCartBadges();
+  }
+
+  function getTotal() {
+    return cart.reduce((s, i) => s + i.price, 0);
+  }
+
+  function resetCart() {
+    cart = [];
+    saveCart();
+    renderCart();
+    updateCartBadges();
+  }
+
+  // ── RENDER CART DRAWER ───────────────────────────────────────────
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const footer    = document.getElementById('cart-footer');
+    const totalEl   = document.getElementById('cart-total');
+
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <div class="cart-empty">
+          <div class="cart-empty__icon">🛒</div>
+          <h3>Your cart is empty</h3>
+          <p>Add some products to get started!</p>
+        </div>`;
+      footer.style.display = 'none';
+    } else {
+      container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item__icon" style="background:${item.color}22;">${item.icon}</div>
+          <div class="cart-item__info">
+            <div class="cart-item__name">${item.name}</div>
+            <div class="cart-item__type">${item.type}</div>
+            <div class="cart-item__price">R${item.price}</div>
+          </div>
+          <button class="cart-item__remove" onclick="removeFromCart('${item.id}')" title="Remove">✕</button>
+        </div>
+      `).join('');
+      footer.style.display = 'block';
+      totalEl.textContent = 'R' + getTotal();
+    }
+  }
+
+  // ── CART DRAWER OPEN/CLOSE ───────────────────────────────────────
+  function openCart() {
+    document.getElementById('cart-drawer').classList.add('open');
+    document.getElementById('cart-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCart() {
+    document.getElementById('cart-drawer').classList.remove('open');
+    document.getElementById('cart-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── UPDATE BADGES ────────────────────────────────────────────────
+  function updateCartBadges() {
+    const n = cart.length;
+    ['cart-count-badge','fab-count'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = n;
+    });
+    const fab = document.getElementById('cart-fab');
+    if (fab) fab.classList.toggle('visible', n > 0);
+  }
+
+  // ── CHECKOUT ─────────────────────────────────────────────────────
+  function openCheckout() {
+    closeCart();
+    // Render order summary
+    const itemsEl = document.getElementById('checkout-order-items');
+    itemsEl.innerHTML = cart.map(i => `
+      <div class="checkout-order-item">
+        <span>${i.icon} ${i.name.split('—')[0].trim()}</span>
+        <strong>R${i.price}</strong>
+      </div>
+    `).join('');
+    document.getElementById('checkout-total').textContent = 'R' + getTotal();
+
+    // Pre-fill email if logged in
+    if (typeof auth !== 'undefined') {
+      const user = auth.currentUser;
+      if (user) {
+        document.getElementById('co-email').value = user.email || '';
+        if (user.displayName) {
+          const parts = user.displayName.split(' ');
+          document.getElementById('co-first').value = parts[0] || '';
+          document.getElementById('co-last').value  = parts.slice(1).join(' ') || '';
+        }
+      }
+    }
+
+    document.getElementById('checkout-modal').style.display = 'block';
+    document.getElementById('success-modal').style.display  = 'none';
+    document.getElementById('checkout-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCheckout() {
+    document.getElementById('checkout-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── SUBMIT TO PAYFAST ────────────────────────────────────────────
+  function submitToPayFast() {
+    const first  = document.getElementById('co-first').value.trim();
+    const last   = document.getElementById('co-last').value.trim();
+    const email  = document.getElementById('co-email').value.trim();
+
+    if (!first || !last || !email) {
+      alert('Please fill in your first name, last name, and email address.');
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    if (cart.length === 0) { alert('Your cart is empty.'); return; }
+
+    const total     = getTotal();
+    const itemNames = cart.map(i => i.name.split('—')[0].trim()).join(', ');
+    const itemIds   = cart.map(i => i.id).join(',');
+
+    // Fill hidden PayFast form
+    document.getElementById('pf-merchant-id').value  = PAYFAST_MERCHANT_ID;
+    document.getElementById('pf-merchant-key').value = PAYFAST_MERCHANT_KEY;
+    document.getElementById('pf-name-first').value   = first;
+    document.getElementById('pf-name-last').value    = last;
+    document.getElementById('pf-email').value        = email;
+    document.getElementById('pf-amount').value       = total.toFixed(2);
+    document.getElementById('pf-item-name').value    = 'Children\'s Ministry PDF Resources';
+    document.getElementById('pf-item-desc').value    = itemNames;
+    document.getElementById('pf-custom').value       = itemIds;
+
+    // Submit to PayFast
+    document.getElementById('payfast-form').submit();
+  }
+
+  // ── FILTER & SEARCH ──────────────────────────────────────────────
+  function filterProducts(category, btn) {
+    if (btn) {
+      document.querySelectorAll('.shop-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    document.querySelectorAll('.product-card, .featured-product').forEach(card => {
+      const match = category === 'all' || card.dataset.category === category;
+      card.style.display = match ? '' : 'none';
+    });
+  }
+
+  function searchProducts(query) {
+    const q = query.toLowerCase();
+    document.querySelectorAll('.product-card').forEach(card => {
+      const name = (card.dataset.name || '').toLowerCase();
+      card.style.display = (!q || name.includes(q)) ? '' : 'none';
+    });
+  }
+
+  // ── TOAST ────────────────────────────────────────────────────────
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── INIT ──────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+    updateCartBadges();
+  });
+</script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

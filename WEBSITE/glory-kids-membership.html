@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glory Kids Membership — $29.99/mo | Children's Ministry Lessons</title>
+  <meta name="description" content="Join Glory Kids Membership for $29.99/month. Get unlimited access to premium Bible curriculum, activity sheets, video guides, and new content every week." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .glory-hero {
+      min-height: 80vh;
+      background: linear-gradient(135deg, #1E1B4B 0%, #4C1D95 40%, #7C3AED 70%, #9333EA 100%);
+      display: flex; align-items: center;
+      padding: 9rem 0 5rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .glory-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 70%, rgba(245,158,11,0.15), transparent 55%),
+                  radial-gradient(ellipse at 80% 20%, rgba(249,115,22,0.1), transparent 50%);
+    }
+    .glory-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: linear-gradient(90deg, rgba(245,158,11,0.25), rgba(249,115,22,0.2));
+      border: 1px solid rgba(245,158,11,0.5);
+      color: var(--gold);
+      padding: 0.5rem 1.25rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+    .glory-title {
+      font-size: clamp(3rem, 6vw, 5rem);
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 1.25rem;
+    }
+    .glory-subtitle {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.2rem;
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+    .glory-trust {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2.5rem; flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    .glory-trust-item {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: rgba(255,255,255,0.65);
+      font-size: 0.875rem;
+    }
+    .glory-trust-item span { color: var(--gold); font-size: 1.1rem; }
+
+    /* Included grid */
+    .included-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .included-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      transition: var(--transition);
+      text-align: center;
+    }
+    .included-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .included-card__icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .included-card__title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+    .included-card__desc { font-size: 0.875rem; color: var(--gray-500); line-height: 1.65; }
+    .included-card__count {
+      display: inline-block;
+      margin-top: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Comparison table */
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th, .compare-table td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .compare-table th {
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy);
+      background: var(--gray-50);
+    }
+    .compare-table th:not(:first-child) { text-align: center; }
+    .compare-table td:not(:first-child) { text-align: center; }
+    .compare-table tr:hover td { background: var(--primary-lighter); }
+    .compare-table td:first-child { font-weight: 500; color: var(--gray-700); font-size: 0.95rem; }
+    .tick-yes { color: var(--green); font-size: 1.2rem; font-weight: 900; }
+    .tick-no  { color: var(--gray-300); font-size: 1.2rem; }
+    .col-highlight {
+      background: var(--primary-lighter) !important;
+      color: var(--primary);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+<div id="page-loader">
+  <div class="loader-content">
+    <div class="loader-logo">✨ Glory Kids</div>
+    <div class="loader-bar"></div>
+  </div>
+</div>
+<div id="progress-bar"></div>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+          </div>
+        </li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li><a href="blog.html" class="nav__link">Blog</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids — $29.99/mo</a></div>
+</div>
+
+<!-- GLORY HERO -->
+<section class="glory-hero">
+  <div class="hero__shapes"><div class="shape shape--1"></div><div class="shape shape--2"></div><div class="shape shape--4"></div></div>
+  <div class="stars"></div>
+  <div class="container" style="position:relative; z-index:1;">
+    <div class="glory-badge">🌟 The #1 Children's Ministry Membership</div>
+    <h1 class="glory-title">
+      Everything Your Ministry<br>Needs in <span style="background:linear-gradient(90deg,var(--gold),var(--coral));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">One Membership</span>
+    </h1>
+    <p class="glory-subtitle">
+      Unlimited access to premium curriculum, weekly new content, activities, devotionals, and more — for just $29.99 per month.
+    </p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="#pricing" class="btn btn--gold btn--lg">✨ Start for $29.99/mo →</a>
+      <a href="#whats-included" class="btn btn--outline-white btn--lg">See What's Included</a>
+    </div>
+    <div class="glory-trust">
+      <div class="glory-trust-item"><span>✓</span> No contracts</div>
+      <div class="glory-trust-item"><span>✓</span> Cancel anytime</div>
+      <div class="glory-trust-item"><span>✓</span> 12,000+ members</div>
+      <div class="glory-trust-item"><span>✓</span> New content weekly</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section id="whats-included">
+  <div class="container">
+    <div class="section-label reveal">Member Benefits</div>
+    <h2 class="section-heading reveal">Everything <span class="highlight">Included</span></h2>
+    <p class="section-subheading reveal">One membership. Unlimited everything. Here's what you get the moment you join.</p>
+    <div class="included-grid">
+      <div class="included-card reveal reveal-delay-1">
+        <span class="included-card__icon">📖</span>
+        <div class="included-card__title">Full Lesson Library</div>
+        <p class="included-card__desc">Access every lesson we've ever created — Old Testament, New Testament, Jesus, Heroes of Faith, holidays, and more.</p>
+        <span class="included-card__count">500+ Lessons</span>
+      </div>
+      <div class="included-card reveal reveal-delay-2">
+        <span class="included-card__icon">✨</span>
+        <div class="included-card__title">Glory Kids Curriculum</div>
+        <p class="included-card__desc">Our flagship multi-week curriculum series included in full. Beautiful, theologically rich, and incredibly engaging.</p>
+        <span class="included-card__count">10+ Series</span>
+      </div>
+      <div class="included-card reveal reveal-delay-3">
+        <span class="included-card__icon">🎨</span>
+        <div class="included-card__title">Activity Sheets</div>
+        <p class="included-card__desc">Hundreds of printable coloring pages, craft guides, games, and activity worksheets for every lesson and age group.</p>
+        <span class="included-card__count">300+ Sheets</span>
+      </div>
+      <div class="included-card reveal reveal-delay-1">
+        <span class="included-card__icon">🎬</span>
+        <div class="included-card__title">Video Lesson Guides</div>
+        <p class="included-card__desc">Step-by-step video walkthroughs for leaders — making it easy for even first-time teachers to deliver incredible lessons.</p>
+        <span class="included-card__count">100+ Videos</span>
+      </div>
+      <div class="included-card reveal reveal-delay-2">
+        <span class="included-card__icon">📬</span>
+        <div class="included-card__title">Parent Devotionals</div>
+        <p class="included-card__desc">Weekly take-home devotional guides that help parents continue the conversation at home and reinforce what kids learned.</p>
+        <span class="included-card__count">Weekly</span>
+      </div>
+      <div class="included-card reveal reveal-delay-3">
+        <span class="included-card__icon">📅</span>
+        <div class="included-card__title">New Content Weekly</div>
+        <p class="included-card__desc">Fresh lessons, activities, and resources added every single week so you never run out of material — ever.</p>
+        <span class="included-card__count">Every Week</span>
+      </div>
+      <div class="included-card reveal reveal-delay-1">
+        <span class="included-card__icon">🎤</span>
+        <div class="included-card__title">Sermon Outlines</div>
+        <p class="included-card__desc">Ready-to-use children's sermon outlines that pastors and teachers can adapt in minutes for any age group.</p>
+        <span class="included-card__count">50+ Outlines</span>
+      </div>
+      <div class="included-card reveal reveal-delay-2">
+        <span class="included-card__icon">🧩</span>
+        <div class="included-card__title">Memory Verse Resources</div>
+        <p class="included-card__desc">Creative, fun, and effective ways for kids to memorize Scripture — cards, games, songs, and more.</p>
+        <span class="included-card__count">200+ Resources</span>
+      </div>
+      <div class="included-card reveal reveal-delay-3">
+        <span class="included-card__icon">🤝</span>
+        <div class="included-card__title">Members Community</div>
+        <p class="included-card__desc">Connect with thousands of ministry leaders in our private community. Share ideas, get feedback, and grow together.</p>
+        <span class="included-card__count">12,000+ Members</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section--light">
+  <div class="container">
+    <div class="section-label reveal">Simple Pricing</div>
+    <h2 class="section-heading reveal">Choose Your <span class="highlight">Plan</span></h2>
+    <p class="section-subheading reveal">Start free, go deeper with Glory Kids. No long-term contracts — cancel anytime.</p>
+    <div class="pricing-cards reveal">
+      <!-- Free -->
+      <div class="pricing-card">
+        <div class="pricing-card__name">Free Forever</div>
+        <div class="pricing-card__price"><sub>$</sub>0</div>
+        <div class="pricing-card__period">always free</div>
+        <div class="pricing-card__divider"></div>
+        <div class="pricing-card__features">
+          <div class="pricing-card__feature"><span class="tick">✓</span> 50+ Free Bible lessons</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Basic activity sheets</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Blog access</div>
+          <div class="pricing-card__feature"><span class="cross">✗</span> Full curriculum library</div>
+          <div class="pricing-card__feature"><span class="cross">✗</span> Glory Kids Curriculum</div>
+          <div class="pricing-card__feature"><span class="cross">✗</span> Video lesson guides</div>
+          <div class="pricing-card__feature"><span class="cross">✗</span> Weekly new content</div>
+          <div class="pricing-card__feature"><span class="cross">✗</span> Community access</div>
+        </div>
+        <a href="free-lessons.html" class="btn btn--outline" style="width:100%; justify-content:center;">Browse Free Lessons</a>
+      </div>
+      <!-- Monthly - FEATURED -->
+      <div class="pricing-card pricing-card--featured">
+        <div class="pricing-card__badge">⭐ Most Popular</div>
+        <div class="pricing-card__name">Glory Kids Monthly</div>
+        <div class="pricing-card__price"><sub>$</sub>29<span style="font-size:1.5rem;">.99</span></div>
+        <div class="pricing-card__period">per month · cancel anytime</div>
+        <div class="pricing-card__divider"></div>
+        <div class="pricing-card__features">
+          <div class="pricing-card__feature"><span class="tick">✓</span> 500+ Bible lessons (all)</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Full curriculum library</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Glory Kids Curriculum series</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> 300+ activity sheets</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Video lesson guides</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Weekly new content</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Parent devotionals</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Members community</div>
+        </div>
+        <a href="#" class="btn btn--primary" style="width:100%; justify-content:center;">Join for $29.99/mo →</a>
+        <p style="text-align:center; font-size:0.78rem; color:var(--gray-400); margin-top:0.75rem;">No commitment · Cancel anytime</p>
+      </div>
+      <!-- Annual -->
+      <div class="pricing-card">
+        <div class="pricing-card__name">Glory Kids Annual</div>
+        <div class="pricing-card__price"><sub>$</sub>249</div>
+        <div class="pricing-card__period">per year · save $111!</div>
+        <div class="pricing-card__divider"></div>
+        <div class="pricing-card__features">
+          <div class="pricing-card__feature"><span class="tick">✓</span> Everything in Monthly</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Save $111 vs monthly</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Priority email support</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Early access to new series</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Downloadable lesson packs</div>
+          <div class="pricing-card__feature"><span class="tick">✓</span> Exclusive webinars</div>
+          <div class="pricing-card__feature" style="color:var(--gray-400);"><span class="cross">✗</span> (same content as monthly)</div>
+          <div class="pricing-card__feature" style="color:var(--gray-400);"><span class="cross">✗</span> (billed annually)</div>
+        </div>
+        <a href="#" class="btn btn--gold" style="width:100%; justify-content:center;">Save $111 — Join Annual →</a>
+        <p style="text-align:center; font-size:0.78rem; color:var(--gray-400); margin-top:0.75rem;">Only $20.75/mo billed annually</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section>
+  <div class="container container--narrow">
+    <div class="section-label reveal">Full Comparison</div>
+    <h2 class="section-heading reveal">How We <span class="highlight">Compare</span></h2>
+    <p class="section-subheading reveal">See exactly what you get with each option.</p>
+    <div style="overflow-x:auto;" class="reveal">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Free</th>
+            <th class="col-highlight">Glory Kids Monthly</th>
+            <th>Annual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Bible Lessons</td><td>50+</td><td class="col-highlight">500+</td><td>500+</td></tr>
+          <tr><td>Curriculum Series</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-yes">✓</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Activity Sheets</td><td>Basic</td><td class="col-highlight">300+</td><td>300+</td></tr>
+          <tr><td>Video Guides</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-yes">✓</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>New Content Weekly</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-yes">✓</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Parent Devotionals</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-yes">✓</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Community Access</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-yes">✓</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Priority Support</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-no">✗</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Early Access</td><td><span class="tick-no">✗</span></td><td class="col-highlight"><span class="tick-no">✗</span></td><td><span class="tick-yes">✓</span></td></tr>
+          <tr><td>Cost/month</td><td>$0</td><td class="col-highlight">$29.99</td><td>$20.75</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section--gray">
+  <div class="container">
+    <div class="section-label reveal">Member Stories</div>
+    <h2 class="section-heading reveal">Our Members <span class="highlight">Love It</span></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">Glory Kids Membership paid for itself in the first week. The amount of high-quality curriculum I got access to would have cost me hundreds elsewhere.</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">👩</div>
+          <div><div class="testimonial-card__name">Rachel Torres</div><div class="testimonial-card__role">Children's Pastor, Bethel Church</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">The weekly new content keeps our ministry fresh and exciting. Kids look forward to Sunday like it's a party. Completely transformed our program.</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">🧔</div>
+          <div><div class="testimonial-card__name">Aaron Kim</div><div class="testimonial-card__role">Kidmin Director, Cornerstone Church</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-3">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">I've tried every subscription out there. Nothing comes close to the value of Glory Kids. The community alone is worth the price — so much wisdom shared!</p>
+        <div class="testimonial-card__author">
+          <div class="testimonial-card__avatar">👩‍🦱</div>
+          <div><div class="testimonial-card__name">Lisa Nguyen</div><div class="testimonial-card__role">Sunday School Coordinator</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container container--narrow">
+    <div class="section-label reveal">FAQ</div>
+    <h2 class="section-heading reveal">Got <span class="highlight">Questions?</span></h2>
+    <p class="section-subheading reveal">Everything you need to know about Glory Kids Membership.</p>
+    <div class="reveal">
+      <div class="faq-item">
+        <div class="faq-question">Can I cancel my membership at any time? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>Absolutely! There are no long-term contracts or cancellation fees. You can cancel your Glory Kids Membership at any time through your account settings, and you'll retain access until the end of your current billing period.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What age groups is the content designed for? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>Our curriculum covers all children's ages from birth through 12 years old. Lessons are clearly labeled by age group: Nursery (0–2), Toddler (2–4), Preschool (3–5), Early Elementary (5–8), and Upper Elementary (8–12).</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Is the content theologically sound? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>Yes! All of our curriculum is grounded in Scripture and written from a Biblical, evangelical Christian worldview. Our content has been reviewed by pastors and theologians to ensure theological accuracy and faithfulness to God's Word.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Can I use this for my church and at home? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>One Glory Kids membership can be used within a single church or household. For churches wanting to give access to multiple staff members or volunteers, please contact us for our multi-seat pricing options.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">What format are the materials in? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>Lessons are available as beautifully designed PDFs that you can download and print. Many also include editable versions so you can customize them for your context. Videos are streamed online through your member dashboard.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Is there a free trial? <div class="faq-icon">+</div></div>
+        <div class="faq-answer"><p>We offer 50+ completely free Bible lessons with no credit card required — perfect for trying our content quality. For full membership access, you can sign up for monthly billing and cancel within 14 days for a full refund if you're not completely satisfied.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section style="padding:4rem 0; background:var(--primary-lighter);">
+  <div class="container">
+    <div class="cta-banner reveal" style="background:linear-gradient(135deg, var(--primary-dark), var(--primary), #9333EA);">
+      <h2 style="color:white;">Ready to Transform Your Ministry?</h2>
+      <p>Join thousands of ministry leaders already using Glory Kids to create unforgettable experiences for kids.</p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="#pricing" class="btn btn--gold btn--lg">✨ Join for $29.99/month →</a>
+        <a href="free-lessons.html" class="btn btn--outline-white btn--lg">Try Free Lessons First</a>
+      </div>
+      <p style="margin-top:1.5rem; font-size:0.85rem; color:rgba(255,255,255,0.55);">14-day money-back guarantee · No contracts · Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div>
+        <p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a>
+        </div>
+      </div>
+      <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Bible Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+      <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+      <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+    </div>
+    <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+  </div>
+</footer>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

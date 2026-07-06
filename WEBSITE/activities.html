@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activities & Resources | Children's Ministry Lessons</title>
+  <meta name="description" content="Crafts, games, coloring pages, memory verse activities, object lessons, and more — all designed to make Bible truth stick for kids." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .activities-header { background: linear-gradient(135deg, #065F46 0%, #10B981 50%, #0891B2 100%); }
+    .resource-section { margin-bottom: 4rem; }
+    .resource-section__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .resource-section__title { font-size: 1.5rem; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 0.65rem; }
+    .resource-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    .resource-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    @media(max-width:1024px) { .resource-grid-4 { grid-template-columns: repeat(2,1fr); } .resource-grid-3 { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:600px) { .resource-grid-4 { grid-template-columns: 1fr; } .resource-grid-3 { grid-template-columns: 1fr; } }
+    .res-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      transition: var(--transition); cursor: pointer;
+    }
+    .res-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .res-card__img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; position: relative; }
+    .res-card__free { position: absolute; top: 0.65rem; right: 0.65rem; background: var(--green); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; }
+    .res-card__member { position: absolute; top: 0.65rem; right: 0.65rem; background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.65rem; font-weight: 700; }
+    .res-card__body { padding: 1.1rem; }
+    .res-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .res-card__meta { font-size: 0.78rem; color: var(--gray-400); display: flex; gap: 0.65rem; }
+    .res-card__btn { display: block; text-align: center; padding: 0.55rem; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; background: var(--primary-lighter); color: var(--primary); transition: var(--transition); }
+    .res-card:hover .res-card__btn { background: var(--primary); color: white; }
+    .object-lesson-card {
+      display: grid; grid-template-columns: 80px 1fr; gap: 1.25rem;
+      background: var(--white); border-radius: var(--radius-lg); padding: 1.25rem;
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      transition: var(--transition); align-items: start;
+    }
+    .object-lesson-card:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+    .object-lesson-card__icon { width: 80px; height: 80px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; flex-shrink: 0; }
+    .object-lesson-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.3rem; }
+    .object-lesson-card__verse { font-size: 0.78rem; color: var(--primary); font-weight: 600; margin-bottom: 0.35rem; }
+    .object-lesson-card__desc { font-size: 0.82rem; color: var(--gray-500); line-height: 1.6; }
+    .download-row { display: flex; gap: 0.5rem; margin-top: 0.65rem; }
+  </style>
+</head>
+<body>
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">🎨 Activities</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
+    <ul class="nav__links">
+      <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+      <li class="nav__dropdown"><a href="#" class="nav__link">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
+      <li><a href="activities.html" class="nav__link active">Activities</a></li>
+      <li><a href="blog.html" class="nav__link">Blog</a></li>
+      <li><a href="contact.html" class="nav__link">Contact</a></li>
+    </ul>
+    <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+    <button class="nav__hamburger"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+</div>
+
+<section class="page-hero activities-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Activities & Resources</span></div>
+    <h1>Activities &amp;<br><span style="color:var(--gold);">Resources</span></h1>
+    <p>Crafts, games, coloring pages, memory verse tools, and object lessons — everything to make Bible truth stick in kids' hearts.</p>
+  </div>
+</section>
+
+<!-- CATEGORY QUICK LINKS -->
+<section style="padding:2.5rem 0; background:var(--primary-lighter);">
+  <div class="container">
+    <div class="activity-grid reveal">
+      <div class="activity-card" onclick="location.href='#crafts'">
+        <div class="activity-card__emoji">🎨</div>
+        <div class="activity-card__title">Crafts</div>
+        <div class="activity-card__count">85+ crafts</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#games'">
+        <div class="activity-card__emoji">🎮</div>
+        <div class="activity-card__title">Games</div>
+        <div class="activity-card__count">60+ games</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#coloring'">
+        <div class="activity-card__emoji">🖍️</div>
+        <div class="activity-card__title">Coloring Pages</div>
+        <div class="activity-card__count">120+ pages</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#memory'">
+        <div class="activity-card__emoji">🧠</div>
+        <div class="activity-card__title">Memory Verses</div>
+        <div class="activity-card__count">200+ resources</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#object'">
+        <div class="activity-card__emoji">🔬</div>
+        <div class="activity-card__title">Object Lessons</div>
+        <div class="activity-card__count">50+ lessons</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#worship'">
+        <div class="activity-card__emoji">🎵</div>
+        <div class="activity-card__title">Worship Guides</div>
+        <div class="activity-card__count">30+ guides</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#drama'">
+        <div class="activity-card__emoji">🎭</div>
+        <div class="activity-card__title">Drama Scripts</div>
+        <div class="activity-card__count">25+ scripts</div>
+      </div>
+      <div class="activity-card" onclick="location.href='#devotionals'">
+        <div class="activity-card__emoji">📬</div>
+        <div class="activity-card__title">Devotionals</div>
+        <div class="activity-card__count">Weekly</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <!-- CRAFTS -->
+    <div class="resource-section" id="crafts">
+      <div class="resource-section__header reveal">
+        <div class="resource-section__title">🎨 Bible Crafts</div>
+        <a href="glory-kids-membership.html" class="btn btn--outline btn--sm">View All 85+ →</a>
+      </div>
+      <div class="resource-grid-4">
+        <div class="res-card reveal reveal-delay-1">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">⛵<span class="res-card__free">FREE</span></div>
+          <div class="res-card__body"><div class="res-card__title">Noah's Ark Paper Boat</div><div class="res-card__meta"><span>Ages 4–8</span><span>•</span><span>15 min</span></div></div>
+          <div class="res-card__btn">Download Free</div>
+        </div>
+        <div class="res-card reveal reveal-delay-2">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#EDE9FE,#FCE7F3);">🌟<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Star of Bethlehem Mobile</div><div class="res-card__meta"><span>Ages 5–10</span><span>•</span><span>20 min</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+        <div class="res-card reveal reveal-delay-3">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE);">🦁<span class="res-card__free">FREE</span></div>
+          <div class="res-card__body"><div class="res-card__title">Daniel's Lion Paper Bag Puppet</div><div class="res-card__meta"><span>Ages 3–7</span><span>•</span><span>10 min</span></div></div>
+          <div class="res-card__btn">Download Free</div>
+        </div>
+        <div class="res-card reveal reveal-delay-1">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#FCE7F3,#FEF3C7);">🍎<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Fruit of the Spirit Tree</div><div class="res-card__meta"><span>Ages 5–12</span><span>•</span><span>25 min</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLORING PAGES -->
+    <div class="resource-section" id="coloring">
+      <div class="resource-section__header reveal">
+        <div class="resource-section__title">🖍️ Coloring Pages</div>
+        <a href="glory-kids-membership.html" class="btn btn--outline btn--sm">View All 120+ →</a>
+      </div>
+      <div class="resource-grid-4">
+        <div class="res-card reveal reveal-delay-1">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#E0F2FE,#EDE9FE);">🕊️<span class="res-card__free">FREE</span></div>
+          <div class="res-card__body"><div class="res-card__title">Jesus Is Baptised</div><div class="res-card__meta"><span>All Ages</span><span>•</span><span>PDF</span></div></div>
+          <div class="res-card__btn">Download Free</div>
+        </div>
+        <div class="res-card reveal reveal-delay-2">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#FEF3C7,#D1FAE5);">🌈<span class="res-card__free">FREE</span></div>
+          <div class="res-card__body"><div class="res-card__title">God's Promise Rainbow</div><div class="res-card__meta"><span>Ages 3–7</span><span>•</span><span>PDF</span></div></div>
+          <div class="res-card__btn">Download Free</div>
+        </div>
+        <div class="res-card reveal reveal-delay-3">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#FCE7F3,#EDE9FE);">✝️<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Easter Morning Scene</div><div class="res-card__meta"><span>All Ages</span><span>•</span><span>PDF</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+        <div class="res-card reveal reveal-delay-1">
+          <div class="res-card__img" style="background:linear-gradient(135deg,#FFF7ED,#FEF3C7);">⭐<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Nativity Scene (Detailed)</div><div class="res-card__meta"><span>Ages 6–12</span><span>•</span><span>PDF</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMORY VERSE RESOURCES -->
+    <div class="resource-section" id="memory" style="background:var(--primary-lighter); border-radius:var(--radius-xl); padding:2.5rem;">
+      <div class="resource-section__header reveal">
+        <div class="resource-section__title">🧠 Memory Verse Resources</div>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Unlock All →</a>
+      </div>
+      <div class="resource-grid-3">
+        <div class="res-card reveal reveal-delay-1">
+          <div class="res-card__img" style="background:linear-gradient(135deg,var(--primary-light),var(--gold-light));">🃏<span class="res-card__free">FREE</span></div>
+          <div class="res-card__body"><div class="res-card__title">John 3:16 Flashcard Set</div><div class="res-card__meta"><span>All Ages</span><span>•</span><span>12 cards</span></div></div>
+          <div class="res-card__btn">Download Free</div>
+        </div>
+        <div class="res-card reveal reveal-delay-2">
+          <div class="res-card__img" style="background:linear-gradient(135deg,var(--gold-light),var(--coral-light));">🧩<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Psalm 23 Puzzle Game</div><div class="res-card__meta"><span>Ages 5–10</span><span>•</span><span>Printable</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+        <div class="res-card reveal reveal-delay-3">
+          <div class="res-card__img" style="background:linear-gradient(135deg,var(--teal-light),var(--green-light));">🎵<span class="res-card__member">MEMBER</span></div>
+          <div class="res-card__body"><div class="res-card__title">Memory Verse Song Bundle (×20)</div><div class="res-card__meta"><span>All Ages</span><span>•</span><span>MP3 + Lyrics</span></div></div>
+          <div class="res-card__btn">Members Only ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJECT LESSONS -->
+    <div class="resource-section" id="object" style="margin-top:2.5rem;">
+      <div class="resource-section__header reveal">
+        <div class="resource-section__title">🔬 Object Lessons</div>
+        <a href="glory-kids-membership.html" class="btn btn--outline btn--sm">View All 50+ →</a>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:1rem;">
+        <div class="object-lesson-card reveal">
+          <div class="object-lesson-card__icon" style="background:var(--primary-light);">🌊</div>
+          <div>
+            <div class="object-lesson-card__title">Walking on Water — Faith over Fear</div>
+            <div class="object-lesson-card__verse">Matthew 14:22–33 · Ages 5–12</div>
+            <div class="object-lesson-card__desc">Using a bowl of water and a small plastic figure, kids visually experience what it means to keep your eyes on Jesus — and what happens when you don't.</div>
+            <div class="download-row"><a href="#" class="btn btn--primary btn--sm">Free Download</a></div>
+          </div>
+        </div>
+        <div class="object-lesson-card reveal">
+          <div class="object-lesson-card__icon" style="background:var(--gold-light);">🕯️</div>
+          <div>
+            <div class="object-lesson-card__title">Let Your Light Shine — Be the Light</div>
+            <div class="object-lesson-card__verse">Matthew 5:14–16 · Ages 4–10</div>
+            <div class="object-lesson-card__desc">A simple candle demonstration that shows kids how one life shining for Jesus can light up the whole room — and why hiding our light makes no sense.</div>
+            <div class="download-row"><a href="#" class="btn btn--primary btn--sm">Free Download</a></div>
+          </div>
+        </div>
+        <div class="object-lesson-card reveal">
+          <div class="object-lesson-card__icon" style="background:var(--green-light);">🌱</div>
+          <div>
+            <div class="object-lesson-card__title">The Parable of the Sower — Good Soil</div>
+            <div class="object-lesson-card__verse">Mark 4:1–20 · Ages 6–12</div>
+            <div class="object-lesson-card__desc">Four cups with different "soil" types and seeds reveal which conditions allow God's Word to take root. A memorable, hands-on lesson kids won't forget.</div>
+            <div class="download-row"><a href="glory-kids-membership.html" class="btn btn--outline btn--sm">Members Only ✨</a></div>
+          </div>
+        </div>
+        <div class="object-lesson-card reveal">
+          <div class="object-lesson-card__icon" style="background:var(--rose-light);">❤️</div>
+          <div>
+            <div class="object-lesson-card__title">God's Unconditional Love — The Stained Paper</div>
+            <div class="object-lesson-card__verse">Romans 5:8 · Ages 5–12</div>
+            <div class="object-lesson-card__desc">Watch a "dirty" piece of paper become clean and white again using bleach and water — a powerful visual of what Jesus does to our hearts when we ask Him in.</div>
+            <div class="download-row"><a href="glory-kids-membership.html" class="btn btn--outline btn--sm">Members Only ✨</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MEMBER CTA -->
+<section style="padding:3rem 0; background:var(--gray-50);">
+  <div class="container">
+    <div class="membership-spotlight reveal" style="text-align:center;">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:3rem;margin-bottom:1rem;">🎨</div>
+        <h2 style="color:white;margin-bottom:1rem;">Unlock 300+ Activities with<br>Glory Kids Membership</h2>
+        <p style="color:rgba(255,255,255,0.8);max-width:540px;margin:0 auto 2rem;">Members get unlimited access to every craft, coloring page, game, object lesson, memory verse resource, drama script, and worship guide — plus new content added every week.</p>
+        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids — $29.99/mo →</a>
+        <p style="color:rgba(255,255,255,0.5);font-size:0.82rem;margin-top:1rem;">No contracts · Cancel anytime · Instant access</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="footer__top">
+    <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
+    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+    <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+</div></footer>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

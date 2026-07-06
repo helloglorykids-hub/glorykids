@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Children's Ministry Lessons</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background: var(--gray-50); }
+    .admin-layout { display: block; min-height: 100vh; }
+    .admin-topbar {
+      background: var(--navy); color: white; padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .admin-topbar__brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-heading); font-weight: 800; }
+    .admin-topbar__brand span { color: var(--gold); }
+    .admin-topbar__user { display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.75); }
+    .admin-topbar__signout { background: rgba(255,255,255,0.1); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .admin-topbar__signout:hover { background: rgba(255,255,255,0.18); }
+
+    .admin-body { display: flex; align-items: flex-start; }
+    .admin-sidebar {
+      width: 240px; flex-shrink: 0; background: white;
+      border-right: 1px solid var(--gray-200); padding: 1.5rem 1rem;
+      min-height: calc(100vh - 65px); position: sticky; top: 65px;
+    }
+    @media(max-width:800px) {
+      .admin-body { flex-direction: column; }
+      .admin-sidebar { width: 100%; position: static; display: flex; gap: 0.5rem; overflow-x: auto; min-height: auto; }
+    }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.7rem 0.9rem; border-radius: var(--radius);
+      font-family: var(--font-heading); font-size: 0.875rem; font-weight: 600;
+      color: var(--gray-600); cursor: pointer; text-decoration: none;
+      flex-shrink: 0;
+    }
+    .admin-nav-item:hover { background: var(--gray-100); color: var(--navy); }
+    .admin-nav-item.active { background: var(--primary-light); color: var(--primary); }
+
+    .admin-main { flex: 1; padding: 2rem; min-width: 0; }
+    .admin-section-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; color: var(--navy); margin-bottom: 1.25rem; }
+
+    .admin-stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media(max-width:1100px) { .admin-stats { grid-template-columns: repeat(3,1fr); } }
+    @media(max-width:600px) { .admin-stats { grid-template-columns: repeat(2,1fr); } }
+    .admin-stat-card { background: white; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100); }
+    .admin-stat-card__label { font-size: 0.8rem; color: var(--gray-500); margin-bottom: 0.4rem; }
+    .admin-stat-card__num { font-family: var(--font-heading); font-size: 1.9rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .admin-stat-card__num.accent { color: var(--primary); }
+    .admin-stat-card__num.gold { color: var(--gold-dark); }
+
+    .admin-card { background: white; border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100); margin-bottom: 2rem; }
+    .admin-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--navy); margin-bottom: 1.25rem; }
+
+    .chart-bars { display: flex; align-items: flex-end; gap: 0.75rem; height: 140px; }
+    .chart-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.5rem; height: 100%; }
+    .chart-bar__fill { width: 100%; background: linear-gradient(180deg, var(--primary), var(--primary-dark)); border-radius: 6px 6px 0 0; min-height: 4px; }
+    .chart-bar__label { font-size: 0.72rem; color: var(--gray-400); }
+
+    table.admin-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .admin-table th { text-align: left; font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--gray-100); }
+    .admin-table td { padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: var(--radius-full); font-size: 0.72rem; font-weight: 700; }
+    .badge--free { background: var(--gray-100); color: var(--gray-600); }
+    .badge--gold { background: var(--gold-light); color: var(--gold-dark); }
+    .badge--active { background: var(--green-light); color: #047857; }
+    .badge--paused { background: #FEF3C7; color: #92400E; }
+    .badge--cancelled { background: var(--rose-light); color: var(--rose); }
+    .badge--admin { background: var(--primary-light); color: var(--primary); }
+    .row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .row-btn {
+      font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-full); cursor: pointer; border: 1px solid var(--gray-200);
+      background: white; color: var(--gray-600);
+    }
+    .row-btn:hover { background: var(--gray-100); }
+    .row-btn--primary { background: var(--primary); color: white; border-color: var(--primary); }
+    .row-btn--warn { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+    .row-btn--danger { background: var(--rose-light); color: var(--rose); border-color: #FECDD3; }
+
+    .post-form { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+    .post-form input, .post-form select, .post-form textarea {
+      width: 100%; padding: 0.7rem 0.9rem; border-radius: var(--radius); border: 1.5px solid var(--gray-200);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .post-form textarea { resize: vertical; min-height: 90px; }
+    .post-form label { font-size: 0.8rem; font-weight: 700; color: var(--gray-600); margin-bottom: 0.35rem; display: block; }
+    .post-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--gray-100); }
+    .post-row:last-child { border-bottom: none; }
+    .post-row__icon { width: 44px; height: 44px; border-radius: var(--radius); background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .post-row__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    .post-row__meta { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
+  </style>
+</head>
+<body>
+
+<div class="admin-layout">
+  <div class="admin-topbar">
+    <div class="admin-topbar__brand">🛡️ Admin<span>Panel</span></div>
+    <div class="admin-topbar__user">
+      <span id="admin-name-label">Loading...</span>
+      <span class="admin-topbar__signout" onclick="adminSignOut()">Sign Out</span>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <a href="#overview" class="admin-nav-item active" onclick="showAdminTab('overview',this)">📊 Overview</a>
+      <a href="#posts" class="admin-nav-item" onclick="showAdminTab('posts',this)">📝 Blog Posts</a>
+      <a href="#members" class="admin-nav-item" onclick="showAdminTab('members',this)">👥 Members</a>
+      <a href="#payments" class="admin-nav-item" onclick="showAdminTab('payments',this)">💳 Payments</a>
+      <a href="#support" class="admin-nav-item" onclick="showAdminTab('support',this)">💬 Support</a>
+    </aside>
+
+    <main class="admin-main">
+
+      <!-- OVERVIEW -->
+      <div id="admin-tab-overview">
+        <div class="admin-section-title">📊 Overview</div>
+        <div class="admin-stats">
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Total Users</div>
+            <div class="admin-stat-card__num" id="stat-total-users">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Active Glory Kids Members</div>
+            <div class="admin-stat-card__num accent" id="stat-active-members">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Estimated MRR</div>
+            <div class="admin-stat-card__num gold" id="stat-mrr">$0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Total Revenue Collected</div>
+            <div class="admin-stat-card__num gold" id="stat-revenue">$0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Open Support Tickets</div>
+            <div class="admin-stat-card__num accent" id="stat-open-tickets">0</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">📈 Signups — Last 7 Days</div>
+          <div class="chart-bars" id="signup-chart"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">🆕 Recent Signups</div>
+          <div id="recent-signups"></div>
+        </div>
+      </div>
+
+      <!-- BLOG POSTS -->
+      <div id="admin-tab-posts" style="display:none;">
+        <div class="admin-section-title" style="display:flex; align-items:center; justify-content:space-between;">
+          📝 Blog Posts
+          <button class="btn btn--primary btn--sm" onclick="showPostForm()">+ New Post</button>
+        </div>
+
+        <div class="admin-card" id="post-form-card" style="display:none;">
+          <div class="admin-card__title" id="post-form-title">New Post</div>
+          <div class="post-form">
+            <input type="hidden" id="post-id" />
+            <div>
+              <label>Title</label>
+              <input type="text" id="post-title" placeholder="Post title" />
+            </div>
+            <div>
+              <label>Category</label>
+              <select id="post-category">
+                <option value="parents">For Parents</option>
+                <option value="pastors">For Pastors</option>
+                <option value="kidmin">For Kidmin Leaders</option>
+              </select>
+            </div>
+            <div>
+              <label>Icon (emoji)</label>
+              <input type="text" id="post-icon" placeholder="📖" value="📖" />
+            </div>
+            <div>
+              <label>Excerpt</label>
+              <textarea id="post-excerpt" placeholder="Short summary shown on the blog cards"></textarea>
+            </div>
+            <div>
+              <label>Content</label>
+              <textarea id="post-content" placeholder="Full article content" style="min-height:160px;"></textarea>
+            </div>
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
+              <input type="checkbox" id="post-published" style="width:auto;" checked /> Published
+            </label>
+            <div style="display:flex; gap:0.75rem;">
+              <button class="btn btn--primary" onclick="savePostForm()">Save Post</button>
+              <button class="btn btn--outline" onclick="hidePostForm()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">All Posts</div>
+          <div id="posts-list"></div>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div id="admin-tab-members" style="display:none;">
+        <div class="admin-section-title">👥 Members</div>
+        <div class="admin-card" style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="members-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div id="admin-tab-payments" style="display:none;">
+        <div class="admin-section-title" style="display:flex; align-items:center; justify-content:space-between;">
+          💳 Payments
+          <button class="btn btn--primary btn--sm" onclick="showPaymentForm()">+ Record Payment</button>
+        </div>
+
+        <div class="admin-card" id="payment-form-card" style="display:none;">
+          <div class="admin-card__title">Record Payment</div>
+          <div class="post-form">
+            <div>
+              <label>Member</label>
+              <select id="payment-member"></select>
+            </div>
+            <div>
+              <label>Amount (USD)</label>
+              <input type="number" id="payment-amount" value="29.99" step="0.01" />
+            </div>
+            <div>
+              <label>Note</label>
+              <input type="text" id="payment-note" placeholder="e.g. Monthly renewal" />
+            </div>
+            <div style="display:flex; gap:0.75rem;">
+              <button class="btn btn--primary" onclick="recordPayment()">Save Payment</button>
+              <button class="btn btn--outline" onclick="hidePaymentForm()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card" style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Member</th><th>Amount</th><th>Note</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div id="admin-tab-support" style="display:none;">
+        <div class="admin-section-title">💬 Support Inbox</div>
+        <p style="color:var(--gray-500); margin-top:-0.75rem; margin-bottom:1.25rem; font-size:0.9rem;">
+          Messages from the chatbot's "talk to a live agent" hand-off, plus anything visitors couldn't get answered. Reply within 24 hours.
+        </p>
+        <div class="admin-card" id="tickets-list"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script>
+let adminUid = null;
+
+onFirebaseReady(() => {
+  auth.onAuthStateChanged(user => {
+    if (!user) { window.location.href = 'admin-login.html'; return; }
+    const rec = GK.getUserRecord(user.uid);
+    if (!rec || !rec.isAdmin) {
+      window.location.href = 'admin-login.html';
+      return;
+    }
+    adminUid = user.uid;
+    document.getElementById('admin-name-label').textContent = (user.displayName || user.email) + ' 👋';
+    renderOverview();
+    renderPosts();
+    renderMembers();
+    renderPayments();
+    renderTickets();
+  });
+});
+
+async function adminSignOut() {
+  await auth.signOut();
+  window.location.href = 'admin-login.html';
+}
+
+function showAdminTab(name, linkEl) {
+  document.querySelectorAll('[id^="admin-tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('admin-tab-' + name).style.display = 'block';
+  document.querySelectorAll('.admin-nav-item').forEach(l => l.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'members') renderMembers();
+  if (name === 'payments') renderPayments();
+  if (name === 'support') renderTickets();
+}
+
+/* ── Overview ─────────────────────────────────────────────── */
+function renderOverview() {
+  const a = GK.getAnalytics();
+  document.getElementById('stat-total-users').textContent = a.totalUsers;
+  document.getElementById('stat-active-members').textContent = a.activeMembers;
+  document.getElementById('stat-mrr').textContent = '$' + a.mrr.toFixed(2);
+  document.getElementById('stat-revenue').textContent = '$' + a.revenue.toFixed(2);
+  document.getElementById('stat-open-tickets').textContent = a.openTickets;
+
+  const maxCount = Math.max(1, ...a.signupsByDay.map(d => d.count));
+  document.getElementById('signup-chart').innerHTML = a.signupsByDay.map(d => `
+    <div class="chart-bar">
+      <div class="chart-bar__fill" style="height:${Math.max(4, (d.count / maxCount) * 100)}%;" title="${d.count} signups"></div>
+      <div class="chart-bar__label">${d.label}</div>
+    </div>
+  `).join('');
+
+  const recent = GK.listUsers().sort((a,b) => b.createdAt - a.createdAt).slice(0, 5);
+  const el = document.getElementById('recent-signups');
+  if (recent.length === 0) { el.innerHTML = '<div class="empty-state">No signups yet.</div>'; return; }
+  el.innerHTML = recent.map(u => `
+    <div class="post-row">
+      <div class="post-row__icon">${(u.displayName || u.email)[0].toUpperCase()}</div>
+      <div>
+        <div class="post-row__title">${u.displayName || u.email.split('@')[0]}</div>
+        <div class="post-row__meta">${u.email} · joined ${new Date(u.createdAt).toLocaleDateString()}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Blog Posts ───────────────────────────────────────────── */
+function showPostForm(post) {
+  document.getElementById('post-form-card').style.display = 'block';
+  document.getElementById('post-form-title').textContent = post ? 'Edit Post' : 'New Post';
+  document.getElementById('post-id').value = post ? post.id : '';
+  document.getElementById('post-title').value = post ? post.title : '';
+  document.getElementById('post-category').value = post ? post.category : 'parents';
+  document.getElementById('post-icon').value = post ? post.icon : '📖';
+  document.getElementById('post-excerpt').value = post ? post.excerpt : '';
+  document.getElementById('post-content').value = post ? post.content : '';
+  document.getElementById('post-published').checked = post ? !!post.published : true;
+}
+function hidePostForm() { document.getElementById('post-form-card').style.display = 'none'; }
+
+function savePostForm() {
+  const title = document.getElementById('post-title').value.trim();
+  if (!title) return alert('Please enter a title.');
+  const post = {
+    id: document.getElementById('post-id').value || undefined,
+    title,
+    category: document.getElementById('post-category').value,
+    icon: document.getElementById('post-icon').value.trim() || '📖',
+    excerpt: document.getElementById('post-excerpt').value.trim(),
+    content: document.getElementById('post-content').value.trim(),
+    published: document.getElementById('post-published').checked,
+    author: 'Admin'
+  };
+  GK.savePost(post);
+  hidePostForm();
+  renderPosts();
+}
+
+function editPost(id) {
+  const post = GK.getPost(id);
+  if (post) showPostForm(post);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deletePostRow(id) {
+  if (!confirm('Delete this post permanently?')) return;
+  GK.deletePost(id);
+  renderPosts();
+}
+
+function renderPosts() {
+  const posts = GK.listPosts();
+  const el = document.getElementById('posts-list');
+  if (posts.length === 0) { el.innerHTML = '<div class="empty-state">No posts yet. Click "+ New Post" to publish your first article.</div>'; return; }
+  el.innerHTML = posts.map(p => `
+    <div class="post-row">
+      <div class="post-row__icon">${p.icon || '📖'}</div>
+      <div style="flex:1;">
+        <div class="post-row__title">${p.title}</div>
+        <div class="post-row__meta">
+          <span class="badge ${p.published ? 'badge--active' : 'badge--free'}">${p.published ? 'Published' : 'Draft'}</span>
+          &nbsp;${p.category} · ${new Date(p.createdAt).toLocaleDateString()}
+        </div>
+      </div>
+      <div class="row-actions">
+        <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
+        <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Members ──────────────────────────────────────────────── */
+function renderMembers() {
+  const users = GK.listUsers().sort((a,b) => b.createdAt - a.createdAt);
+  const tbody = document.getElementById('members-tbody');
+  if (users.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No members yet.</td></tr>'; return; }
+  tbody.innerHTML = users.map(u => {
+    const planBadge = u.plan === 'glory_kids' ? '<span class="badge badge--gold">Glory Kids</span>' : '<span class="badge badge--free">Free</span>';
+    const statusBadge = u.plan !== 'glory_kids' ? '' :
+      u.planStatus === 'active' ? '<span class="badge badge--active">Active</span>' :
+      u.planStatus === 'paused' ? '<span class="badge badge--paused">Paused</span>' :
+      '<span class="badge badge--cancelled">Cancelled</span>';
+    const adminBadge = u.isAdmin ? '<span class="badge badge--admin">Admin</span>' : '';
+
+    let actions = '';
+    if (u.plan !== 'glory_kids') {
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.uid}','glory_kids','active')">Make Glory Kids</button>`;
+    } else if (u.planStatus === 'active') {
+      actions += `<button class="row-btn row-btn--warn" onclick="setMemberPlan('${u.uid}','glory_kids','paused')">Pause</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.uid}','free','active')">Cancel</button>`;
+    } else if (u.planStatus === 'paused') {
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.uid}','glory_kids','active')">Resume</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.uid}','free','active')">Cancel</button>`;
+    }
+    actions += `<button class="row-btn row-btn--danger" onclick="deleteMember('${u.uid}')">Delete</button>`;
+
+    return `
+      <tr>
+        <td>${u.displayName || u.email.split('@')[0]} ${adminBadge}</td>
+        <td>${u.email}</td>
+        <td>${planBadge}</td>
+        <td>${statusBadge}</td>
+        <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+        <td><div class="row-actions">${actions}</div></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function setMemberPlan(uid, plan, status) {
+  GK.updateUserRecord(uid, { plan, planStatus: status });
+  const rec = GK.getUserRecord(uid);
+  const label = plan === 'glory_kids' ? (status === 'active' ? 'Glory Kids membership activated' : 'Glory Kids membership paused') : 'Membership set to Free';
+  gkLogActivity(uid, plan === 'glory_kids' && status === 'active' ? '✨' : (status === 'paused' ? '⏸️' : '🔻'), label);
+  renderMembers();
+  renderOverview();
+}
+
+function deleteMember(uid) {
+  if (!confirm('Permanently delete this member and all their data?')) return;
+  if (uid === adminUid) return alert('You cannot delete your own admin account from here.');
+  GK.deleteUserRecord(uid);
+  renderMembers();
+  renderOverview();
+}
+
+/* ── Payments ─────────────────────────────────────────────── */
+function showPaymentForm() {
+  const select = document.getElementById('payment-member');
+  const users = GK.listUsers();
+  select.innerHTML = users.map(u => `<option value="${u.uid}" data-email="${u.email}">${u.displayName || u.email}</option>`).join('');
+  document.getElementById('payment-form-card').style.display = 'block';
+}
+function hidePaymentForm() { document.getElementById('payment-form-card').style.display = 'none'; }
+
+function recordPayment() {
+  const select = document.getElementById('payment-member');
+  const uid = select.value;
+  const email = select.options[select.selectedIndex]?.dataset.email;
+  const amount = parseFloat(document.getElementById('payment-amount').value) || 0;
+  const note = document.getElementById('payment-note').value.trim();
+  if (!uid) return alert('Please select a member.');
+  GK.addPayment({ uid, email, amount, note });
+  gkLogActivity(uid, '💳', 'Payment of $' + amount.toFixed(2) + ' recorded');
+  hidePaymentForm();
+  renderPayments();
+  renderOverview();
+}
+
+function deletePaymentRow(id) {
+  if (!confirm('Delete this payment record?')) return;
+  GK.deletePayment(id);
+  renderPayments();
+  renderOverview();
+}
+
+function renderPayments() {
+  const payments = GK.listPayments();
+  const tbody = document.getElementById('payments-tbody');
+  if (payments.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No payments recorded yet.</td></tr>'; return; }
+  tbody.innerHTML = payments.map(p => `
+    <tr>
+      <td>${p.email}</td>
+      <td>$${Number(p.amount).toFixed(2)}</td>
+      <td>${p.note || '—'}</td>
+      <td>${new Date(p.date).toLocaleDateString()}</td>
+      <td><button class="row-btn row-btn--danger" onclick="deletePaymentRow('${p.id}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+/* ── Support tickets ──────────────────────────────────────── */
+function renderTickets() {
+  const tickets = GK.listTickets();
+  const el = document.getElementById('tickets-list');
+  if (tickets.length === 0) { el.innerHTML = '<div class="empty-state">No support messages yet. When a visitor can\'t get an answer from the chatbot, their message will show up here.</div>'; return; }
+  el.innerHTML = tickets.map(t => `
+    <div class="post-row" style="align-items:flex-start;">
+      <div class="post-row__icon">${t.status === 'open' ? '🟠' : '✅'}</div>
+      <div style="flex:1;">
+        <div class="post-row__title">${t.name} <span style="font-weight:400;color:var(--gray-400);">— ${t.email}</span></div>
+        <div class="post-row__meta">${new Date(t.createdAt).toLocaleString()} · <span class="badge ${t.status === 'open' ? 'badge--paused' : 'badge--active'}">${t.status === 'open' ? 'Open' : 'Resolved'}</span></div>
+        <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-700);">${t.message}</p>
+        ${t.transcript && t.transcript.length ? `<details style="margin-top:0.5rem;"><summary style="cursor:pointer; font-size:0.78rem; color:var(--primary); font-weight:600;">View chat transcript (${t.transcript.length})</summary><div style="margin-top:0.5rem; background:var(--gray-50); border-radius:var(--radius); padding:0.75rem; font-size:0.78rem; color:var(--gray-600); max-height:160px; overflow-y:auto;">${t.transcript.map(m => `<div style="margin-bottom:0.4rem;"><strong>${m.role === 'user' ? 'Visitor' : 'Bot'}:</strong> ${m.text}</div>`).join('')}</div></details>` : ''}
+      </div>
+      <div class="row-actions">
+        <a class="row-btn row-btn--primary" href="mailto:${t.email}?subject=Re: your question&body=Hi ${t.name},%0D%0A%0D%0A">Reply by Email</a>
+        ${t.status === 'open'
+          ? `<button class="row-btn row-btn--warn" onclick="resolveTicket('${t.id}')">Mark Resolved</button>`
+          : `<button class="row-btn" onclick="reopenTicket('${t.id}')">Reopen</button>`}
+        <button class="row-btn row-btn--danger" onclick="deleteTicketRow('${t.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function resolveTicket(id) { GK.updateTicket(id, { status: 'resolved' }); renderTickets(); renderOverview(); }
+function reopenTicket(id) { GK.updateTicket(id, { status: 'open' }); renderTickets(); renderOverview(); }
+function deleteTicketRow(id) {
+  if (!confirm('Delete this support message?')) return;
+  GK.deleteTicket(id);
+  renderTickets();
+  renderOverview();
+}
+</script>
+</body>
+</html>

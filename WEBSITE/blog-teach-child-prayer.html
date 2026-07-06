@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Teach Your Child About Prayer: 5 Ways to Make It Stick | Children's Ministry Lessons</title>
+  <meta name="description" content="Your child rushes through mealtime prayers so fast the words blur. Here's how to build a prayer habit that actually sticks — 5 practical strategies for parents." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background: var(--gray-50); }
+
+    /* ── BLOG POST HERO ─────────────────────────────────── */
+    .post-hero {
+      background: linear-gradient(145deg, var(--navy) 0%, #312E81 50%, var(--primary) 100%);
+      padding: 7rem 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .post-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(245,158,11,0.12), transparent 55%),
+                  radial-gradient(ellipse at 10% 80%, rgba(249,115,22,0.08), transparent 50%);
+    }
+    .post-hero__inner {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .post-hero__breadcrumb {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; margin-bottom: 1.5rem;
+      font-size: 0.8rem; color: rgba(255,255,255,0.55);
+    }
+    .post-hero__breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+    .post-hero__breadcrumb a:hover { color: var(--gold); }
+    .post-hero__breadcrumb span { color: rgba(255,255,255,0.3); }
+    .post-hero__category {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4);
+      color: var(--gold); font-family: var(--font-heading);
+      font-size: 0.75rem; font-weight: 700; padding: 0.35rem 1rem;
+      border-radius: var(--radius-full); margin-bottom: 1.25rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .post-hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      color: white; line-height: 1.15; margin-bottom: 1.25rem;
+    }
+    .post-hero__subtitle {
+      color: rgba(255,255,255,0.72); font-size: 1.1rem;
+      line-height: 1.7; max-width: 600px; margin: 0 auto 2rem;
+    }
+    .post-hero__meta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.5rem; flex-wrap: wrap;
+      padding: 1.25rem 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 0.5rem;
+    }
+    .post-hero__meta-item {
+      display: flex; align-items: center; gap: 0.45rem;
+      color: rgba(255,255,255,0.6); font-size: 0.82rem;
+    }
+    .post-hero__meta-item strong { color: rgba(255,255,255,0.85); font-weight: 600; }
+    .post-hero__author-photo {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--coral));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 700; color: white;
+      font-family: var(--font-heading); flex-shrink: 0;
+    }
+
+    /* Hero image strip */
+    .post-hero__image {
+      width: 100%; max-width: 800px; margin: 2rem auto 0;
+      height: 340px;
+      background: linear-gradient(145deg, rgba(124,58,237,0.3), rgba(30,27,75,0.8)),
+                  url('') center/cover;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 6rem;
+      position: relative; overflow: hidden;
+    }
+    .post-hero__image::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(145deg, rgba(124,58,237,0.45), rgba(30,27,75,0.6));
+    }
+    .post-hero__image span { position: relative; z-index: 1; }
+
+    /* ── POST LAYOUT ─────────────────────────────────────── */
+    .post-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 2.5rem;
+      max-width: 1120px; margin: 0 auto;
+      padding: 3rem 2rem;
+      align-items: start;
+    }
+    @media(max-width: 900px) {
+      .post-layout { grid-template-columns: 1fr; }
+      .post-sidebar { order: 2; }
+    }
+
+    /* ── ARTICLE BODY ────────────────────────────────────── */
+    .post-body {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      overflow: hidden;
+    }
+    .post-body__content {
+      padding: 2.5rem;
+    }
+    @media(max-width: 600px) { .post-body__content { padding: 1.5rem; } }
+
+    /* Opening hook */
+    .post-hook {
+      font-size: 1.15rem; color: var(--gray-700);
+      line-height: 1.8; font-style: italic;
+      border-left: 4px solid var(--primary);
+      padding: 1.1rem 1.5rem;
+      background: var(--primary-lighter);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+      margin-bottom: 2rem;
+    }
+
+    /* Body text */
+    .post-body__content p {
+      font-size: 1rem; line-height: 1.85;
+      color: var(--gray-700); margin-bottom: 1.5rem;
+    }
+    .post-body__content h2 {
+      font-size: 1.5rem; color: var(--navy);
+      margin: 2.5rem 0 1rem; line-height: 1.25;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--primary-lighter);
+    }
+    .post-body__content h3 {
+      font-size: 1.15rem; color: var(--primary-dark);
+      margin: 2rem 0 0.75rem; display: flex; align-items: center; gap: 0.6rem;
+    }
+    .post-body__content h3 .strategy-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--primary); color: white;
+      font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
+    }
+
+    /* Lists */
+    .post-body__content ul { margin: 0 0 1.5rem 0; padding: 0; list-style: none; }
+    .post-body__content ul li {
+      position: relative; padding: 0.35rem 0 0.35rem 1.75rem;
+      color: var(--gray-700); font-size: 1rem; line-height: 1.7;
+    }
+    .post-body__content ul li::before {
+      content: '✓';
+      position: absolute; left: 0;
+      color: var(--primary); font-weight: 800;
+    }
+
+    /* Strategy boxes */
+    .strategy-box {
+      background: linear-gradient(135deg, var(--primary-lighter), white);
+      border: 1.5px solid var(--primary-light);
+      border-radius: var(--radius-xl);
+      padding: 1.75rem 2rem;
+      margin: 2rem 0;
+      position: relative; overflow: hidden;
+    }
+    .strategy-box::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+      border-radius: 4px 0 0 4px;
+    }
+    .strategy-box__label {
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--primary); margin-bottom: 0.6rem;
+    }
+    .strategy-box h3 {
+      font-size: 1.15rem; color: var(--navy);
+      margin: 0 0 0.85rem !important; padding: 0 !important;
+      border: none !important;
+    }
+    .strategy-box p { font-size: 0.95rem; color: var(--gray-600); margin-bottom: 0 !important; }
+
+    /* CHAT Framework */
+    .chat-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 0.85rem; margin: 1.25rem 0;
+    }
+    @media(max-width: 500px) { .chat-grid { grid-template-columns: 1fr; } }
+    .chat-item {
+      background: white; border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-lg); padding: 1rem 1.15rem;
+      display: flex; gap: 0.85rem; align-items: flex-start;
+    }
+    .chat-item__letter {
+      width: 38px; height: 38px; border-radius: var(--radius);
+      background: var(--primary); color: white;
+      font-family: var(--font-heading); font-size: 1.25rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-item__letter.c { background: #EF4444; }
+    .chat-item__letter.h { background: var(--gold); }
+    .chat-item__letter.a { background: var(--primary); }
+    .chat-item__letter.t { background: #10B981; }
+    .chat-item strong { display: block; font-family: var(--font-heading); font-size: 0.875rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .chat-item span { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; }
+
+    /* Pullquote */
+    .pullquote {
+      position: relative; margin: 2.5rem 0;
+      padding: 2rem 2.5rem;
+      background: linear-gradient(135deg, var(--navy), var(--primary-dark));
+      border-radius: var(--radius-xl);
+      text-align: center;
+    }
+    .pullquote::before {
+      content: '"';
+      position: absolute; top: -0.25rem; left: 1.5rem;
+      font-family: Georgia, serif; font-size: 6rem;
+      color: rgba(255,255,255,0.12); line-height: 1;
+    }
+    .pullquote p {
+      font-size: 1.2rem; color: white !important;
+      font-style: italic; line-height: 1.65;
+      font-weight: 500; margin: 0 !important;
+      position: relative; z-index: 1;
+    }
+
+    /* Permission boxes */
+    .permission-box {
+      background: var(--gold-light);
+      border: 1.5px solid #FDE68A;
+      border-radius: var(--radius-xl);
+      padding: 1.5rem 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .permission-box__title {
+      font-family: var(--font-heading); font-size: 0.82rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: #92400E; margin-bottom: 0.85rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .permission-box ul { margin: 0 !important; }
+    .permission-box ul li { color: #78350F !important; }
+    .permission-box ul li::before { color: #D97706 !important; }
+
+    /* Obstacle cards */
+    .obstacles-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1rem; margin: 1.25rem 0 1.5rem;
+    }
+    @media(max-width: 500px) { .obstacles-grid { grid-template-columns: 1fr; } }
+    .obstacle-card {
+      background: var(--gray-50);
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+    }
+    .obstacle-card__q {
+      font-family: var(--font-heading); font-size: 0.8rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 0.4rem;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .obstacle-card p { font-size: 0.82rem; color: var(--gray-600); line-height: 1.6; margin: 0 !important; }
+
+    /* Goal callout */
+    .goal-callout {
+      background: linear-gradient(135deg, var(--primary-light), var(--gold-light));
+      border: 2px solid var(--primary-lighter);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.25rem;
+      text-align: center;
+      margin: 2rem 0;
+    }
+    .goal-callout__icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .goal-callout h3 { font-size: 1.15rem; color: var(--navy); margin-bottom: 0.6rem; }
+    .goal-callout p { color: var(--gray-600); font-size: 0.95rem; line-height: 1.75; margin: 0 !important; }
+
+    /* Tags */
+    .post-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      padding: 1.5rem 2.5rem;
+      border-top: 1px solid var(--gray-100);
+    }
+    .post-tag {
+      background: var(--gray-100); color: var(--gray-600);
+      font-family: var(--font-heading); font-size: 0.75rem; font-weight: 600;
+      padding: 0.3rem 0.85rem; border-radius: var(--radius-full);
+      text-decoration: none; transition: var(--transition);
+    }
+    .post-tag:hover { background: var(--primary); color: white; }
+
+    /* Share bar */
+    .post-share {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 1.5rem 2.5rem;
+      border-top: 1px solid var(--gray-100);
+      background: var(--gray-50);
+      flex-wrap: wrap;
+    }
+    .post-share__label { font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700; color: var(--gray-600); }
+    .share-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-heading); font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; border: none; transition: var(--transition); text-decoration: none;
+    }
+    .share-btn--facebook { background: #1877F2; color: white; }
+    .share-btn--twitter  { background: #1DA1F2; color: white; }
+    .share-btn--copy     { background: var(--gray-200); color: var(--gray-700); }
+    .share-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Author card */
+    .author-card {
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      padding: 2rem 2.5rem;
+      display: flex; gap: 1.5rem;
+      margin-top: 1.5rem;
+      align-items: flex-start;
+    }
+    @media(max-width: 600px) { .author-card { flex-direction: column; padding: 1.5rem; } }
+    .author-card__avatar {
+      width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--primary), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-heading); font-weight: 800; font-size: 1.75rem; color: white;
+    }
+    .author-card__name  { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .author-card__role  { font-size: 0.82rem; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem; }
+    .author-card__bio   { font-size: 0.875rem; color: var(--gray-600); line-height: 1.7; margin: 0; }
+
+    /* ── SIDEBAR ─────────────────────────────────────────── */
+    .post-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .sidebar-card {
+      background: white; border-radius: var(--radius-xl);
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      overflow: hidden;
+    }
+    .sidebar-card__header {
+      padding: 1rem 1.25rem 0.85rem;
+      border-bottom: 1px solid var(--gray-100);
+      font-family: var(--font-heading); font-size: 0.875rem; font-weight: 800;
+      color: var(--navy); display: flex; align-items: center; gap: 0.5rem;
+    }
+    .sidebar-card__body { padding: 1.1rem 1.25rem; }
+
+    /* Table of contents */
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li { border-bottom: 1px solid var(--gray-100); }
+    .toc-list li:last-child { border-bottom: none; }
+    .toc-list a {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.65rem 0;
+      font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600;
+      color: var(--gray-600); text-decoration: none; transition: color 0.2s;
+    }
+    .toc-list a:hover { color: var(--primary); }
+    .toc-list .toc-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--primary-light); color: var(--primary);
+      font-size: 0.68rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    /* Related posts */
+    .related-post {
+      display: flex; gap: 0.75rem; align-items: flex-start;
+      padding: 0.75rem 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .related-post:last-child { border-bottom: none; }
+    .related-post__icon {
+      width: 44px; height: 44px; border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; flex-shrink: 0;
+    }
+    .related-post__title {
+      font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700;
+      color: var(--navy); line-height: 1.35; margin-bottom: 0.2rem;
+      text-decoration: none; display: block; transition: color 0.2s;
+    }
+    .related-post__title:hover { color: var(--primary); }
+    .related-post__meta { font-size: 0.72rem; color: var(--gray-400); }
+
+    /* Membership sidebar CTA */
+    .sidebar-cta {
+      background: linear-gradient(145deg, var(--primary-dark), var(--primary));
+      border-radius: var(--radius-xl);
+      padding: 1.75rem 1.5rem; text-align: center;
+    }
+    .sidebar-cta__icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .sidebar-cta h4 { color: white; font-size: 1rem; margin-bottom: 0.5rem; }
+    .sidebar-cta p  { color: rgba(255,255,255,0.75); font-size: 0.8rem; line-height: 1.6; margin-bottom: 1.25rem; }
+
+    /* ── RELATED POSTS GRID (bottom) ──────────────────────── */
+    .related-section {
+      max-width: 1120px; margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+    .related-section h2 {
+      font-size: 1.5rem; color: var(--navy);
+      margin-bottom: 1.5rem;
+    }
+    .related-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    @media(max-width: 768px) { .related-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width: 480px) { .related-grid { grid-template-columns: 1fr; } }
+    .related-card {
+      background: white; border-radius: var(--radius-xl);
+      box-shadow: var(--shadow); border: 1px solid var(--gray-100);
+      overflow: hidden; transition: var(--transition); text-decoration: none;
+    }
+    .related-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+    .related-card__cover {
+      height: 140px; display: flex; align-items: center;
+      justify-content: center; font-size: 3rem;
+    }
+    .related-card__body { padding: 1.1rem; }
+    .related-card__cat { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-bottom: 0.35rem; }
+    .related-card__title { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 800; color: var(--navy); line-height: 1.35; margin-bottom: 0.35rem; }
+    .related-card__meta { font-size: 0.75rem; color: var(--gray-400); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav" style="background:white;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" style="color:var(--navy);">
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text" style="color:var(--navy);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li><a href="glory-kids-membership.html" class="nav__link">Membership</a></li>
+        <li><a href="blog.html" class="nav__link active">Blog</a></li>
+        <li><a href="shop.html" class="nav__link">Shop</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ POST HERO ══════════════════════════════════════ -->
+<section class="post-hero">
+  <div class="post-hero__inner">
+    <nav class="post-hero__breadcrumb">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="blog.html">Blog</a>
+      <span>›</span>
+      <a href="blog.html#parents">For Parents</a>
+      <span>›</span>
+      <span style="color:rgba(255,255,255,0.5);">Teaching Prayer</span>
+    </nav>
+
+    <div class="post-hero__category">👪 For Parents</div>
+
+    <h1>How to Teach Your Child About Prayer:<br>5 Ways to Make It Stick</h1>
+
+    <p class="post-hero__subtitle">
+      Your child rushes through mealtime prayers so fast the words blur together. You've tried everything — here's what actually works.
+    </p>
+
+    <div class="post-hero__meta">
+      <div class="post-hero__meta-item">
+        <div class="post-hero__author-photo">JV</div>
+        <span>By <strong>Jandre van der Walt</strong></span>
+      </div>
+      <div class="post-hero__meta-item">
+        📅 <span>May 28, 2025</span>
+      </div>
+      <div class="post-hero__meta-item">
+        ⏱️ <span>7 min read</span>
+      </div>
+      <div class="post-hero__meta-item">
+        👪 <span>For Parents</span>
+      </div>
+    </div>
+  </div>
+  <div class="post-hero__image" style="max-width:800px;margin:2rem auto 0;">
+    <span>🙏</span>
+  </div>
+</section>
+
+<!-- ══════════ POST LAYOUT ══════════════════════════════════ -->
+<div class="post-layout">
+
+  <!-- MAIN ARTICLE -->
+  <article>
+    <div class="post-body">
+      <div class="post-body__content">
+
+        <!-- Opening Hook -->
+        <p class="post-hook">
+          "Your eight-year-old rushes through mealtime prayers so quickly the words blur together. You've taught her repeatedly, yet the lessons don't seem to stick."
+        </p>
+
+        <p>Here's the reality most parenting books won't tell you: <strong>prayer isn't something you teach kids once and check off the list.</strong> Prayer is a relationship, and like any relationship, it grows through practice, invitation, and genuine connection — not a single Sunday morning lesson.</p>
+
+        <p>The good news? You don't need a theology degree or a perfect quiet time routine. You just need a few strategies that meet your child where they are. Here are five that actually work.</p>
+
+        <!-- Section 1 -->
+        <h2>The Real Problem With How We Teach Prayer</h2>
+
+        <p>Traditional approaches typically involve sitting children down to explain prayer components — Adoration, Confession, Thanksgiving, Supplication. The acronyms are memorable. The results, often, are not.</p>
+
+        <p>Children who are taught prayer as a formula tend to do exactly that: follow the formula. They go through the motions without genuine engagement. They say the words, but their hearts aren't in the room.</p>
+
+        <p>The issue isn't the technique. <strong>It's the context.</strong> Children learn to pray by actually praying — by observing how the adults in their lives talk to God, and by witnessing prayer's impact on real, everyday circumstances they care about.</p>
+
+        <!-- Section 2 -->
+        <h2>What Prayer Actually Is (And How to Explain It Simply)</h2>
+
+        <p>Before you can teach your child how to pray, help them understand what prayer actually is. The simplest and most powerful explanation you can give?</p>
+
+        <div class="pullquote">
+          <p>"Prayer is just talking to God like you talk to me."</p>
+        </div>
+
+        <p>Children often believe prayer requires special, formal, or archaic language — that God only responds to the "right" words said in the "right" tone. This belief quietly crushes their prayer lives before they even begin.</p>
+
+        <div class="permission-box">
+          <div class="permission-box__title">✅ Give Your Child Permission to Know:</div>
+          <ul>
+            <li>Prayer can happen anywhere — in the car, at school, in bed, on the playground</li>
+            <li>Any topic works — fears, friendships, gratitude, dreams, even small everyday things</li>
+            <li>Personal, everyday language is not just allowed — it's welcomed</li>
+            <li>Simple expressions like "Help me, God" or "Thank you" are real, complete prayers</li>
+          </ul>
+        </div>
+
+        <!-- Strategy 1 -->
+        <h2>5 Strategies That Actually Work</h2>
+
+        <div class="strategy-box">
+          <div class="strategy-box__label">Strategy 1</div>
+          <h3>Model Prayer Out Loud — Every Day</h3>
+          <p>"Your child will pray the way she hears you pray." This is probably the single most powerful thing in this article. Children don't learn to pray from instruction — they learn from imitation. When they hear you talk honestly to God about your own day, your own fears, your own gratitude, they absorb a living, breathing model of what real prayer looks like.</p>
+        </div>
+
+        <p>This means praying out loud in ordinary moments: expressing work anxiety in the car on the way to school, thanking God for a beautiful sunset, asking for patience in the middle of a hard day. It doesn't have to be long. It doesn't have to be eloquent. It just has to be real.</p>
+
+        <div class="strategy-box">
+          <div class="strategy-box__label">Strategy 2</div>
+          <h3>Start With What They Actually Care About</h3>
+          <p>Rather than introducing scripture-based prayer formats right away, begin with topics that are meaningful to your child right now — a friendship conflict, a test they're worried about, their football game on Saturday, a fear of the dark. When children experience prayer addressing their actual circumstances, and then witness God respond (in any of the countless ways He does), they discover that prayer isn't just a ritual. It's relevant.</p>
+        </div>
+
+        <div class="strategy-box">
+          <div class="strategy-box__label">Strategy 3</div>
+          <h3>Teach the "CHAT" Prayer Framework</h3>
+          <p>When your child is ready for a little more structure, the CHAT framework offers guidance without rigidity. The key is that children don't need to follow it in strict order — it's a starting point, not a script.</p>
+        </div>
+
+        <div class="chat-grid">
+          <div class="chat-item">
+            <div class="chat-item__letter c">C</div>
+            <div>
+              <strong>Confession</strong>
+              <span>Acknowledging mistakes and asking for forgiveness — teaches honesty with God.</span>
+            </div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-item__letter h">H</div>
+            <div>
+              <strong>Honoring God</strong>
+              <span>Expressing who God is — His love, His power, His goodness.</span>
+            </div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-item__letter a">A</div>
+            <div>
+              <strong>Asking</strong>
+              <span>Making requests — for themselves, for others, for the world.</span>
+            </div>
+          </div>
+          <div class="chat-item">
+            <div class="chat-item__letter t">T</div>
+            <div>
+              <strong>Thanksgiving</strong>
+              <span>Expressing gratitude — the single fastest way to shift a child's attitude.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="strategy-box">
+          <div class="strategy-box__label">Strategy 4</div>
+          <h3>Create a "Prayer Jar" or "Prayer Wall"</h3>
+          <p>Visual tools are powerful for concrete thinkers — and most children under twelve think very concretely. Write prayer requests on paper slips and store them in a jar. Keep a visible board on the fridge or bedroom wall. Mark answers when they come. The accumulation of answered prayers becomes one of the most faith-building experiences a child can have. They can see, with their own eyes, that prayer does something.</p>
+        </div>
+
+        <div class="strategy-box">
+          <div class="strategy-box__label">Strategy 5</div>
+          <h3>Pray With Her — Not Just Have Her Pray Alone</h3>
+          <p>There's a significant difference between telling a child to pray and praying alongside them. Joint prayer creates spiritual intimacy. Bedtime prayers, mealtime discussions, and moments of crisis are all rich opportunities for shared spiritual connection — before independent prayer practice can develop.</p>
+        </div>
+
+        <!-- Overcoming Obstacles -->
+        <h2>Overcoming the Most Common Obstacles</h2>
+
+        <div class="obstacles-grid">
+          <div class="obstacle-card">
+            <div class="obstacle-card__q">👶 "They're too young to understand"</div>
+            <p>Basic concepts are enough — God loves us, God listens, God wants us to talk to Him. Even a toddler can understand that someone important loves them and wants to hear from them.</p>
+          </div>
+          <div class="obstacle-card">
+            <div class="obstacle-card__q">😴 "They get bored during prayer time"</div>
+            <p>Reconnect by addressing something they currently care about. Boredom in prayer almost always means the prayer isn't relevant to their actual life right now.</p>
+          </div>
+          <div class="obstacle-card">
+            <div class="obstacle-card__q">🙅 "They refuse to participate"</div>
+            <p>Model prayer without demanding participation. Pray for them privately. Don't turn prayer into a battle — that association will last far longer than one difficult season.</p>
+          </div>
+          <div class="obstacle-card">
+            <div class="obstacle-card__q">😬 "I'm not comfortable praying myself"</div>
+            <p>Your personal prayer development and your child's are more connected than you think. Growing together is not a weakness — it's one of the most meaningful things you can do as a parent.</p>
+          </div>
+        </div>
+
+        <!-- Goal Callout -->
+        <div class="goal-callout">
+          <div class="goal-callout__icon">🎯</div>
+          <h3>The Real Goal</h3>
+          <p>The objective isn't flawless prayer performance. It's raising <strong>a child who sees God as accessible, responsive, and genuinely involved in her real life.</strong> When prayer transforms from task to conversation — addressing real circumstances with a God who actually shows up — it becomes a sustainable, life-long practice rooted in authentic relationship.</p>
+        </div>
+
+        <p>That's the prayer life every parent dreams of for their child. And it starts not with a curriculum, but with you — praying out loud, right now, about the things that actually matter today.</p>
+
+      </div><!-- /post-body__content -->
+
+      <!-- Tags -->
+      <div class="post-tags">
+        <a href="blog.html#parents" class="post-tag">For Parents</a>
+        <a href="blog.html" class="post-tag">Prayer</a>
+        <a href="blog.html" class="post-tag">Parenting Faith</a>
+        <a href="blog.html" class="post-tag">Children's Devotions</a>
+        <a href="blog.html" class="post-tag">Family Worship</a>
+        <a href="free-lessons.html" class="post-tag">Bible Teaching</a>
+      </div>
+
+      <!-- Share bar -->
+      <div class="post-share">
+        <span class="post-share__label">Share this post:</span>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://childrensministrylessons.com/blog-teach-child-prayer.html" target="_blank" rel="noopener" class="share-btn share-btn--facebook">
+          👍 Facebook
+        </a>
+        <a href="https://twitter.com/intent/tweet?url=https://childrensministrylessons.com/blog-teach-child-prayer.html&text=How+to+Teach+Your+Child+About+Prayer" target="_blank" rel="noopener" class="share-btn share-btn--twitter">
+          🐦 Twitter
+        </a>
+        <button class="share-btn share-btn--copy" onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.textContent='✅ Copied!')">
+          🔗 Copy Link
+        </button>
+      </div>
+    </div><!-- /post-body -->
+
+    <!-- Author Card -->
+    <div class="author-card">
+      <div class="author-card__avatar">JV</div>
+      <div>
+        <div class="author-card__name">Jandre van der Walt</div>
+        <div class="author-card__role">Founder, Children's Ministry Lessons</div>
+        <p class="author-card__bio">Jandre is passionate about equipping parents and ministry leaders with practical, faith-filled resources. He writes regularly on children's discipleship, family worship, and building a biblical foundation in the next generation.</p>
+      </div>
+    </div>
+
+  </article><!-- /article -->
+
+  <!-- SIDEBAR -->
+  <aside class="post-sidebar">
+
+    <!-- Table of Contents -->
+    <div class="sidebar-card">
+      <div class="sidebar-card__header">📋 In This Post</div>
+      <div class="sidebar-card__body" style="padding:0.25rem 0.5rem;">
+        <ul class="toc-list">
+          <li><a href="#"><span class="toc-num">1</span> The Real Problem</a></li>
+          <li><a href="#"><span class="toc-num">2</span> What Prayer Actually Is</a></li>
+          <li><a href="#"><span class="toc-num">3</span> Strategy 1: Model Out Loud</a></li>
+          <li><a href="#"><span class="toc-num">4</span> Strategy 2: What They Care About</a></li>
+          <li><a href="#"><span class="toc-num">5</span> Strategy 3: CHAT Framework</a></li>
+          <li><a href="#"><span class="toc-num">6</span> Strategy 4: Prayer Jar / Wall</a></li>
+          <li><a href="#"><span class="toc-num">7</span> Strategy 5: Pray Together</a></li>
+          <li><a href="#"><span class="toc-num">8</span> Overcoming Obstacles</a></li>
+          <li><a href="#"><span class="toc-num">9</span> The Real Goal</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Membership CTA -->
+    <div class="sidebar-cta">
+      <div class="sidebar-cta__icon">✨</div>
+      <h4>Glory Kids Membership</h4>
+      <p>Get 500+ Bible lessons, weekly devotionals for families, and full curriculum series — all for $29.99/mo.</p>
+      <a href="glory-kids-membership.html" class="btn btn--gold" style="width:100%;display:block;text-align:center;">
+        Join Glory Kids →
+      </a>
+    </div>
+
+    <!-- Related Posts -->
+    <div class="sidebar-card">
+      <div class="sidebar-card__header">📖 Related Posts</div>
+      <div class="sidebar-card__body">
+        <div class="related-post">
+          <div class="related-post__icon" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">📖</div>
+          <div>
+            <a href="blog.html" class="related-post__title">5 Ways to Make Bible Stories Come Alive for Kids</a>
+            <div class="related-post__meta">For Parents · 5 min read</div>
+          </div>
+        </div>
+        <div class="related-post">
+          <div class="related-post__icon" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">🏡</div>
+          <div>
+            <a href="blog.html" class="related-post__title">Building a Family Devotion Habit That Lasts</a>
+            <div class="related-post__meta">For Parents · 6 min read</div>
+          </div>
+        </div>
+        <div class="related-post">
+          <div class="related-post__icon" style="background:linear-gradient(135deg,#D1FAE5,#ECFDF5);">💬</div>
+          <div>
+            <a href="blog.html" class="related-post__title">Answering "Why Doesn't God Always Answer My Prayers?"</a>
+            <div class="related-post__meta">For Parents · 4 min read</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Free Lesson CTA -->
+    <div class="sidebar-card" style="background:linear-gradient(135deg,var(--gold-light),white);border-color:#FDE68A;">
+      <div class="sidebar-card__body" style="text-align:center;padding:1.5rem;">
+        <div style="font-size:2rem;margin-bottom:0.6rem;">📖</div>
+        <h4 style="color:var(--navy);margin-bottom:0.4rem;font-size:0.95rem;">Free Prayer Lesson</h4>
+        <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:1rem;line-height:1.6;">Download our free "Power of Prayer" lesson to teach this to your Sunday school class.</p>
+        <a href="free-lessons.html" class="btn btn--primary" style="width:100%;display:block;text-align:center;font-size:0.85rem;">
+          Get Free Lesson →
+        </a>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /post-layout -->
+
+<!-- ══════════ RELATED POSTS ══════════════════════════════════ -->
+<section class="related-section">
+  <h2>More For Parents</h2>
+  <div class="related-grid">
+    <a href="blog.html" class="related-card">
+      <div class="related-card__cover" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE);">📖</div>
+      <div class="related-card__body">
+        <div class="related-card__cat">For Parents</div>
+        <div class="related-card__title">5 Ways to Make Bible Stories Come Alive for Kids</div>
+        <div class="related-card__meta">5 min read · May 2025</div>
+      </div>
+    </a>
+    <a href="blog.html" class="related-card">
+      <div class="related-card__cover" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">🏡</div>
+      <div class="related-card__body">
+        <div class="related-card__cat">For Parents</div>
+        <div class="related-card__title">Building a Family Devotion Habit That Actually Lasts</div>
+        <div class="related-card__meta">6 min read · April 2025</div>
+      </div>
+    </a>
+    <a href="blog.html" class="related-card">
+      <div class="related-card__cover" style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE);">💬</div>
+      <div class="related-card__body">
+        <div class="related-card__cat">For Parents</div>
+        <div class="related-card__title">When Your Child Asks "Why Doesn't God Answer My Prayers?"</div>
+        <div class="related-card__meta">4 min read · April 2025</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <div class="footer__logo"><span class="footer__logo-icon">✝</span> Children's<span>Ministry</span>Lessons</div>
+        <p class="footer__desc">Equipping children's ministry leaders and parents with world-class Bible resources.</p>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Blog</h4>
+        <a href="blog.html#parents" class="footer__link">For Parents</a>
+        <a href="blog.html#pastors" class="footer__link">For Pastors</a>
+        <a href="blog.html#kidmin" class="footer__link">For Kidmin Leaders</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Resources</h4>
+        <a href="free-lessons.html" class="footer__link">Free Lessons</a>
+        <a href="glory-kids-membership.html" class="footer__link">Glory Kids Membership</a>
+        <a href="shop.html" class="footer__link">Shop</a>
+        <a href="curriculum-packs.html" class="footer__link">Curriculum</a>
+      </div>
+      <div class="footer__col">
+        <h4 class="footer__heading">Company</h4>
+        <a href="contact.html" class="footer__link">Contact</a>
+        <a href="index.html" class="footer__link">Home</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2025 Children's Ministry Lessons. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

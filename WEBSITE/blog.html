@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — For Parents, Pastors & Kidmin Leaders | Children's Ministry Lessons</title>
+  <meta name="description" content="Articles, tips and inspiration for parents, pastors, and children's ministry leaders. Practical wisdom for raising the next generation of faith." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .blog-header { background: linear-gradient(135deg, #1E1B4B 0%, #7C3AED 60%, #9333EA 100%); }
+    .featured-post {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 0;
+      background: var(--white); border-radius: var(--radius-xl);
+      overflow: hidden; box-shadow: var(--shadow-lg);
+      margin-bottom: 3rem;
+    }
+    .featured-post__img {
+      min-height: 360px; display: flex; align-items: center; justify-content: center;
+      font-size: 7rem;
+      background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
+    }
+    .featured-post__body { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+    .featured-post__cat { margin-bottom: 1rem; }
+    .featured-post__title { font-size: 1.8rem; margin-bottom: 1rem; }
+    .featured-post__excerpt { color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.75; }
+    .featured-post__meta { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--gray-400); }
+    .author-mini { display: flex; align-items: center; gap: 0.5rem; }
+    .author-mini__avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    @media(max-width:768px) {
+      .featured-post { grid-template-columns: 1fr; }
+      .featured-post__img { min-height: 220px; }
+      .featured-post__body { padding: 1.5rem; }
+    }
+    .blog-sidebar { position: sticky; top: 100px; }
+    .sidebar-card { background: var(--white); border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); margin-bottom: 1.5rem; }
+    .sidebar-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--navy); margin-bottom: 1.25rem; }
+    .popular-post { display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-100); }
+    .popular-post:last-child { border-bottom: none; }
+    .popular-post__num { font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; color: var(--primary-light); min-width: 28px; }
+    .popular-post__title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--navy); line-height: 1.4; }
+    .popular-post__cat { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.2rem; }
+    .blog-main { display: grid; grid-template-columns: 1fr 320px; gap: 3rem; align-items: start; }
+    @media(max-width:1024px) { .blog-main { grid-template-columns: 1fr; } .blog-sidebar { position: static; } }
+  </style>
+</head>
+<body>
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">📝 The Blog</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
+    <ul class="nav__links">
+      <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+      <li class="nav__dropdown"><a href="#" class="nav__link">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
+      <li><a href="activities.html" class="nav__link">Activities</a></li>
+      <li><a href="blog.html" class="nav__link active">Blog</a></li>
+      <li><a href="contact.html" class="nav__link">Contact</a></li>
+    </ul>
+    <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+    <button class="nav__hamburger"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+</div>
+
+<section class="page-hero blog-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Blog</span></div>
+    <h1>Inspiration &amp;<br><span style="color:var(--gold);">Practical Wisdom</span></h1>
+    <p>Articles for parents, pastors, and kidmin leaders — helping you go deeper in faith and ministry.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <!-- Tabs -->
+    <div class="tabs reveal">
+      <button class="tab-btn active" data-tab="tab-all">📚 All Posts</button>
+      <button class="tab-btn" data-tab="tab-parents">👨‍👩‍👧 For Parents</button>
+      <button class="tab-btn" data-tab="tab-pastors">⛪ For Pastors</button>
+      <button class="tab-btn" data-tab="tab-kidmin">🌟 For Kidmin Leaders</button>
+    </div>
+
+    <!-- ALL POSTS -->
+    <div id="tab-all" class="tab-content active">
+      <!-- Featured -->
+      <div class="featured-post reveal">
+        <div class="featured-post__img" style="font-size:4rem;">🙏</div>
+        <div class="featured-post__body">
+          <div class="featured-post__cat"><span class="section-label" style="background:var(--primary-light);color:var(--primary);">For Parents</span></div>
+          <h2 class="featured-post__title">How to Teach Your Child About Prayer: 5 Ways to Make It Stick</h2>
+          <div class="featured-post__meta">
+            <div class="author-mini"><div class="author-mini__avatar">JV</div><strong>Jandre van der Walt</strong></div>
+            <span>May 28, 2025</span>
+            <span>7 min read</span>
+          </div>
+          <p class="featured-post__excerpt">Your child rushes through mealtime prayers so fast the words blur together. You've tried telling them to slow down, to mean it — yet it doesn't stick. Here's what actually works: 5 practical strategies that build a prayer life rooted in real relationship with God.</p>
+          <a href="blog-teach-child-prayer.html" class="btn btn--primary">Read Article →</a>
+        </div>
+      </div>
+
+      <div class="blog-main">
+        <div>
+          <div class="blog-grid" id="blog-grid-all">
+            <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#FEF3C7,#FFF7ED);">
+              <div class="blog-card__img">⛪<span class="blog-card__category" style="--cat-bg:var(--gold-dark);--cat-color:white;">For Pastors</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>June 20, 2026</span><span>•</span><span>7 min</span></div>
+                <h4 class="blog-card__title">Why Your Children's Ministry Budget Is Your Most Important Investment</h4>
+                <p class="blog-card__excerpt">Research shows most Christians commit to faith before 18. Here's the data every pastor needs to see when planning ministry budgets.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+            <div class="blog-card reveal reveal-delay-2" style="--img-bg:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+              <div class="blog-card__img">🌟<span class="blog-card__category" style="--cat-bg:var(--green);--cat-color:white;">For Kidmin</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>June 15, 2026</span><span>•</span><span>6 min</span></div>
+                <h4 class="blog-card__title">How to Recruit and Retain Amazing Kids Ministry Volunteers</h4>
+                <p class="blog-card__excerpt">Volunteer burnout is real. Here's the proven system that builds a team that's excited, equipped, and committed for the long haul.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+            <div class="blog-card reveal reveal-delay-3" style="--img-bg:linear-gradient(135deg,#EDE9FE,#FCE7F3);">
+              <div class="blog-card__img">👨‍👩‍👧<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>June 10, 2026</span><span>•</span><span>4 min</span></div>
+                <h4 class="blog-card__title">10 Bible Verses Every Child Should Know by Heart</h4>
+                <p class="blog-card__excerpt">Hiding God's Word in the heart starts young. These 10 verses will shape your child's faith, character, and worldview for life.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+            <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#FFF7ED,#FEF3C7);">
+              <div class="blog-card__img">⛪<span class="blog-card__category" style="--cat-bg:var(--gold-dark);--cat-color:white;">For Pastors</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>June 5, 2026</span><span>•</span><span>8 min</span></div>
+                <h4 class="blog-card__title">Building a Children's Ministry Culture That Parents Talk About</h4>
+                <p class="blog-card__excerpt">The best advertising is a parent saying "My kid can't stop talking about kids church." Here's how to build that kind of ministry culture.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+            <div class="blog-card reveal reveal-delay-2" style="--img-bg:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+              <div class="blog-card__img">🌟<span class="blog-card__category" style="--cat-bg:var(--green);--cat-color:white;">For Kidmin</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>May 30, 2026</span><span>•</span><span>5 min</span></div>
+                <h4 class="blog-card__title">5 Object Lessons That Will Blow Kids' Minds This Sunday</h4>
+                <p class="blog-card__excerpt">Object lessons make abstract truths concrete and unforgettable. These 5 are proven crowd-pleasers that kids remember for years.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+            <div class="blog-card reveal reveal-delay-3" style="--img-bg:linear-gradient(135deg,#FCE7F3,#EDE9FE);">
+              <div class="blog-card__img">👨‍👩‍👧<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+              <div class="blog-card__body">
+                <div class="blog-card__meta"><span>May 25, 2026</span><span>•</span><span>6 min</span></div>
+                <h4 class="blog-card__title">Answering Your Child's Tough Questions About God</h4>
+                <p class="blog-card__excerpt">"Why did God let this happen?" Kids ask the hard questions. Here's how to respond with honesty, wisdom, and faith that strengthens theirs.</p>
+                <a href="#" class="blog-card__link">Read Article →</a>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4 reveal">
+            <a href="#" class="btn btn--outline btn--lg">Load More Articles →</a>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <aside class="blog-sidebar">
+          <div class="sidebar-card reveal">
+            <div class="sidebar-card__title">🔥 Most Popular</div>
+            <div class="popular-post"><div class="popular-post__num">01</div><div><div class="popular-post__title">7 Ways to Make Family Devotions Fun</div><div class="popular-post__cat">For Parents</div></div></div>
+            <div class="popular-post"><div class="popular-post__num">02</div><div><div class="popular-post__title">How to Recruit Amazing Volunteers</div><div class="popular-post__cat">For Kidmin Leaders</div></div></div>
+            <div class="popular-post"><div class="popular-post__num">03</div><div><div class="popular-post__title">10 Verses Every Child Should Know</div><div class="popular-post__cat">For Parents</div></div></div>
+            <div class="popular-post"><div class="popular-post__num">04</div><div><div class="popular-post__title">Your Children's Ministry Budget</div><div class="popular-post__cat">For Pastors</div></div></div>
+            <div class="popular-post"><div class="popular-post__num">05</div><div><div class="popular-post__title">5 Object Lessons That Blow Minds</div><div class="popular-post__cat">For Kidmin Leaders</div></div></div>
+          </div>
+          <div class="sidebar-card reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary)); color:white; border:none;">
+            <div style="font-size:2rem; margin-bottom:0.75rem;">✨</div>
+            <div style="font-family:var(--font-heading); font-weight:800; font-size:1.1rem; color:white; margin-bottom:0.5rem;">Glory Kids Membership</div>
+            <p style="font-size:0.875rem; color:rgba(255,255,255,0.75); margin-bottom:1.25rem;">Unlock 500+ lessons, curriculum, activities and weekly new content for just $29.99/mo.</p>
+            <a href="glory-kids-membership.html" class="btn btn--gold" style="width:100%; justify-content:center;">Join Now →</a>
+          </div>
+          <div class="sidebar-card reveal">
+            <div class="sidebar-card__title">📬 Free Weekly Tips</div>
+            <p style="font-size:0.875rem; color:var(--gray-500); margin-bottom:1rem;">Get our best articles and free resources delivered every week.</p>
+            <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:0.65rem;">
+              <input type="email" placeholder="Your email address" class="form-input" style="font-size:0.875rem;" />
+              <button class="btn btn--primary" style="width:100%; justify-content:center;">Subscribe Free</button>
+            </form>
+          </div>
+          <div class="sidebar-card reveal">
+            <div class="sidebar-card__title">🏷 Browse by Topic</div>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Family Devotions</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Volunteer Tips</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Curriculum</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Prayer</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Object Lessons</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Budget</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Parenting</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="border:1px solid var(--gray-200);">Worship</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- FOR PARENTS TAB -->
+    <div id="tab-parents" class="tab-content">
+      <div class="blog-grid" id="blog-grid-parents">
+        <div class="blog-card reveal" style="--img-bg:linear-gradient(135deg,#EDE9FE,#DDD6FE);">
+          <div class="blog-card__img" style="font-size:2.5rem;">🙏<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>May 28, 2025</span><span>•</span><span>7 min</span></div>
+            <h4 class="blog-card__title">How to Teach Your Child About Prayer: 5 Ways to Make It Stick</h4>
+            <p class="blog-card__excerpt">Your child rushes through mealtime prayers so fast the words blur. Here's what actually builds a lasting prayer habit.</p>
+            <a href="blog-teach-child-prayer.html" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#EDE9FE,#FCE7F3);">
+          <div class="blog-card__img">👨‍👩‍👧<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>June 25, 2026</span><span>•</span><span>5 min</span></div>
+            <h4 class="blog-card__title">7 Ways to Make Family Devotions Actually Fun</h4>
+            <p class="blog-card__excerpt">Turn Bible time into the highlight of your family's day with these creative, proven strategies.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#FCE7F3,#EDE9FE);">
+          <div class="blog-card__img">📖<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>June 10, 2026</span><span>•</span><span>4 min</span></div>
+            <h4 class="blog-card__title">10 Bible Verses Every Child Should Know by Heart</h4>
+            <p class="blog-card__excerpt">These 10 verses will shape your child's faith, character, and worldview for a lifetime.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-2" style="--img-bg:linear-gradient(135deg,#FFF7ED,#FEF3C7);">
+          <div class="blog-card__img">❓<span class="blog-card__category" style="--cat-bg:var(--primary);--cat-color:white;">For Parents</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>May 25, 2026</span><span>•</span><span>6 min</span></div>
+            <h4 class="blog-card__title">Answering Your Child's Tough Questions About God</h4>
+            <p class="blog-card__excerpt">Practical wisdom for responding to the hard questions kids ask — with honesty and faith.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR PASTORS TAB -->
+    <div id="tab-pastors" class="tab-content">
+      <div class="blog-grid" id="blog-grid-pastors">
+        <div class="blog-card reveal" style="--img-bg:linear-gradient(135deg,#FEF3C7,#FFF7ED);">
+          <div class="blog-card__img">⛪<span class="blog-card__category" style="--cat-bg:var(--gold-dark);--cat-color:white;">For Pastors</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>June 20, 2026</span><span>•</span><span>7 min</span></div>
+            <h4 class="blog-card__title">Why Your Children's Ministry Budget Is Your Most Important Investment</h4>
+            <p class="blog-card__excerpt">The data every pastor needs when making ministry budget decisions. The ROI is eternal.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#FFF7ED,#FEF3C7);">
+          <div class="blog-card__img">🏛️<span class="blog-card__category" style="--cat-bg:var(--gold-dark);--cat-color:white;">For Pastors</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>June 5, 2026</span><span>•</span><span>8 min</span></div>
+            <h4 class="blog-card__title">Building a Children's Ministry Culture That Parents Rave About</h4>
+            <p class="blog-card__excerpt">How to create a kids ministry that becomes the most talked-about ministry in your church.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-2" style="--img-bg:linear-gradient(135deg,#E0F2FE,#EDE9FE);">
+          <div class="blog-card__img">📊<span class="blog-card__category" style="--cat-bg:var(--gold-dark);--cat-color:white;">For Pastors</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>May 20, 2026</span><span>•</span><span>9 min</span></div>
+            <h4 class="blog-card__title">The State of Children's Ministry in 2026 — Key Trends</h4>
+            <p class="blog-card__excerpt">What's working, what's changing, and what pastors need to know to lead thriving ministries this year.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOR KIDMIN TAB -->
+    <div id="tab-kidmin" class="tab-content">
+      <div class="blog-grid" id="blog-grid-kidmin">
+        <div class="blog-card reveal" style="--img-bg:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+          <div class="blog-card__img">🌟<span class="blog-card__category" style="--cat-bg:var(--green);--cat-color:white;">For Kidmin</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>June 15, 2026</span><span>•</span><span>6 min</span></div>
+            <h4 class="blog-card__title">How to Recruit and Retain Amazing Kids Ministry Volunteers</h4>
+            <p class="blog-card__excerpt">The proven system that builds a committed, passionate volunteer team that shows up every Sunday.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-1" style="--img-bg:linear-gradient(135deg,#E0F2FE,#D1FAE5);">
+          <div class="blog-card__img">🎭<span class="blog-card__category" style="--cat-bg:var(--green);--cat-color:white;">For Kidmin</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>May 30, 2026</span><span>•</span><span>5 min</span></div>
+            <h4 class="blog-card__title">5 Object Lessons That Will Blow Kids' Minds This Sunday</h4>
+            <p class="blog-card__excerpt">Object lessons that make abstract truths concrete, memorable, and life-changing for children.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+        <div class="blog-card reveal reveal-delay-2" style="--img-bg:linear-gradient(135deg,#D1FAE5,#FEF3C7);">
+          <div class="blog-card__img">📋<span class="blog-card__category" style="--cat-bg:var(--green);--cat-color:white;">For Kidmin</span></div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta"><span>May 15, 2026</span><span>•</span><span>7 min</span></div>
+            <h4 class="blog-card__title">The Ultimate Kids Ministry Planning Calendar for 2026</h4>
+            <p class="blog-card__excerpt">A complete month-by-month planning guide so you're never scrambling for ideas at the last minute.</p>
+            <a href="#" class="blog-card__link">Read →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section--gray" style="padding:3rem 0;">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <h2>Never Run Out of Ministry Ideas</h2>
+      <p>Join Glory Kids Membership and get new curriculum, lessons, and resources every single week — plus access to our full library of 500+ free lessons.</p>
+      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white; color:var(--coral-dark);">✨ Join Glory Kids — $29.99/mo →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="footer__top">
+    <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
+    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Bible Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+    <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+</div></footer>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+<script>
+(function () {
+  const CAT_META = {
+    parents: { label: 'For Parents',      bg: 'var(--primary)',    gridId: 'blog-grid-parents' },
+    pastors: { label: 'For Pastors',      bg: 'var(--gold-dark)',  gridId: 'blog-grid-pastors' },
+    kidmin:  { label: 'For Kidmin',       bg: 'var(--green)',      gridId: 'blog-grid-kidmin' }
+  };
+
+  function cardHtml(post) {
+    const meta = CAT_META[post.category] || CAT_META.parents;
+    const readMin = Math.max(1, Math.round((post.content || '').split(/\s+/).length / 200));
+    return `
+      <div class="blog-card reveal" style="--img-bg:linear-gradient(135deg,#EDE9FE,#FCE7F3);">
+        <div class="blog-card__img">${post.icon || '📖'}<span class="blog-card__category" style="--cat-bg:${meta.bg};--cat-color:white;">${meta.label}</span></div>
+        <div class="blog-card__body">
+          <div class="blog-card__meta"><span>${new Date(post.createdAt).toLocaleDateString()}</span><span>•</span><span>${readMin} min</span></div>
+          <h4 class="blog-card__title">${post.title}</h4>
+          <p class="blog-card__excerpt">${post.excerpt || ''}</p>
+          <a href="#" class="blog-card__link">Read Article →</a>
+        </div>
+      </div>
+    `;
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof GK === 'undefined') return;
+    const posts = GK.listPosts().filter(p => p.published);
+    if (posts.length === 0) return;
+
+    const allGrid = document.getElementById('blog-grid-all');
+    if (allGrid) allGrid.insertAdjacentHTML('afterbegin', posts.map(cardHtml).join(''));
+
+    Object.entries(CAT_META).forEach(([cat, meta]) => {
+      const grid = document.getElementById(meta.gridId);
+      const catPosts = posts.filter(p => p.category === cat);
+      if (grid && catPosts.length) grid.insertAdjacentHTML('afterbegin', catPosts.map(cardHtml).join(''));
+    });
+  });
+})();
+</script>
+</body>
+</html>

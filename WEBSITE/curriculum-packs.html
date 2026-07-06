@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Curriculum Packs | Children's Ministry Lessons</title>
+  <meta name="description" content="Complete, multi-week children's ministry curriculum packs. Everything included — lessons, activities, visuals, and take-home sheets. Ready to plug and play." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .packs-header { background: linear-gradient(135deg, #0C4A6E 0%, #0891B2 60%, #7C3AED 100%); }
+    .pack-grid-full { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    @media(max-width:768px) { .pack-grid-full { grid-template-columns: 1fr; } }
+    .pack-card-full {
+      background: var(--white); border-radius: var(--radius-xl);
+      overflow: hidden; box-shadow: var(--shadow-md);
+      transition: var(--transition); border: 1px solid var(--gray-100);
+    }
+    .pack-card-full:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .pack-header-img {
+      height: 220px; display: flex; align-items: center; justify-content: center;
+      font-size: 6rem; position: relative;
+    }
+    .pack-header-img .pack-weeks-badge {
+      position: absolute; bottom: 1rem; left: 1rem;
+      background: rgba(0,0,0,0.5); color: white;
+      padding: 0.3rem 0.85rem; border-radius: var(--radius-full);
+      font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700;
+      backdrop-filter: blur(4px);
+    }
+    .pack-header-img .pack-new-badge {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--gold); color: var(--navy);
+      padding: 0.3rem 0.85rem; border-radius: var(--radius-full);
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+    }
+    .pack-body { padding: 2rem; }
+    .pack-age-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .age-badge {
+      padding: 0.25rem 0.7rem; border-radius: var(--radius-full);
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+      background: var(--primary-light); color: var(--primary);
+    }
+    .pack-what { margin: 1.25rem 0; }
+    .pack-what-title { font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-500); margin-bottom: 0.65rem; }
+    .pack-what-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+    .pack-what-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; color: var(--gray-700); }
+    .pack-what-item::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .pack-price-row { display: flex; align-items: center; justify-content: space-between; padding-top: 1.25rem; border-top: 1px solid var(--gray-100); flex-wrap: wrap; gap: 1rem; }
+    .pack-price { font-family: var(--font-heading); font-size: 2rem; font-weight: 900; color: var(--primary); }
+    .pack-price-was { font-size: 1rem; color: var(--gray-400); text-decoration: line-through; margin-left: 0.5rem; font-weight: 400; }
+    .pack-price-note { font-size: 0.8rem; color: var(--gray-400); }
+    .bundle-banner {
+      background: linear-gradient(135deg, var(--primary-darker), var(--primary));
+      border-radius: var(--radius-xl); padding: 3rem;
+      color: white; text-align: center; margin-bottom: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .bundle-banner::before { content: ''; position: absolute; inset:0; background: radial-gradient(ellipse at center, rgba(245,158,11,0.15), transparent 65%); }
+    .bundle-banner > * { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">📦 Curriculum</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
+    <ul class="nav__links">
+      <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+      <li class="nav__dropdown"><a href="#" class="nav__link active">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
+      <li><a href="activities.html" class="nav__link">Activities</a></li>
+      <li><a href="blog.html" class="nav__link">Blog</a></li>
+      <li><a href="contact.html" class="nav__link">Contact</a></li>
+    </ul>
+    <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+    <button class="nav__hamburger"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+</div>
+
+<section class="page-hero packs-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Curriculum Packs</span></div>
+    <h1>Plug-and-Play<br><span style="color:var(--gold);">Curriculum Packs</span></h1>
+    <p>Complete multi-week series with everything you need — lesson scripts, activities, visuals, and take-home sheets. Open and teach.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <!-- Membership Banner -->
+    <div class="bundle-banner reveal">
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);color:var(--gold);padding:0.4rem 1rem;border-radius:var(--radius-full);font-family:var(--font-heading);font-size:0.8rem;font-weight:700;margin-bottom:1rem;">💡 Best Value</div>
+      <h2 style="color:white; margin-bottom:0.75rem;">Get ALL Packs with Glory Kids Membership</h2>
+      <p style="color:rgba(255,255,255,0.8); max-width:560px; margin:0 auto 1.5rem;">Instead of buying individual packs, Glory Kids Members get access to EVERY curriculum pack plus 500+ free lessons, activities, and weekly new content — all for $29.99/month.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join for $29.99/mo — Best Value</a>
+        <a href="#packs" class="btn btn--outline-white">Browse Individual Packs</a>
+      </div>
+    </div>
+
+    <!-- Filter -->
+    <div class="filter-bar reveal" id="filter-bar">
+      <button class="filter-btn active" data-filter="all">All Packs</button>
+      <button class="filter-btn" data-filter="preschool">🐣 Preschool</button>
+      <button class="filter-btn" data-filter="elementary">📚 Elementary</button>
+      <button class="filter-btn" data-filter="ot">📜 Old Testament</button>
+      <button class="filter-btn" data-filter="nt">✝️ New Testament</button>
+      <button class="filter-btn" data-filter="character">🌟 Character</button>
+    </div>
+
+    <div class="pack-grid-full" id="packs">
+
+      <div class="pack-card-full reveal reveal-delay-1" data-category="ot">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">
+          📜
+          <span class="pack-weeks-badge">12 Weeks</span>
+          <span class="pack-new-badge">⭐ Bestseller</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 3–5</span><span class="age-badge">Ages 6–12</span></div>
+          <h3 style="margin-bottom:0.5rem;">God's Big Story</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">A sweeping journey through the entire Bible — from Genesis to Revelation — helping kids see that every story points to Jesus. Perfect for any time of year.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">12 complete lesson scripts</div>
+              <div class="pack-what-item">Teacher guides</div>
+              <div class="pack-what-item">Activity sheets (×12)</div>
+              <div class="pack-what-item">Coloring pages</div>
+              <div class="pack-what-item">Memory verse cards</div>
+              <div class="pack-what-item">Parent devotionals</div>
+              <div class="pack-what-item">Discussion questions</div>
+              <div class="pack-what-item">Object lesson guides</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$49</span><span class="pack-price-was">$79</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pack-card-full reveal reveal-delay-2" data-category="nt">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#EDE9FE,#FCE7F3);">
+          ❤️
+          <span class="pack-weeks-badge">8 Weeks</span>
+          <span class="pack-new-badge">🆕 New!</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 3–5</span><span class="age-badge">Ages 6–10</span></div>
+          <h3 style="margin-bottom:0.5rem;">Jesus Loves Me — The Series</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Eight weeks exploring the love of Jesus through His parables, miracles, and the cross. Kids finish knowing deeply that Jesus loves them, knows them, and died for them.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">8 complete lesson scripts</div>
+              <div class="pack-what-item">Teacher guides</div>
+              <div class="pack-what-item">Craft activity sheets</div>
+              <div class="pack-what-item">Story visuals (printable)</div>
+              <div class="pack-what-item">Memory verse posters</div>
+              <div class="pack-what-item">Parent take-home sheets</div>
+              <div class="pack-what-item">Game ideas</div>
+              <div class="pack-what-item">Snack ideas per lesson</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$39</span><span class="pack-price-was">$59</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pack-card-full reveal reveal-delay-1" data-category="character">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+          🦸
+          <span class="pack-weeks-badge">10 Weeks</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 6–12</span></div>
+          <h3 style="margin-bottom:0.5rem;">Heroes of Faith</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Ten weeks exploring the lives of Biblical heroes — Abraham, Moses, David, Esther, Daniel, and more. Kids discover how ordinary people did extraordinary things through faith in God.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">10 lesson scripts</div>
+              <div class="pack-what-item">Hero character cards</div>
+              <div class="pack-what-item">Timeline poster</div>
+              <div class="pack-what-item">Activity workbooks</div>
+              <div class="pack-what-item">Memory verse games</div>
+              <div class="pack-what-item">Drama scripts</div>
+              <div class="pack-what-item">Parent devotionals</div>
+              <div class="pack-what-item">Assessment quizzes</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$45</span><span class="pack-price-was">$69</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pack-card-full reveal reveal-delay-2" data-category="character">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#E0F2FE,#EDE9FE);">
+          🙏
+          <span class="pack-weeks-badge">6 Weeks</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 4–8</span><span class="age-badge">Ages 8–12</span></div>
+          <h3 style="margin-bottom:0.5rem;">Power of Prayer</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Six weeks teaching kids what prayer really is, how to pray, why God answers prayer, and powerful stories of prayer from Scripture. Kids come away excited to actually pray.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">6 lesson scripts</div>
+              <div class="pack-what-item">Prayer journal templates</div>
+              <div class="pack-what-item">Activity sheets</div>
+              <div class="pack-what-item">Prayer wall resources</div>
+              <div class="pack-what-item">Memory verse cards</div>
+              <div class="pack-what-item">Family prayer guides</div>
+              <div class="pack-what-item">Object lessons</div>
+              <div class="pack-what-item">Reflection worksheets</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$29</span><span class="pack-price-was">$49</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pack-card-full reveal reveal-delay-1" data-category="preschool">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#FCE7F3,#FFF1F2);">
+          🌸
+          <span class="pack-weeks-badge">8 Weeks</span>
+          <span class="pack-new-badge">Ages 2–5</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 2–3</span><span class="age-badge">Ages 3–5</span></div>
+          <h3 style="margin-bottom:0.5rem;">Little Ones, Big God — Preschool Pack</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Specially designed for our youngest learners! Eight gentle, fun-filled lessons with simple truths, songs, crafts, and activities that even 2-year-olds can engage with.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">8 gentle lesson scripts</div>
+              <div class="pack-what-item">Simple craft guides</div>
+              <div class="pack-what-item">Coloring sheets</div>
+              <div class="pack-what-item">Song lyrics & actions</div>
+              <div class="pack-what-item">Sensory activity ideas</div>
+              <div class="pack-what-item">Parent connection cards</div>
+              <div class="pack-what-item">Classroom decor prints</div>
+              <div class="pack-what-item">Snack + story ideas</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$35</span><span class="pack-price-was">$55</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pack-card-full reveal reveal-delay-2" data-category="nt elementary">
+        <div class="pack-header-img" style="background:linear-gradient(135deg,#FEF3C7,#FCE7F3);">
+          🎄
+          <span class="pack-weeks-badge">4 Weeks</span>
+          <span class="pack-new-badge">Holiday</span>
+        </div>
+        <div class="pack-body">
+          <div class="pack-age-row"><span class="age-badge">Ages 3–12</span></div>
+          <h3 style="margin-bottom:0.5rem;">The Greatest Gift — Christmas Pack</h3>
+          <p style="color:var(--gray-500);font-size:0.9rem;line-height:1.7;margin-bottom:1rem;">Four weeks leading up to Christmas — building the wonder and anticipation of Jesus' birth. Includes Advent activities, family devotionals, and a Christmas Eve lesson.</p>
+          <div class="pack-what">
+            <div class="pack-what-title">What's Included:</div>
+            <div class="pack-what-list">
+              <div class="pack-what-item">4 Christmas lesson scripts</div>
+              <div class="pack-what-item">Advent calendar printable</div>
+              <div class="pack-what-item">Nativity craft pack</div>
+              <div class="pack-what-item">Christmas Eve special</div>
+              <div class="pack-what-item">Family Advent devotional</div>
+              <div class="pack-what-item">Carol activity sheets</div>
+              <div class="pack-what-item">Gift tag memory verses</div>
+              <div class="pack-what-item">Christmas Eve story</div>
+            </div>
+          </div>
+          <div class="pack-price-row">
+            <div><span class="pack-price">$25</span><span class="pack-price-was">$39</span><div class="pack-price-note">One-time download</div></div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;align-items:flex-end;">
+              <a href="glory-kids-membership.html" class="btn btn--primary">Get in Membership ✨</a>
+              <a href="#" class="btn btn--ghost btn--sm" style="font-size:0.8rem;color:var(--gray-500);">Or buy standalone →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOM CURRICULUM -->
+<section class="section--light">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;" class="reveal">
+      <div>
+        <div class="section-label">Need Something Custom?</div>
+        <h2 style="margin-bottom:1rem;">We'll Build a <span class="highlight">Custom Pack</span> for You</h2>
+        <p style="color:var(--gray-500);margin-bottom:1.5rem;">Have a specific theme, Bible book, or series in mind? We create custom curriculum packs for churches of all sizes. Tell us what you need and we'll build it.</p>
+        <a href="contact.html" class="btn btn--primary btn--lg">Request Custom Curriculum →</a>
+      </div>
+      <div style="background:white;border-radius:var(--radius-xl);padding:2.5rem;box-shadow:var(--shadow-md);">
+        <div style="font-size:3rem;margin-bottom:1rem;">🎨</div>
+        <h3 style="margin-bottom:1rem;">Custom Pack Includes:</h3>
+        <div style="display:flex;flex-direction:column;gap:0.65rem;">
+          <div style="display:flex;align-items:center;gap:0.65rem;font-size:0.9rem;"><span style="color:var(--green);font-weight:700;">✓</span> Your chosen Bible theme or book</div>
+          <div style="display:flex;align-items:center;gap:0.65rem;font-size:0.9rem;"><span style="color:var(--green);font-weight:700;">✓</span> Your preferred number of weeks</div>
+          <div style="display:flex;align-items:center;gap:0.65rem;font-size:0.9rem;"><span style="color:var(--green);font-weight:700;">✓</span> Age-appropriate for your congregation</div>
+          <div style="display:flex;align-items:center;gap:0.65rem;font-size:0.9rem;"><span style="color:var(--green);font-weight:700;">✓</span> Delivered within 2 weeks</div>
+          <div style="display:flex;align-items:center;gap:0.65rem;font-size:0.9rem;"><span style="color:var(--green);font-weight:700;">✓</span> Unlimited revisions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="footer__top">
+    <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
+    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+    <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+</div></footer>
+<script src="app.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

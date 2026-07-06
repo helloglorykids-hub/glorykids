@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Dashboard | Children's Ministry Lessons</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body { background: var(--gray-50); }
+    .dashboard-layout { display: block; min-height: 100vh; padding-top: 72px; }
+
+    /* SIDEBAR */
+    .dash-sidebar {
+      background: var(--white);
+      border-right: 1px solid var(--gray-200);
+      padding: 2rem 1.25rem;
+      position: fixed;
+      top: 72px; left: 0; bottom: 0;
+      width: 260px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+    @media(max-width:900px) {
+      .dash-sidebar {
+        position: static;
+        width: auto;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      .dash-sidebar__user { margin-bottom: 1rem; }
+      .dash-nav-section { margin-bottom: 0.75rem; display: flex; gap: 0.5rem; overflow-x: auto; }
+      .dash-nav-section:last-child { margin-bottom: 0; }
+      .dash-nav-section__title { display: none; }
+      .dash-nav-item { flex-shrink: 0; }
+    }
+    .dash-sidebar__user {
+      display: flex; align-items: center; gap: 0.85rem;
+      padding: 1rem;
+      background: var(--primary-lighter);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.75rem;
+    }
+    .dash-sidebar__avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
+    }
+    .dash-sidebar__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .dash-sidebar__name { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    .dash-sidebar__plan { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
+
+    .dash-nav-section { margin-bottom: 1.5rem; }
+    .dash-nav-section__title {
+      font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-400);
+      margin-bottom: 0.5rem; padding: 0 0.5rem;
+    }
+    .dash-nav-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.7rem 0.85rem;
+      border-radius: var(--radius);
+      font-family: var(--font-heading); font-size: 0.875rem; font-weight: 600;
+      color: var(--gray-600);
+      transition: var(--transition);
+      cursor: pointer; text-decoration: none;
+    }
+    .dash-nav-item:hover { background: var(--gray-100); color: var(--navy); }
+    .dash-nav-item.active { background: var(--primary-light); color: var(--primary); }
+    .dash-nav-item__icon { font-size: 1.1rem; width: 22px; text-align: center; }
+    .dash-nav-item__badge {
+      margin-left: auto;
+      background: var(--primary); color: white;
+      font-size: 0.65rem; font-weight: 700;
+      padding: 0.15rem 0.5rem; border-radius: var(--radius-full);
+    }
+
+    /* MAIN CONTENT */
+    .dash-main { margin-left: 260px; padding: 2rem; }
+    @media(max-width:900px) { .dash-main { margin-left: 0; } }
+
+    /* WELCOME BANNER */
+    .dash-welcome {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .dash-welcome::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(245,158,11,0.15), transparent 60%);
+    }
+    .dash-welcome > * { position: relative; z-index: 1; }
+    .dash-welcome__greeting { font-size: 0.875rem; color: rgba(255,255,255,0.7); margin-bottom: 0.35rem; }
+    .dash-welcome__name { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 800; color: white; margin-bottom: 0.5rem; }
+    .dash-welcome__sub { color: rgba(255,255,255,0.75); font-size: 0.95rem; margin-bottom: 0; }
+    .dash-welcome__emoji { position: absolute; right: 2.5rem; top: 50%; transform: translateY(-50%); font-size: 5rem; opacity: 0.15; }
+
+    /* PLAN CARD */
+    .plan-card {
+      background: white; border-radius: var(--radius-xl);
+      padding: 1.75rem; box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100);
+      margin-bottom: 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.25rem;
+    }
+    .plan-card__info { display: flex; align-items: center; gap: 1rem; }
+    .plan-card__icon {
+      width: 52px; height: 52px; border-radius: var(--radius-lg);
+      background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .plan-card__name { font-family: var(--font-heading); font-weight: 800; color: var(--navy); margin-bottom: 0.2rem; }
+    .plan-card__status { font-size: 0.82rem; color: var(--gray-500); }
+    .plan-card__status .active-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 0.35rem; }
+    .plan-free-note { background: var(--gold-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .plan-free-note p { font-size: 0.875rem; color: var(--gold-dark); font-weight: 500; margin: 0; }
+
+    /* STATS ROW */
+    .dash-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media(max-width:768px) { .dash-stats { grid-template-columns: repeat(2,1fr); } }
+    .dash-stat-card {
+      background: white; border-radius: var(--radius-lg);
+      padding: 1.25rem; box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-100);
+    }
+    .dash-stat-card__icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .dash-stat-card__num { font-family: var(--font-heading); font-size: 1.75rem; font-weight: 900; color: var(--primary); line-height: 1; }
+    .dash-stat-card__label { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.25rem; }
+
+    /* CONTENT GRID */
+    .dash-section-title {
+      font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800;
+      color: var(--navy); margin-bottom: 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-section-title a { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+    .dash-content-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media(max-width:768px) { .dash-content-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:480px) { .dash-content-grid { grid-template-columns: 1fr; } }
+    .dash-content-card {
+      background: white; border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100);
+      overflow: hidden; transition: var(--transition);
+    }
+    .dash-content-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .dash-content-card__img {
+      height: 110px; display: flex; align-items: center;
+      justify-content: center; font-size: 2.5rem;
+      position: relative;
+    }
+    .dash-content-card__lock {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.35); backdrop-filter: blur(3px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+    }
+    .dash-content-card__body { padding: 0.85rem; }
+    .dash-content-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .dash-content-card__meta { font-size: 0.72rem; color: var(--gray-400); }
+    .dash-content-card__save {
+      position: absolute; top: 0.5rem; right: 0.5rem;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,0.9); box-shadow: var(--shadow-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; cursor: pointer; transition: var(--transition);
+      z-index: 2;
+    }
+    .dash-content-card__save:hover { transform: scale(1.1); }
+    .dash-content-card__save.saved { background: var(--primary); }
+    .saved-item-card {
+      display: flex; align-items: center; gap: 1rem;
+      background: white; border-radius: var(--radius-lg);
+      padding: 1rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100);
+      margin-bottom: 0.75rem;
+    }
+    .saved-item-card__icon {
+      width: 48px; height: 48px; border-radius: var(--radius); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    }
+    .saved-item-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    .saved-item-card__meta { font-size: 0.78rem; color: var(--gray-400); }
+    .saved-item-card__remove {
+      margin-left: auto; background: var(--rose-light); color: var(--rose);
+      border-radius: var(--radius-full); padding: 0.4rem 0.85rem;
+      font-size: 0.78rem; font-weight: 700; cursor: pointer; flex-shrink: 0;
+    }
+
+    /* UPGRADE BANNER */
+    .upgrade-banner {
+      background: linear-gradient(135deg, var(--gold), var(--coral));
+      border-radius: var(--radius-xl); padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .upgrade-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at right, rgba(255,255,255,0.12), transparent 60%); }
+    .upgrade-banner > * { position: relative; z-index: 1; }
+    .upgrade-banner h3 { color: white; font-size: 1.25rem; margin-bottom: 0.35rem; }
+    .upgrade-banner p  { color: rgba(255,255,255,0.85); font-size: 0.875rem; margin: 0; }
+
+    /* RECENT ACTIVITY */
+    .activity-list { display: flex; flex-direction: column; gap: 0; }
+    .activity-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item__icon {
+      width: 36px; height: 36px; border-radius: var(--radius);
+      background: var(--primary-light); display: flex; align-items: center;
+      justify-content: center; font-size: 1rem; flex-shrink: 0;
+    }
+    .activity-item__title { font-family: var(--font-heading); font-weight: 600; font-size: 0.875rem; color: var(--navy); }
+    .activity-item__time { font-size: 0.75rem; color: var(--gray-400); }
+    .activity-item__arrow { margin-left: auto; color: var(--gray-300); }
+
+    /* PROFILE SECTION */
+    .profile-card {
+      background: white; border-radius: var(--radius-xl);
+      padding: 2rem; box-shadow: var(--shadow);
+      border: 1px solid var(--gray-100); margin-bottom: 2rem;
+    }
+    .profile-card__header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1.75rem; }
+    .profile-card__avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; font-family: var(--font-heading); font-weight: 700; font-size: 1.75rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden; position: relative;
+    }
+    .profile-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-card__name { font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; color: var(--navy); }
+    .profile-card__email { font-size: 0.875rem; color: var(--gray-500); }
+    .profile-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:640px) { .profile-form { grid-template-columns: 1fr; } }
+    .danger-zone { background: var(--rose-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-top: 1.5rem; }
+    .danger-zone h4 { color: var(--rose); font-size: 0.875rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .danger-zone p { font-size: 0.82rem; color: #9F1239; margin-bottom: 0.85rem; }
+  </style>
+</head>
+<body data-protected="true">
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav" style="background:white; box-shadow: 0 2px 20px rgba(0,0,0,0.08);">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" style="color:var(--navy);">
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text" style="color:var(--navy);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li><a href="curriculum-packs.html" class="nav__link">Curriculum</a></li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li><a href="blog.html" class="nav__link">Blog</a></li>
+      </ul>
+      <div class="nav__actions" id="nav-actions-placeholder">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+      <button class="nav__hamburger" style="display:none;"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-layout">
+  <!-- SIDEBAR -->
+  <aside class="dash-sidebar">
+    <div class="dash-sidebar__user" id="sidebar-user">
+      <div class="dash-sidebar__avatar" id="sidebar-avatar">?</div>
+      <div>
+        <div class="dash-sidebar__name" id="sidebar-name">Loading...</div>
+        <div class="dash-sidebar__plan" id="sidebar-plan">Free Account</div>
+      </div>
+    </div>
+
+    <div class="dash-nav-section">
+      <div class="dash-nav-section__title">Menu</div>
+      <a href="#overview" class="dash-nav-item active" onclick="showTab('overview',this)">
+        <span class="dash-nav-item__icon">🏠</span> Dashboard
+      </a>
+      <a href="#lessons" class="dash-nav-item" onclick="showTab('lessons',this)">
+        <span class="dash-nav-item__icon">📖</span> My Lessons
+        <span class="dash-nav-item__badge">50+</span>
+      </a>
+      <a href="#curriculum" class="dash-nav-item" onclick="showTab('curriculum',this)">
+        <span class="dash-nav-item__icon">✨</span> Curriculum
+      </a>
+      <a href="#activities" class="dash-nav-item" onclick="showTab('activities',this)">
+        <span class="dash-nav-item__icon">🎨</span> Activities
+      </a>
+      <a href="#saved" class="dash-nav-item" onclick="showTab('saved',this)">
+        <span class="dash-nav-item__icon">🔖</span> Saved
+      </a>
+    </div>
+
+    <div class="dash-nav-section">
+      <div class="dash-nav-section__title">Account</div>
+      <a href="#profile" class="dash-nav-item" onclick="showTab('profile',this)">
+        <span class="dash-nav-item__icon">👤</span> Profile
+      </a>
+      <a href="glory-kids-membership.html" class="dash-nav-item">
+        <span class="dash-nav-item__icon">💳</span> Membership
+      </a>
+      <a href="#" class="dash-nav-item" onclick="signOut(); return false;">
+        <span class="dash-nav-item__icon">🚪</span> Sign Out
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash-main">
+
+    <!-- OVERVIEW TAB -->
+    <div id="tab-overview">
+      <!-- Welcome Banner -->
+      <div class="dash-welcome">
+        <div class="dash-welcome__emoji">📖</div>
+        <div class="dash-welcome__greeting">Welcome back 👋</div>
+        <h2 class="dash-welcome__name" id="welcome-name">Loading...</h2>
+        <p class="dash-welcome__sub">You have 50+ free lessons ready to explore.</p>
+      </div>
+
+      <!-- Plan Card -->
+      <div class="plan-card">
+        <div class="plan-card__info">
+          <div class="plan-card__icon" id="plan-icon">📖</div>
+          <div>
+            <div class="plan-card__name" id="plan-name">Free Account</div>
+            <div class="plan-card__status" id="plan-status-row"><span class="active-dot"></span> Active</div>
+          </div>
+        </div>
+        <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta">✨ Upgrade to Glory Kids — $29.99/mo</a>
+      </div>
+
+      <!-- Free plan nudge -->
+      <div class="plan-free-note" id="free-plan-note">
+        <p>🔓 You have access to <strong>50+ free lessons</strong>. Upgrade to Glory Kids to unlock 500+ lessons, curriculum, and weekly new content.</p>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Upgrade Now →</a>
+      </div>
+
+      <!-- Stats -->
+      <div class="dash-stats" style="margin-top:1.5rem;">
+        <div class="dash-stat-card">
+          <div class="dash-stat-card__icon">📖</div>
+          <div class="dash-stat-card__num">50+</div>
+          <div class="dash-stat-card__label">Lessons Available</div>
+        </div>
+        <div class="dash-stat-card">
+          <div class="dash-stat-card__icon">🎨</div>
+          <div class="dash-stat-card__num">30+</div>
+          <div class="dash-stat-card__label">Free Activities</div>
+        </div>
+        <div class="dash-stat-card">
+          <div class="dash-stat-card__icon">🔖</div>
+          <div class="dash-stat-card__num" id="stat-saved-count">0</div>
+          <div class="dash-stat-card__label">Saved Items</div>
+        </div>
+        <div class="dash-stat-card">
+          <div class="dash-stat-card__icon">📅</div>
+          <div class="dash-stat-card__num">Weekly</div>
+          <div class="dash-stat-card__label">New Free Content</div>
+        </div>
+      </div>
+
+      <!-- Featured Free Lessons -->
+      <div class="dash-section-title">
+        📖 Free Lessons <a href="free-lessons.html">View all →</a>
+      </div>
+      <div class="dash-content-grid" id="free-lessons-grid">
+        <div class="dash-content-card" data-lesson-id="moses-red-sea" data-title="Moses Parts the Red Sea" data-meta="Old Testament · Ages 5–12" data-icon="🌊" data-bg="linear-gradient(135deg,#FEF3C7,#FFF7ED)">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED);">
+            🌊
+            <div class="dash-content-card__save" onclick="toggleSave(this)">🔖</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">Moses Parts the Red Sea</div>
+            <div class="dash-content-card__meta">Old Testament · Ages 5–12</div>
+          </div>
+        </div>
+        <div class="dash-content-card" data-lesson-id="daniel-lions-den" data-title="Daniel & the Lions' Den" data-meta="Heroes of Faith · Ages 6–12" data-icon="🦁" data-bg="linear-gradient(135deg,#D1FAE5,#E0F2FE)">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+            🦁
+            <div class="dash-content-card__save" onclick="toggleSave(this)">🔖</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">Daniel & the Lions' Den</div>
+            <div class="dash-content-card__meta">Heroes of Faith · Ages 6–12</div>
+          </div>
+        </div>
+        <div class="dash-content-card" data-lesson-id="jesus-feeds-5000" data-title="Jesus Feeds 5,000" data-meta="Jesus · Ages 4–10" data-icon="🍞" data-bg="linear-gradient(135deg,#EDE9FE,#FCE7F3)">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#EDE9FE,#FCE7F3);">
+            🍞
+            <div class="dash-content-card__save" onclick="toggleSave(this)">🔖</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">Jesus Feeds 5,000</div>
+            <div class="dash-content-card__meta">Jesus · Ages 4–10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Locked Member Content Preview -->
+      <div class="dash-section-title">
+        ✨ Glory Kids Curriculum <span style="font-size:0.75rem;color:var(--gray-400);font-weight:500;" id="curriculum-tag">Members Only</span>
+      </div>
+      <div class="dash-content-grid" id="curriculum-grid">
+        <div class="dash-content-card">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#EDE9FE,#FEF3C7);">
+            ✝️
+            <div class="dash-content-card__lock">🔒</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">God's Big Story — 12 Week Series</div>
+            <div class="dash-content-card__meta dash-content-card__meta--locked">Members Only · Upgrade to Access</div>
+          </div>
+        </div>
+        <div class="dash-content-card">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#FCE7F3,#EDE9FE);">
+            ❤️
+            <div class="dash-content-card__lock">🔒</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">Jesus Loves Me — 8 Week Series</div>
+            <div class="dash-content-card__meta dash-content-card__meta--locked">Members Only · Upgrade to Access</div>
+          </div>
+        </div>
+        <div class="dash-content-card">
+          <div class="dash-content-card__img" style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE);">
+            🦸
+            <div class="dash-content-card__lock">🔒</div>
+          </div>
+          <div class="dash-content-card__body">
+            <div class="dash-content-card__title">Heroes of Faith — 10 Week Series</div>
+            <div class="dash-content-card__meta dash-content-card__meta--locked">Members Only · Upgrade to Access</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upgrade Banner -->
+      <div class="upgrade-banner">
+        <div>
+          <h3>Unlock Everything with Glory Kids ✨</h3>
+          <p>500+ lessons, 10+ curriculum series, 300+ activity sheets, and new content every week.</p>
+        </div>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white;color:var(--coral-dark);white-space:nowrap;">
+          Join for $29.99/mo →
+        </a>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="dash-section-title">🕐 Recent Activity</div>
+      <div style="background:white;border-radius:var(--radius-xl);padding:1.5rem;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);margin-bottom:2rem;">
+        <div class="activity-list" id="activity-list"></div>
+        <p style="text-align:center;color:var(--gray-400);font-size:0.82rem;margin:1rem 0 0;">Your activity will appear here as you explore content.</p>
+      </div>
+    </div>
+
+    <!-- PROFILE TAB (hidden by default) -->
+    <div id="tab-profile" style="display:none;">
+      <h2 style="margin-bottom:1.5rem;">My Profile</h2>
+
+      <div class="profile-card">
+        <div class="profile-card__header">
+          <div class="profile-card__avatar" id="profile-avatar">?</div>
+          <div>
+            <div class="profile-card__name" id="profile-name">Your Name</div>
+            <div class="profile-card__email" id="profile-email">your@email.com</div>
+          </div>
+        </div>
+
+        <div class="profile-form">
+          <div class="form-group">
+            <label class="form-label">Display Name</label>
+            <input type="text" class="form-input" id="profile-name-input" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="profile-email-input" placeholder="your@email.com" disabled style="opacity:.6;" />
+          </div>
+        </div>
+        <button class="btn btn--primary" onclick="updateProfile()" style="margin-top:0.5rem;">Save Changes</button>
+
+        <div class="danger-zone" style="margin-top:2rem;">
+          <h4>⚠️ Danger Zone</h4>
+          <p>Once you delete your account, all your data will be permanently removed and cannot be recovered.</p>
+          <button class="btn btn--sm" style="background:var(--rose);color:white;" onclick="confirmDelete()">Delete My Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSONS TAB -->
+    <div id="tab-lessons" style="display:none;">
+      <h2 style="margin-bottom:1.5rem;">My Lessons</h2>
+      <p style="color:var(--gray-500);margin-bottom:2rem;">Your free lesson library. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Upgrade to unlock 500+</a></p>
+      <a href="free-lessons.html" class="btn btn--primary btn--lg">Browse All Free Lessons →</a>
+    </div>
+
+    <!-- CURRICULUM TAB -->
+    <div id="tab-curriculum" style="display:none;">
+      <h2 style="margin-bottom:1.5rem;">Curriculum</h2>
+      <div class="upgrade-banner">
+        <div><h3>Glory Kids Curriculum is a Members-Only Feature ✨</h3><p>Join Glory Kids to access 10+ multi-week curriculum series.</p></div>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white;color:var(--coral-dark);">Join for $29.99/mo →</a>
+      </div>
+    </div>
+
+    <!-- ACTIVITIES TAB -->
+    <div id="tab-activities" style="display:none;">
+      <h2 style="margin-bottom:1.5rem;">Activities & Resources</h2>
+      <p style="color:var(--gray-500);margin-bottom:2rem;">Browse free activities or <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">upgrade to unlock 300+</a></p>
+      <a href="activities.html" class="btn btn--primary btn--lg">Browse Free Activities →</a>
+    </div>
+
+    <!-- SAVED TAB -->
+    <div id="tab-saved" style="display:none;">
+      <h2 style="margin-bottom:1.5rem;">Saved Items</h2>
+      <div id="saved-list"></div>
+      <div id="saved-empty" style="text-align:center;padding:4rem 2rem;background:white;border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);">
+        <div style="font-size:3rem;margin-bottom:1rem;">🔖</div>
+        <h3 style="color:var(--navy);margin-bottom:0.5rem;">No saved items yet</h3>
+        <p style="color:var(--gray-500);margin-bottom:1.5rem;">Click the bookmark icon on any lesson to save it here for quick access.</p>
+        <a href="free-lessons.html" class="btn btn--primary">Browse Lessons to Save →</a>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+<script>
+// Override nav actions area since we already have it built above
+document.addEventListener('DOMContentLoaded', () => {
+  const actions = document.querySelector('.nav__actions');
+  if (actions) actions.id = 'nav-actions-placeholder';
+});
+
+let currentUid = null;
+
+// Populate dashboard with user info
+onFirebaseReady(() => {
+  auth.onAuthStateChanged(user => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUid = user.uid;
+
+    const name = user.displayName || user.email.split('@')[0];
+    const initials = user.displayName
+      ? user.displayName.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2)
+      : user.email[0].toUpperCase();
+
+    document.getElementById('welcome-name').textContent = 'Hello, ' + name + '! 👋';
+    document.getElementById('sidebar-name').textContent = name;
+
+    const sidebarAvatar = document.getElementById('sidebar-avatar');
+    const profileAvatar  = document.getElementById('profile-avatar');
+    if (user.photoURL) {
+      sidebarAvatar.innerHTML = `<img src="${user.photoURL}" alt="" />`;
+      profileAvatar.innerHTML  = `<img src="${user.photoURL}" alt="" />`;
+    } else {
+      sidebarAvatar.textContent = initials;
+      profileAvatar.textContent  = initials;
+    }
+    document.getElementById('profile-name').textContent  = user.displayName || name;
+    document.getElementById('profile-email').textContent = user.email;
+    document.getElementById('profile-name-input').value  = user.displayName || '';
+    document.getElementById('profile-email-input').value = user.email;
+
+    updateNav(user);
+    renderSavedState();
+    renderActivity();
+    renderPlanState();
+  });
+});
+
+// ── Plan / membership state ──────────────────────────────
+function renderPlanState() {
+  const rec = GK.getUserRecord(currentUid);
+  const plan = rec ? rec.plan : 'free';
+  const status = rec ? rec.planStatus : 'active';
+  const isActiveMember = plan === 'glory_kids' && status === 'active';
+  const isPaused = plan === 'glory_kids' && status === 'paused';
+
+  document.getElementById('sidebar-plan').textContent = isActiveMember ? 'Glory Kids Member' : (isPaused ? 'Membership Paused' : 'Free Account');
+  document.getElementById('plan-icon').textContent = isActiveMember ? '✨' : (isPaused ? '⏸️' : '📖');
+  document.getElementById('plan-name').textContent = isActiveMember ? 'Glory Kids Membership' : (isPaused ? 'Glory Kids Membership' : 'Free Account');
+
+  const statusRow = document.getElementById('plan-status-row');
+  const cta = document.getElementById('plan-cta');
+  const freeNote = document.getElementById('free-plan-note');
+  const curriculumTag = document.getElementById('curriculum-tag');
+  const curriculumGrid = document.getElementById('curriculum-grid');
+
+  if (isActiveMember) {
+    statusRow.innerHTML = '<span class="active-dot"></span> Active';
+    cta.style.display = 'none';
+    freeNote.style.display = 'none';
+    curriculumTag.textContent = 'Unlocked ✨';
+    curriculumGrid.querySelectorAll('.dash-content-card__lock').forEach(l => l.style.display = 'none');
+    curriculumGrid.querySelectorAll('.dash-content-card__meta--locked').forEach(m => m.textContent = 'Included in your membership');
+  } else if (isPaused) {
+    statusRow.innerHTML = '<span class="active-dot" style="background:var(--gold-dark);"></span> Paused';
+    cta.textContent = '▶️ Resume Membership';
+    cta.style.display = 'inline-flex';
+    freeNote.style.display = 'none';
+    curriculumTag.textContent = 'Members Only';
+    curriculumGrid.querySelectorAll('.dash-content-card__lock').forEach(l => l.style.display = 'flex');
+    curriculumGrid.querySelectorAll('.dash-content-card__meta--locked').forEach(m => m.textContent = 'Membership paused · Contact support');
+  } else {
+    statusRow.innerHTML = '<span class="active-dot"></span> Active';
+    cta.textContent = '✨ Upgrade to Glory Kids — $29.99/mo';
+    cta.style.display = 'inline-flex';
+    freeNote.style.display = 'flex';
+    curriculumTag.textContent = 'Members Only';
+    curriculumGrid.querySelectorAll('.dash-content-card__lock').forEach(l => l.style.display = 'flex');
+    curriculumGrid.querySelectorAll('.dash-content-card__meta--locked').forEach(m => m.textContent = 'Members Only · Upgrade to Access');
+  }
+}
+
+// Tab switcher
+function showTab(name, linkEl) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('tab-' + name).style.display = 'block';
+  document.querySelectorAll('.dash-nav-item').forEach(l => l.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+}
+
+// ── Profile ──────────────────────────────────────────────
+async function updateProfile() {
+  const name = document.getElementById('profile-name-input').value.trim();
+  if (!name) return;
+  try {
+    await auth.currentUser.updateProfile({ displayName: name });
+    document.getElementById('profile-name').textContent = name;
+    document.getElementById('welcome-name').textContent = 'Hello, ' + name + '! 👋';
+    document.getElementById('sidebar-name').textContent = name;
+    const initials = name.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2);
+    if (!auth.currentUser.photoURL) {
+      document.getElementById('sidebar-avatar').textContent = initials;
+      document.getElementById('profile-avatar').textContent = initials;
+    }
+    updateNav(auth.currentUser);
+    gkLogActivity(currentUid, '👤', 'Profile updated');
+    renderActivity();
+    alert('Profile updated!');
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+async function confirmDelete() {
+  if (confirm('Are you sure you want to permanently delete your account? This cannot be undone.')) {
+    try {
+      await auth.currentUser.delete();
+      window.location.href = 'index.html';
+    } catch(e) {
+      alert('Please sign out and sign in again before deleting your account.');
+    }
+  }
+}
+
+// ── Saved items ──────────────────────────────────────────
+function savedKey() { return 'gk_saved_' + currentUid; }
+function getSaved() { return JSON.parse(localStorage.getItem(savedKey()) || '[]'); }
+function setSaved(list) { localStorage.setItem(savedKey(), JSON.stringify(list)); }
+
+function toggleSave(btnEl) {
+  const card = btnEl.closest('.dash-content-card');
+  const id = card.dataset.lessonId;
+  const list = getSaved();
+  const idx = list.findIndex(i => i.id === id);
+  if (idx > -1) {
+    list.splice(idx, 1);
+    gkLogActivity(currentUid, '🔖', 'Removed "' + card.dataset.title + '" from saved');
+  } else {
+    list.unshift({
+      id,
+      title: card.dataset.title,
+      meta: card.dataset.meta,
+      icon: card.dataset.icon,
+      bg: card.dataset.bg
+    });
+    gkLogActivity(currentUid, '🔖', 'Saved "' + card.dataset.title + '"');
+  }
+  setSaved(list);
+  renderSavedState();
+  renderActivity();
+}
+
+function removeSaved(id) {
+  setSaved(getSaved().filter(i => i.id !== id));
+  renderSavedState();
+}
+
+function renderSavedState() {
+  const list = getSaved();
+
+  // stat count
+  const statEl = document.getElementById('stat-saved-count');
+  if (statEl) statEl.textContent = list.length;
+
+  // bookmark button state on free-lessons grid
+  document.querySelectorAll('#free-lessons-grid .dash-content-card').forEach(card => {
+    const saved = list.some(i => i.id === card.dataset.lessonId);
+    const btn = card.querySelector('.dash-content-card__save');
+    if (btn) {
+      btn.classList.toggle('saved', saved);
+      btn.textContent = saved ? '✅' : '🔖';
+    }
+  });
+
+  // saved tab
+  const savedList = document.getElementById('saved-list');
+  const savedEmpty = document.getElementById('saved-empty');
+  if (!savedList) return;
+  if (list.length === 0) {
+    savedList.innerHTML = '';
+    savedEmpty.style.display = 'block';
+    return;
+  }
+  savedEmpty.style.display = 'none';
+  savedList.innerHTML = list.map(item => `
+    <div class="saved-item-card">
+      <div class="saved-item-card__icon" style="background:${item.bg};">${item.icon}</div>
+      <div>
+        <div class="saved-item-card__title">${item.title}</div>
+        <div class="saved-item-card__meta">${item.meta}</div>
+      </div>
+      <div class="saved-item-card__remove" onclick="removeSaved('${item.id}')">Remove</div>
+    </div>
+  `).join('');
+}
+
+// ── Recent activity ──────────────────────────────────────
+function renderActivity() {
+  const el = document.getElementById('activity-list');
+  if (!el) return;
+  const list = JSON.parse(localStorage.getItem('gk_activity_' + currentUid) || '[]');
+  if (list.length === 0) {
+    el.innerHTML = '';
+    return;
+  }
+  el.innerHTML = list.slice(0, 8).map(a => `
+    <div class="activity-item">
+      <div class="activity-item__icon">${a.icon}</div>
+      <div>
+        <div class="activity-item__title">${a.title}</div>
+        <div class="activity-item__time">${timeAgo(a.time)}</div>
+      </div>
+      <div class="activity-item__arrow">›</div>
+    </div>
+  `).join('');
+}
+
+function timeAgo(ts) {
+  const diff = Math.max(0, Date.now() - ts);
+  const min = Math.floor(diff / 60000);
+  if (min < 1) return 'Just now';
+  if (min < 60) return min + 'm ago';
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return hr + 'h ago';
+  return Math.floor(hr / 24) + 'd ago';
+}
+</script>
+</body>
+</html>

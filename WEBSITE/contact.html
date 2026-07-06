@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Children's Ministry Lessons</title>
+  <meta name="description" content="Get in touch with the Children's Ministry Lessons team. We'd love to hear from you — questions, partnership inquiries, or custom curriculum requests." />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    .contact-header { background: linear-gradient(135deg, #1E1B4B 0%, #5B21B6 50%, #7C3AED 100%); }
+    .contact-wrapper {
+      display: grid; grid-template-columns: 380px 1fr; gap: 4rem; align-items: start;
+    }
+    @media(max-width:900px) { .contact-wrapper { grid-template-columns: 1fr; } }
+    .contact-sidebar { position: sticky; top: 120px; }
+    .contact-info-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      padding: 2rem; box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100); margin-bottom: 1.5rem;
+    }
+    .contact-info-card__title {
+      font-family: var(--font-heading); font-weight: 800;
+      font-size: 1.1rem; color: var(--navy); margin-bottom: 1.5rem;
+    }
+    .contact-method {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 0; border-bottom: 1px solid var(--gray-100);
+    }
+    .contact-method:last-child { border-bottom: none; padding-bottom: 0; }
+    .contact-method__icon {
+      width: 44px; height: 44px; border-radius: var(--radius-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .contact-method__label {
+      font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--gray-400); margin-bottom: 0.2rem;
+    }
+    .contact-method__value { font-size: 0.9rem; color: var(--navy); font-weight: 500; }
+    .contact-method__note { font-size: 0.78rem; color: var(--gray-400); margin-top: 0.15rem; }
+    .social-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .social-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem; border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200); font-family: var(--font-heading);
+      font-size: 0.82rem; font-weight: 600; color: var(--gray-700);
+      transition: var(--transition);
+    }
+    .social-link:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    .form-card {
+      background: var(--white); border-radius: var(--radius-xl);
+      padding: 2.5rem; box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100);
+    }
+    .form-card__title { font-size: 1.75rem; font-weight: 800; color: var(--navy); margin-bottom: 0.5rem; }
+    .form-card__subtitle { color: var(--gray-500); margin-bottom: 2rem; font-size: 0.95rem; }
+    .inquiry-type { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.65rem; margin-bottom: 1.5rem; }
+    .inquiry-btn {
+      padding: 0.75rem; border-radius: var(--radius-lg);
+      border: 2px solid var(--gray-200); text-align: center;
+      font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700;
+      color: var(--gray-600); cursor: pointer; transition: var(--transition);
+      background: var(--white);
+    }
+    .inquiry-btn .i-icon { display: block; font-size: 1.5rem; margin-bottom: 0.3rem; }
+    .inquiry-btn:hover, .inquiry-btn.selected {
+      border-color: var(--primary); color: var(--primary); background: var(--primary-lighter);
+    }
+    .success-msg {
+      display: none; text-align: center; padding: 2rem;
+      background: var(--green-light); border-radius: var(--radius-lg); margin-top: 1rem;
+    }
+    .success-msg h3 { color: #065F46; margin-bottom: 0.5rem; }
+    .success-msg p { color: #047857; font-size: 0.9rem; }
+    .faq-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:640px) { .faq-mini { grid-template-columns: 1fr; } .inquiry-type { grid-template-columns: 1fr 1fr; } }
+    .faq-mini-card {
+      background: var(--white); border-radius: var(--radius-lg); padding: 1.25rem;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100);
+    }
+    .faq-mini-card__q { font-family: var(--font-heading); font-weight: 700; font-size: 0.875rem; color: var(--navy); margin-bottom: 0.4rem; }
+    .faq-mini-card__a { font-size: 0.82rem; color: var(--gray-500); line-height: 1.6; }
+    .map-placeholder {
+      height: 220px; background: linear-gradient(135deg, var(--primary-lighter), var(--gold-light));
+      border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; margin-top: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+  </style>
+</head>
+<body>
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">✉️ Contact</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
+    <ul class="nav__links">
+      <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+      <li class="nav__dropdown"><a href="#" class="nav__link">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
+      <li><a href="activities.html" class="nav__link">Activities</a></li>
+      <li><a href="blog.html" class="nav__link">Blog</a></li>
+      <li><a href="contact.html" class="nav__link active">Contact</a></li>
+    </ul>
+    <div class="nav__actions">
+        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
+        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      </div>
+    <button class="nav__hamburger"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+</div>
+
+<section class="page-hero contact-header">
+  <div class="container">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Contact</span></div>
+    <h1>Let's <span style="color:var(--gold);">Connect</span></h1>
+    <p>We'd love to hear from you — whether you have a question, need support, want custom curriculum, or just want to say hi.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="contact-wrapper">
+
+      <!-- SIDEBAR -->
+      <aside class="contact-sidebar">
+        <div class="contact-info-card reveal">
+          <div class="contact-info-card__title">📬 Get in Touch</div>
+          <div class="contact-method">
+            <div class="contact-method__icon" style="background:var(--primary-light);">✉️</div>
+            <div>
+              <div class="contact-method__label">Email</div>
+              <div class="contact-method__value">hello@childrensministrylessons.com</div>
+              <div class="contact-method__note">We reply within 24 hours</div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method__icon" style="background:var(--gold-light);">🌐</div>
+            <div>
+              <div class="contact-method__label">Website</div>
+              <div class="contact-method__value">childrensministrylessons.com</div>
+              <div class="contact-method__note">Available 24/7</div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="contact-method__icon" style="background:var(--green-light);">⏰</div>
+            <div>
+              <div class="contact-method__label">Support Hours</div>
+              <div class="contact-method__value">Mon–Fri, 9am–5pm EST</div>
+              <div class="contact-method__note">Glory Kids members get priority support</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-info-card reveal">
+          <div class="contact-info-card__title">🤝 Follow Us</div>
+          <div class="social-links">
+            <a href="#" class="social-link">📘 Facebook</a>
+            <a href="#" class="social-link">📷 Instagram</a>
+            <a href="#" class="social-link">▶️ YouTube</a>
+            <a href="#" class="social-link">📌 Pinterest</a>
+          </div>
+        </div>
+
+        <div class="contact-info-card reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary));border:none;">
+          <div style="font-size:2rem;margin-bottom:0.75rem;">✨</div>
+          <div style="font-family:var(--font-heading);font-weight:800;font-size:1.05rem;color:white;margin-bottom:0.5rem;">Quick Answer?</div>
+          <p style="font-size:0.875rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem;">Most questions are answered in our FAQ or help articles. Check these first for an instant answer!</p>
+          <a href="glory-kids-membership.html#faq" class="btn btn--gold" style="width:100%;justify-content:center;">View FAQ →</a>
+        </div>
+      </aside>
+
+      <!-- FORM -->
+      <div>
+        <div class="form-card reveal">
+          <h2 class="form-card__title">Send Us a Message</h2>
+          <p class="form-card__subtitle">Fill in the form below and we'll get back to you within 24 hours.</p>
+
+          <!-- Inquiry Type Selector -->
+          <div style="margin-bottom:1.25rem;">
+            <div class="form-label">What can we help you with?</div>
+            <div class="inquiry-type">
+              <button class="inquiry-btn selected" onclick="selectInquiry(this)">
+                <span class="i-icon">💬</span>General Question
+              </button>
+              <button class="inquiry-btn" onclick="selectInquiry(this)">
+                <span class="i-icon">✨</span>Membership Help
+              </button>
+              <button class="inquiry-btn" onclick="selectInquiry(this)">
+                <span class="i-icon">📦</span>Curriculum Request
+              </button>
+              <button class="inquiry-btn" onclick="selectInquiry(this)">
+                <span class="i-icon">🎨</span>Custom Content
+              </button>
+              <button class="inquiry-btn" onclick="selectInquiry(this)">
+                <span class="i-icon">🤝</span>Partnership
+              </button>
+              <button class="inquiry-btn" onclick="selectInquiry(this)">
+                <span class="i-icon">🐛</span>Technical Issue
+              </button>
+            </div>
+          </div>
+
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name *</label>
+                <input type="text" class="form-input" placeholder="Your first name" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name *</label>
+                <input type="text" class="form-input" placeholder="Your last name" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Email Address *</label>
+                <input type="email" class="form-input" placeholder="your@email.com" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Phone (optional)</label>
+                <input type="tel" class="form-input" placeholder="+1 (555) 000-0000" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Role *</label>
+              <select class="form-select" required>
+                <option value="">Select your role...</option>
+                <option>Children's Ministry Director / Kidmin Leader</option>
+                <option>Pastor / Church Leader</option>
+                <option>Parent / Family</option>
+                <option>Sunday School Teacher / Volunteer</option>
+                <option>Homeschool Parent</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Church / Organisation (optional)</label>
+              <input type="text" class="form-input" placeholder="Your church or organisation name" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Message *</label>
+              <textarea class="form-textarea" placeholder="Tell us how we can help you..." required></textarea>
+            </div>
+            <div class="form-group" style="display:flex;align-items:flex-start;gap:0.75rem;">
+              <input type="checkbox" id="newsletter-opt" style="width:18px;height:18px;margin-top:2px;accent-color:var(--primary);flex-shrink:0;" />
+              <label for="newsletter-opt" style="font-size:0.875rem;color:var(--gray-600);cursor:pointer;line-height:1.5;">
+                Yes! Send me free weekly lessons, tips, and ministry inspiration. I can unsubscribe anytime.
+              </label>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg" style="width:100%;justify-content:center;">
+              Send Message →
+            </button>
+            <p style="text-align:center;font-size:0.8rem;color:var(--gray-400);margin-top:0.85rem;">
+              We respect your privacy and will never share your information.
+            </p>
+          </form>
+
+          <div class="success-msg" id="success-msg">
+            <div style="font-size:3rem;margin-bottom:0.75rem;">🎉</div>
+            <h3>Message Sent!</h3>
+            <p>Thank you for reaching out! We'll get back to you within 24 hours. In the meantime, why not browse our free Bible lessons?</p>
+            <a href="free-lessons.html" class="btn btn--primary" style="margin-top:1rem;">Browse Free Lessons →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK FAQ -->
+<section class="section--gray">
+  <div class="container">
+    <div class="section-label reveal">Quick Answers</div>
+    <h2 class="section-heading reveal">Common <span class="highlight">Questions</span></h2>
+    <div class="faq-mini reveal">
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">How do I access my membership?</div>
+        <div class="faq-mini-card__a">After signing up for Glory Kids Membership, you'll receive an email with your login details. You can access all content from your member dashboard immediately.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">Can I get a refund?</div>
+        <div class="faq-mini-card__a">Yes! We offer a 14-day money-back guarantee on all new memberships. If you're not completely satisfied, contact us within 14 days for a full refund — no questions asked.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">Do you offer group or church discounts?</div>
+        <div class="faq-mini-card__a">Yes! For churches wanting multiple seats for their team, we offer special pricing. Get in touch using the contact form and we'll put together a custom quote for you.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">Can I request custom curriculum?</div>
+        <div class="faq-mini-card__a">Absolutely! We create custom curriculum packs for churches. Fill in the contact form above, select "Custom Content," and tell us about your vision. We'd love to help.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">Are the lessons suitable for small churches?</div>
+        <div class="faq-mini-card__a">Perfectly suited! Our lessons are designed to work with any size team — even a single volunteer. Everything is clearly scripted and ready to use right out of the box.</div>
+      </div>
+      <div class="faq-mini-card">
+        <div class="faq-mini-card__q">Can I use the content in multiple campuses?</div>
+        <div class="faq-mini-card__a">One membership covers one ministry location. For multi-site churches, please contact us for our multi-campus licensing options — we make it affordable at scale.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION STATEMENT SECTION -->
+<section>
+  <div class="container container--narrow">
+    <div style="text-align:center;" class="reveal">
+      <div style="font-size:4rem;margin-bottom:1.25rem;">✝️</div>
+      <h2 style="margin-bottom:1rem;">Our Heart &amp; <span class="highlight">Mission</span></h2>
+      <p style="color:var(--gray-500);font-size:1.1rem;line-height:1.85;max-width:680px;margin:0 auto 2rem;">
+        We believe that children's ministry is one of the most important callings in the Church. Research consistently shows that the majority of people who follow Jesus made that decision as children. Our mission is simple: <strong style="color:var(--navy);">to equip every church, parent, and ministry leader with world-class tools so that no child is ever reached with anything less than the very best.</strong>
+      </p>
+      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg">Join the Mission — $29.99/mo →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="footer__top">
+    <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
+    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li><li><a href="#">Privacy Policy</a></li></ul></div>
+    <div><div class="footer__newsletter-title">Newsletter</div><p class="footer__desc">Free weekly lessons and ministry tips.</p><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com — All rights reserved.</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+</div></footer>
+
+<script src="app.js"></script>
+<script>
+function selectInquiry(btn) {
+  document.querySelectorAll('.inquiry-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  this.style.display = 'none';
+  document.getElementById('success-msg').style.display = 'block';
+});
+</script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
