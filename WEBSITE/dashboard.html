@@ -13,7 +13,7 @@
 
     /* SIDEBAR */
     .dash-sidebar {
-      background: var(--white);
+      background: var(--color-card);
       border-right: 1px solid var(--gray-200);
       padding: 2rem 1.25rem;
       position: fixed;
@@ -55,7 +55,7 @@
       flex-shrink: 0; overflow: hidden;
     }
     .dash-sidebar__avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .dash-sidebar__name { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    .dash-sidebar__name { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--white); }
     .dash-sidebar__plan { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
 
     .dash-nav-section { margin-bottom: 1.5rem; }
@@ -73,7 +73,7 @@
       transition: var(--transition);
       cursor: pointer; text-decoration: none;
     }
-    .dash-nav-item:hover { background: var(--gray-100); color: var(--navy); }
+    .dash-nav-item:hover { background: var(--gray-100); color: var(--white); }
     .dash-nav-item.active { background: var(--primary-light); color: var(--primary); }
     .dash-nav-item__icon { font-size: 1.1rem; width: 22px; text-align: center; }
     .dash-nav-item__badge {
@@ -110,7 +110,7 @@
 
     /* PLAN CARD */
     .plan-card {
-      background: white; border-radius: var(--radius-xl);
+      background: var(--color-card); border-radius: var(--radius-xl);
       padding: 1.75rem; box-shadow: var(--shadow);
       border: 1px solid var(--gray-100);
       margin-bottom: 2rem;
@@ -124,7 +124,7 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.5rem; flex-shrink: 0;
     }
-    .plan-card__name { font-family: var(--font-heading); font-weight: 800; color: var(--navy); margin-bottom: 0.2rem; }
+    .plan-card__name { font-family: var(--font-heading); font-weight: 800; color: var(--white); margin-bottom: 0.2rem; }
     .plan-card__status { font-size: 0.82rem; color: var(--gray-500); }
     .plan-card__status .active-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; display: inline-block; margin-right: 0.35rem; }
     .plan-free-note { background: var(--gold-light); border-radius: var(--radius-lg); padding: 1.25rem; margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
@@ -134,7 +134,7 @@
     .dash-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 2rem; }
     @media(max-width:768px) { .dash-stats { grid-template-columns: repeat(2,1fr); } }
     .dash-stat-card {
-      background: white; border-radius: var(--radius-lg);
+      background: var(--color-card); border-radius: var(--radius-lg);
       padding: 1.25rem; box-shadow: var(--shadow-sm);
       border: 1px solid var(--gray-100);
     }
@@ -145,7 +145,7 @@
     /* CONTENT GRID */
     .dash-section-title {
       font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800;
-      color: var(--navy); margin-bottom: 1rem;
+      color: var(--white); margin-bottom: 1rem;
       display: flex; align-items: center; justify-content: space-between;
     }
     .dash-section-title a { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
@@ -153,7 +153,7 @@
     @media(max-width:768px) { .dash-content-grid { grid-template-columns: repeat(2,1fr); } }
     @media(max-width:480px) { .dash-content-grid { grid-template-columns: 1fr; } }
     .dash-content-card {
-      background: white; border-radius: var(--radius-lg);
+      background: var(--color-card); border-radius: var(--radius-lg);
       box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100);
       overflow: hidden; transition: var(--transition);
     }
@@ -170,7 +170,7 @@
       font-size: 1.75rem;
     }
     .dash-content-card__body { padding: 0.85rem; }
-    .dash-content-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .dash-content-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; color: var(--white); margin-bottom: 0.2rem; }
     .dash-content-card__meta { font-size: 0.72rem; color: var(--gray-400); }
     .dash-content-card__save {
       position: absolute; top: 0.5rem; right: 0.5rem;
@@ -184,7 +184,7 @@
     .dash-content-card__save.saved { background: var(--primary); }
     .saved-item-card {
       display: flex; align-items: center; gap: 1rem;
-      background: white; border-radius: var(--radius-lg);
+      background: var(--color-card); border-radius: var(--radius-lg);
       padding: 1rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100);
       margin-bottom: 0.75rem;
     }
@@ -192,7 +192,7 @@
       width: 48px; height: 48px; border-radius: var(--radius); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
     }
-    .saved-item-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--navy); }
+    .saved-item-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--white); }
     .saved-item-card__meta { font-size: 0.78rem; color: var(--gray-400); }
     .saved-item-card__remove {
       margin-left: auto; background: var(--rose-light); color: var(--rose);
@@ -225,13 +225,13 @@
       background: var(--primary-light); display: flex; align-items: center;
       justify-content: center; font-size: 1rem; flex-shrink: 0;
     }
-    .activity-item__title { font-family: var(--font-heading); font-weight: 600; font-size: 0.875rem; color: var(--navy); }
+    .activity-item__title { font-family: var(--font-heading); font-weight: 600; font-size: 0.875rem; color: var(--white); }
     .activity-item__time { font-size: 0.75rem; color: var(--gray-400); }
     .activity-item__arrow { margin-left: auto; color: var(--gray-300); }
 
     /* PROFILE SECTION */
     .profile-card {
-      background: white; border-radius: var(--radius-xl);
+      background: var(--color-card); border-radius: var(--radius-xl);
       padding: 2rem; box-shadow: var(--shadow);
       border: 1px solid var(--gray-100); margin-bottom: 2rem;
     }
@@ -244,7 +244,7 @@
       flex-shrink: 0; overflow: hidden; position: relative;
     }
     .profile-card__avatar img { width: 100%; height: 100%; object-fit: cover; }
-    .profile-card__name { font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; color: var(--navy); }
+    .profile-card__name { font-family: var(--font-heading); font-weight: 800; font-size: 1.25rem; color: var(--white); }
     .profile-card__email { font-size: 0.875rem; color: var(--gray-500); }
     .profile-form { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     @media(max-width:640px) { .profile-form { grid-template-columns: 1fr; } }
@@ -256,12 +256,12 @@
 <body data-protected="true">
 
 <!-- NAV -->
-<nav class="nav scrolled" id="nav" style="background:white; box-shadow: 0 2px 20px rgba(0,0,0,0.08);">
+<nav class="nav scrolled" id="nav" style="background:var(--color-card); box-shadow: 0 2px 20px rgba(0,0,0,0.08);">
   <div class="container">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" style="color:var(--navy);">
+      <a href="index.html" class="nav__logo" style="color:var(--white);">
         <div class="nav__logo-icon">✝</div>
-        <span class="nav__logo-text" style="color:var(--navy);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
+        <span class="nav__logo-text" style="color:var(--white);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
       </a>
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
@@ -458,14 +458,14 @@
           <h3>Unlock Everything with Glory Kids ✨</h3>
           <p>500+ lessons, 10+ curriculum series, 300+ activity sheets, and new content every week.</p>
         </div>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white;color:var(--coral-dark);white-space:nowrap;">
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);white-space:nowrap;">
           Join for $29.99/mo →
         </a>
       </div>
 
       <!-- Recent Activity -->
       <div class="dash-section-title">🕐 Recent Activity</div>
-      <div style="background:white;border-radius:var(--radius-xl);padding:1.5rem;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);margin-bottom:2rem;">
+      <div style="background:var(--color-card);border-radius:var(--radius-xl);padding:1.5rem;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);margin-bottom:2rem;">
         <div class="activity-list" id="activity-list"></div>
         <p style="text-align:center;color:var(--gray-400);font-size:0.82rem;margin:1rem 0 0;">Your activity will appear here as you explore content.</p>
       </div>
@@ -516,7 +516,7 @@
       <h2 style="margin-bottom:1.5rem;">Curriculum</h2>
       <div class="upgrade-banner">
         <div><h3>Glory Kids Curriculum is a Members-Only Feature ✨</h3><p>Join Glory Kids to access 10+ multi-week curriculum series.</p></div>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white;color:var(--coral-dark);">Join for $29.99/mo →</a>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">Join for $29.99/mo →</a>
       </div>
     </div>
 
@@ -531,9 +531,9 @@
     <div id="tab-saved" style="display:none;">
       <h2 style="margin-bottom:1.5rem;">Saved Items</h2>
       <div id="saved-list"></div>
-      <div id="saved-empty" style="text-align:center;padding:4rem 2rem;background:white;border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);">
+      <div id="saved-empty" style="text-align:center;padding:4rem 2rem;background:var(--color-card);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);">
         <div style="font-size:3rem;margin-bottom:1rem;">🔖</div>
-        <h3 style="color:var(--navy);margin-bottom:0.5rem;">No saved items yet</h3>
+        <h3 style="color:var(--white);margin-bottom:0.5rem;">No saved items yet</h3>
         <p style="color:var(--gray-500);margin-bottom:1.5rem;">Click the bookmark icon on any lesson to save it here for quick access.</p>
         <a href="free-lessons.html" class="btn btn--primary">Browse Lessons to Save →</a>
       </div>

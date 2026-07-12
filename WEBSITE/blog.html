@@ -11,7 +11,7 @@
     .blog-header { background: linear-gradient(135deg, #1C2B3A 0%, #7B5EA7 60%, #7B5EA7 100%); }
     .featured-post {
       display: grid; grid-template-columns: 1.2fr 1fr; gap: 0;
-      background: var(--white); border-radius: var(--radius-xl);
+      background: var(--color-card); border-radius: var(--radius-xl);
       overflow: hidden; box-shadow: var(--shadow-lg);
       margin-bottom: 3rem;
     }
@@ -33,12 +33,12 @@
       .featured-post__body { padding: 1.5rem; }
     }
     .blog-sidebar { position: sticky; top: 100px; }
-    .sidebar-card { background: var(--white); border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); margin-bottom: 1.5rem; }
-    .sidebar-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--navy); margin-bottom: 1.25rem; }
+    .sidebar-card { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); margin-bottom: 1.5rem; }
+    .sidebar-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--white); margin-bottom: 1.25rem; }
     .popular-post { display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--gray-100); }
     .popular-post:last-child { border-bottom: none; }
     .popular-post__num { font-family: var(--font-heading); font-weight: 900; font-size: 1.5rem; color: var(--primary-light); min-width: 28px; }
-    .popular-post__title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--navy); line-height: 1.4; }
+    .popular-post__title { font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700; color: var(--white); line-height: 1.4; }
     .popular-post__cat { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.2rem; }
     .blog-main { display: grid; grid-template-columns: 1fr 320px; gap: 3rem; align-items: start; }
     @media(max-width:1024px) { .blog-main { grid-template-columns: 1fr; } .blog-sidebar { position: static; } }
@@ -333,7 +333,7 @@
     <div class="cta-banner reveal">
       <h2>Never Run Out of Ministry Ideas</h2>
       <p>Join Glory Kids Membership and get new curriculum, lessons, and resources every single week — plus access to our full library of 500+ free lessons.</p>
-      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white; color:var(--coral-dark);">✨ Join Glory Kids — $29.99/mo →</a>
+      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card); color:var(--coral-dark);">✨ Join Glory Kids — $29.99/mo →</a>
     </div>
   </div>
 </section>

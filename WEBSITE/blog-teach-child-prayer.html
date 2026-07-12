@@ -108,7 +108,7 @@
 
     /* ── ARTICLE BODY ────────────────────────────────────── */
     .post-body {
-      background: white;
+      background: var(--color-card);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
       border: 1px solid var(--gray-100);
@@ -136,7 +136,7 @@
       color: var(--gray-700); margin-bottom: 1.5rem;
     }
     .post-body__content h2 {
-      font-size: 1.5rem; color: var(--navy);
+      font-size: 1.5rem; color: var(--white);
       margin: 2.5rem 0 1rem; line-height: 1.25;
       padding-bottom: 0.6rem;
       border-bottom: 2px solid var(--primary-lighter);
@@ -186,7 +186,7 @@
       color: var(--primary); margin-bottom: 0.6rem;
     }
     .strategy-box h3 {
-      font-size: 1.15rem; color: var(--navy);
+      font-size: 1.15rem; color: var(--white);
       margin: 0 0 0.85rem !important; padding: 0 !important;
       border: none !important;
     }
@@ -199,7 +199,7 @@
     }
     @media(max-width: 500px) { .chat-grid { grid-template-columns: 1fr; } }
     .chat-item {
-      background: white; border: 1.5px solid var(--gray-200);
+      background: var(--color-card); border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-lg); padding: 1rem 1.15rem;
       display: flex; gap: 0.85rem; align-items: flex-start;
     }
@@ -214,7 +214,7 @@
     .chat-item__letter.h { background: var(--gold); }
     .chat-item__letter.a { background: var(--primary); }
     .chat-item__letter.t { background: #3BAB5A; }
-    .chat-item strong { display: block; font-family: var(--font-heading); font-size: 0.875rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .chat-item strong { display: block; font-family: var(--font-heading); font-size: 0.875rem; color: var(--white); margin-bottom: 0.2rem; }
     .chat-item span { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; }
 
     /* Pullquote */
@@ -270,7 +270,7 @@
     }
     .obstacle-card__q {
       font-family: var(--font-heading); font-size: 0.8rem; font-weight: 800;
-      color: var(--navy); margin-bottom: 0.4rem;
+      color: var(--white); margin-bottom: 0.4rem;
       display: flex; align-items: center; gap: 0.4rem;
     }
     .obstacle-card p { font-size: 0.82rem; color: var(--gray-600); line-height: 1.6; margin: 0 !important; }
@@ -285,7 +285,7 @@
       margin: 2rem 0;
     }
     .goal-callout__icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .goal-callout h3 { font-size: 1.15rem; color: var(--navy); margin-bottom: 0.6rem; }
+    .goal-callout h3 { font-size: 1.15rem; color: var(--white); margin-bottom: 0.6rem; }
     .goal-callout p { color: var(--gray-600); font-size: 0.95rem; line-height: 1.75; margin: 0 !important; }
 
     /* Tags */
@@ -325,7 +325,7 @@
 
     /* Author card */
     .author-card {
-      background: white;
+      background: var(--color-card);
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
       border: 1px solid var(--gray-100);
@@ -341,7 +341,7 @@
       display: flex; align-items: center; justify-content: center;
       font-family: var(--font-heading); font-weight: 800; font-size: 1.75rem; color: white;
     }
-    .author-card__name  { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; color: var(--navy); margin-bottom: 0.2rem; }
+    .author-card__name  { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; color: var(--white); margin-bottom: 0.2rem; }
     .author-card__role  { font-size: 0.82rem; color: var(--primary); font-weight: 600; margin-bottom: 0.75rem; }
     .author-card__bio   { font-size: 0.875rem; color: var(--gray-600); line-height: 1.7; margin: 0; }
 
@@ -349,7 +349,7 @@
     .post-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
 
     .sidebar-card {
-      background: white; border-radius: var(--radius-xl);
+      background: var(--color-card); border-radius: var(--radius-xl);
       box-shadow: var(--shadow); border: 1px solid var(--gray-100);
       overflow: hidden;
     }
@@ -357,7 +357,7 @@
       padding: 1rem 1.25rem 0.85rem;
       border-bottom: 1px solid var(--gray-100);
       font-family: var(--font-heading); font-size: 0.875rem; font-weight: 800;
-      color: var(--navy); display: flex; align-items: center; gap: 0.5rem;
+      color: var(--white); display: flex; align-items: center; gap: 0.5rem;
     }
     .sidebar-card__body { padding: 1.1rem 1.25rem; }
 
@@ -392,7 +392,7 @@
     }
     .related-post__title {
       font-family: var(--font-heading); font-size: 0.82rem; font-weight: 700;
-      color: var(--navy); line-height: 1.35; margin-bottom: 0.2rem;
+      color: var(--white); line-height: 1.35; margin-bottom: 0.2rem;
       text-decoration: none; display: block; transition: color 0.2s;
     }
     .related-post__title:hover { color: var(--primary); }
@@ -414,7 +414,7 @@
       padding: 0 2rem;
     }
     .related-section h2 {
-      font-size: 1.5rem; color: var(--navy);
+      font-size: 1.5rem; color: var(--white);
       margin-bottom: 1.5rem;
     }
     .related-grid {
@@ -423,7 +423,7 @@
     @media(max-width: 768px) { .related-grid { grid-template-columns: repeat(2,1fr); } }
     @media(max-width: 480px) { .related-grid { grid-template-columns: 1fr; } }
     .related-card {
-      background: white; border-radius: var(--radius-xl);
+      background: var(--color-card); border-radius: var(--radius-xl);
       box-shadow: var(--shadow); border: 1px solid var(--gray-100);
       overflow: hidden; transition: var(--transition); text-decoration: none;
     }
@@ -434,19 +434,19 @@
     }
     .related-card__body { padding: 1.1rem; }
     .related-card__cat { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-bottom: 0.35rem; }
-    .related-card__title { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 800; color: var(--navy); line-height: 1.35; margin-bottom: 0.35rem; }
+    .related-card__title { font-family: var(--font-heading); font-size: 0.95rem; font-weight: 800; color: var(--white); line-height: 1.35; margin-bottom: 0.35rem; }
     .related-card__meta { font-size: 0.75rem; color: var(--gray-400); }
   </style>
 </head>
 <body>
 
 <!-- NAV -->
-<nav class="nav scrolled" id="nav" style="background:white;box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+<nav class="nav scrolled" id="nav" style="background:var(--color-card);box-shadow:0 2px 20px rgba(0,0,0,0.08);">
   <div class="container">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" style="color:var(--navy);">
+      <a href="index.html" class="nav__logo" style="color:var(--white);">
         <div class="nav__logo-icon">✝</div>
-        <span class="nav__logo-text" style="color:var(--navy);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
+        <span class="nav__logo-text" style="color:var(--white);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
       </a>
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
@@ -752,7 +752,7 @@
     <div class="sidebar-card" style="background:linear-gradient(135deg,var(--gold-light),white);border-color:#EFC26B;">
       <div class="sidebar-card__body" style="text-align:center;padding:1.5rem;">
         <div style="font-size:2rem;margin-bottom:0.6rem;">📖</div>
-        <h4 style="color:var(--navy);margin-bottom:0.4rem;font-size:0.95rem;">Free Prayer Lesson</h4>
+        <h4 style="color:var(--white);margin-bottom:0.4rem;font-size:0.95rem;">Free Prayer Lesson</h4>
         <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:1rem;line-height:1.6;">Download our free "Power of Prayer" lesson to teach this to your Sunday school class.</p>
         <a href="free-lessons.html" class="btn btn--primary" style="width:100%;display:block;text-align:center;font-size:0.85rem;">
           Get Free Lesson →

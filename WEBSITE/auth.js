@@ -74,17 +74,10 @@ function updateNav(user) {
     });
   } else {
     actions.innerHTML = `
-      <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
-      <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+      <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+      <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+      <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
     `;
-  }
-
-  // Also update scrolled state colour for .nav__link
-  const nav = document.getElementById('nav');
-  if (nav && !nav.classList.contains('scrolled')) {
-    actions.querySelectorAll('.nav__link').forEach(l => {
-      l.style.color = 'rgba(255,255,255,0.9)';
-    });
   }
 }
 
