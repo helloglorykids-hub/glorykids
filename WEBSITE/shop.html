@@ -7,7 +7,7 @@
   <meta name="description" content="Shop Bible lesson packs, curriculum bundles, activity sheets, and more. Instant PDF downloads for children's ministry." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     /* ── SHOP-SPECIFIC STYLES ─────────────────────────── */
     body { background: var(--gray-50); }
@@ -23,13 +23,13 @@
     .shop-hero::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 70% 40%, rgba(245,158,11,0.15), transparent 55%),
-                  radial-gradient(ellipse at 20% 80%, rgba(249,115,22,0.1), transparent 50%);
+      background: radial-gradient(ellipse at 70% 40%, rgba(245,166,35,0.15), transparent 55%),
+                  radial-gradient(ellipse at 20% 80%, rgba(242,101,34,0.1), transparent 50%);
     }
     .shop-hero > .container { position: relative; z-index: 1; }
     .shop-hero__badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4);
+      background: rgba(245,166,35,0.2); border: 1px solid rgba(245,166,35,0.4);
       color: var(--gold); font-family: var(--font-heading);
       font-size: 0.8rem; font-weight: 700; padding: 0.4rem 1rem;
       border-radius: var(--radius-full); margin-bottom: 1.25rem;
@@ -80,7 +80,7 @@
       font-family: var(--font-body); font-size: 0.875rem; outline: none;
       width: 220px; transition: var(--transition); background: var(--gray-50);
     }
-    .shop-search input:focus { border-color: var(--primary); background: white; width: 280px; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+    .shop-search input:focus { border-color: var(--primary); background: white; width: 280px; box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
     .shop-search__icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; pointer-events: none; }
 
     /* FEATURED PRODUCT */
@@ -107,7 +107,7 @@
       border-radius: var(--radius-xl);
       padding: 2.5rem 2rem;
       text-align: center;
-      box-shadow: 0 20px 60px rgba(124,58,237,0.35);
+      box-shadow: 0 20px 60px rgba(123,94,167,0.35);
       position: relative;
     }
     .featured-product__mock-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
@@ -176,7 +176,7 @@
     .badge--sale     { background: var(--coral); color: white; }
     .badge--popular  { background: var(--gold); color: white; }
     .badge--bundle   { background: var(--navy); color: white; }
-    .badge--free     { background: #10B981; color: white; }
+    .badge--free     { background: #3BAB5A; color: white; }
 
     .product-card__cover {
       height: 180px;
@@ -234,7 +234,7 @@
     }
     .product-card__buy:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .product-card__buy--gold { background: var(--gold); }
-    .product-card__buy--gold:hover { background: #D97706; }
+    .product-card__buy--gold:hover { background: #C47F0D; }
 
     /* BUNDLE BANNER */
     .bundle-banner {
@@ -248,7 +248,7 @@
     .bundle-banner::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 80% 50%, rgba(245,158,11,0.15), transparent 60%);
+      background: radial-gradient(ellipse at 80% 50%, rgba(245,166,35,0.15), transparent 60%);
     }
     .bundle-banner > * { position: relative; z-index: 1; }
     .bundle-banner__kicker { color: var(--gold); font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
@@ -257,7 +257,7 @@
     .bundle-banner__pricing { text-align: center; flex-shrink: 0; }
     .bundle-banner__price { font-family: var(--font-heading); font-size: 3rem; font-weight: 900; color: var(--gold); line-height: 1; }
     .bundle-banner__orig  { color: rgba(255,255,255,0.45); text-decoration: line-through; font-size: 0.9rem; margin-bottom: 0.75rem; }
-    .bundle-banner__save  { background: rgba(245,158,11,0.2); border: 1px solid rgba(245,158,11,0.4); color: var(--gold); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: var(--radius-full); margin-bottom: 1rem; display: inline-block; }
+    .bundle-banner__save  { background: rgba(245,166,35,0.2); border: 1px solid rgba(245,166,35,0.4); color: var(--gold); font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.8rem; border-radius: var(--radius-full); margin-bottom: 1rem; display: inline-block; }
 
     /* CART DRAWER */
     .cart-overlay {
@@ -340,10 +340,10 @@
       border-radius: var(--radius-lg);
       padding: 1rem; font-family: var(--font-heading);
       font-size: 1rem; font-weight: 700; cursor: pointer;
-      transition: var(--transition); box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      transition: var(--transition); box-shadow: 0 4px 14px rgba(123,94,167,0.3);
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-    .cart-checkout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.4); }
+    .cart-checkout-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(123,94,167,0.4); }
     .cart-checkout-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .cart-payfast-note {
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -357,7 +357,7 @@
       border: none; border-radius: var(--radius-full);
       padding: 1rem 1.5rem;
       font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
-      cursor: pointer; box-shadow: 0 6px 24px rgba(124,58,237,0.4);
+      cursor: pointer; box-shadow: 0 6px 24px rgba(123,94,167,0.4);
       display: flex; align-items: center; gap: 0.6rem;
       transition: var(--transition); z-index: 100;
       transform: scale(0); opacity: 0;
@@ -419,7 +419,7 @@
       font-family: var(--font-body); font-size: 0.875rem; outline: none;
       background: var(--gray-50); transition: var(--transition); box-sizing: border-box;
     }
-    .checkout-field input:focus, .checkout-field select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(124,58,237,0.1); }
+    .checkout-field input:focus, .checkout-field select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
     .payfast-info {
       background: linear-gradient(135deg, #EFF6FF, #F0FDF4);
       border: 1px solid #BFDBFE; border-radius: var(--radius-lg);
@@ -441,7 +441,7 @@
       color: white; border: none; border-radius: var(--radius-lg);
       padding: 1.1rem; font-family: var(--font-heading);
       font-size: 1rem; font-weight: 700; cursor: pointer;
-      transition: var(--transition); box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+      transition: var(--transition); box-shadow: 0 4px 14px rgba(123,94,167,0.3);
       display: flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
     .checkout-pay-btn:hover { transform: translateY(-1px); }
@@ -622,7 +622,7 @@
             <div class="featured-product__price-orig">R699</div>
           </div>
           <div class="featured-product__save-chip">Save 50%</div>
-          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'bundle-50',name:'Complete Bible Lesson Bundle (50 Lessons)',price:349,icon:'📖',color:'#4F46E5',type:'PDF Bundle'})">
+          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'bundle-50',name:'Complete Bible Lesson Bundle (50 Lessons)',price:349,icon:'📖',color:'#7B5EA7',type:'PDF Bundle'})">
             🛒 Add to Cart
           </button>
         </div>
@@ -665,7 +665,7 @@
       <!-- Product 1 -->
       <div class="product-card reveal" data-category="lessons" data-name="old testament heroes 10 lesson pack">
         <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#7C3AED,#4F46E5);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#7B5EA7,#7B5EA7);">
           <div class="product-card__cover-inner">
             <div>🦁</div>
             <div class="product-card__cover-title">OT Heroes Pack</div>
@@ -686,7 +686,7 @@
               <div class="product-card__price">R149</div>
               <div class="product-card__price-orig">R249</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'ot-heroes',name:'Old Testament Heroes — 10 Lesson Pack',price:149,icon:'🦁',color:'#4F46E5',type:'PDF · 10 Lessons'})">
+            <button class="product-card__buy" onclick="addToCart({id:'ot-heroes',name:'Old Testament Heroes — 10 Lesson Pack',price:149,icon:'🦁',color:'#7B5EA7',type:'PDF · 10 Lessons'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -696,7 +696,7 @@
       <!-- Product 2 -->
       <div class="product-card reveal" data-category="lessons" data-name="life of jesus 8 lesson pack">
         <div class="product-card__badge badge--new">New</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#F59E0B,#F97316);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#F5A623,#F26522);">
           <div class="product-card__cover-inner">
             <div>✝️</div>
             <div class="product-card__cover-title">Life of Jesus Pack</div>
@@ -717,7 +717,7 @@
               <div class="product-card__price">R129</div>
               <div class="product-card__price-orig">R199</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'life-jesus',name:'Life of Jesus — 8 Lesson Pack',price:129,icon:'✝️',color:'#F59E0B',type:'PDF · 8 Lessons'})">
+            <button class="product-card__buy" onclick="addToCart({id:'life-jesus',name:'Life of Jesus — 8 Lesson Pack',price:129,icon:'✝️',color:'#F5A623',type:'PDF · 8 Lessons'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -726,7 +726,7 @@
 
       <!-- Product 3 -->
       <div class="product-card reveal" data-category="lessons" data-name="power of prayer 6 lesson pack">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#10B981,#0EA5E9);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#3BAB5A,#1A7FBF);">
           <div class="product-card__cover-inner">
             <div>🙏</div>
             <div class="product-card__cover-title">Power of Prayer Pack</div>
@@ -746,7 +746,7 @@
             <div>
               <div class="product-card__price">R99</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'prayer-pack',name:'Power of Prayer — 6 Lesson Pack',price:99,icon:'🙏',color:'#10B981',type:'PDF · 6 Lessons'})">
+            <button class="product-card__buy" onclick="addToCart({id:'prayer-pack',name:'Power of Prayer — 6 Lesson Pack',price:99,icon:'🙏',color:'#3BAB5A',type:'PDF · 6 Lessons'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -756,7 +756,7 @@
       <!-- Product 4 -->
       <div class="product-card reveal" data-category="lessons" data-name="christmas easter holiday lessons">
         <div class="product-card__badge badge--sale">Sale</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#EF4444,#EC4899);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#EF4444,#C2410C);">
           <div class="product-card__cover-inner">
             <div>🎄</div>
             <div class="product-card__cover-title">Holiday Pack</div>
@@ -786,7 +786,7 @@
 
       <!-- Product 5 -->
       <div class="product-card reveal" data-category="lessons" data-name="new testament miracles 5 lessons">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#8B5CF6,#EC4899);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#7B5EA7,#C2410C);">
           <div class="product-card__cover-inner">
             <div>🌊</div>
             <div class="product-card__cover-title">Miracles of Jesus</div>
@@ -806,7 +806,7 @@
             <div>
               <div class="product-card__price">R89</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'miracles',name:'Miracles of Jesus — 5 Lesson Pack',price:89,icon:'🌊',color:'#8B5CF6',type:'PDF · 5 Lessons'})">
+            <button class="product-card__buy" onclick="addToCart({id:'miracles',name:'Miracles of Jesus — 5 Lesson Pack',price:89,icon:'🌊',color:'#7B5EA7',type:'PDF · 5 Lessons'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -815,7 +815,7 @@
 
       <!-- Product 6 -->
       <div class="product-card reveal" data-category="lessons" data-name="fruit of the spirit character lessons">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#0EA5E9,#10B981);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#1A7FBF,#3BAB5A);">
           <div class="product-card__cover-inner">
             <div>🍎</div>
             <div class="product-card__cover-title">Fruit of the Spirit</div>
@@ -835,7 +835,7 @@
             <div>
               <div class="product-card__price">R139</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'fruit-spirit',name:'Fruit of the Spirit — 9 Lesson Pack',price:139,icon:'🍎',color:'#0EA5E9',type:'PDF · 9 Lessons'})">
+            <button class="product-card__buy" onclick="addToCart({id:'fruit-spirit',name:'Fruit of the Spirit — 9 Lesson Pack',price:139,icon:'🍎',color:'#1A7FBF',type:'PDF · 9 Lessons'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -855,7 +855,7 @@
 
       <div class="product-card reveal" data-category="activities" data-name="bible coloring pages mega pack">
         <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#F97316,#F59E0B);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#F26522,#F5A623);">
           <div class="product-card__cover-inner">
             <div>🖍️</div>
             <div class="product-card__cover-title">Coloring Mega Pack</div>
@@ -876,7 +876,7 @@
               <div class="product-card__price">R119</div>
               <div class="product-card__price-orig">R199</div>
             </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'coloring-mega',name:'Bible Coloring Pages — 100 Page Mega Pack',price:119,icon:'🖍️',color:'#F97316',type:'PDF · 100 Pages'})">
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'coloring-mega',name:'Bible Coloring Pages — 100 Page Mega Pack',price:119,icon:'🖍️',color:'#F26522',type:'PDF · 100 Pages'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -884,7 +884,7 @@
       </div>
 
       <div class="product-card reveal" data-category="activities" data-name="bible memory verse cards printable">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#EC4899,#8B5CF6);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#C2410C,#7B5EA7);">
           <div class="product-card__cover-inner">
             <div>📜</div>
             <div class="product-card__cover-title">Memory Verse Cards</div>
@@ -904,7 +904,7 @@
             <div>
               <div class="product-card__price">R79</div>
             </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'memory-verses',name:'Memory Verse Card Pack — 52 Verses',price:79,icon:'📜',color:'#EC4899',type:'PDF · 52 Cards'})">
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'memory-verses',name:'Memory Verse Card Pack — 52 Verses',price:79,icon:'📜',color:'#C2410C',type:'PDF · 52 Cards'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -913,7 +913,7 @@
 
       <div class="product-card reveal" data-category="activities" data-name="bible craft templates kids sunday school">
         <div class="product-card__badge badge--new">New</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#10B981,#0EA5E9);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#3BAB5A,#1A7FBF);">
           <div class="product-card__cover-inner">
             <div>✂️</div>
             <div class="product-card__cover-title">Craft Templates</div>
@@ -933,7 +933,7 @@
             <div>
               <div class="product-card__price">R99</div>
             </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'craft-templates',name:'Bible Craft Templates — 30 Projects',price:99,icon:'✂️',color:'#10B981',type:'PDF · 30 Projects'})">
+            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'craft-templates',name:'Bible Craft Templates — 30 Projects',price:99,icon:'✂️',color:'#3BAB5A',type:'PDF · 30 Projects'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -953,7 +953,7 @@
 
       <div class="product-card reveal" data-category="curriculum" data-name="god's big story 12 week curriculum series">
         <div class="product-card__badge badge--bundle">Bundle</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#1E1B4B,#4F46E5);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#1C2B3A,#7B5EA7);">
           <div class="product-card__cover-inner">
             <div>📖</div>
             <div class="product-card__cover-title">God's Big Story</div>
@@ -974,7 +974,7 @@
               <div class="product-card__price">R249</div>
               <div class="product-card__price-orig">R399</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'gods-big-story',name:\"God's Big Story — 12-Week Curriculum\",price:249,icon:'📖',color:'#1E1B4B',type:'PDF Curriculum · 12 Weeks'})">
+            <button class="product-card__buy" onclick="addToCart({id:'gods-big-story',name:\"God's Big Story — 12-Week Curriculum\",price:249,icon:'📖',color:'#1C2B3A',type:'PDF Curriculum · 12 Weeks'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -983,7 +983,7 @@
 
       <div class="product-card reveal" data-category="curriculum" data-name="heroes of faith 10 week curriculum">
         <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#B45309,#F59E0B);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#C47F0D,#F5A623);">
           <div class="product-card__cover-inner">
             <div>🦸</div>
             <div class="product-card__cover-title">Heroes of Faith</div>
@@ -1004,7 +1004,7 @@
               <div class="product-card__price">R219</div>
               <div class="product-card__price-orig">R349</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'heroes-faith',name:'Heroes of Faith — 10-Week Curriculum',price:219,icon:'🦸',color:'#B45309',type:'PDF Curriculum · 10 Weeks'})">
+            <button class="product-card__buy" onclick="addToCart({id:'heroes-faith',name:'Heroes of Faith — 10-Week Curriculum',price:219,icon:'🦸',color:'#C47F0D',type:'PDF Curriculum · 10 Weeks'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -1012,7 +1012,7 @@
       </div>
 
       <div class="product-card reveal" data-category="curriculum" data-name="little ones big god preschool curriculum 8 week">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#DB2777,#F97316);">
+        <div class="product-card__cover" style="background:linear-gradient(145deg,#C2410C,#F26522);">
           <div class="product-card__cover-inner">
             <div>🌈</div>
             <div class="product-card__cover-title">Little Ones, Big God</div>
@@ -1032,7 +1032,7 @@
             <div>
               <div class="product-card__price">R199</div>
             </div>
-            <button class="product-card__buy" onclick="addToCart({id:'little-ones',name:'Little Ones, Big God — 8-Week Preschool Series',price:199,icon:'🌈',color:'#DB2777',type:'PDF Curriculum · 8 Weeks'})">
+            <button class="product-card__buy" onclick="addToCart({id:'little-ones',name:'Little Ones, Big God — 8-Week Preschool Series',price:199,icon:'🌈',color:'#C2410C',type:'PDF Curriculum · 8 Weeks'})">
               🛒 Add to Cart
             </button>
           </div>
@@ -1048,7 +1048,7 @@
         <h2>The Ultimate Ministry Bundle — Everything in One</h2>
         <p>Every lesson pack, every curriculum series, every activity sheet in our store. One payment, unlimited use in your ministry forever. Perfect for new churches or growing kids' programs.</p>
         <div style="margin-top:1.5rem;">
-          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'ultimate-bundle',name:'Ultimate Ministry Bundle — All Products',price:699,icon:'📦',color:'#1E1B4B',type:'Complete PDF Library'})">
+          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'ultimate-bundle',name:'Ultimate Ministry Bundle — All Products',price:699,icon:'📦',color:'#1C2B3A',type:'Complete PDF Library'})">
             🛒 Add to Cart — R699
           </button>
           <span style="margin-left:1rem;color:rgba(255,255,255,0.6);font-size:0.85rem;">R1,899 if bought separately</span>

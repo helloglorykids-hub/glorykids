@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Children's Ministry Lessons — Where Faith Comes Alive for Kids</title>
-  <meta name="description" content="World-class children's ministry curriculum, free Bible lessons, and the Glory Kids Membership. Equipping churches, parents, and kidmin leaders to raise the next generation of faith." />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Bible Lessons for Kids — Preschool to Preteen (Free Printables & Ready-to-Teach)</title>
+  <meta name="description" content="Free Bible lessons for preschoolers, elementary kids & preteens. Printable activities, crafts & discussion questions. Use for Sunday school or kids church." />
+  <meta name="keywords" content="Bible lessons for kids, free Bible lessons printable, Glory Kids membership, Bible curriculum kids, Sunday school lessons" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="homepage.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": []
+  }
+  </script>
 </head>
 <body>
 
@@ -24,12 +32,13 @@
 <div id="progress-bar"></div>
 
 <!-- ═══════════════════════════════════════════════
-     NAVIGATION
+     1. NAVIGATION
 ════════════════════════════════════════════════ -->
 <nav class="nav" id="nav">
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
         <div class="nav__logo-icon">✝</div>
         <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
       </a>
@@ -54,8 +63,9 @@
         <li><a href="contact.html" class="nav__link">Contact</a></li>
       </ul>
       <div class="nav__actions">
-        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
-        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
       </div>
       <button class="nav__hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -73,587 +83,45 @@
   <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
   <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
-    <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids — $29.99/mo</a>
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Glory Kids → $29.99/mo</a>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════
-     HERO
+     2. HERO SECTION (Ink)
 ════════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero__shapes">
-    <div class="shape shape--1"></div>
-    <div class="shape shape--2"></div>
-    <div class="shape shape--3"></div>
-    <div class="shape shape--4"></div>
-    <div class="shape shape--5"></div>
-  </div>
-  <div class="stars"></div>
-
+<section class="gk-hero">
   <div class="container">
-    <div class="hero__inner">
-      <div class="hero__content">
-        <div class="hero__badge">🌟 Introducing Glory Kids Membership</div>
-        <h1 class="hero__title">
-          Where Faith<br>
-          <span class="hero-accent">Comes Alive</span><br>
-          for Kids
-        </h1>
-        <p class="hero__subtitle">
+    <div class="gk-hero__grid">
+      <div class="gk-hero__left">
+        <div class="gk-hero__badge reveal">🌟 Introducing Glory Kids Membership</div>
+        <h1 class="gk-hero__h1 gk-hero__h1--56 reveal reveal-delay-1">Where Faith Comes Alive for Kids</h1>
+        <p class="gk-hero__sub reveal reveal-delay-2">
           World-class Bible curriculum, free lessons, and ministry resources that help children fall in love with Jesus — and keep churches coming back for more.
         </p>
-        <div class="hero__cta">
-          <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">
-            ✨ Join Glory Kids <span class="btn-icon">→</span>
-          </a>
-          <a href="free-lessons.html" class="btn btn--outline-white btn--lg">
-            📖 Free Lessons
-          </a>
+        <div class="gk-hero__cta reveal reveal-delay-3">
+          <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg">✨ Join Glory Kids — $29.99/mo</a>
+          <a href="free-lessons.html" class="gk-btn gk-btn--outline-white gk-btn--lg">📖 Browse Free Lessons</a>
         </div>
-        <div class="hero__social-proof">
-          <div class="hero__avatars">
-            <div class="hero__avatar">👩</div>
-            <div class="hero__avatar">👨</div>
-            <div class="hero__avatar">👩‍🦱</div>
-            <div class="hero__avatar">🧔</div>
-            <div class="hero__avatar">+</div>
+        <p class="gk-hero__trust reveal reveal-delay-3">Trusted by <strong>12,000+</strong> children's ministry leaders worldwide</p>
+      </div>
+
+      <div class="gk-hero__right reveal reveal-delay-2">
+        <div class="gk-hero__proof-card">
+          <div class="gk-hero__avatars">
+            <span class="gk-hero__avatar">👩</span>
+            <span class="gk-hero__avatar">👨</span>
+            <span class="gk-hero__avatar">👩‍🦱</span>
+            <span class="gk-hero__avatar">🧔</span>
+            <span class="gk-hero__avatar gk-hero__avatar--plus">+</span>
           </div>
-          <p>Trusted by <strong>12,000+</strong> children's ministry leaders worldwide</p>
-        </div>
-      </div>
-
-      <div class="hero__visual">
-        <div class="hero__card-stack">
-          <!-- Floating Stat Card 1 -->
-          <div class="hero__card hero__card--float1">
-            <div class="hero-stat">
-              <span class="hero-stat__num">500+</span>
-              <span class="hero-stat__label">Bible Lessons</span>
-            </div>
-          </div>
-          <!-- Floating Stat Card 2 -->
-          <div class="hero__card hero__card--float2">
-            <div class="hero-stat">
-              <span class="hero-stat__num">98%</span>
-              <span class="hero-stat__label">Love Rate ❤️</span>
-            </div>
-          </div>
-          <!-- Main Card -->
-          <div class="hero__card hero__card--main">
-            <div class="membership-preview">
-              <div class="membership-preview__icon">✨</div>
-              <div>
-                <div class="membership-preview__title">Glory Kids Membership</div>
-                <div class="membership-preview__price">Only <strong>$29.99/month</strong></div>
-              </div>
-            </div>
-            <div class="membership-preview__features">
-              <div class="membership-preview__feat">Unlimited curriculum access</div>
-              <div class="membership-preview__feat">New lessons every week</div>
-              <div class="membership-preview__feat">Printable activity sheets</div>
-              <div class="membership-preview__feat">Video lesson guides</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero__scroll">
-    <div class="scroll-mouse"></div>
-    <span>Scroll to explore</span>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     LESSON SERIES MARQUEE
-════════════════════════════════════════════════ -->
-<div class="lesson-marquee">
-  <div class="lesson-marquee__row lesson-marquee__row--1">
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1A7FBF,#0F5A8A);">
-      <div class="lesson-card__deco">🌈</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Rooted</div>
-        <div class="lesson-card__subtitle">A Series on Faith</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#C47F0D);">
-      <div class="lesson-card__deco">🕊️</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Brave Heart</div>
-        <div class="lesson-card__subtitle">A Series on Courage</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#FDF6E3,#F2D9C4); color:#111827;">
-      <div class="lesson-card__deco">🌸</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">Have a Nice Day</div>
-        <div class="lesson-card__subtitle">A Series on Kindness</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F26522,#C4441A);">
-      <div class="lesson-card__deco">☀️</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Summer<br>Soundtrack</div>
-        <div class="lesson-card__subtitle">Songs of the Summer</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#F26522);">
-      <div class="lesson-card__deco">⛪</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Welcome Home</div>
-        <div class="lesson-card__subtitle">A Series on the Church</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1E1B4B,#7C3AED);">
-      <div class="lesson-card__deco">💜</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">In My Feelings</div>
-        <div class="lesson-card__subtitle">A Series on Emotions</div>
-      </div>
-    </div>
-    <!-- duplicate set for seamless loop -->
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1A7FBF,#0F5A8A);">
-      <div class="lesson-card__deco">🌈</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Rooted</div>
-        <div class="lesson-card__subtitle">A Series on Faith</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#C47F0D);">
-      <div class="lesson-card__deco">🕊️</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Brave Heart</div>
-        <div class="lesson-card__subtitle">A Series on Courage</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#FDF6E3,#F2D9C4); color:#111827;">
-      <div class="lesson-card__deco">🌸</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">Have a Nice Day</div>
-        <div class="lesson-card__subtitle">A Series on Kindness</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F26522,#C4441A);">
-      <div class="lesson-card__deco">☀️</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Summer<br>Soundtrack</div>
-        <div class="lesson-card__subtitle">Songs of the Summer</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#F26522);">
-      <div class="lesson-card__deco">⛪</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Welcome Home</div>
-        <div class="lesson-card__subtitle">A Series on the Church</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1E1B4B,#7C3AED);">
-      <div class="lesson-card__deco">💜</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">In My Feelings</div>
-        <div class="lesson-card__subtitle">A Series on Emotions</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="lesson-marquee__row lesson-marquee__row--2">
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#0E7C3F,#0A5A2E);">
-      <div class="lesson-card__deco">🎄</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Christmas<br>Playlist</div>
-        <div class="lesson-card__subtitle">A Series on Wonder</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5C518,#F5A623); color:#111827;">
-      <div class="lesson-card__deco">🧠</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">Bullies in<br>My Brain</div>
-        <div class="lesson-card__subtitle">A Series on Mental Health</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#E5E5E5,#B8B8B8); color:#111827;">
-      <div class="lesson-card__deco">✏️</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">The Youth<br>Will Win</div>
-        <div class="lesson-card__subtitle">A New Series</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F26522,#1E1B4B);">
-      <div class="lesson-card__deco">🍂</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">It's Giving<br>Thanks</div>
-        <div class="lesson-card__subtitle">A Series on Gratitude</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1A7FBF,#1E1B4B);">
-      <div class="lesson-card__deco">⏳</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">What Was I<br>Made For</div>
-        <div class="lesson-card__subtitle">A Series on Purpose</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#C47F0D);">
-      <div class="lesson-card__deco">🌼</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Move of God</div>
-        <div class="lesson-card__subtitle">A Series on Revival</div>
-      </div>
-    </div>
-    <!-- duplicate set for seamless loop -->
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#0E7C3F,#0A5A2E);">
-      <div class="lesson-card__deco">🎄</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Christmas<br>Playlist</div>
-        <div class="lesson-card__subtitle">A Series on Wonder</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5C518,#F5A623); color:#111827;">
-      <div class="lesson-card__deco">🧠</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">Bullies in<br>My Brain</div>
-        <div class="lesson-card__subtitle">A Series on Mental Health</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#E5E5E5,#B8B8B8); color:#111827;">
-      <div class="lesson-card__deco">✏️</div>
-      <div class="lesson-card__body" style="color:#111827;">
-        <div class="lesson-card__title">The Youth<br>Will Win</div>
-        <div class="lesson-card__subtitle">A New Series</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F26522,#1E1B4B);">
-      <div class="lesson-card__deco">🍂</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">It's Giving<br>Thanks</div>
-        <div class="lesson-card__subtitle">A Series on Gratitude</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#1A7FBF,#1E1B4B);">
-      <div class="lesson-card__deco">⏳</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">What Was I<br>Made For</div>
-        <div class="lesson-card__subtitle">A Series on Purpose</div>
-      </div>
-    </div>
-    <div class="lesson-card" style="--lc-bg: linear-gradient(135deg,#F5A623,#C47F0D);">
-      <div class="lesson-card__deco">🌼</div>
-      <div class="lesson-card__body">
-        <div class="lesson-card__title">Move of God</div>
-        <div class="lesson-card__subtitle">A Series on Revival</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     STATS BAR
-════════════════════════════════════════════════ -->
-<div class="stats-bar">
-  <div class="container">
-    <div class="stats-bar__inner">
-      <div class="stat-item reveal">
-        <span class="stat-item__number" data-count="12000" data-suffix="+">0</span>
-        <div class="stat-item__label">Ministry Leaders</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-1">
-        <span class="stat-item__number" data-count="500" data-suffix="+">0</span>
-        <div class="stat-item__label">Free Bible Lessons</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-2">
-        <span class="stat-item__number" data-count="50" data-suffix="+">0</span>
-        <div class="stat-item__label">Countries Reached</div>
-      </div>
-      <div class="stat-item reveal reveal-delay-3">
-        <span class="stat-item__number" data-count="1000000" data-suffix="+">0</span>
-        <div class="stat-item__label">Kids Impacted</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════
-     GLORY KIDS MEMBERSHIP SPOTLIGHT
-════════════════════════════════════════════════ -->
-<section style="padding: 5rem 0; background: var(--primary-lighter);">
-  <div class="container">
-    <div class="membership-spotlight reveal">
-      <div class="membership-spotlight__inner">
-        <div>
-          <div class="membership-spotlight__tag">⭐ Most Popular</div>
-          <h2 class="membership-spotlight__title">
-            Everything You Need to Run an<br>
-            <span style="color: var(--gold);">Incredible Kids Ministry</span>
-          </h2>
-          <p class="membership-spotlight__desc">
-            Glory Kids Membership gives you instant access to an ever-growing library of curriculum, lesson plans, activity sheets, worship guides, and more — everything you need to create unforgettable experiences for kids.
-          </p>
-          <div class="membership-includes">
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Full Curriculum Library
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Weekly New Content
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Printable Activity Sheets
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Video Lesson Guides
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Glory Kids Curriculum
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Parent Devotionals
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Sermon Outlines
-            </div>
-            <div class="membership-includes__item">
-              <div class="check-icon">✓</div>
-              Cancel Anytime
-            </div>
-          </div>
-          <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">
-            Start for $29.99/month →
-          </a>
-        </div>
-        <div class="membership-spotlight__pricing">
-          <div class="price-tag">
-            <div class="price-tag__amount">$29<span style="font-size:1.5rem; vertical-align:super;">.99</span></div>
-            <div class="price-tag__period">per month</div>
-            <div class="price-tag__yearly">or $249/year — save $111!</div>
-          </div>
-          <div class="price-features">
-            <div class="price-feature"><span class="tick">✓</span> Unlimited lesson access</div>
-            <div class="price-feature"><span class="tick">✓</span> New content weekly</div>
-            <div class="price-feature"><span class="tick">✓</span> All age groups (0–12)</div>
-            <div class="price-feature"><span class="tick">✓</span> Print & digital formats</div>
-            <div class="price-feature"><span class="tick">✓</span> Member community access</div>
-            <div class="price-feature"><span class="tick">✓</span> Priority email support</div>
-          </div>
-          <a href="glory-kids-membership.html" class="btn btn--gold" style="width:100%; justify-content:center;">
-            Join Glory Kids Today
-          </a>
-          <p style="margin-top:1rem; font-size:0.8rem; color:rgba(255,255,255,0.5); text-align:center;">
-            No contracts. Cancel anytime.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     WHAT WE OFFER
-════════════════════════════════════════════════ -->
-<section>
-  <div class="container">
-    <div class="section-label reveal">Everything You Need</div>
-    <h2 class="section-heading reveal">Ministry Resources <span class="highlight">That Transform</span></h2>
-    <p class="section-subheading reveal">From free Bible lessons to complete curriculum packs — we have everything to help your children's ministry thrive.</p>
-
-    <div class="features-grid">
-      <div class="feature-card reveal reveal-delay-1" style="--bg-gradient: linear-gradient(90deg, #7C3AED, #9333EA); --icon-bg: var(--primary-light);">
-        <div class="feature-card__icon">📖</div>
-        <h3 class="feature-card__title">Free Bible Lessons</h3>
-        <p class="feature-card__desc">500+ free, ready-to-teach Bible lessons covering Old Testament, New Testament, Jesus, Heroes of Faith, and seasonal topics.</p>
-        <a href="free-lessons.html" class="feature-card__link">Browse Free Lessons →</a>
-      </div>
-
-      <div class="feature-card reveal reveal-delay-2" style="--bg-gradient: linear-gradient(90deg, #F59E0B, #F97316); --icon-bg: var(--gold-light);">
-        <div class="feature-card__icon">✨</div>
-        <h3 class="feature-card__title">Glory Kids Membership</h3>
-        <p class="feature-card__desc">Unlimited access to our full library — curriculum, activities, devotionals, and new content added every single week for just $29.99/mo.</p>
-        <a href="glory-kids-membership.html" class="feature-card__link">Join the Membership →</a>
-      </div>
-
-      <div class="feature-card reveal reveal-delay-3" style="--bg-gradient: linear-gradient(90deg, #0891B2, #7C3AED); --icon-bg: var(--teal-light);">
-        <div class="feature-card__icon">📦</div>
-        <h3 class="feature-card__title">Curriculum Packs</h3>
-        <p class="feature-card__desc">Complete, multi-week curriculum packs with everything included — lessons, activities, visuals, and take-home sheets. Ready to plug and play.</p>
-        <a href="curriculum-packs.html" class="feature-card__link">View Curriculum Packs →</a>
-      </div>
-
-      <div class="feature-card reveal reveal-delay-1" style="--bg-gradient: linear-gradient(90deg, #10B981, #0891B2); --icon-bg: var(--green-light);">
-        <div class="feature-card__icon">🎨</div>
-        <h3 class="feature-card__title">Activities & Resources</h3>
-        <p class="feature-card__desc">Crafts, games, coloring pages, memory verse activities, object lessons, and more — all designed to make Bible truth stick for kids.</p>
-        <a href="activities.html" class="feature-card__link">Explore Activities →</a>
-      </div>
-
-      <div class="feature-card reveal reveal-delay-2" style="--bg-gradient: linear-gradient(90deg, #F43F5E, #F97316); --icon-bg: var(--rose-light);">
-        <div class="feature-card__icon">⭐</div>
-        <h3 class="feature-card__title">Glory Kids Curriculum</h3>
-        <p class="feature-card__desc">Our flagship curriculum series — beautifully designed, theologically rich lessons that kids love and leaders find easy to teach.</p>
-        <a href="glory-kids-curriculum.html" class="feature-card__link">View the Curriculum →</a>
-      </div>
-
-      <div class="feature-card reveal reveal-delay-3" style="--bg-gradient: linear-gradient(90deg, #7C3AED, #F43F5E); --icon-bg: var(--primary-light);">
-        <div class="feature-card__icon">📝</div>
-        <h3 class="feature-card__title">Blog & Devotionals</h3>
-        <p class="feature-card__desc">Articles, tips, and inspiration for parents, pastors, and kids ministry leaders — helping you go deeper in faith and ministry excellence.</p>
-        <a href="blog.html" class="feature-card__link">Read the Blog →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     FEATURED LESSONS
-════════════════════════════════════════════════ -->
-<section class="section--gray">
-  <div class="container">
-    <div class="section-label reveal">Free to Use</div>
-    <h2 class="section-heading reveal">Popular <span class="highlight">Bible Lessons</span></h2>
-    <p class="section-subheading reveal">Completely free, beautifully designed lessons you can use this Sunday.</p>
-
-    <div class="lessons-grid">
-      <div class="lesson-card reveal reveal-delay-1" style="--img-bg: linear-gradient(135deg, #FEF3C7, #FFF7ED);">
-        <div class="lesson-card__img">
-          🌊
-          <span class="lesson-card__tag tag--ot">Old Testament</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Moses Parts the Red Sea</h4>
-          <p class="lesson-card__desc">Kids discover that God makes a way when there seems to be no way — a powerful lesson in trust and courage.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 5–12</span>
-            <a href="free-lessons.html" class="btn btn--primary btn--sm">Read Lesson →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-2" style="--img-bg: linear-gradient(135deg, #EDE9FE, #FCE7F3);">
-        <div class="lesson-card__img">
-          🍞
-          <span class="lesson-card__tag tag--jesus">Jesus</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Jesus Feeds 5,000</h4>
-          <p class="lesson-card__desc">When a little boy gave all he had, Jesus multiplied it. Kids learn that God can do more than we can imagine.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 4–10</span>
-            <a href="free-lessons.html" class="btn btn--primary btn--sm">Read Lesson →</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-3" style="--img-bg: linear-gradient(135deg, #D1FAE5, #E0F2FE);">
-        <div class="lesson-card__img">
-          🦁
-          <span class="lesson-card__tag tag--heroes">Heroes of Faith</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Daniel and the Lions' Den</h4>
-          <p class="lesson-card__desc">Even when it was dangerous, Daniel prayed. Kids learn boldness in their faith no matter what others think.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 6–12</span>
-            <a href="free-lessons.html" class="btn btn--primary btn--sm">Read Lesson →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-4 reveal">
-      <a href="free-lessons.html" class="btn btn--outline btn--lg">View All 500+ Free Lessons →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     TESTIMONIALS
-════════════════════════════════════════════════ -->
-<section>
-  <div class="container">
-    <div class="section-label reveal">What People Say</div>
-    <h2 class="section-heading reveal">Loved by <span class="highlight">Ministry Leaders</span></h2>
-    <p class="section-subheading reveal">Thousands of churches and families trust us to equip the next generation of faith.</p>
-
-    <div class="testimonials-grid">
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">The Glory Kids Membership has completely transformed our children's ministry. Our volunteers love how easy the lessons are to teach, and the kids absolutely beg to come back every week!</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">👩</div>
-          <div>
-            <div class="testimonial-card__name">Sarah Mitchell</div>
-            <div class="testimonial-card__role">Children's Director, Grace Community Church</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">As a parent, I use these lessons for family devotionals too. The content is theologically solid, incredibly engaging, and my kids actually WANT to do it. Worth every penny!</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">👨</div>
-          <div>
-            <div class="testimonial-card__name">Marcus Johnson</div>
-            <div class="testimonial-card__role">Father of 3 & Sunday School Teacher</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-3">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">We went from zero curriculum structure to a thriving, well-organized ministry in 2 months. The Glory Kids curriculum is a game-changer. I recommend it to every pastor I know.</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">🧔</div>
-          <div>
-            <div class="testimonial-card__name">Pastor David Osei</div>
-            <div class="testimonial-card__role">Lead Pastor, Harvest Life Church</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-1">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">Even with a tiny team, we can run a first-class children's ministry. The resources are so good that parents comment on them every week. We're never going back!</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">👩‍🦱</div>
-          <div>
-            <div class="testimonial-card__name">Tanya Roberts</div>
-            <div class="testimonial-card__role">Kidmin Director, New Hope Fellowship</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-2">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">The free lessons alone are better than anything I've paid for elsewhere. When I discovered the membership, it was a no-brainer. The value is absolutely incredible.</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">👩</div>
-          <div>
-            <div class="testimonial-card__name">Emily Chen</div>
-            <div class="testimonial-card__role">Homeschool Mom & Ministry Volunteer</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-3">
-        <div class="testimonial-card__quote">"</div>
-        <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">I've tried every children's ministry curriculum out there. Nothing comes close to the quality, depth, and creativity of what's in the Glory Kids Membership. It's on a different level.</p>
-        <div class="testimonial-card__author">
-          <div class="testimonial-card__avatar">👨</div>
-          <div>
-            <div class="testimonial-card__name">Rev. James Whitfield</div>
-            <div class="testimonial-card__role">Associate Pastor, Living Waters Church</div>
+          <div class="gk-hero__proof-stats">
+            <span>500+ Bible Lessons</span>
+            <span class="gk-hero__proof-dot">|</span>
+            <span>98% Love Rate ❤️</span>
           </div>
         </div>
       </div>
@@ -662,56 +130,417 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     GLORY KIDS CURRICULUM PROMO
+     3. TRUST & AUTHORITY (Smoke)
 ════════════════════════════════════════════════ -->
-<section class="section--gray">
+<section class="gk-section gk-stats">
   <div class="container">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;">
-      <div class="reveal reveal--left">
-        <div class="section-label section-label--gold">New Series</div>
-        <h2 style="margin-bottom:1rem;">Introducing <span class="highlight">Glory Kids Curriculum</span></h2>
-        <p style="color:var(--gray-500); margin-bottom:1.5rem; font-size:1.05rem; line-height:1.8;">
-          Our flagship curriculum — beautifully illustrated, theologically rich lesson series designed for every age group. Each series runs 4–12 weeks with everything a leader needs to create life-changing experiences.
-        </p>
-        <ul style="margin-bottom:2rem; display:flex; flex-direction:column; gap:0.75rem;">
-          <li style="display:flex; align-items:center; gap:0.75rem; font-weight:500;">
-            <span style="color:var(--primary); font-size:1.2rem;">✦</span> Complete lesson scripts & teacher guides
-          </li>
-          <li style="display:flex; align-items:center; gap:0.75rem; font-weight:500;">
-            <span style="color:var(--primary); font-size:1.2rem;">✦</span> Printable activity and coloring sheets
-          </li>
-          <li style="display:flex; align-items:center; gap:0.75rem; font-weight:500;">
-            <span style="color:var(--primary); font-size:1.2rem;">✦</span> Memory verse cards & games
-          </li>
-          <li style="display:flex; align-items:center; gap:0.75rem; font-weight:500;">
-            <span style="color:var(--primary); font-size:1.2rem;">✦</span> Parent take-home devotionals
-          </li>
+    <div class="gk-stats__grid">
+      <div class="gk-stats__item reveal">
+        <div class="gk-stats__icon">🎯</div>
+        <div class="gk-stats__num"><span class="stat-item__number" data-count="12000" data-suffix="+">0</span></div>
+        <div class="gk-stats__label">Ministry Leaders Worldwide</div>
+      </div>
+      <div class="gk-stats__item reveal reveal-delay-1">
+        <div class="gk-stats__icon">📊</div>
+        <div class="gk-stats__num"><span class="stat-item__number" data-count="500" data-suffix="+">0</span></div>
+        <div class="gk-stats__label">Free Bible Lessons</div>
+      </div>
+      <div class="gk-stats__item reveal reveal-delay-2">
+        <div class="gk-stats__icon">🌍</div>
+        <div class="gk-stats__num"><span class="stat-item__number" data-count="150" data-suffix="+">0</span></div>
+        <div class="gk-stats__label">Countries Reached</div>
+      </div>
+      <div class="gk-stats__item reveal reveal-delay-3">
+        <div class="gk-stats__icon">👥</div>
+        <div class="gk-stats__num"><span class="stat-item__number" data-count="2000000" data-suffix="+">0</span></div>
+        <div class="gk-stats__label">Kids Impacted This Year</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     4. THE PILLARS SECTION ⭐
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-section--white">
+  <div class="container">
+    <h2 class="gk-h2 reveal">More Than Lessons — Spiritual Formation That Sticks</h2>
+    <p class="gk-section-sub reveal">Every Glory Kids lesson is built on three pillars that help children know God, hear His voice, and live out their faith with conviction.</p>
+
+    <div class="gk-cards3">
+      <div class="gk-pillar-card gk-pillar-card--voice reveal reveal-delay-1">
+        <div class="gk-pillar-card__emoji">🕊️</div>
+        <h3 class="gk-pillar-card__title">VOICE: Seeing and Hearing Jesus</h3>
+        <p class="gk-pillar-card__body">We teach kids how to recognize God's voice through Scripture, prayer, and the Holy Spirit. Children learn that God speaks and that they can grow in listening and responding to Him. This isn't head knowledge — it's personal encounter.</p>
+      </div>
+      <div class="gk-pillar-card gk-pillar-card--power reveal reveal-delay-2">
+        <div class="gk-pillar-card__emoji">⚡</div>
+        <h3 class="gk-pillar-card__title">POWER: Living the Jesus Way</h3>
+        <p class="gk-pillar-card__body">Kids learn how to live out their faith with boldness. Through prayer, faith, and real-life application, children discover how Jesus empowers them to walk in love, courage, and obedience. Faith becomes action, not theory.</p>
+      </div>
+      <div class="gk-pillar-card gk-pillar-card--presence reveal reveal-delay-3">
+        <div class="gk-pillar-card__emoji">🔥</div>
+        <h3 class="gk-pillar-card__title">PRESENCE: Marked by His Presence</h3>
+        <p class="gk-pillar-card__body">We help children discover who they are in Christ and how to live from God's presence every day. Kids learn that they are loved, chosen, and never alone. This is the foundation of everything else.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     5. PROBLEM SECTION
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Is This Your Reality?</h2>
+    <p class="gk-section-sub reveal">Thousands of ministry leaders face the same challenges. You're not alone.</p>
+
+    <div class="gk-cards3">
+      <div class="gk-problem-card reveal reveal-delay-1">
+        <div class="gk-problem-card__icon">📉</div>
+        <h3 class="gk-problem-card__title">Kids' Attention Drops by Week Three</h3>
+        <p class="gk-problem-card__body">You prep all week. You deliver with passion. But by point two, half the room is checked out. It's not your fault — it's the curriculum and follow-up.</p>
+      </div>
+      <div class="gk-problem-card reveal reveal-delay-2">
+        <div class="gk-problem-card__icon">🕛</div>
+        <h3 class="gk-problem-card__title">You're Scrambling Sunday Morning</h3>
+        <p class="gk-problem-card__body">Curriculum hunting, activity planning, parent communication... your whole week disappears. You show up Sunday still prepping.</p>
+      </div>
+      <div class="gk-problem-card reveal reveal-delay-3">
+        <div class="gk-problem-card__icon">🔥</div>
+        <h3 class="gk-problem-card__title">Volunteers Feel Unprepared & Burned Out</h3>
+        <p class="gk-problem-card__body">Your team wants to serve, but without clear lesson plans and confidence in the content, they're frustrated. Good people walk away.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     6. SOLUTION SECTION
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-section--white">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Here's How Glory Kids Changes Everything</h2>
+    <div class="gk-solution__grid">
+      <div class="gk-img-placeholder gk-img-placeholder--tall reveal reveal--left">[IMAGE PLACEHOLDER — ministry/teaching photo]</div>
+      <div class="reveal reveal--right">
+        <h3 class="gk-solution__headline">Curriculum Built for Spiritual Transformation</h3>
+        <div class="gk-solution__point">
+          <div class="gk-solution__point-icon">✨</div>
+          <div>
+            <h4>Kids Stay Engaged Week 1–12</h4>
+            <p>Lessons that build spiritual depth week-to-week. Series curriculum that connects Bible dots. Kids actually WANT to come back.</p>
+          </div>
+        </div>
+        <div class="gk-solution__point">
+          <div class="gk-solution__point-icon">⏱️</div>
+          <div>
+            <h4>Prep in 30 Minutes (Not 5+ Hours)</h4>
+            <p>Video lesson guides, ready-to-print activities, parent devotionals — everything done for you. Walk in Sunday morning ready.</p>
+          </div>
+        </div>
+        <div class="gk-solution__point">
+          <div class="gk-solution__point-icon">💪</div>
+          <div>
+            <h4>Volunteers Walk In Confident</h4>
+            <p>Step-by-step lesson scripts. Volunteer training resources. Built-in backup plans. Your team feels equipped and energized.</p>
+          </div>
+        </div>
+        <div class="gk-solution__point">
+          <div class="gk-solution__point-icon">🙏</div>
+          <div>
+            <h4>Parents Are Equipped to Disciple at Home</h4>
+            <p>Weekly parent devotionals + take-home activities mean your impact extends beyond Sunday. Families grow together.</p>
+          </div>
+        </div>
+        <a href="free-lessons.html" class="gk-btn gk-btn--outline-ink">Try Free Lessons</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     7. FEATURED SERIES CAROUSEL (Ink)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-carousel-section">
+  <div class="container">
+    <h2 class="gk-h2 gk-h2--white reveal">Curriculum Series Your Kids Will Absolutely Love</h2>
+    <p class="gk-section-sub gk-section-sub--white reveal">Each series runs 4–12 weeks with complete lesson plans, activities, parent devotionals, and spiritual transformation built in.</p>
+  </div>
+  <div class="gk-carousel">
+    <div class="gk-carousel__track">
+      <div class="gk-series-card"><div class="gk-series-card__icon">🌈</div><h3 class="gk-series-card__title">Rooted: A Series on Faith</h3><div class="gk-series-card__duration">12-Week Series</div><p class="gk-series-card__desc">Help kids discover who they are in Christ and how to live from God's presence.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">🕊️</div><h3 class="gk-series-card__title">Brave Heart: A Series on Courage</h3><div class="gk-series-card__duration">8-Week Series</div><p class="gk-series-card__desc">Kids learn to face fear with faith and step boldly into what God has for them.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">🌸</div><h3 class="gk-series-card__title">Have a Nice Day: A Series on Kindness</h3><div class="gk-series-card__duration">10-Week Series</div><p class="gk-series-card__desc">Kids explore what it looks like to carry God's kindness into everyday life.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">🧠</div><h3 class="gk-series-card__title">Bullies in My Brain: A Series on Mental Health</h3><div class="gk-series-card__duration">6-Week Series</div><p class="gk-series-card__desc">A gentle, faith-rooted series helping kids name anxious thoughts and find peace in God.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">💜</div><h3 class="gk-series-card__title">In My Feelings: A Series on Emotions</h3><div class="gk-series-card__duration">8-Week Series</div><p class="gk-series-card__desc">Kids learn to process big emotions and bring every feeling honestly to God.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">⛪</div><h3 class="gk-series-card__title">Welcome Home: A Series on the Church</h3><div class="gk-series-card__duration">10-Week Series</div><p class="gk-series-card__desc">Kids discover what it means to belong to the family of God and His church.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">☀️</div><h3 class="gk-series-card__title">Summer Soundtrack: Songs of the Summer</h3><div class="gk-series-card__duration">6-Week Series</div><p class="gk-series-card__desc">A fun, music-filled series keeping kids rooted in faith all summer long.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">🎄</div><h3 class="gk-series-card__title">Christmas Playlist: A Series on Wonder</h3><div class="gk-series-card__duration">4-Week Series</div><p class="gk-series-card__desc">Kids rediscover the wonder of Jesus' birth through story, song, and celebration.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">✏️</div><h3 class="gk-series-card__title">The Youth Will Win: A New Series</h3><div class="gk-series-card__duration">8-Week Series</div><p class="gk-series-card__desc">A bold new series calling the next generation to rise up in faith and purpose.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+      <div class="gk-series-card"><div class="gk-series-card__icon">🍂</div><h3 class="gk-series-card__title">It's Giving Thanks: A Series on Gratitude</h3><div class="gk-series-card__duration">4-Week Series</div><p class="gk-series-card__desc">Kids learn to cultivate a heart of gratitude no matter the season of life.</p><a href="glory-kids-curriculum.html" class="gk-series-card__cta">Explore Series</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     8. NEW RELEASES SECTION ⭐
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <h2 class="gk-h2 reveal">🔥 New Releases This Month 🔥</h2>
+    <p class="gk-section-sub reveal">Fresh curriculum drops every month. Members get instant access to everything, new and archived.</p>
+
+    <div class="gk-cards4">
+      <div class="gk-release-card reveal reveal-delay-1">
+        <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
+        <h4 class="gk-release-card__title">What Was I Made For</h4>
+        <p class="gk-release-card__desc">A Series on Purpose</p>
+        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+      </div>
+      <div class="gk-release-card reveal reveal-delay-2">
+        <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
+        <h4 class="gk-release-card__title">Move of God</h4>
+        <p class="gk-release-card__desc">A Series on Revival</p>
+        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+      </div>
+      <div class="gk-release-card reveal reveal-delay-3">
+        <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
+        <h4 class="gk-release-card__title">Welcome Home</h4>
+        <p class="gk-release-card__desc">A Series on the Church</p>
+        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+      </div>
+      <div class="gk-release-card reveal reveal-delay-1">
+        <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
+        <h4 class="gk-release-card__title">In My Feelings</h4>
+        <p class="gk-release-card__desc">A Series on Emotions</p>
+        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+      </div>
+    </div>
+    <div class="gk-center reveal" style="margin-top:2.5rem;">
+      <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--lg">Browse All Series →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     9. SERIES GALLERY / LIBRARY PREVIEW (Ink)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-gallery-section">
+  <div class="container">
+    <h2 class="gk-h2 gk-h2--white reveal">Complete Curriculum Library</h2>
+    <p class="gk-section-sub gk-section-sub--white reveal">500+ lessons organized into complete series. Everything from foundational faith to current issues kids care about.</p>
+
+    <div class="gk-gallery__grid">
+      <div class="gk-gallery__item reveal">🌈<span>Rooted</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-1">🕊️<span>Brave Heart</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-2">🌸<span>Have a Nice Day</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-3">🧠<span>Bullies in My Brain</span></div>
+      <div class="gk-gallery__item reveal">💜<span>In My Feelings</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-1">⛪<span>Welcome Home</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-2">☀️<span>Summer Soundtrack</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-3">🎄<span>Christmas Playlist</span></div>
+      <div class="gk-gallery__item reveal">✏️<span>The Youth Will Win</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-1">🍂<span>It's Giving Thanks</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-2">⏳<span>What Was I Made For</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-3">🌼<span>Move of God</span></div>
+      <div class="gk-gallery__item reveal">🦁<span>Heroes of Faith</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-1">🙏<span>Power of Prayer</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-2">✝️<span>God's Big Story</span></div>
+      <div class="gk-gallery__item reveal reveal-delay-3">❤️<span>Jesus Loves Me</span></div>
+    </div>
+    <div class="gk-center reveal" style="margin-top:2.5rem;">
+      <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-white gk-btn--lg">View Complete Library →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     10. MEMBERSHIP VALUE SECTION
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-section--white">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Everything You Get in Glory Kids Membership</h2>
+
+    <div class="gk-value-grid gk-value-grid--full reveal">
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>500+ Bible Lessons</h4><p>Complete lessons for ages 3–12, organized by topic, season, and spiritual theme.</p></div>
+      </div>
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>New Content Every Week</h4><p>Fresh lessons, activities, and resources added weekly so you never repeat and always have something timely and relevant.</p></div>
+      </div>
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>Video Teaching Guides</h4><p>Watch exactly how to teach each lesson. Removes anxiety, builds confidence.</p></div>
+      </div>
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>Parent Devotionals</h4><p>Weekly devotionals to send home. Extend impact beyond Sunday into family discipleship.</p></div>
+      </div>
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>Volunteer Training Resources</h4><p>Equip your team. Lesson scripts, backup plans, team coaching materials.</p></div>
+      </div>
+      <div class="gk-value-item">
+        <div class="gk-value-item__icon">✓</div>
+        <div><h4>Community Access</h4><p>Connect with other ministry leaders. Share ideas, ask questions, grow together.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     11. PRICING SECTION
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Simple Pricing. Zero Surprises.</h2>
+
+    <div class="gk-pricing2">
+      <div class="gk-pricing2__card gk-pricing2__card--featured reveal reveal-delay-1">
+        <div class="gk-badge gk-badge--popular">★ Most Popular</div>
+        <div class="gk-pricing2__amount">$29.99<span>/month</span></div>
+        <div class="gk-pricing2__or">OR</div>
+        <div class="gk-pricing2__amount gk-pricing2__amount--sm">$249<span>/year (Save $111!)</span></div>
+        <ul class="gk-pricing2__list">
+          <li>✓ 500+ Bible lessons</li>
+          <li>✓ New content weekly</li>
+          <li>✓ Video teaching guides</li>
+          <li>✓ Parent devotionals</li>
+          <li>✓ Community access</li>
+          <li>✓ Cancel anytime</li>
         </ul>
-        <div style="display:flex; gap:1rem;">
-          <a href="glory-kids-curriculum.html" class="btn btn--primary btn--lg">Explore the Curriculum →</a>
-          <a href="glory-kids-membership.html" class="btn btn--outline btn--lg">Get it in Membership</a>
+        <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--block gk-btn--lg">Join Glory Kids Today</a>
+        <p class="gk-pricing2__note">14-day money-back guarantee. No questions asked.</p>
+      </div>
+
+      <div class="gk-pricing2__card reveal reveal-delay-2">
+        <h3 class="gk-pricing2__title">Start Exploring First</h3>
+        <p class="gk-pricing2__body">Browse 500+ Free Lessons<br>No credit card required<br>No signup pressure</p>
+        <a href="free-lessons.html" class="gk-btn gk-btn--outline-ink gk-btn--block gk-btn--lg">Browse Free Lessons</a>
+        <p class="gk-pricing2__note">Start free. Upgrade when you're ready.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     12. ROI / VALUE CALCULATOR ⭐
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-section--white">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Here's the Math</h2>
+
+    <div class="gk-cards3">
+      <div class="gk-roi-card reveal reveal-delay-1">
+        <h3>Small Church <span>(1 service)</span></h3>
+        <div class="gk-roi-card__row"><span>DIY Prep Time</span><strong>5–7 hrs/week</strong></div>
+        <div class="gk-roi-card__row"><span>Labor Cost</span><strong>~$250–350/week</strong></div>
+        <div class="gk-roi-card__row"><span>Glory Kids</span><strong>30 min + $29.99/mo</strong></div>
+        <div class="gk-roi-card__save">💰 You Save: $200–300/week ($10K+/year)</div>
+      </div>
+      <div class="gk-roi-card reveal reveal-delay-2">
+        <h3>Medium Church <span>(2 services)</span></h3>
+        <div class="gk-roi-card__row"><span>DIY Prep Time</span><strong>10–14 hrs/week</strong></div>
+        <div class="gk-roi-card__row"><span>Labor Cost</span><strong>~$500–700/week</strong></div>
+        <div class="gk-roi-card__row"><span>Glory Kids</span><strong>45 min + $29.99/mo</strong></div>
+        <div class="gk-roi-card__save">💰 You Save: $450–650/week ($23K+/year)</div>
+      </div>
+      <div class="gk-roi-card reveal reveal-delay-3">
+        <h3>Large Church <span>(multi-location)</span></h3>
+        <div class="gk-roi-card__row"><span>DIY Prep Time</span><strong>15–20 hrs/week</strong></div>
+        <div class="gk-roi-card__row"><span>Labor Cost</span><strong>~$750–1,000/week</strong></div>
+        <div class="gk-roi-card__row"><span>Glory Kids</span><strong>1 hr + $29.99/mo</strong></div>
+        <div class="gk-roi-card__save">💰 You Save: $700–950/week ($36K+/year)</div>
+      </div>
+    </div>
+    <p class="gk-roi-closing reveal">The membership pays for itself in labor savings within the first week. That's time you get back for your family, your team, and the students who need you.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     13. HOW IT WORKS (Blue accent)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-howitworks">
+  <div class="container">
+    <h2 class="gk-h2 gk-h2--white reveal">Get Started in 3 Minutes</h2>
+    <div class="gk-cards3">
+      <div class="gk-step-card reveal reveal-delay-1">
+        <div class="gk-step-card__num">01</div>
+        <h3>Create Your Free Account</h3>
+        <p>Enter your email. No credit card required. Takes less than 30 seconds.</p>
+      </div>
+      <div class="gk-step-card reveal reveal-delay-2">
+        <div class="gk-step-card__num">02</div>
+        <h3>Access Your First Series</h3>
+        <p>Start with your free starter series — a complete 4-week curriculum packed with everything you need.</p>
+      </div>
+      <div class="gk-step-card reveal reveal-delay-3">
+        <div class="gk-step-card__num">03</div>
+        <h3>Teach with Confidence</h3>
+        <p>Show up prepared, deliver with clarity, and watch kids engage with God's Word like never before.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     14. TESTIMONIALS (Ink, results-focused)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-testimonials">
+  <div class="container">
+    <h2 class="gk-h2 gk-h2--white reveal">Here's What Ministry Leaders Say</h2>
+    <p class="gk-section-sub gk-section-sub--white reveal">Real stories from churches, schools, and families using Glory Kids.</p>
+
+    <div class="gk-cards3 gk-cards3--testimonials">
+      <div class="gk-testimonial-card reveal reveal-delay-1">
+        <div class="gk-testimonial-card__tag">ENGAGEMENT</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"Our kids actually ask for Bible time now. Before Glory Kids, we were competing with screens. Now they CHOOSE us."</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Sarah M.</div><div class="gk-testimonial-card__role">Children's Director, Grace Community Church, Cape Town</div></div>
         </div>
       </div>
-      <div class="reveal reveal--right" style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem;">
-        <div style="background:linear-gradient(135deg,#EDE9FE,#FCE7F3); border-radius:var(--radius-xl); padding:2rem; text-align:center; box-shadow:var(--shadow);">
-          <div style="font-size:3rem; margin-bottom:0.75rem;">✝️</div>
-          <div style="font-family:var(--font-heading); font-weight:800; color:var(--navy); font-size:0.95rem;">God's Big Story</div>
-          <div style="font-size:0.8rem; color:var(--gray-500); margin-top:0.25rem;">12-Week Series</div>
+      <div class="gk-testimonial-card reveal reveal-delay-2">
+        <div class="gk-testimonial-card__tag">VOLUNTEER EMPOWERMENT</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"Our volunteers went from anxious to confident. They're not scrambling anymore. They're actually enjoying serving."</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Tom R.</div><div class="gk-testimonial-card__role">Kids Ministry Leader, Ohio Church</div></div>
         </div>
-        <div style="background:linear-gradient(135deg,#FEF3C7,#FFF7ED); border-radius:var(--radius-xl); padding:2rem; text-align:center; box-shadow:var(--shadow); margin-top:1.5rem;">
-          <div style="font-size:3rem; margin-bottom:0.75rem;">❤️</div>
-          <div style="font-family:var(--font-heading); font-weight:800; color:var(--navy); font-size:0.95rem;">Jesus Loves Me</div>
-          <div style="font-size:0.8rem; color:var(--gray-500); margin-top:0.25rem;">8-Week Series</div>
+      </div>
+      <div class="gk-testimonial-card reveal reveal-delay-3">
+        <div class="gk-testimonial-card__tag">SPIRITUAL GROWTH</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"We saw spiritual growth like we've never seen. Plus, 10 salvations last month alone. This content is 🔥"</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Jay S.</div><div class="gk-testimonial-card__role">Kingdom Church, Jupiter, Florida</div></div>
         </div>
-        <div style="background:linear-gradient(135deg,#D1FAE5,#E0F2FE); border-radius:var(--radius-xl); padding:2rem; text-align:center; box-shadow:var(--shadow); margin-top:-1.5rem;">
-          <div style="font-size:3rem; margin-bottom:0.75rem;">🦸</div>
-          <div style="font-family:var(--font-heading); font-weight:800; color:var(--navy); font-size:0.95rem;">Heroes of Faith</div>
-          <div style="font-size:0.8rem; color:var(--gray-500); margin-top:0.25rem;">10-Week Series</div>
+      </div>
+      <div class="gk-testimonial-card reveal reveal-delay-1">
+        <div class="gk-testimonial-card__tag">PROGRAM TRANSFORMATION</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"We went from zero structure to a thriving, organized ministry in 2 months. The quality speaks for itself."</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Pastor David</div><div class="gk-testimonial-card__role">Harvest Life Church, Albuquerque</div></div>
         </div>
-        <div style="background:linear-gradient(135deg,#FFF1F2,#FCE7F3); border-radius:var(--radius-xl); padding:2rem; text-align:center; box-shadow:var(--shadow);">
-          <div style="font-size:3rem; margin-bottom:0.75rem;">🙏</div>
-          <div style="font-family:var(--font-heading); font-weight:800; color:var(--navy); font-size:0.95rem;">Power of Prayer</div>
-          <div style="font-size:0.8rem; color:var(--gray-500); margin-top:0.25rem;">6-Week Series</div>
+      </div>
+      <div class="gk-testimonial-card reveal reveal-delay-2">
+        <div class="gk-testimonial-card__tag">TIME SAVINGS</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"I went from 6 hours of prep to 30 minutes. I have my life back. My wife thanks you."</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Marcus J.</div><div class="gk-testimonial-card__role">Multi-Campus Pastor</div></div>
+        </div>
+      </div>
+      <div class="gk-testimonial-card reveal reveal-delay-3">
+        <div class="gk-testimonial-card__tag">BUDGET IMPACT</div>
+        <div class="gk-stars">★★★★★</div>
+        <p class="gk-testimonial-card__text">"Best resource we've invested in. Costs less than a coffee subscription but delivers enterprise-level quality."</p>
+        <div class="gk-testimonial-card__author">
+          <div><div class="gk-testimonial-card__name">Emily K.</div><div class="gk-testimonial-card__role">Homeschool Co-op Leader</div></div>
         </div>
       </div>
     </div>
@@ -719,138 +548,271 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     LATEST BLOG POSTS
+     15. PERSONAL TOUCH SECTION ⭐
 ════════════════════════════════════════════════ -->
-<section>
+<section class="gk-section">
   <div class="container">
-    <div class="section-label reveal">Fresh Content</div>
-    <h2 class="section-heading reveal">From <span class="highlight">the Blog</span></h2>
-    <p class="section-subheading reveal">Practical articles and inspiration for parents, pastors, and ministry leaders.</p>
-
-    <div class="blog-grid">
-      <div class="blog-card reveal reveal-delay-1" style="--img-bg: linear-gradient(135deg, #EDE9FE, #FCE7F3);">
-        <div class="blog-card__img">
-          👨‍👩‍👧
-          <span class="blog-card__category" style="--cat-bg: var(--primary); --cat-color: white;">For Parents</span>
-        </div>
-        <div class="blog-card__body">
-          <div class="blog-card__meta">
-            <span>June 25, 2026</span>
-            <span>•</span>
-            <span>5 min read</span>
-          </div>
-          <h4 class="blog-card__title">7 Ways to Make Family Devotions Actually Fun for Kids</h4>
-          <p class="blog-card__excerpt">Family devotions don't have to be a battle. Here are 7 proven strategies that make Bible time the highlight of your day...</p>
-          <a href="blog.html" class="blog-card__link">Read Article →</a>
-        </div>
-      </div>
-
-      <div class="blog-card reveal reveal-delay-2" style="--img-bg: linear-gradient(135deg, #FEF3C7, #FFF7ED);">
-        <div class="blog-card__img">
-          ⛪
-          <span class="blog-card__category" style="--cat-bg: var(--gold-dark); --cat-color: white;">For Pastors</span>
-        </div>
-        <div class="blog-card__body">
-          <div class="blog-card__meta">
-            <span>June 20, 2026</span>
-            <span>•</span>
-            <span>7 min read</span>
-          </div>
-          <h4 class="blog-card__title">Why Your Children's Ministry Budget Is the Most Important Investment</h4>
-          <p class="blog-card__excerpt">Research consistently shows that most Christians make a faith commitment before age 18. Here's why investing in kids ministry pays eternal dividends...</p>
-          <a href="blog.html" class="blog-card__link">Read Article →</a>
-        </div>
-      </div>
-
-      <div class="blog-card reveal reveal-delay-3" style="--img-bg: linear-gradient(135deg, #D1FAE5, #E0F2FE);">
-        <div class="blog-card__img">
-          🌟
-          <span class="blog-card__category" style="--cat-bg: var(--green); --cat-color: white;">For Kidmin</span>
-        </div>
-        <div class="blog-card__body">
-          <div class="blog-card__meta">
-            <span>June 15, 2026</span>
-            <span>•</span>
-            <span>6 min read</span>
-          </div>
-          <h4 class="blog-card__title">How to Recruit and Retain Amazing Volunteers for Your Kids Ministry</h4>
-          <p class="blog-card__excerpt">Volunteer burnout is real. Here's the proven system we teach ministry leaders to build a team that's excited, equipped, and committed...</p>
-          <a href="blog.html" class="blog-card__link">Read Article →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-4 reveal">
-      <a href="blog.html" class="btn btn--outline btn--lg">View All Articles →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     CTA BANNER
-════════════════════════════════════════════════ -->
-<section style="padding:4rem 0;">
-  <div class="container">
-    <div class="cta-banner reveal">
-      <h2>Ready to Transform Your<br>Children's Ministry?</h2>
-      <p>Join 12,000+ ministry leaders who use our resources to create unforgettable experiences for kids every week.</p>
-      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:white; color:var(--coral-dark);">✨ Join Glory Kids — $29.99/mo</a>
-        <a href="free-lessons.html" class="btn btn--outline-white btn--lg">📖 Start with Free Lessons</a>
+    <div class="gk-personal__grid">
+      <div class="gk-img-placeholder gk-img-placeholder--square reveal reveal--left">[PHOTO PLACEHOLDER — Jandre / team]</div>
+      <div class="reveal reveal--right">
+        <h2 class="gk-h2 gk-h2--left">Built by People Who Get It</h2>
+        <p class="gk-personal__sub">Glory Kids isn't built by corporate software people. It's built by ministry leaders who've been in your shoes.</p>
+        <p class="gk-personal__quote">"I built Glory Kids because I was tired of seeing ministry leaders burn out over curriculum prep. I'm a children's ministry director. I've felt the weight of doing it all alone.</p>
+        <p class="gk-personal__quote">This isn't a get-rich-quick scheme. It's a mission to equip the next generation of ministry leaders with tools that actually work — so they can focus on what really matters: helping kids encounter Jesus.</p>
+        <p class="gk-personal__quote">Every lesson, every video guide, every resource is built with one question in mind: 'Will this help a volunteer feel confident? Will this help a kid actually grow spiritually?'</p>
+        <p class="gk-personal__quote">That's it. That's the standard."</p>
+        <div class="gk-personal__author">— Jandre, Founder<br>Glory Kids Ministries</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     FOOTER
+     16. SERIES CATEGORIES SECTION
 ════════════════════════════════════════════════ -->
-<footer class="footer">
+<section class="gk-section gk-section--white">
   <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand">
-        <div class="footer__logo">
-          <div class="logo-mark">✝</div>
-          ChildrensMinistryLessons
-        </div>
-        <p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith. World-class Bible curriculum since 2015.</p>
-        <div class="footer__social">
-          <a href="#" class="footer__social-link" aria-label="Facebook">📘</a>
-          <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
-          <a href="#" class="footer__social-link" aria-label="YouTube">▶️</a>
-          <a href="#" class="footer__social-link" aria-label="Pinterest">📌</a>
+    <h2 class="gk-h2 reveal">Find What You Need</h2>
+    <p class="gk-section-sub reveal">Curriculum organized by topic, season, and spiritual theme.</p>
+
+    <div class="gk-category-grid reveal">
+      <a href="free-lessons.html" class="gk-category-card">🔥 <span>Heroes of Faith</span></a>
+      <a href="free-lessons.html" class="gk-category-card">🎄 <span>Seasonal (Christmas, Easter, VBS)</span></a>
+      <a href="free-lessons.html" class="gk-category-card">💪 <span>Character Development</span></a>
+      <a href="free-lessons.html" class="gk-category-card">🧠 <span>Mental Health & Emotions</span></a>
+      <a href="free-lessons.html" class="gk-category-card">👨‍👩‍👧‍👦 <span>Family & Relationships</span></a>
+      <a href="free-lessons.html" class="gk-category-card">🙏 <span>Prayer & Spiritual Practices</span></a>
+      <a href="free-lessons.html" class="gk-category-card">📖 <span>Old Testament Stories</span></a>
+      <a href="free-lessons.html" class="gk-category-card">✨ <span>New Testament & Jesus</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     17. BLOG PREVIEW (Smoke)
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Fresh Content from the Blog</h2>
+
+    <div class="gk-blog-tabs reveal">
+      <button class="tab-btn active" data-tab="gk-tab-parents">👨‍👩‍👧 For Parents</button>
+      <button class="tab-btn" data-tab="gk-tab-pastors">⛪ For Pastors</button>
+      <button class="tab-btn" data-tab="gk-tab-kidmin">🌟 For Kidmin Leaders</button>
+    </div>
+
+    <div class="gk-cards3">
+      <div id="gk-tab-parents" class="tab-content active gk-blog-card reveal reveal-delay-1">
+        <span class="gk-blog-card__badge">👨‍👩‍👧 For Parents</span>
+        <div class="gk-blog-card__meta">June 25, 2026 • 5 min read</div>
+        <h3 class="gk-blog-card__title">7 Ways to Make Family Devotions Actually Fun for Kids</h3>
+        <p class="gk-blog-card__excerpt">Family devotions don't have to be a battle. Here are 7 proven strategies that make Bible time the highlight of your day...</p>
+        <a href="blog.html" class="gk-blog-card__link">Read Article →</a>
+      </div>
+      <div id="gk-tab-pastors" class="tab-content gk-blog-card reveal reveal-delay-2">
+        <span class="gk-blog-card__badge">⛪ For Pastors</span>
+        <div class="gk-blog-card__meta">June 20, 2026 • 7 min read</div>
+        <h3 class="gk-blog-card__title">Why Your Children's Ministry Budget Is the Most Important Investment</h3>
+        <p class="gk-blog-card__excerpt">Research consistently shows that most Christians make a faith commitment before age 18. Here's why investing in kids ministry pays eternal dividends...</p>
+        <a href="blog.html" class="gk-blog-card__link">Read Article →</a>
+      </div>
+      <div id="gk-tab-kidmin" class="tab-content gk-blog-card reveal reveal-delay-3">
+        <span class="gk-blog-card__badge">🌟 For Kidmin</span>
+        <div class="gk-blog-card__meta">June 15, 2026 • 6 min read</div>
+        <h3 class="gk-blog-card__title">How to Recruit and Retain Amazing Volunteers</h3>
+        <p class="gk-blog-card__excerpt">Volunteer burnout is real. Here's the proven system we teach ministry leaders to build a team that's excited, equipped, and committed...</p>
+        <a href="blog.html" class="gk-blog-card__link">Read Article →</a>
+      </div>
+    </div>
+    <div class="gk-center reveal">
+      <a href="blog.html" class="gk-link-ink">View All Blog Posts →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     18. SCHEDULE ZOOM CALL SECTION ⭐
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-zoom-section">
+  <div class="container">
+    <div class="gk-zoom__grid">
+      <div class="gk-img-placeholder gk-img-placeholder--square reveal reveal--left">[PHOTO PLACEHOLDER — team member]</div>
+      <div class="reveal reveal--right">
+        <h2 class="gk-h2 gk-h2--white gk-h2--left">Let's Talk About Your Ministry</h2>
+        <h3 class="gk-zoom__subhead">Get Personalized Help from Our Team</h3>
+        <p class="gk-zoom__body">Not sure if Glory Kids is right for your ministry? Our team would love to talk. We offer personalized walkthroughs, answer all your questions, and help you figure out the best plan for your church or school.</p>
+        <p class="gk-zoom__body"><strong>No sales pitch. Just ministry leaders talking with ministry leaders.</strong></p>
+        <a href="contact.html" class="gk-btn gk-btn--white gk-btn--lg">Schedule Your Free Zoom Call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     19. ROLE-SPECIFIC CTA CARDS
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-section--white">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Looking for Something Specific?</h2>
+    <div class="gk-cards3">
+      <a href="for-pastors.html" class="gk-role-card gk-role-card--green reveal reveal-delay-1">
+        <div class="gk-role-card__label">For Pastors</div>
+        <h3>How to Lead a Thriving Kids Ministry on Any Budget</h3>
+        <span class="gk-role-card__link">Learn More →</span>
+      </a>
+      <a href="for-kidmin-leaders.html" class="gk-role-card gk-role-card--purple reveal reveal-delay-2">
+        <div class="gk-role-card__label">For Kidmin Leaders</div>
+        <h3>Build & Retain an Energized, Confident Team</h3>
+        <span class="gk-role-card__link">Learn More →</span>
+      </a>
+      <a href="blog.html" class="gk-role-card gk-role-card--orange reveal reveal-delay-3">
+        <div class="gk-role-card__label">For Parents</div>
+        <h3>Making Family Faith Fun, Natural & Meaningful</h3>
+        <span class="gk-role-card__link">Learn More →</span>
+      </a>
+    </div>
+    <p class="gk-section-sub reveal" style="margin-top:2rem;">Each section has resources built specifically for your role.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     20. FINAL CTA (Ink)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-final-cta">
+  <div class="container gk-center">
+    <h2 class="gk-h2 gk-h2--white">Ready to Transform Your Children's Ministry?</h2>
+    <p class="gk-final-cta__sub">Join 12,000+ ministry leaders who are creating unforgettable experiences for kids every week.</p>
+    <div class="gk-final-cta__buttons">
+      <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg">✨ Join Glory Kids — $29.99/mo</a>
+      <a href="free-lessons.html" class="gk-btn gk-btn--outline-white gk-btn--lg">📖 Start with Free Lessons</a>
+    </div>
+    <p class="gk-final-cta__note">14-day money-back guarantee. No credit card required for free lessons.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     22. FAQ SECTION (SEO)
+════════════════════════════════════════════════ -->
+<section class="gk-section gk-faq">
+  <div class="container">
+    <h2 class="gk-h2 reveal">Frequently Asked Questions</h2>
+    <p class="gk-section-sub reveal">Answers to everything ministry leaders, parents, and teachers ask us.</p>
+
+    <div class="gk-faq__wrap">
+
+      <h3 class="gk-faq__cat reveal">About Free Lessons</h3>
+      <div class="faq-item"><button class="faq-question">Are these Bible lessons really completely free?<span>+</span></button><div class="faq-answer"><p>Yes! 500+ Bible lessons are completely free with zero signup required. We believe Bible education should be accessible to everyone. Browse, download, and print instantly. All for free.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What age groups do the free lessons cover?<span>+</span></button><div class="faq-answer"><p>Our lessons work best for ages 3–12 and can easily be adapted for younger or older kids. Each lesson specifies recommended age ranges. Teachers in Sunday school, churches, Christian schools, and homeschools all use them.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I modify and customize the lessons?<span>+</span></button><div class="faq-answer"><p>Absolutely. All lessons are fully editable and printable. Adapt them for your group's size, age mix, and needs. That's exactly what they're designed for. Make them your own.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you offer lessons in Spanish or other languages?<span>+</span></button><div class="faq-answer"><p>Currently all lessons are in English. Spanish translations are on our roadmap. Email hello@childrensministrylessons.com if you'd like to be notified when they're available.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How often are new free lessons added?<span>+</span></button><div class="faq-answer"><p>Members get new content weekly. Free lessons are updated monthly with seasonal topics and high-demand Bible stories.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I use these lessons in my church, school, or homeschool?<span>+</span></button><div class="faq-answer"><p>Yes! Lessons are designed for churches, Sunday schools, homeschools, and Christian schools. Use them however works best for your ministry.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Membership</h3>
+      <div class="faq-item"><button class="faq-question">What's included in the Glory Kids Membership?<span>+</span></button><div class="faq-answer"><p>Unlimited access to 500+ Bible lessons, new content every week, video teaching guides, printable activity sheets, parent devotionals, sermon outlines, volunteer training resources, and access to our member community.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How much does the Glory Kids Membership cost?<span>+</span></button><div class="faq-answer"><p>$29.99/month or $249/year (saves $111). Cancel anytime with zero penalties.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do members get access to all the free lessons?<span>+</span></button><div class="faq-answer"><p>Yes. Members get full access to all 500+ free lessons PLUS exclusive membership-only content, complete curriculum series, and new additions every week.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I cancel my membership anytime?<span>+</span></button><div class="faq-answer"><p>100% yes. Cancel with one click anytime. No long-term contracts, no penalties, no questions asked.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is there a free trial for the membership?<span>+</span></button><div class="faq-answer"><p>You can access 500+ free lessons with no signup required. For a membership trial, contact hello@childrensministrylessons.com for options.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What payment methods do you accept?<span>+</span></button><div class="faq-answer"><p>We accept all major credit/debit cards (Visa, Mastercard, American Express). Payments are processed securely through Stripe.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What if I'm not satisfied with the membership?<span>+</span></button><div class="faq-answer"><p>14-day money-back guarantee on annual plans. 7-day money-back guarantee on monthly plans (no downloads required). Your satisfaction is guaranteed.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you offer group or church discounts?<span>+</span></button><div class="faq-answer"><p>Yes. Reach out to hello@childrensministrylessons.com for team pricing. Volume discounts available for multi-staff churches.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Content & Lessons</h3>
+      <div class="faq-item"><button class="faq-question">What's the difference between individual lessons and curriculum series?<span>+</span></button><div class="faq-answer"><p>Individual lessons are standalone Bible stories. Curriculum series are themed, progressive 4–12 week programs where lessons build on each other, creating deeper spiritual formation.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Are activities and crafts included with lessons?<span>+</span></button><div class="faq-answer"><p>Yes. Every lesson includes discussion questions, craft ideas, games, object lessons, and printable activity sheets designed to reinforce the Bible truth.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you have object lessons?<span>+</span></button><div class="faq-answer"><p>Yes. We have 50+ object lessons using simple household items to help kids visually understand spiritual truths.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you have seasonal lessons (Christmas, Easter, VBS)?<span>+</span></button><div class="faq-answer"><p>Absolutely. Complete seasonal collections including Easter curriculum, Christmas series, VBS themes, and holiday-specific lessons.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Are parent devotionals included?<span>+</span></button><div class="faq-answer"><p>Yes, with membership. Weekly devotionals are designed to extend the lesson into family discipleship, helping parents talk about faith at home.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I download and print all lessons?<span>+</span></button><div class="faq-answer"><p>Yes. All lessons come in PDF format ready to print. Print as many copies as you need for your ministry.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Are there volunteer training resources?<span>+</span></button><div class="faq-answer"><p>Yes. Members get volunteer training materials, lesson scripts, backup plans, team coaching guides, and confidence-building resources.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What teaching methods do your lessons use?<span>+</span></button><div class="faq-answer"><p>Our lessons engage multiple learning styles: storytelling, discussion, activities, crafts, games, object lessons, and memory verse activities. We focus on spiritual transformation, not just information transfer.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Our Spiritual Approach</h3>
+      <div class="faq-item"><button class="faq-question">What's the theological foundation of Glory Kids lessons?<span>+</span></button><div class="faq-answer"><p>All lessons are Jesus-centered, Bible-rich, and built on three spiritual pillars: VOICE (hearing God), POWER (living boldly), and PRESENCE (knowing you belong to God).</p></div></div>
+      <div class="faq-item"><button class="faq-question">How are the lessons structured?<span>+</span></button><div class="faq-answer"><p>Each lesson follows: Opening hook → Bible story (kid-friendly retelling) → Discussion (helps kids process) → Application (real-life connection) → Activity (reinforces the truth) → Closing (prayer/commitment).</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do lessons point kids to make a decision for Jesus?<span>+</span></button><div class="faq-answer"><p>Many do. Our goal is to help kids encounter Jesus personally, not just hear about Him. We leave space for the Holy Spirit to work.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How do you handle sensitive or difficult Bible stories?<span>+</span></button><div class="faq-answer"><p>We present them honestly and age-appropriately. We don't avoid hard truths, but we frame them with hope and redemption.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you have lessons addressing current issues (mental health, social media, racism)?<span>+</span></button><div class="faq-answer"><p>Yes. We regularly add series addressing topics kids care about: mental health, emotions, relationships, identity, social issues, peer pressure — all through a biblical lens.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Technical Details</h3>
+      <div class="faq-item"><button class="faq-question">Do I need to download lessons or can I view them online?<span>+</span></button><div class="faq-answer"><p>Both. Lessons are available online to view OR download/print. Members can access both ways instantly.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What file formats are available?<span>+</span></button><div class="faq-answer"><p>Lessons are in PDF (printable) and online viewable format. Some series include video guides where applicable.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do I need an account to access free lessons?<span>+</span></button><div class="faq-answer"><p>No. You can browse and download free lessons without creating an account. But creating an account lets you save favorites and get updates.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is my membership data secure?<span>+</span></button><div class="faq-answer"><p>Absolutely. We use industry-standard 256-bit encryption and comply with all data protection standards.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How do I reset my password?<span>+</span></button><div class="faq-answer"><p>Click 'Forgot Password' on the login page and follow email instructions. Support team can help if you don't receive the reset email.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I access lessons on my phone?<span>+</span></button><div class="faq-answer"><p>Yes. Our site is fully mobile-responsive. Browse, view, and download on any device.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What if I have a technical issue?<span>+</span></button><div class="faq-answer"><p>Email hello@childrensministrylessons.com or use our contact form. Members get priority support within 24 hours.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Community & Support</h3>
+      <div class="faq-item"><button class="faq-question">What's included in the member community?<span>+</span></button><div class="faq-answer"><p>Private forum where you can share ideas, ask questions, connect with other ministry leaders, and get support.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Can I request specific lessons?<span>+</span></button><div class="faq-answer"><p>Absolutely. Popular requests guide our content creation. Email hello@childrensministrylessons.com with your suggestions.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you offer coaching or consulting?<span>+</span></button><div class="faq-answer"><p>Yes. We offer optional coaching calls with our team. See our services page for details.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How do I stay updated on new releases?<span>+</span></button><div class="faq-answer"><p>Members get instant notifications. Free users can subscribe to our blog to stay in the loop.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you have a blog with ministry tips?<span>+</span></button><div class="faq-answer"><p>Yes! Our blog has articles for parents, pastors, and kidmin leaders on topics like volunteer retention, family discipleship, and teaching strategies.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is there a Grow Kids partnership or integration?<span>+</span></button><div class="faq-answer"><p>We are separate from Grow Curriculum. Glory Kids focuses specifically on Bible lessons and spiritual formation. Check our blog for complementary resources.</p></div></div>
+
+      <h3 class="gk-faq__cat reveal">About Pricing & Value</h3>
+      <div class="faq-item"><button class="faq-question">How does Glory Kids compare to Orange, RightNow Media, or GO Curriculum?<span>+</span></button><div class="faq-answer"><p>We focus on free accessibility + affordable membership. We're half the cost of competitors and our free lessons are more robust than most paid programs. See our comparison page.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Is the membership really worth $30/month?<span>+</span></button><div class="faq-answer"><p>Yes. The membership saves you 4–5 hours/week in prep time. At $50/hour labor cost, that's $200–250/week savings — paying for itself in the first week.</p></div></div>
+      <div class="faq-item"><button class="faq-question">Do you offer discounts for nonprofits or churches?<span>+</span></button><div class="faq-answer"><p>Yes. Reach out to hello@childrensministrylessons.com for nonprofit pricing and volume discounts.</p></div></div>
+      <div class="faq-item"><button class="faq-question">What if I'm a volunteer (not paid staff)?<span>+</span></button><div class="faq-answer"><p>Glory Kids was built for leaders like you. Many of our users are volunteer youth leaders, Sunday school teachers, and homeschool co-op leaders. Start free and upgrade if helpful.</p></div></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     21. FOOTER (Ink)
+════════════════════════════════════════════════ -->
+<footer class="gk-footer">
+  <div class="container">
+    <div class="gk-footer__grid">
+      <div class="gk-footer__brand">
+        <div class="gk-footer__logo">✝ Glory Kids Ministries</div>
+        <p class="gk-footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith. Founded 2015.</p>
+        <div class="gk-footer__social">
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶️</a>
+          <a href="#" aria-label="TikTok">🎵</a>
         </div>
       </div>
+
       <div>
-        <div class="footer__col-title">Resources</div>
-        <ul class="footer__links">
-          <li><a href="free-lessons.html" class="footer__link">Free Bible Lessons</a></li>
-          <li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li>
-          <li><a href="glory-kids-curriculum.html" class="footer__link">Glory Kids Curriculum</a></li>
-          <li><a href="activities.html" class="footer__link">Activities & Resources</a></li>
+        <div class="gk-footer__title">Resources</div>
+        <ul class="gk-footer__links">
+          <li><a href="free-lessons.html">Free Bible Lessons</a></li>
+          <li><a href="curriculum-packs.html">Curriculum Packs</a></li>
+          <li><a href="glory-kids-curriculum.html">Glory Kids Curriculum</a></li>
+          <li><a href="activities.html">Activities & Resources</a></li>
+          <li><a href="blog.html">Blog</a></li>
         </ul>
       </div>
+
       <div>
-        <div class="footer__col-title">Blog</div>
-        <ul class="footer__links">
-          <li><a href="blog.html" class="footer__link">For Parents</a></li>
-          <li><a href="blog.html" class="footer__link">For Pastors</a></li>
-          <li><a href="blog.html" class="footer__link">For Kidmin Leaders</a></li>
-          <li><a href="contact.html" class="footer__link">Contact Us</a></li>
+        <div class="gk-footer__title">Company</div>
+        <ul class="gk-footer__links">
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html">Careers</a></li>
+          <li><a href="contact.html">Partner With Us</a></li>
         </ul>
       </div>
+
       <div>
-        <div class="footer__newsletter-title">Stay Inspired</div>
-        <p class="footer__desc">Get free lessons, tips, and ministry inspiration straight to your inbox. No spam. Ever.</p>
-        <form class="newsletter-form" onsubmit="return false;">
-          <input type="email" placeholder="Your email address" />
+        <div class="gk-footer__title">Stay Inspired</div>
+        <p class="gk-footer__desc">Get free lessons, tips, and ministry inspiration.</p>
+        <form class="newsletter-form gk-newsletter" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email" />
           <button type="submit">Subscribe</button>
         </form>
       </div>
     </div>
-    <div class="footer__bottom">
-      <span>© 2026 ChildrensMinistryLessons.com — All rights reserved.</span>
-      <div style="display:flex; gap:1.5rem;">
+
+    <div class="gk-footer__bottom">
+      <span>© 2026 ChildrensMinistryLessons.com. All rights reserved.</span>
+      <div class="gk-footer__legal">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
         <a href="contact.html">Contact</a>
