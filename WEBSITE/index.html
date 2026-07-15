@@ -9,7 +9,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
   <link rel="stylesheet" href="homepage.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false, container: false } };
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -60,6 +66,7 @@
             <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
           </div>
         </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
         <li><a href="contact.html" class="nav__link">Contact</a></li>
       </ul>
       <div class="nav__actions">
@@ -82,6 +89,7 @@
   <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
   <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
   <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
   <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
   <a href="login.html" class="nav__mobile-link">👤 Login</a>
@@ -93,41 +101,101 @@
 <!-- ═══════════════════════════════════════════════
      2. HERO SECTION (Ink)
 ════════════════════════════════════════════════ -->
-<section class="gk-hero">
-  <div class="container">
-    <div class="gk-hero__grid">
-      <div class="gk-hero__left">
-        <div class="gk-hero__badge reveal">🌟 Introducing Glory Kids Membership</div>
-        <h1 class="gk-hero__h1 gk-hero__h1--56 reveal reveal-delay-1">Where Faith Comes Alive for Kids</h1>
-        <p class="gk-hero__sub reveal reveal-delay-2">
-          World-class Bible curriculum, free lessons, and ministry resources that help children fall in love with Jesus — and keep churches coming back for more.
-        </p>
-        <div class="gk-hero__cta reveal reveal-delay-3">
-          <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg">✨ Join Glory Kids — $29.99/mo</a>
-          <a href="free-lessons.html" class="gk-btn gk-btn--outline-white gk-btn--lg">📖 Browse Free Lessons</a>
-        </div>
-        <p class="gk-hero__trust reveal reveal-delay-3">Trusted by <strong>12,000+</strong> children's ministry leaders worldwide</p>
+<section class="relative isolate overflow-hidden min-h-[640px] flex items-center pt-[130px] pb-16 md:pt-40 md:pb-28">
+
+  <!-- Background image carousel -->
+  <div id="heroCarousel" class="absolute inset-0 -z-10">
+    <div class="hero-slide active absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-100"
+         style="background-image:url('images/hero-kids.jpg');" aria-hidden="true"></div>
+    <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-0"
+         style="background-image:url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=1600&q=80');" aria-hidden="true"></div>
+    <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-0"
+         style="background-image:url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1600&q=80');" aria-hidden="true"></div>
+    <!-- Readability overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/80 to-slate-950/40"></div>
+    <div class="absolute inset-0 bg-slate-950/30"></div>
+  </div>
+
+  <div class="container relative z-10">
+    <div class="max-w-2xl">
+      <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 px-4 py-2 rounded-full font-semibold text-sm mb-6 reveal">
+        🌟 Introducing Glory Kids Membership
       </div>
 
-      <div class="gk-hero__right reveal reveal-delay-2">
-        <div class="gk-hero__proof-card">
-          <div class="gk-hero__avatars">
-            <span class="gk-hero__avatar">👩</span>
-            <span class="gk-hero__avatar">👨</span>
-            <span class="gk-hero__avatar">👩‍🦱</span>
-            <span class="gk-hero__avatar">🧔</span>
-            <span class="gk-hero__avatar gk-hero__avatar--plus">+</span>
-          </div>
-          <div class="gk-hero__proof-stats">
-            <span>500+ Bible Lessons</span>
-            <span class="gk-hero__proof-dot">|</span>
-            <span>98% Love Rate ❤️</span>
-          </div>
-        </div>
+      <h1 class="font-bold text-white leading-[1.12] text-[32px] sm:text-[40px] md:text-[52px] mb-6 reveal reveal-delay-1">
+        500+ Free Bible Lessons for Kids Ages 3&ndash;12 <span class="text-emerald-400">|</span> Ready-to-Teach
+      </h1>
+
+      <p class="text-slate-200 text-base md:text-lg leading-relaxed mb-8 max-w-xl reveal reveal-delay-2">
+        Complete curriculum, activities, and parent resources. Used by <strong class="text-white">12,000+</strong> ministry leaders. Start free&mdash;no credit card required.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 mb-6 reveal reveal-delay-3">
+        <a href="free-lessons.html"
+           class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-base px-7 py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-colors">
+          📖 Browse Free Lessons Now
+        </a>
+        <a href="glory-kids-membership.html"
+           class="inline-flex items-center justify-center gap-2 border-2 border-white/70 hover:bg-white/10 text-white font-semibold text-base px-7 py-4 rounded-xl transition-colors">
+          ✨ Join Glory Kids &mdash; $29.99/mo
+        </a>
       </div>
+
+      <p class="flex flex-wrap items-center gap-2 text-sm text-slate-200 reveal reveal-delay-3">
+        <span class="text-amber-400 tracking-tight">⭐⭐⭐⭐⭐</span>
+        <span><strong class="text-white">98%</strong> of leaders love it</span>
+        <span class="text-slate-400">|</span>
+        <span><strong class="text-white">12,000+</strong> churches trusted</span>
+      </p>
     </div>
   </div>
+
+  <!-- Carousel indicators -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-white transition-opacity" data-index="0" aria-label="Show slide 1"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-opacity" data-index="1" aria-label="Show slide 2"></button>
+    <button class="hero-dot w-2.5 h-2.5 rounded-full bg-white/40 transition-opacity" data-index="2" aria-label="Show slide 3"></button>
+  </div>
 </section>
+
+<script>
+  (function () {
+    var slides = document.querySelectorAll('#heroCarousel .hero-slide');
+    var dots = document.querySelectorAll('.hero-dot');
+    var current = 0;
+    var timer;
+
+    function show(index) {
+      slides.forEach(function (s, i) {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0', i !== index);
+      });
+      dots.forEach(function (d, i) {
+        d.classList.toggle('bg-white', i === index);
+        d.classList.toggle('bg-white/40', i !== index);
+      });
+      current = index;
+    }
+
+    function next() {
+      show((current + 1) % slides.length);
+    }
+
+    function startAutoRotate() {
+      clearInterval(timer);
+      timer = setInterval(next, 5000);
+    }
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () {
+        show(parseInt(dot.dataset.index, 10));
+        startAutoRotate();
+      });
+    });
+
+    startAutoRotate();
+  })();
+</script>
 
 <!-- ═══════════════════════════════════════════════
      3. TRUST & AUTHORITY (Smoke)
@@ -294,27 +362,35 @@
     <div class="gk-cards4">
       <div class="gk-release-card reveal reveal-delay-1">
         <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
-        <h4 class="gk-release-card__title">What Was I Made For</h4>
-        <p class="gk-release-card__desc">A Series on Purpose</p>
-        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        <div class="gk-release-card__body">
+          <h4 class="gk-release-card__title">What Was I Made For</h4>
+          <p class="gk-release-card__desc">A Series on Purpose</p>
+          <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        </div>
       </div>
       <div class="gk-release-card reveal reveal-delay-2">
         <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
-        <h4 class="gk-release-card__title">Move of God</h4>
-        <p class="gk-release-card__desc">A Series on Revival</p>
-        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        <div class="gk-release-card__body">
+          <h4 class="gk-release-card__title">Move of God</h4>
+          <p class="gk-release-card__desc">A Series on Revival</p>
+          <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        </div>
       </div>
       <div class="gk-release-card reveal reveal-delay-3">
         <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
-        <h4 class="gk-release-card__title">Welcome Home</h4>
-        <p class="gk-release-card__desc">A Series on the Church</p>
-        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        <div class="gk-release-card__body">
+          <h4 class="gk-release-card__title">Welcome Home</h4>
+          <p class="gk-release-card__desc">A Series on the Church</p>
+          <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        </div>
       </div>
       <div class="gk-release-card reveal reveal-delay-1">
         <div class="gk-img-placeholder">[IMAGE PLACEHOLDER]</div>
-        <h4 class="gk-release-card__title">In My Feelings</h4>
-        <p class="gk-release-card__desc">A Series on Emotions</p>
-        <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        <div class="gk-release-card__body">
+          <h4 class="gk-release-card__title">In My Feelings</h4>
+          <p class="gk-release-card__desc">A Series on Emotions</p>
+          <a href="glory-kids-curriculum.html" class="gk-btn gk-btn--outline-ink gk-btn--sm">Browse →</a>
+        </div>
       </div>
     </div>
     <div class="gk-center reveal" style="margin-top:2.5rem;">
@@ -487,65 +563,210 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════
-     14. TESTIMONIALS (Ink, results-focused)
+     14. TESTIMONIALS (hybrid: video + filterable text grid)
 ════════════════════════════════════════════════ -->
 <section class="gk-section gk-testimonials">
   <div class="container">
     <h2 class="gk-h2 gk-h2--white reveal">Here's What Ministry Leaders Say</h2>
     <p class="gk-section-sub gk-section-sub--white reveal">Real stories from churches, schools, and families using Glory Kids.</p>
 
-    <div class="gk-cards3 gk-cards3--testimonials">
-      <div class="gk-testimonial-card reveal reveal-delay-1">
-        <div class="gk-testimonial-card__tag">ENGAGEMENT</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"Our kids actually ask for Bible time now. Before Glory Kids, we were competing with screens. Now they CHOOSE us."</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Sarah M.</div><div class="gk-testimonial-card__role">Children's Director, Grace Community Church, Cape Town</div></div>
-        </div>
-      </div>
-      <div class="gk-testimonial-card reveal reveal-delay-2">
-        <div class="gk-testimonial-card__tag">VOLUNTEER EMPOWERMENT</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"Our volunteers went from anxious to confident. They're not scrambling anymore. They're actually enjoying serving."</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Tom R.</div><div class="gk-testimonial-card__role">Kids Ministry Leader, Ohio Church</div></div>
-        </div>
-      </div>
-      <div class="gk-testimonial-card reveal reveal-delay-3">
-        <div class="gk-testimonial-card__tag">SPIRITUAL GROWTH</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"We saw spiritual growth like we've never seen. Plus, 10 salvations last month alone. This content is 🔥"</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Jay S.</div><div class="gk-testimonial-card__role">Kingdom Church, Jupiter, Florida</div></div>
-        </div>
-      </div>
-      <div class="gk-testimonial-card reveal reveal-delay-1">
-        <div class="gk-testimonial-card__tag">PROGRAM TRANSFORMATION</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"We went from zero structure to a thriving, organized ministry in 2 months. The quality speaks for itself."</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Pastor David</div><div class="gk-testimonial-card__role">Harvest Life Church, Albuquerque</div></div>
-        </div>
-      </div>
-      <div class="gk-testimonial-card reveal reveal-delay-2">
-        <div class="gk-testimonial-card__tag">TIME SAVINGS</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"I went from 6 hours of prep to 30 minutes. I have my life back. My wife thanks you."</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Marcus J.</div><div class="gk-testimonial-card__role">Multi-Campus Pastor</div></div>
-        </div>
-      </div>
-      <div class="gk-testimonial-card reveal reveal-delay-3">
-        <div class="gk-testimonial-card__tag">BUDGET IMPACT</div>
-        <div class="gk-stars">★★★★★</div>
-        <p class="gk-testimonial-card__text">"Best resource we've invested in. Costs less than a coffee subscription but delivers enterprise-level quality."</p>
-        <div class="gk-testimonial-card__author">
-          <div><div class="gk-testimonial-card__name">Emily K.</div><div class="gk-testimonial-card__role">Homeschool Co-op Leader</div></div>
+    <!-- Featured video testimonial -->
+    <div class="reveal mb-16 max-w-4xl mx-auto">
+      <div id="videoTestimonial" class="relative rounded-2xl overflow-hidden aspect-video bg-slate-900 border border-white/10 shadow-2xl shadow-black/40 group cursor-pointer">
+        <img src="images/hero-kids.jpg" alt="Pastor David video testimonial" class="w-full h-full object-cover opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-slate-950/40"></div>
+
+        <button type="button" id="videoPlayBtn" aria-label="Play video testimonial"
+                class="absolute inset-0 flex items-center justify-center">
+          <span class="flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/90 shadow-lg transition-transform duration-300 group-hover:scale-110">
+            <svg viewBox="0 0 24 24" class="w-8 h-8 sm:w-10 sm:h-10 text-slate-900 translate-x-0.5" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </button>
+
+        <div class="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
+          <div class="text-amber-400 text-lg mb-2 tracking-tight">★★★★★</div>
+          <p class="text-white text-lg sm:text-2xl font-semibold leading-snug max-w-2xl mb-4">"We went from zero structure to a thriving, organized ministry in 2 months. The quality speaks for itself."</p>
+          <div class="text-slate-200 text-sm sm:text-base font-medium">
+            <span class="text-white font-bold">Pastor David</span> &middot; Lead Pastor &middot; Harvest Life Church, Albuquerque &middot; <span class="text-slate-400">~350 congregants</span>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="testimonialFilters">
+      <button data-filter="all" class="tst-filter-btn is-active px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">All Reviews</button>
+      <button data-filter="engagement" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Engagement</button>
+      <button data-filter="volunteer" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Volunteer Empowerment</button>
+      <button data-filter="growth" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Spiritual Growth</button>
+      <button data-filter="time" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Time Savings</button>
+      <button data-filter="budget" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Budget Impact</button>
+    </div>
+
+    <!-- Text testimonials grid (2x2 visible, rest revealed via Load More) -->
+    <div id="testimonialGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+      <div class="tst-card" data-category="engagement">
+        <div class="tst-card__inner">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tst-avatar" style="background:linear-gradient(135deg,#6D5BD0,#F2994A);">👩</span>
+            <div>
+              <div class="text-white font-bold text-sm">Sarah M.</div>
+              <div class="text-slate-400 text-xs">Children's Director, Cape Town</div>
+            </div>
+          </div>
+          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Our kids actually ask for Bible time now. Before Glory Kids, we were competing with screens. Now they CHOOSE us."</p>
+          <span class="tst-badge">Engagement</span>
+        </div>
+      </div>
+
+      <div class="tst-card" data-category="volunteer">
+        <div class="tst-card__inner">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tst-avatar" style="background:linear-gradient(135deg,#E14D5C,#F2994A);">🧔</span>
+            <div>
+              <div class="text-white font-bold text-sm">Tom R.</div>
+              <div class="text-slate-400 text-xs">Kids Ministry Leader, Ohio</div>
+            </div>
+          </div>
+          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Our volunteers went from anxious to confident. They're not scrambling anymore. They're actually enjoying serving."</p>
+          <span class="tst-badge">Volunteer Empowerment</span>
+        </div>
+      </div>
+
+      <div class="tst-card" data-category="growth">
+        <div class="tst-card__inner">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tst-avatar" style="background:linear-gradient(135deg,#38B6A5,#7ED6A5);">👨</span>
+            <div>
+              <div class="text-white font-bold text-sm">Jay S.</div>
+              <div class="text-slate-400 text-xs">Kingdom Church, Jupiter, FL</div>
+            </div>
+          </div>
+          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"We saw spiritual growth like we've never seen. Plus, 10 salvations last month alone. This content is 🔥"</p>
+          <span class="tst-badge">Spiritual Growth</span>
+        </div>
+      </div>
+
+      <div class="tst-card" data-category="time">
+        <div class="tst-card__inner">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tst-avatar" style="background:linear-gradient(135deg,#4B5EAA,#8E7CC3);">👨‍🦱</span>
+            <div>
+              <div class="text-white font-bold text-sm">Marcus J.</div>
+              <div class="text-slate-400 text-xs">Multi-Campus Pastor</div>
+            </div>
+          </div>
+          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"I went from 6 hours of prep to 30 minutes. I have my life back. My wife thanks you."</p>
+          <span class="tst-badge">Time Savings</span>
+        </div>
+      </div>
+
+      <div class="tst-card is-extra hidden" data-category="budget">
+        <div class="tst-card__inner">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="tst-avatar" style="background:linear-gradient(135deg,#D45D9C,#F2994A);">👩‍🦱</span>
+            <div>
+              <div class="text-white font-bold text-sm">Emily K.</div>
+              <div class="text-slate-400 text-xs">Homeschool Co-op Leader</div>
+            </div>
+          </div>
+          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
+          <p class="text-slate-300 text-sm leading-relaxed mb-4">"Best resource we've invested in. Costs less than a coffee subscription but delivers enterprise-level quality."</p>
+          <span class="tst-badge">Budget Impact</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10 reveal">
+      <button type="button" id="loadMoreTestimonials" class="gk-btn gk-btn--outline-white gk-btn--lg">Load More Reviews</button>
+    </div>
   </div>
 </section>
+
+<style>
+  .tst-filter-btn { background: transparent; color: var(--gray-500); }
+  .tst-filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
+  .tst-filter-btn.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  .tst-card { transition: opacity 0.35s ease, transform 0.35s ease; }
+  .tst-card.is-filtered-out { opacity: 0; transform: scale(0.94); pointer-events: none; position: absolute; visibility: hidden; height: 0; overflow: hidden; margin: 0; }
+  .tst-card__inner {
+    height: 100%; background: var(--color-card); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .tst-card__inner:hover {
+    background: var(--color-card-hover); border-color: rgba(255,255,255,0.25);
+    transform: translateY(-4px); box-shadow: var(--shadow-lg);
+  }
+  .tst-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+  }
+  .tst-badge {
+    display: inline-block; font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.03em; color: #4ade80; background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.4); border-radius: var(--radius-full); padding: 0.3rem 0.75rem;
+  }
+</style>
+
+<script>
+  (function () {
+    // Video testimonial: swap thumbnail for YouTube embed on click
+    var videoBox = document.getElementById('videoTestimonial');
+    var playBtn = document.getElementById('videoPlayBtn');
+    if (playBtn && videoBox) {
+      playBtn.addEventListener('click', function () {
+        var youtubeId = 'M7lc1UVf-VE'; // TODO: replace with real testimonial video ID
+        videoBox.innerHTML =
+          '<iframe class="w-full h-full" src="https://www.youtube.com/embed/' + youtubeId + '?autoplay=1&rel=0" ' +
+          'title="Ministry leader video testimonial" frameborder="0" ' +
+          'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
+          'allowfullscreen></iframe>';
+      });
+    }
+
+    // Filter tabs
+    var filterButtons = document.querySelectorAll('.tst-filter-btn');
+    var cards = document.querySelectorAll('.tst-card');
+    var loadMoreBtn = document.getElementById('loadMoreTestimonials');
+    var extraRevealed = false;
+
+    function applyFilter(filter) {
+      cards.forEach(function (card) {
+        var matches = filter === 'all' || card.dataset.category === filter;
+        var isExtraStillCollapsed = card.classList.contains('is-extra') && !extraRevealed;
+        card.classList.toggle('is-filtered-out', !matches || isExtraStillCollapsed);
+      });
+    }
+
+    filterButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        filterButtons.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function () {
+        extraRevealed = true;
+        document.querySelectorAll('.tst-card.is-extra').forEach(function (card) {
+          card.classList.remove('hidden');
+        });
+        var activeFilter = document.querySelector('.tst-filter-btn.is-active').dataset.filter;
+        applyFilter(activeFilter);
+        loadMoreBtn.style.display = 'none';
+      });
+    }
+  })();
+</script>
 
 <!-- ═══════════════════════════════════════════════
      15. PERSONAL TOUCH SECTION ⭐
@@ -655,12 +876,12 @@
   <div class="container">
     <h2 class="gk-h2 reveal">Looking for Something Specific?</h2>
     <div class="gk-cards3">
-      <a href="for-pastors.html" class="gk-role-card gk-role-card--green reveal reveal-delay-1">
+      <a href="blog.html#pastors" class="gk-role-card gk-role-card--green reveal reveal-delay-1">
         <div class="gk-role-card__label">For Pastors</div>
         <h3>How to Lead a Thriving Kids Ministry on Any Budget</h3>
         <span class="gk-role-card__link">Learn More →</span>
       </a>
-      <a href="for-kidmin-leaders.html" class="gk-role-card gk-role-card--blue reveal reveal-delay-2">
+      <a href="blog.html#kidmin" class="gk-role-card gk-role-card--blue reveal reveal-delay-2">
         <div class="gk-role-card__label">For Kidmin Leaders</div>
         <h3>Build & Retain an Energized, Confident Team</h3>
         <span class="gk-role-card__link">Learn More →</span>
@@ -753,7 +974,7 @@
       <div class="faq-item"><button class="faq-question">Is there a Grow Kids partnership or integration?<span>+</span></button><div class="faq-answer"><p>We are separate from Grow Curriculum. Glory Kids focuses specifically on Bible lessons and spiritual formation. Check our blog for complementary resources.</p></div></div>
 
       <h3 class="gk-faq__cat reveal">About Pricing & Value</h3>
-      <div class="faq-item"><button class="faq-question">How does Glory Kids compare to Orange, RightNow Media, or GO Curriculum?<span>+</span></button><div class="faq-answer"><p>We focus on free accessibility + affordable membership. We're half the cost of competitors and our free lessons are more robust than most paid programs. See our comparison page.</p></div></div>
+      <div class="faq-item"><button class="faq-question">How does Glory Kids compare to Orange, RightNow Media, or GO Curriculum?<span>+</span></button><div class="faq-answer"><p>We focus on free accessibility + affordable membership. We're half the cost of competitors and our free lessons are more robust than most paid programs. See our <a href="comparison.html">full comparison page</a>.</p></div></div>
       <div class="faq-item"><button class="faq-question">Is the membership really worth $30/month?<span>+</span></button><div class="faq-answer"><p>Yes. The membership saves you 4–5 hours/week in prep time. At $50/hour labor cost, that's $200–250/week savings — paying for itself in the first week.</p></div></div>
       <div class="faq-item"><button class="faq-question">Do you offer discounts for nonprofits or churches?<span>+</span></button><div class="faq-answer"><p>Yes. Reach out to hello@childrensministrylessons.com for nonprofit pricing and volume discounts.</p></div></div>
       <div class="faq-item"><button class="faq-question">What if I'm a volunteer (not paid staff)?<span>+</span></button><div class="faq-answer"><p>Glory Kids was built for leaders like you. Many of our users are volunteer youth leaders, Sunday school teachers, and homeschool co-op leaders. Start free and upgrade if helpful.</p></div></div>
@@ -794,6 +1015,7 @@
         <div class="gk-footer__title">Company</div>
         <ul class="gk-footer__links">
           <li><a href="contact.html">About Us</a></li>
+          <li><a href="faq/index.html">FAQ</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a href="contact.html">Careers</a></li>
           <li><a href="contact.html">Partner With Us</a></li>

@@ -6,7 +6,12 @@
   <title>Glory Kids Curriculum | Children's Ministry Lessons</title>
   <meta name="description" content="Our flagship children's ministry curriculum — beautifully designed, theologically rich multi-week series that kids love and leaders find easy to teach." />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="homepage.css" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false, container: false } };
+  </script>
   <style>
     .curr-hero { background: linear-gradient(135deg, #5F4784 0%, #7B5EA7 50%, #7B5EA7 80%, #C47F0D 100%); }
     .series-card {
@@ -48,31 +53,63 @@
 <div id="progress-bar"></div>
 
 <nav class="nav" id="nav">
-  <div class="container"><div class="nav__inner">
-    <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
-    <ul class="nav__links">
-      <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
-      <li class="nav__dropdown"><a href="#" class="nav__link active">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
-      <li><a href="activities.html" class="nav__link">Activities</a></li>
-      <li><a href="blog.html" class="nav__link">Blog</a></li>
-      <li><a href="contact.html" class="nav__link">Contact</a></li>
-    </ul>
-    <div class="nav__actions">
-        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
-        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
       </div>
-    <button class="nav__hamburger"><span></span><span></span><span></span></button>
-  </div></div>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
 </nav>
+
+<!-- Mobile Nav -->
 <div class="nav__mobile">
   <a href="index.html" class="nav__mobile-link">🏠 Home</a>
-  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Lessons</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
   <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
   <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
-  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
   <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
-  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="login.html" class="nav__mobile-link">👤 Login</a>
+  <div class="nav__mobile-cta">
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Glory Kids → $29.99/mo</a>
+  </div>
 </div>
 
 <!-- HERO -->
@@ -166,87 +203,272 @@
     <h2 class="section-heading reveal">Browse the <span class="highlight">Series</span></h2>
     <p class="section-subheading reveal">All series are included with Glory Kids Membership. New series added regularly.</p>
 
-    <div class="series-grid">
-      <div class="series-card reveal reveal-delay-1">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#EDE7F6,#FEF0D3);">✝️<span class="series-card__weeks">12 Weeks</span><span class="series-card__new">⭐ Most Popular</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">God's Big Story</div>
-          <div class="series-card__ages"><span class="age-chip">PreK</span><span class="age-chip">Elementary</span><span class="age-chip">Upper Elem.</span></div>
-          <p class="series-card__desc">A sweeping journey through the Bible — from Creation to the Cross — helping kids see how every story points to Jesus.</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 12 Complete Lessons</span>
-            <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Get in Membership</a>
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="curriculumFilters">
+      <button data-filter="all" class="curr-filter-btn is-active px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">All Series</button>
+      <button data-filter="popular" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Most Popular</button>
+      <button data-filter="new" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">New Releases</button>
+      <button data-filter="seasonal" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Seasonal</button>
+      <button data-filter="age" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">By Age Group</button>
+    </div>
+
+    <!-- Grid -->
+    <div id="curriculumGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Rooted -->
+      <div class="curr-card group" data-category="all popular">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#6D5BD0,#F2994A);">
+            🌳
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 12 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Rooted: A Series on Faith</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 12 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Twelve weeks digging into what it really means to have faith that holds — through doubt, growth, and everyday life.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
 
-      <div class="series-card reveal reveal-delay-2">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#FDEBD9,#EDE7F6);">❤️<span class="series-card__weeks">8 Weeks</span><span class="series-card__new">🆕 New!</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">Jesus Loves Me — The Series</div>
-          <div class="series-card__ages"><span class="age-chip">Toddler</span><span class="age-chip">PreK</span><span class="age-chip">Elementary</span></div>
-          <p class="series-card__desc">Eight weeks exploring Jesus' love through miracles, parables, the Cross, and Resurrection. Kids finish knowing they are deeply loved.</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 8 Complete Lessons</span>
-            <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Get in Membership</a>
+      <!-- Brave Heart -->
+      <div class="curr-card group" data-category="all popular">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#E14D5C,#F2994A);">
+            🦁
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Brave Heart</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bible heroes who faced their fears with God at their side — helping kids find courage for their own battles.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
 
-      <div class="series-card reveal reveal-delay-3">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#D9F0E1,#D6EDF9);">🦸<span class="series-card__weeks">10 Weeks</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">Heroes of Faith</div>
-          <div class="series-card__ages"><span class="age-chip">Elementary</span><span class="age-chip">Upper Elem.</span></div>
-          <p class="series-card__desc">The lives of Abraham, Moses, Ruth, David, Esther, Daniel, and more — showing how ordinary people did extraordinary things through faith.</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 10 Complete Lessons</span>
-            <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Get in Membership</a>
+      <!-- Have a Nice Day -->
+      <div class="curr-card group" data-category="all age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#38B6A5,#7ED6A5);">
+            😊
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Have a Nice Day</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-8 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A kindness-first series that turns "be nice" into real habits — sharing, patience, and gentle words.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
 
-      <div class="series-card reveal reveal-delay-1">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#D6EDF9,#EDE7F6);">🙏<span class="series-card__weeks">6 Weeks</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">Power of Prayer</div>
-          <div class="series-card__ages"><span class="age-chip">PreK</span><span class="age-chip">Elementary</span><span class="age-chip">Upper Elem.</span></div>
-          <p class="series-card__desc">Six weeks teaching kids what prayer really is, why God hears them, and how to build a real prayer life that goes beyond "Now I lay me down to sleep."</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 6 Complete Lessons</span>
-            <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Get in Membership</a>
+      <!-- Bullies in My Brain -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#4B5EAA,#8E7CC3);">
+            🧠
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
+            <span class="absolute top-3 right-3 bg-emerald-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Bullies in My Brain</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A gentle, biblical look at anxious thoughts and negative self-talk — arming kids with truth that quiets the noise.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
 
-      <div class="series-card reveal reveal-delay-2">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#FEF0D3,#FDEBD9);">🌸<span class="series-card__weeks">8 Weeks</span><span class="series-card__new">Ages 2–5</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">Little Ones, Big God</div>
-          <div class="series-card__ages"><span class="age-chip">Nursery</span><span class="age-chip">Toddler</span><span class="age-chip">PreK</span></div>
-          <p class="series-card__desc">Specially designed for our youngest learners — gentle, sensory-rich lessons with songs, simple crafts, and age-appropriate Bible truths.</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 8 Complete Lessons</span>
-            <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Get in Membership</a>
+      <!-- In My Feelings -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#D45D9C,#F2994A);">
+            💗
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-emerald-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">In My Feelings</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Naming big emotions through Scripture — helping kids process sadness, anger, and worry in healthy ways.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
 
-      <div class="series-card reveal reveal-delay-3">
-        <div class="series-card__header" style="background:linear-gradient(135deg,#FDEBD9,#FDEBD9);">🎁<span class="series-card__weeks">Coming Soon</span></div>
-        <div class="series-card__body">
-          <div class="series-card__title">The Holy Spirit — Helper & Friend</div>
-          <div class="series-card__ages"><span class="age-chip">Elementary</span><span class="age-chip">Upper Elem.</span></div>
-          <p class="series-card__desc">A brand-new series exploring who the Holy Spirit is, what He does in our lives, and how to live a Spirit-filled life as a kid. Coming Summer 2026.</p>
-          <div class="series-card__footer">
-            <span class="series-card__lessons">📝 6 Lessons Planned</span>
-            <a href="glory-kids-membership.html" class="btn btn--outline btn--sm">Join to Get First Access</a>
+      <!-- Welcome Home -->
+      <div class="curr-card group" data-category="all">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#3E8E7E,#38B6A5);">
+            🏠
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Welcome Home</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">What church is, why it matters, and how kids belong — building excitement for community and the family of God.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
           </div>
         </div>
       </div>
+
+      <!-- Summer Soundtrack -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#F2C94C,#38B6A5);">
+            🎧
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">☀️ Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Summer Soundtrack</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A high-energy summer series with worship, water games, and Scripture kids will be singing all season.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Christmas Playlist -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#C0392B,#3E8E7E);">
+            🎄
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">❄️ Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Christmas Playlist</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Four weeks of Advent wonder — the songs, the star, the shepherds — pointing straight to the newborn King.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Youth Will Win -->
+      <div class="curr-card group" data-category="all new age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#6D5BD0,#D45D9C);">
+            🏆
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-emerald-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">The Youth Will Win</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bold, preteen-focused lessons on standing firm in faith and leading well — for kids stepping into their calling.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- It's Giving Thanks -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#C47F0D,#F2994A);">
+            🍂
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🍁 Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">It's Giving Thanks</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A short, joyful series building real gratitude habits — perfect for the weeks leading into Thanksgiving.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- What Was I Made For -->
+      <div class="curr-card group" data-category="all popular age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#38B6A5,#6D5BD0);">
+            🌟
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">What Was I Made For</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Helping preteens explore identity and purpose in Christ — who God made them to be, on purpose, for a purpose.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Move of God -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#4B5EAA,#38B6A5);">
+            🔥
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-emerald-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Move of God</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Stories of revival and the Holy Spirit's power at work — stirring kids to expect God to move today.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-12 reveal">
+      <a href="free-lessons.html" class="btn btn--outline btn--lg">View All 500+ Lessons →</a>
     </div>
   </div>
 </section>
+
+<style>
+  .curr-filter-btn { background: transparent; color: var(--gray-500); }
+  .curr-filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
+  .curr-filter-btn.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .curr-card { transition: opacity 0.35s ease, transform 0.35s ease; }
+  .curr-card.is-hidden { opacity: 0; transform: scale(0.94); pointer-events: none; position: absolute; visibility: hidden; height: 0; overflow: hidden; margin: 0; }
+  .curr-card__cta {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+    color: var(--primary); opacity: 0; transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .group:hover .curr-card__cta { opacity: 1; transform: translateY(0); }
+  .curr-preview-badge {
+    position: absolute; bottom: 0.75rem; left: 0.75rem;
+    background: rgba(255,255,255,0.9); color: #1a1f3a;
+    font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 999px;
+  }
+</style>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.curr-filter-btn');
+    var cards = document.querySelectorAll('.curr-card');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var filter = btn.dataset.filter;
+        cards.forEach(function (card) {
+          var cats = card.dataset.category.split(' ');
+          if (cats.indexOf(filter) !== -1) {
+            card.classList.remove('is-hidden');
+          } else {
+            card.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+  })();
+</script>
 
 <!-- HOW IT WORKS -->
 <section>
@@ -326,7 +548,7 @@
   <div class="footer__top">
     <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
     <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
-    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="faq/index.html" class="footer__link">FAQ</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
     <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
   </div>
   <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>

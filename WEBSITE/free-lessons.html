@@ -3,428 +3,638 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free Bible Lessons | Children's Ministry Lessons</title>
-  <meta name="description" content="500+ free Bible lessons for kids — Old Testament, New Testament, Jesus, Heroes of Faith, and more. Ready to teach, printable, and completely free." />
+  <title>500+ Free Bible Lessons for Kids (Ages 3-12) | Printable & Ready-to-Teach</title>
+  <meta name="description" content="Free Bible lessons for kids ages 3-12: printable activity sheets, crafts, and discussion questions. No signup, no credit card — download and teach today." />
+  <meta name="keywords" content="free Bible lessons for kids, printable Bible lessons, Bible activity sheets for kids, Sunday school lessons" />
+  <link rel="canonical" href="https://www.childrensministrylessons.com/free-lessons.html" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    .lessons-header {
-      background: linear-gradient(135deg, #278244 0%, #047857 40%, #7B5EA7 100%);
-    }
-    .search-bar {
-      display: flex; gap: 0.75rem; max-width: 520px; margin: 2rem auto 0;
-    }
-    .search-bar input {
-      flex: 1; padding: 0.85rem 1.25rem;
-      border: none; border-radius: var(--radius-full);
-      font-family: var(--font-body); font-size: 0.95rem;
-      outline: none; box-shadow: var(--shadow-md);
-    }
-    .search-bar button {
-      background: var(--gold); color: var(--white);
-      padding: 0.85rem 1.5rem;
-      border-radius: var(--radius-full);
-      font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
-      cursor: pointer; transition: var(--transition);
-      white-space: nowrap;
-    }
-    .search-bar button:hover { background: var(--gold-dark); }
-    .lesson-count {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.9);
-      padding: 0.5rem 1.25rem;
-      border-radius: var(--radius-full);
-      font-family: var(--font-heading);
-      font-size: 0.85rem; font-weight: 600;
-      margin-bottom: 1.25rem;
-    }
-    .category-pills {
-      display: flex; gap: 0.75rem; flex-wrap: wrap;
-      margin-bottom: 2rem;
-    }
-    .category-pill {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.6rem 1.25rem;
-      border-radius: var(--radius-full);
-      font-family: var(--font-heading); font-size: 0.85rem; font-weight: 700;
-      cursor: pointer; transition: var(--transition);
-      border: 2px solid transparent;
-    }
-    .lesson-card--lg .lesson-card__img { height: 240px; }
-    .no-results {
-      text-align: center; padding: 4rem 2rem;
-      color: var(--gray-500);
-    }
-    .no-results h3 { color: var(--white); margin-bottom: 0.5rem; }
-    .featured-lesson {
-      display: grid; grid-template-columns: 1fr 1.4fr;
-      gap: 3rem; align-items: center;
-      background: var(--color-card);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-      margin-bottom: 3rem;
-    }
-    .featured-lesson__img {
-      height: 320px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 6rem;
-      background: linear-gradient(135deg, #EDE7F6, #FEF0D3);
-    }
-    .featured-lesson__body { padding: 2.5rem 2.5rem 2.5rem 0; }
-    .featured-lesson__label {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: var(--gold-light); color: var(--gold-dark);
-      padding: 0.3rem 0.85rem;
-      border-radius: var(--radius-full);
-      font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      margin-bottom: 1rem;
-    }
-    .featured-lesson__title { font-size: 2rem; margin-bottom: 0.85rem; }
-    .featured-lesson__desc { color: var(--gray-500); margin-bottom: 1.5rem; line-height: 1.75; }
-    .featured-lesson__meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
-    .featured-lesson__meta span {
-      display: flex; align-items: center; gap: 0.4rem;
-      font-size: 0.875rem; color: var(--gray-500); font-weight: 500;
-    }
-    @media(max-width:768px) {
-      .featured-lesson { grid-template-columns: 1fr; }
-      .featured-lesson__body { padding: 1.5rem; }
-      .featured-lesson__img { height: 200px; }
-    }
-  </style>
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="homepage.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false, container: false } };
+  </script>
 </head>
 <body>
+
 <div id="page-loader"><div class="loader-content"><div class="loader-logo">📖 Free Lessons</div><div class="loader-bar"></div></div></div>
 <div id="progress-bar"></div>
 
+<!-- NAVIGATION -->
 <nav class="nav" id="nav">
   <div class="container">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo"><div class="nav__logo-icon">✝</div><span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span></a>
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
+      </a>
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link active">Free Lessons</a></li>
-        <li class="nav__dropdown"><a href="#" class="nav__link">Curriculum ▾</a><div class="nav__dropdown-menu"><a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a><a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a></div></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
         <li><a href="activities.html" class="nav__link">Activities</a></li>
-        <li><a href="blog.html" class="nav__link">Blog</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
         <li><a href="contact.html" class="nav__link">Contact</a></li>
       </ul>
       <div class="nav__actions">
-        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
-        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
       </div>
-      <button class="nav__hamburger"><span></span><span></span><span></span></button>
+      <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
+
 <div class="nav__mobile">
   <a href="index.html" class="nav__mobile-link">🏠 Home</a>
   <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
   <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
   <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
-  <a href="activities.html" class="nav__mobile-link">🎨 Activities</a>
+  <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
   <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
-  <div class="nav__mobile-cta"><a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Glory Kids</a></div>
+  <div class="nav__mobile-cta">
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Glory Kids → $29.99/mo</a>
+  </div>
 </div>
 
-<!-- PAGE HERO -->
-<section class="page-hero lessons-header">
-  <div class="container">
-    <div class="lesson-count">📖 500+ Free Lessons Available</div>
-    <h1>Free Bible Lessons<br>for <span style="color:var(--gold);">Every Age</span></h1>
-    <p>Completely free, ready-to-teach Bible lessons covering the whole of Scripture. Download, print, and teach this Sunday.</p>
-    <div class="search-bar">
-      <input type="text" id="lesson-search" placeholder="Search lessons (e.g. 'David', 'Easter', 'Prayer')..." />
-      <button onclick="searchLessons()">Search</button>
-    </div>
-  </div>
-</section>
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="relative overflow-hidden bg-[var(--color-darkest)] pt-[130px] pb-14 md:pt-40 md:pb-16">
+  <div class="absolute inset-0 -z-10 pointer-events-none" style="background:radial-gradient(circle at 15% 0%, rgba(34,197,94,0.15) 0%, transparent 55%);"></div>
+  <div class="container relative">
+    <nav class="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+      <a href="index.html" class="hover:text-white transition-colors">Home</a>
+      <span class="mx-2">/</span>
+      <span class="text-white">Free Bible Lessons</span>
+    </nav>
 
-<!-- LESSONS SECTION -->
-<section>
-  <div class="container">
-    <!-- Filters -->
-    <div class="filter-bar" id="filter-bar">
-      <button class="filter-btn active" data-filter="all">🌟 All Lessons</button>
-      <button class="filter-btn" data-filter="old-testament">📜 Old Testament</button>
-      <button class="filter-btn" data-filter="new-testament">✝️ New Testament</button>
-      <button class="filter-btn" data-filter="jesus">💛 Jesus</button>
-      <button class="filter-btn" data-filter="heroes">🦸 Heroes of Faith</button>
-      <button class="filter-btn" data-filter="prayer">🙏 Prayer</button>
-      <button class="filter-btn" data-filter="holiday">🎉 Holidays</button>
-    </div>
-
-    <!-- Featured Lesson -->
-    <div class="featured-lesson reveal">
-      <div class="featured-lesson__img">🌊</div>
-      <div class="featured-lesson__body">
-        <div class="featured-lesson__label">⭐ Featured This Week</div>
-        <h2 class="featured-lesson__title">Moses Parts the Red Sea</h2>
-        <p class="featured-lesson__desc">God makes a way when there seems to be no way! In this powerful lesson, kids discover what happens when we trust God in impossible situations. Includes lesson script, discussion questions, object lesson, and printable activity sheets.</p>
-        <div class="featured-lesson__meta">
-          <span>📅 Ages 5–12</span>
-          <span>⏱ 30–45 min</span>
-          <span>🏷 Old Testament</span>
-          <span>📄 PDF Download</span>
-        </div>
-        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
-          <a href="#" class="btn btn--primary btn--lg">📥 Download Free Lesson</a>
-          <a href="glory-kids-membership.html" class="btn btn--outline btn--lg">Get 500+ More →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Lessons Grid -->
-    <div class="lessons-grid" id="lessons-grid">
-
-      <div class="lesson-card reveal reveal-delay-1" data-category="old-testament" data-title="creation story">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#FEF0D3,#FDEBD9);">
-          🌍
-          <span class="lesson-card__tag tag--ot">Old Testament</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">God Creates the World</h4>
-          <p class="lesson-card__desc">Kids discover that God is the Creator of everything — and that they are His most special creation, made with love and purpose.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 3–8</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-2" data-category="old-testament" data-title="noah ark animals">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#D6EDF9,#EDE7F6);">
-          🌈
-          <span class="lesson-card__tag tag--ot">Old Testament</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Noah and the Ark</h4>
-          <p class="lesson-card__desc">God kept Noah's family safe because Noah trusted and obeyed. Kids learn that obedience to God always leads to protection and blessing.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 3–10</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-3" data-category="heroes" data-title="david goliath giant">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#D9F0E1,#D6EDF9);">
-          🪨
-          <span class="lesson-card__tag tag--heroes">Heroes of Faith</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">David and Goliath</h4>
-          <p class="lesson-card__desc">A young boy, a sling, and a big God. Kids discover that with God on their side, they can face any giant in their life with courage and faith.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 5–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-1" data-category="jesus" data-title="jesus born christmas nativity">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#FDEBD9,#FEF0D3);">
-          ⭐
-          <span class="lesson-card__tag tag--jesus">Jesus</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">The Birth of Jesus</h4>
-          <p class="lesson-card__desc">God loved the world so much He sent His Son. Kids experience the wonder of that first Christmas night in Bethlehem — and what it means for them today.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 3–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-2" data-category="jesus" data-title="zacchaeus tax collector tree">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#EDE7F6,#D9F0E1);">
-          🌳
-          <span class="lesson-card__tag tag--jesus">Jesus</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Zacchaeus Meets Jesus</h4>
-          <p class="lesson-card__desc">Jesus sees the real you — and He loves you anyway. Kids discover that no one is too far gone for Jesus to reach and restore.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 4–10</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-3" data-category="prayer" data-title="lord prayer disciples">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#D6EDF9,#EDE7F6);">
-          🙏
-          <span class="lesson-card__tag tag--prayer">Prayer</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">The Lord's Prayer</h4>
-          <p class="lesson-card__desc">Jesus taught His disciples how to talk to God. Kids learn that prayer is a conversation with their Heavenly Father who always listens and cares.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 5–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-1" data-category="heroes" data-title="esther queen brave courage">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#FDEBD9,#FFF1F2);">
-          👑
-          <span class="lesson-card__tag tag--heroes">Heroes of Faith</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Esther: Born for Such a Time</h4>
-          <p class="lesson-card__desc">Esther's bravery saved an entire nation. Kids learn that God puts us exactly where we are for a purpose — and bravery changes everything.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 6–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-2" data-category="new-testament" data-title="good samaritan love neighbor">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#FDEBD9,#FEF0D3);">
-          💛
-          <span class="lesson-card__tag tag--nt">New Testament</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">The Good Samaritan</h4>
-          <p class="lesson-card__desc">Love your neighbour as yourself. Through this timeless parable, kids learn what it truly means to show kindness, compassion, and love to everyone.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 4–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-3" data-category="holiday" data-title="easter resurrection risen">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#D9F0E1,#D6EDF9);">
-          ✝️
-          <span class="lesson-card__tag tag--holiday">Easter</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">He Is Risen! — Easter Lesson</h4>
-          <p class="lesson-card__desc">The most important event in history! Kids explore the Easter story from Good Friday to Resurrection Sunday and discover why it changes everything.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 3–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-1" data-category="heroes" data-title="joseph coat dreams egypt">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#FEF0D3,#FDEBD9);">
-          🌈
-          <span class="lesson-card__tag tag--heroes">Heroes of Faith</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Joseph and His Dreams</h4>
-          <p class="lesson-card__desc">God had a plan for Joseph even in the pit. Kids discover that what others mean for harm, God can turn into something beautiful and purposeful.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 5–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-2" data-category="jesus" data-title="prodigal son father love">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#EDE7F6,#FDEBD9);">
-          🏃
-          <span class="lesson-card__tag tag--jesus">Jesus</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">The Prodigal Son</h4>
-          <p class="lesson-card__desc">No matter how far we run, God always runs to meet us. Kids discover the relentless, unconditional love of our Heavenly Father.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 5–12</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="lesson-card reveal reveal-delay-3" data-category="new-testament" data-title="fruits spirit love joy peace">
-        <div class="lesson-card__img" style="background:linear-gradient(135deg,#D9F0E1,#FEF0D3);">
-          🍎
-          <span class="lesson-card__tag tag--nt">New Testament</span>
-        </div>
-        <div class="lesson-card__body">
-          <h4 class="lesson-card__title">Fruit of the Spirit</h4>
-          <p class="lesson-card__desc">Love, joy, peace, patience... Kids explore what it looks like when the Holy Spirit lives in us, and how to grow in each beautiful fruit.</p>
-          <div class="lesson-card__footer">
-            <span class="lesson-card__age">Ages 4–10</span>
-            <a href="#" class="btn btn--primary btn--sm">Free Download</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Load More -->
-    <div class="text-center mt-4 reveal">
-      <p style="color:var(--gray-500); margin-bottom:1.25rem;">Showing 12 of 500+ free lessons</p>
-      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg">✨ Unlock All 500+ Lessons with Glory Kids →</a>
-    </div>
-  </div>
-</section>
-
-<!-- MEMBERSHIP NUDGE -->
-<section class="section--light" style="padding:3.5rem 0;">
-  <div class="container">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center;" class="reveal">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
       <div>
-        <div class="section-label">Want More?</div>
-        <h2 style="margin-bottom:1rem;">Get <span class="highlight">Unlimited Access</span> with Glory Kids</h2>
-        <p style="color:var(--gray-500); margin-bottom:1.5rem;">These free lessons are just the beginning. Glory Kids Membership unlocks 500+ lessons, complete curriculum series, activity sheets, video guides, and new content every single week.</p>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg">Join for $29.99/mo →</a>
+        <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 px-4 py-2 rounded-full font-semibold text-sm mb-5">
+          📖 500+ Lessons &middot; Updated Every Month
+        </div>
+        <h1 class="font-bold text-white leading-[1.15] text-[28px] sm:text-[36px] md:text-[44px] mb-5">
+          500+ Free Bible Lessons for Kids (Ages 3&ndash;12) | Ready-to-Print Activities
+        </h1>
+        <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+          No signup required. No credit card. Just download, print, and teach.
+        </p>
+        <a href="#lessonGrid" class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-base px-7 py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-colors">
+          Browse Free Lessons Now →
+        </a>
       </div>
-      <div style="display:flex; flex-direction:column; gap:1rem;">
-        <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:1.25rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem;">
-          <span style="font-size:2rem;">📖</span>
-          <div><strong style="font-family:var(--font-heading); color:var(--white);">500+ Lessons</strong><br><span style="font-size:0.85rem; color:var(--gray-500);">Full Bible coverage for all ages</span></div>
+
+      <!-- 3 sample lesson covers -->
+      <div class="flex items-center justify-center gap-3 sm:gap-4">
+        <div class="hero-cover hero-cover--tilt-left" style="background:linear-gradient(135deg,#6D5BD0,#38B6A5);">
+          <span class="text-4xl sm:text-5xl">🦁</span>
+          <span class="hero-cover__label">David &amp; Goliath</span>
         </div>
-        <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:1.25rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem;">
-          <span style="font-size:2rem;">✨</span>
-          <div><strong style="font-family:var(--font-heading); color:var(--white);">Glory Kids Curriculum</strong><br><span style="font-size:0.85rem; color:var(--gray-500);">Multi-week series included</span></div>
+        <div class="hero-cover hero-cover--front" style="background:linear-gradient(135deg,#E14D5C,#F2994A);">
+          <span class="text-4xl sm:text-5xl">🌊</span>
+          <span class="hero-cover__label">Moses &amp; the Red Sea</span>
         </div>
-        <div style="background:var(--color-card); border-radius:var(--radius-lg); padding:1.25rem; box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem;">
-          <span style="font-size:2rem;">📅</span>
-          <div><strong style="font-family:var(--font-heading); color:var(--white);">New Every Week</strong><br><span style="font-size:0.85rem; color:var(--gray-500);">Fresh content added weekly</span></div>
+        <div class="hero-cover hero-cover--tilt-right" style="background:linear-gradient(135deg,#38B6A5,#4B5EAA);">
+          <span class="text-4xl sm:text-5xl">🐋</span>
+          <span class="hero-cover__label">Jonah &amp; the Whale</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<footer class="footer">
+<!-- ═══════════════════════════════════════════════
+     STICKY SEARCH + FILTERS
+════════════════════════════════════════════════ -->
+<section class="bg-[var(--color-bg)] border-b border-white/10 sticky top-[64px] z-30 py-4" id="filterBar">
   <div class="container">
-    <div class="footer__top">
-      <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
-      <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Bible Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
-      <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
-      <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" onsubmit="return false;"><input type="email" placeholder="Your email" /><button>Subscribe</button></form></div>
+    <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
+      <!-- Search -->
+      <div class="relative flex-1 max-w-md">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input id="lessonSearch" type="text" placeholder="Search by title or Bible story..."
+          class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+
+      <!-- Mobile filter toggle -->
+      <button id="filterToggleBtn" class="lg:hidden flex items-center justify-center gap-2 border border-white/15 text-white text-sm font-semibold px-4 py-2.5 rounded-xl">
+        <span>☰ Filters &amp; Sort</span>
+      </button>
+
+      <!-- Desktop filters -->
+      <div id="filterControls" class="hidden lg:flex flex-wrap gap-2 items-center">
+        <select id="filterAge" class="filter-select">
+          <option value="all">All Ages</option>
+          <option value="preschool">Preschool (2-5)</option>
+          <option value="k2">K&ndash;2nd Grade</option>
+          <option value="upper35">3rd&ndash;5th Grade</option>
+          <option value="sixplus">6th Grade+</option>
+        </select>
+        <select id="filterTopic" class="filter-select">
+          <option value="all">All Topics</option>
+          <option value="heroes">Heroes of Faith</option>
+          <option value="prayer">Prayer</option>
+          <option value="emotions">Emotions</option>
+          <option value="mentalhealth">Mental Health</option>
+          <option value="church">Church</option>
+          <option value="holidays">Holidays</option>
+        </select>
+        <select id="filterType" class="filter-select">
+          <option value="all">All Types</option>
+          <option value="lesson">Bible Lesson</option>
+          <option value="craft">Craft</option>
+          <option value="activity">Activity</option>
+          <option value="discussion">Discussion Questions</option>
+          <option value="song">Song</option>
+        </select>
+        <select id="filterSeason" class="filter-select">
+          <option value="all">All Seasons</option>
+          <option value="general">General</option>
+          <option value="christmas">Christmas</option>
+          <option value="easter">Easter</option>
+          <option value="summer">Summer</option>
+          <option value="thanksgiving">Thanksgiving</option>
+        </select>
+        <select id="sortSelect" class="filter-select">
+          <option value="recent">Sort: Most Recent</option>
+          <option value="popular">Sort: Most Popular</option>
+          <option value="downloaded">Sort: Most Downloaded</option>
+        </select>
+      </div>
     </div>
-    <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+
+    <!-- Mobile filter panel -->
+    <div id="mobileFilterPanel" class="hidden lg:hidden grid grid-cols-2 gap-2 mt-3">
+      <select id="filterAgeMobile" class="filter-select">
+        <option value="all">All Ages</option>
+        <option value="preschool">Preschool (2-5)</option>
+        <option value="k2">K&ndash;2nd Grade</option>
+        <option value="upper35">3rd&ndash;5th Grade</option>
+        <option value="sixplus">6th Grade+</option>
+      </select>
+      <select id="filterTopicMobile" class="filter-select">
+        <option value="all">All Topics</option>
+        <option value="heroes">Heroes of Faith</option>
+        <option value="prayer">Prayer</option>
+        <option value="emotions">Emotions</option>
+        <option value="mentalhealth">Mental Health</option>
+        <option value="church">Church</option>
+        <option value="holidays">Holidays</option>
+      </select>
+      <select id="filterTypeMobile" class="filter-select">
+        <option value="all">All Types</option>
+        <option value="lesson">Bible Lesson</option>
+        <option value="craft">Craft</option>
+        <option value="activity">Activity</option>
+        <option value="discussion">Discussion Questions</option>
+        <option value="song">Song</option>
+      </select>
+      <select id="filterSeasonMobile" class="filter-select">
+        <option value="all">All Seasons</option>
+        <option value="general">General</option>
+        <option value="christmas">Christmas</option>
+        <option value="easter">Easter</option>
+        <option value="summer">Summer</option>
+        <option value="thanksgiving">Thanksgiving</option>
+      </select>
+      <select id="sortSelectMobile" class="filter-select col-span-2">
+        <option value="recent">Sort: Most Recent</option>
+        <option value="popular">Sort: Most Popular</option>
+        <option value="downloaded">Sort: Most Downloaded</option>
+      </select>
+    </div>
+
+    <p id="resultsCount" class="text-xs text-slate-400 mt-2"></p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     GRID + SIDEBAR
+════════════════════════════════════════════════ -->
+<section class="bg-[var(--color-bg)] py-10 md:py-14" id="lessonGrid">
+  <div class="container">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-10">
+
+      <div>
+        <div id="cardGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <p id="noResults" class="hidden text-center text-slate-400 py-16">No lessons match your filters. Try clearing a filter or searching a different term.</p>
+        <div class="text-center mt-10">
+          <button id="loadMoreBtn" class="gk-btn gk-btn--outline-white gk-btn--lg">Load More Lessons</button>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <aside class="space-y-6">
+        <div class="sidebar-box">
+          <div class="sidebar-box__title">🔥 Most Downloaded This Week</div>
+          <ol id="sidebarDownloaded" class="space-y-2 text-sm"></ol>
+        </div>
+        <div class="sidebar-box">
+          <div class="sidebar-box__title">🆕 New Releases</div>
+          <ol id="sidebarNew" class="space-y-2 text-sm"></ol>
+        </div>
+        <div class="sidebar-box">
+          <div class="sidebar-box__title">👨‍👩‍👧 Popular by Age Group</div>
+          <ol id="sidebarByAge" class="space-y-2 text-sm"></ol>
+        </div>
+        <div class="sidebar-box sidebar-box--tips">
+          <div class="text-xs font-bold uppercase tracking-wide text-emerald-300 mb-2">Related Reading</div>
+          <ul class="space-y-2 text-sm">
+            <li><a href="blog-kids-engagement.html" class="sidebar-link">How to Keep Kids Engaged in Church: 7 Strategies →</a></li>
+            <li><a href="blog-family-devotions.html" class="sidebar-link">Family Devotions for Kids: 5 Simple Ideas →</a></li>
+            <li><a href="blog-teach-child-prayer.html" class="sidebar-link">How to Teach Your Child About Prayer →</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     MEMBERSHIP CTA
+════════════════════════════════════════════════ -->
+<section class="bg-[var(--color-darkest)] py-16 md:py-20">
+  <div class="container">
+    <div class="max-w-2xl mx-auto text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Want unlimited access to ALL 500+ lessons + video guides + parent devotionals?</h2>
+      <a href="glory-kids-membership.html" class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-colors mt-4 mb-6">
+        Join Glory Kids — $29.99/month →
+      </a>
+      <p class="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-300">
+        <span class="text-amber-400 tracking-tight">⭐⭐⭐⭐⭐</span>
+        <span><strong class="text-white">98%</strong> love it</span>
+        <span class="text-slate-500">|</span>
+        <span>14-day money-back guarantee</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PDF PREVIEW LIGHTBOX
+════════════════════════════════════════════════ -->
+<div id="lessonModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
+  <div class="bg-[var(--color-card)] border border-white/10 rounded-2xl max-w-lg w-full p-6 relative">
+    <button id="modalClose" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl" aria-label="Close preview">✕</button>
+    <div id="modalCover" class="rounded-xl aspect-[2/1] flex items-center justify-center text-6xl mb-5"></div>
+    <h3 id="modalTitle" class="text-white font-bold text-xl mb-1"></h3>
+    <p id="modalStory" class="text-slate-400 text-sm mb-4"></p>
+    <p id="modalDesc" class="text-slate-300 text-sm mb-6"></p>
+    <a id="modalDownload" href="#" class="inline-flex items-center justify-center gap-2 w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold text-base px-6 py-3 rounded-xl transition-colors">
+      ⬇ Download Free PDF
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="gk-footer">
+  <div class="container">
+    <div class="gk-footer__grid">
+      <div class="gk-footer__brand">
+        <div class="gk-footer__logo">✝ Glory Kids Ministries</div>
+        <p class="gk-footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith. Founded 2015.</p>
+        <div class="gk-footer__social">
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶️</a>
+          <a href="#" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div>
+        <div class="gk-footer__title">Resources</div>
+        <ul class="gk-footer__links">
+          <li><a href="free-lessons.html">Free Bible Lessons</a></li>
+          <li><a href="curriculum-packs.html">Curriculum Packs</a></li>
+          <li><a href="glory-kids-curriculum.html">Glory Kids Curriculum</a></li>
+          <li><a href="comparison.html">Compare Platforms</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="gk-footer__title">Company</div>
+        <ul class="gk-footer__links">
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="faq/index.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="gk-footer__title">Stay Inspired</div>
+        <p class="gk-footer__desc">Get free lessons, tips, and ministry inspiration.</p>
+        <form class="newsletter-form gk-newsletter" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="gk-footer__bottom">
+      <span>© 2026 ChildrensMinistryLessons.com. All rights reserved.</span>
+      <div class="gk-footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
   </div>
 </footer>
 
-<script src="app.js"></script>
+<style>
+  .hero-cover {
+    width: 110px; height: 150px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.35); flex-shrink: 0;
+  }
+  @media (min-width: 640px) { .hero-cover { width: 140px; height: 190px; } }
+  .hero-cover--tilt-left { transform: rotate(-6deg); }
+  .hero-cover--tilt-right { transform: rotate(6deg); }
+  .hero-cover--front { transform: translateY(-10px) scale(1.05); z-index: 1; }
+  .hero-cover__label { color: #fff; font-size: 0.65rem; font-weight: 700; text-align: center; padding: 0 0.4rem; line-height: 1.3; }
+
+  .filter-select {
+    background: var(--color-card); border: 1px solid var(--color-border); color: #fff;
+    font-size: 0.82rem; font-weight: 600; padding: 0.55rem 0.75rem; border-radius: 0.65rem;
+    outline: none;
+  }
+
+  .lesson-card {
+    background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+    overflow: hidden; transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .lesson-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .lesson-card.is-filtered-out { display: none; }
+  .lesson-card.is-page-hidden { display: none; }
+  .lesson-card__thumb { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+  .lesson-card__age {
+    position: absolute; top: 0.6rem; left: 0.6rem; background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
+    color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;
+  }
+  .lesson-card__body { padding: 1.1rem 1.25rem 1.25rem; }
+  .lesson-card__title { color: #fff; font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .lesson-card__story { color: var(--gray-500); font-size: 0.78rem; margin-bottom: 0.4rem; }
+  .lesson-card__desc { color: var(--gray-400); font-size: 0.82rem; line-height: 1.5; margin-bottom: 0.9rem; }
+  .lesson-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+  .lesson-card__preview {
+    flex: 1; text-align: center; background: var(--primary); color: #fff; font-weight: 700; font-size: 0.78rem;
+    padding: 0.55rem 0.75rem; border-radius: 0.6rem; border: none; cursor: pointer; transition: var(--transition);
+  }
+  .lesson-card__preview:hover { background: var(--primary-dark); }
+  .lesson-card__dl { color: var(--gray-400); font-size: 1.1rem; padding: 0.4rem; }
+  .lesson-card__dl:hover { color: #fff; }
+
+  .sidebar-box { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.35rem; }
+  .sidebar-box__title { font-family: var(--font-heading); font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 0.9rem; }
+  .sidebar-box--tips { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.3); }
+  .sidebar-item { display: flex; align-items: baseline; gap: 0.5rem; color: var(--gray-300); }
+  .sidebar-item__num { color: var(--primary); font-weight: 800; flex-shrink: 0; }
+  .sidebar-link { color: var(--gray-300); text-decoration: none; }
+  .sidebar-link:hover { color: #fff; text-decoration: underline; }
+</style>
+
 <script>
-function searchLessons() {
-  const q = document.getElementById('lesson-search').value.toLowerCase();
-  const cards = document.querySelectorAll('[data-category]');
-  cards.forEach(card => {
-    const title = (card.dataset.title || '') + card.querySelector('.lesson-card__title').textContent.toLowerCase();
-    card.style.display = (q === '' || title.includes(q)) ? '' : 'none';
+(function () {
+  var LESSONS = [
+    { title: "David & Goliath", story: "1 Samuel 17", desc: "A shepherd boy's faith topples a giant no soldier dared face.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🦁", downloads: 812, date: "2026-06-20", grad: "#6D5BD0,#38B6A5" },
+    { title: "The Good Samaritan", story: "Luke 10:25-37", desc: "A story-plus-activity lesson on what it really means to love your neighbor.", age: "upper35", ageLabel: "Ages 3-12", topic: "church", type: "activity", season: "general", emoji: "🤝", downloads: 645, date: "2026-06-18", grad: "#E14D5C,#F2994A" },
+    { title: "Jesus Calms the Storm", story: "Mark 4:35-41", desc: "A gentle lesson + craft helping little ones trust Jesus when they're scared.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "craft", season: "general", emoji: "⛵", downloads: 590, date: "2026-06-15", grad: "#4B5EAA,#38B6A5" },
+    { title: "Jonah & the Whale", story: "Jonah 1-2", desc: "What happens when we run from God's plan — and what happens when we turn back.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🐋", downloads: 701, date: "2026-06-10", grad: "#38B6A5,#6D5BD0" },
+    { title: "Moses & the Red Sea", story: "Exodus 14", desc: "God makes a way where there seems to be no way at all.", age: "k2", ageLabel: "Ages 5-12", topic: "heroes", type: "lesson", season: "general", emoji: "🌊", downloads: 733, date: "2026-06-08", grad: "#F2994A,#E14D5C" },
+    { title: "Daniel in the Lions' Den", story: "Daniel 6", desc: "A discussion-driven lesson on staying faithful even when it's costly.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "discussion", season: "general", emoji: "🦁", downloads: 512, date: "2026-05-30", grad: "#7B5EA7,#F2994A" },
+    { title: "The Lord's Prayer, Explained for Kids", story: "Matthew 6:9-13", desc: "Breaking down the Lord's Prayer line-by-line in language kids actually get.", age: "upper35", ageLabel: "Ages 6-12", topic: "prayer", type: "discussion", season: "general", emoji: "🙏", downloads: 486, date: "2026-05-25", grad: "#38B6A5,#4B5EAA" },
+    { title: "When I'm Scared: Trusting God With Big Feelings", story: "Psalm 56:3", desc: "A lesson + craft that gives anxious kids simple, biblical tools for fear.", age: "preschool", ageLabel: "Ages 3-7", topic: "mentalhealth", type: "craft", season: "general", emoji: "💙", downloads: 468, date: "2026-05-20", grad: "#4B5EAA,#8E7CC3" },
+    { title: "Why Do We Go to Church?", story: "Hebrews 10:24-25", desc: "A discussion lesson helping kids see church as family, not just a building.", age: "k2", ageLabel: "Ages 5-10", topic: "church", type: "discussion", season: "general", emoji: "⛪", downloads: 401, date: "2026-05-15", grad: "#3E8E7E,#38B6A5" },
+    { title: "The Nativity Story", story: "Luke 2:1-20", desc: "A lesson + craft retelling the first Christmas in a way little ones love.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "craft", season: "christmas", emoji: "🎄", downloads: 890, date: "2026-05-10", grad: "#C0392B,#3E8E7E" },
+    { title: "He Is Risen: An Easter Lesson for Kids", story: "Matthew 28:1-10", desc: "A hope-filled lesson explaining the resurrection in age-appropriate terms.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "lesson", season: "easter", emoji: "✝️", downloads: 754, date: "2026-05-05", grad: "#F2994A,#7B5EA7" },
+    { title: "Noah's Ark", story: "Genesis 6-9", desc: "A craft-friendly lesson on obedience, patience, and God's promises.", age: "preschool", ageLabel: "Ages 3-7", topic: "heroes", type: "craft", season: "general", emoji: "🌈", downloads: 622, date: "2026-04-28", grad: "#38B6A5,#7ED6A5" },
+    { title: "The Fruit of the Spirit Song & Craft", story: "Galatians 5:22-23", desc: "A sing-along plus craft that helps kids memorize all nine fruits of the Spirit.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "song", season: "general", emoji: "🎵", downloads: 388, date: "2026-04-20", grad: "#D45D9C,#F2994A" },
+    { title: "Giving Thanks: A Thanksgiving Bible Lesson", story: "1 Thessalonians 5:18", desc: "A discussion lesson building real gratitude habits, not just a holiday craft.", age: "k2", ageLabel: "Ages 5-10", topic: "holidays", type: "discussion", season: "thanksgiving", emoji: "🍂", downloads: 355, date: "2026-04-15", grad: "#C47F0D,#F2994A" },
+    { title: "Faith Like a Mustard Seed: Summer Bible Adventure", story: "Matthew 17:20", desc: "A high-energy summer activity lesson on small faith making a big difference.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "activity", season: "summer", emoji: "🌱", downloads: 340, date: "2026-04-10", grad: "#F2C94C,#38B6A5" },
+    { title: "Dealing With Big Feelings", story: "Philippians 4:6-7", desc: "A discussion-based lesson giving kids biblical language for anger and worry.", age: "upper35", ageLabel: "Ages 6-12", topic: "mentalhealth", type: "discussion", season: "general", emoji: "🧠", downloads: 410, date: "2026-04-05", grad: "#4B5EAA,#D45D9C" },
+    { title: "The Prodigal Son", story: "Luke 15:11-32", desc: "A discussion lesson on grace, coming home, and a Father who never stops watching.", age: "upper35", ageLabel: "Ages 6-12", topic: "church", type: "discussion", season: "general", emoji: "🏡", downloads: 375, date: "2026-03-28", grad: "#3E8E7E,#6D5BD0" },
+    { title: "Building on the Rock", story: "Matthew 7:24-27", desc: "A craft lesson on why a faith built on Jesus stands firm in every storm.", age: "k2", ageLabel: "Ages 5-10", topic: "heroes", type: "craft", season: "general", emoji: "🪨", downloads: 298, date: "2026-03-20", grad: "#6D5BD0,#F2994A" }
+  ];
+
+  var PAGE_SIZE = 12;
+  var visibleCount = PAGE_SIZE;
+
+  var cardGrid = document.getElementById('cardGrid');
+  var noResults = document.getElementById('noResults');
+  var resultsCount = document.getElementById('resultsCount');
+  var loadMoreBtn = document.getElementById('loadMoreBtn');
+
+  function cardHtml(lesson, index) {
+    return (
+      '<div class="lesson-card" data-index="' + index + '" data-title="' + lesson.title.toLowerCase() + '" data-story="' + lesson.story.toLowerCase() +
+      '" data-age="' + lesson.age + '" data-topic="' + lesson.topic + '" data-type="' + lesson.type + '" data-season="' + lesson.season + '">' +
+        '<div class="lesson-card__thumb" style="background:linear-gradient(135deg,' + lesson.grad + ');">' +
+          lesson.emoji +
+          '<span class="lesson-card__age">' + lesson.ageLabel + '</span>' +
+        '</div>' +
+        '<div class="lesson-card__body">' +
+          '<div class="lesson-card__title">' + lesson.title + '</div>' +
+          '<div class="lesson-card__story">📜 ' + lesson.story + '</div>' +
+          '<div class="lesson-card__desc">' + lesson.desc + '</div>' +
+          '<div class="lesson-card__footer">' +
+            '<button type="button" class="lesson-card__preview" data-index="' + index + '">👁 Preview &amp; Download</button>' +
+            '<button type="button" class="lesson-card__dl" data-index="' + index + '" aria-label="Download">⬇</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function renderGrid() {
+    cardGrid.innerHTML = LESSONS.map(cardHtml).join('');
+  }
+
+  function applyFiltersAndSort() {
+    var query = document.getElementById('lessonSearch').value.trim().toLowerCase();
+    var age = document.getElementById('filterAge').value;
+    var topic = document.getElementById('filterTopic').value;
+    var type = document.getElementById('filterType').value;
+    var season = document.getElementById('filterSeason').value;
+    var sort = document.getElementById('sortSelect').value;
+
+    var cards = Array.from(cardGrid.querySelectorAll('.lesson-card'));
+
+    // sort underlying order first
+    var sorted = cards.slice().sort(function (a, b) {
+      var la = LESSONS[a.dataset.index], lb = LESSONS[b.dataset.index];
+      if (sort === 'popular') return lb.downloads - la.downloads;
+      if (sort === 'downloaded') return lb.downloads - la.downloads;
+      return new Date(lb.date) - new Date(la.date); // recent
+    });
+    sorted.forEach(function (card) { cardGrid.appendChild(card); });
+
+    var visibleMatches = 0;
+    var matches = [];
+    sorted.forEach(function (card) {
+      var matchesQuery = !query || card.dataset.title.indexOf(query) !== -1 || card.dataset.story.indexOf(query) !== -1;
+      var matchesAge = age === 'all' || card.dataset.age === age;
+      var matchesTopic = topic === 'all' || card.dataset.topic === topic;
+      var matchesType = type === 'all' || card.dataset.type === type;
+      var matchesSeason = season === 'all' || card.dataset.season === season;
+      var isMatch = matchesQuery && matchesAge && matchesTopic && matchesType && matchesSeason;
+      card.classList.toggle('is-filtered-out', !isMatch);
+      if (isMatch) matches.push(card);
+    });
+
+    matches.forEach(function (card, i) {
+      card.classList.toggle('is-page-hidden', i >= visibleCount);
+    });
+
+    visibleMatches = matches.length;
+    resultsCount.textContent = visibleMatches + ' lesson' + (visibleMatches === 1 ? '' : 's') + ' found';
+    noResults.classList.toggle('hidden', visibleMatches !== 0);
+    loadMoreBtn.style.display = (visibleMatches > visibleCount) ? 'inline-flex' : 'none';
+  }
+
+  function syncControlPairs(idA, idB) {
+    var a = document.getElementById(idA), b = document.getElementById(idB);
+    function sync(src, dest) {
+      src.addEventListener('change', function () {
+        dest.value = src.value;
+        visibleCount = PAGE_SIZE;
+        applyFiltersAndSort();
+      });
+    }
+    sync(a, b); sync(b, a);
+  }
+
+  renderGrid();
+  applyFiltersAndSort();
+
+  document.getElementById('lessonSearch').addEventListener('input', function () {
+    visibleCount = PAGE_SIZE;
+    applyFiltersAndSort();
   });
-}
-document.getElementById('lesson-search').addEventListener('keydown', e => {
-  if (e.key === 'Enter') searchLessons();
-});
+
+  syncControlPairs('filterAge', 'filterAgeMobile');
+  syncControlPairs('filterTopic', 'filterTopicMobile');
+  syncControlPairs('filterType', 'filterTypeMobile');
+  syncControlPairs('filterSeason', 'filterSeasonMobile');
+  syncControlPairs('sortSelect', 'sortSelectMobile');
+
+  loadMoreBtn.addEventListener('click', function () {
+    visibleCount += PAGE_SIZE;
+    applyFiltersAndSort();
+  });
+
+  document.getElementById('filterToggleBtn').addEventListener('click', function () {
+    document.getElementById('mobileFilterPanel').classList.toggle('hidden');
+  });
+
+  // Sidebar widgets
+  function renderSidebar() {
+    var byDownloads = LESSONS.slice().sort(function (a, b) { return b.downloads - a.downloads; }).slice(0, 5);
+    document.getElementById('sidebarDownloaded').innerHTML = byDownloads.map(function (l, i) {
+      return '<li class="sidebar-item"><span class="sidebar-item__num">' + (i + 1) + '</span><span>' + l.title + '</span></li>';
+    }).join('');
+
+    var byDate = LESSONS.slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); }).slice(0, 3);
+    document.getElementById('sidebarNew').innerHTML = byDate.map(function (l) {
+      return '<li class="sidebar-item"><span>🆕</span><span>' + l.title + '</span></li>';
+    }).join('');
+
+    var ageGroups = ['preschool', 'k2', 'upper35', 'sixplus'];
+    var ageLabels = { preschool: 'Preschool', k2: 'K-2nd', upper35: '3rd-5th', sixplus: '6th+' };
+    var byAge = ageGroups.map(function (age) {
+      var top = LESSONS.filter(function (l) { return l.age === age; }).sort(function (a, b) { return b.downloads - a.downloads; })[0];
+      return top ? '<li class="sidebar-item"><span>' + ageLabels[age] + ':</span><span>' + top.title + '</span></li>' : '';
+    }).join('');
+    document.getElementById('sidebarByAge').innerHTML = byAge;
+  }
+  renderSidebar();
+
+  // PDF preview lightbox
+  var modal = document.getElementById('lessonModal');
+  function openModal(index) {
+    var lesson = LESSONS[index];
+    document.getElementById('modalCover').style.background = 'linear-gradient(135deg,' + lesson.grad + ')';
+    document.getElementById('modalCover').textContent = lesson.emoji;
+    document.getElementById('modalTitle').textContent = lesson.title;
+    document.getElementById('modalStory').textContent = '📜 ' + lesson.story + ' · ' + lesson.ageLabel;
+    document.getElementById('modalDesc').textContent = lesson.desc;
+    document.getElementById('modalDownload').href = '#download-' + index;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  }
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+  cardGrid.addEventListener('click', function (e) {
+    var btn = e.target.closest('.lesson-card__preview, .lesson-card__dl');
+    if (!btn) return;
+    openModal(parseInt(btn.dataset.index, 10));
+  });
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+})();
 </script>
+
+<!-- SEO Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.childrensministrylessons.com/index.html" },
+    { "@type": "ListItem", "position": 2, "name": "Free Bible Lessons", "item": "https://www.childrensministrylessons.com/free-lessons.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Free Bible Lessons for Kids",
+  "description": "500+ free Bible lessons for kids ages 3-12 — printable activity sheets, crafts, and discussion questions.",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "David & Goliath" },
+      { "@type": "ListItem", "position": 2, "name": "The Good Samaritan" },
+      { "@type": "ListItem", "position": 3, "name": "Jesus Calms the Storm" },
+      { "@type": "ListItem", "position": 4, "name": "Jonah & the Whale" },
+      { "@type": "ListItem", "position": 5, "name": "Moses & the Red Sea" },
+      { "@type": "ListItem", "position": 6, "name": "Daniel in the Lions' Den" },
+      { "@type": "ListItem", "position": 7, "name": "The Lord's Prayer, Explained for Kids" },
+      { "@type": "ListItem", "position": 8, "name": "The Nativity Story" },
+      { "@type": "ListItem", "position": 9, "name": "He Is Risen: An Easter Lesson for Kids" },
+      { "@type": "ListItem", "position": 10, "name": "Noah's Ark" }
+    ]
+  }
+}
+</script>
+
+<script src="app.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="auth.js"></script>

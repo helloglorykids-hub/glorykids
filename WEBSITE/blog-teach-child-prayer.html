@@ -7,6 +7,7 @@
   <meta name="description" content="Your child rushes through mealtime prayers so fast the words blur. Here's how to build a prayer habit that actually sticks — 5 practical strategies for parents." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="homepage.css" />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     body { background: var(--gray-50); }
@@ -441,28 +442,65 @@
 <body>
 
 <!-- NAV -->
-<nav class="nav scrolled" id="nav" style="background:var(--color-card);box-shadow:0 2px 20px rgba(0,0,0,0.08);">
+<nav class="nav" id="nav">
   <div class="container">
     <div class="nav__inner">
-      <a href="index.html" class="nav__logo" style="color:var(--white);">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
         <div class="nav__logo-icon">✝</div>
-        <span class="nav__logo-text" style="color:var(--white);">Children's<span style="color:var(--primary);">Ministry</span>Lessons</span>
+        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
       </a>
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
-        <li><a href="glory-kids-membership.html" class="nav__link">Membership</a></li>
-        <li><a href="blog.html" class="nav__link active">Blog</a></li>
-        <li><a href="shop.html" class="nav__link">Shop</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
         <li><a href="contact.html" class="nav__link">Contact</a></li>
       </ul>
       <div class="nav__actions">
-        <a href="shop.html" class="btn btn--outline" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);border-color:var(--coral);color:var(--coral);">🛒 Shop</a>
-        <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
       </div>
-      <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile Nav -->
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="login.html" class="nav__mobile-link">👤 Login</a>
+  <div class="nav__mobile-cta">
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Glory Kids → $29.99/mo</a>
+  </div>
+</div>
 
 <!-- ══════════ POST HERO ══════════════════════════════════════ -->
 <section class="post-hero">
@@ -818,6 +856,7 @@
       </div>
       <div class="footer__col">
         <h4 class="footer__heading">Company</h4>
+        <a href="faq/index.html" class="footer__link">FAQ</a>
         <a href="contact.html" class="footer__link">Contact</a>
         <a href="index.html" class="footer__link">Home</a>
       </div>
