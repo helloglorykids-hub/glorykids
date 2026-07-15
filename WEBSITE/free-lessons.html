@@ -32,7 +32,7 @@
       <a href="index.html" class="nav__logo">
         <span class="nav__logo-star">⭐</span>
         <div class="nav__logo-icon">✝</div>
-        <span class="nav__logo-text">Children's<span>Ministry</span>Lessons</span>
+        <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
       </a>
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link active">Free Lessons</a></li>
@@ -84,30 +84,42 @@
 <!-- ═══════════════════════════════════════════════
      HERO
 ════════════════════════════════════════════════ -->
-<section class="relative overflow-hidden bg-[var(--color-darkest)] pt-[130px] pb-14 md:pt-40 md:pb-16">
-  <div class="absolute inset-0 -z-10 pointer-events-none" style="background:radial-gradient(circle at 15% 0%, rgba(34,197,94,0.15) 0%, transparent 55%);"></div>
-  <div class="container relative">
-    <nav class="text-sm text-slate-400 mb-6" aria-label="Breadcrumb">
+<section class="relative isolate overflow-hidden bg-[var(--color-darkest)] pt-[130px] pb-14 md:pt-40 md:pb-16">
+
+  <!-- Background image carousel -->
+  <div id="freeLessonsHeroCarousel" class="absolute inset-0 -z-10">
+    <div class="hero-slide active absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-100"
+         style="background-image:url('images/hero-kids.jpg');" aria-hidden="true"></div>
+    <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-0"
+         style="background-image:url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=1600&q=80');" aria-hidden="true"></div>
+    <div class="hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1500ms] ease-in-out opacity-0"
+         style="background-image:url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=1600&q=80');" aria-hidden="true"></div>
+    <!-- Readability overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-950/60"></div>
+    <div class="absolute inset-0 bg-slate-950/30"></div>
+    <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(circle at 15% 0%, rgba(249,115,22,0.15) 0%, transparent 55%);"></div>
+  </div>
+
+  <div class="container relative z-10">
+    <nav class="text-sm text-slate-400 mb-6 flex justify-center" aria-label="Breadcrumb">
       <a href="index.html" class="hover:text-white transition-colors">Home</a>
       <span class="mx-2">/</span>
       <span class="text-white">Free Bible Lessons</span>
     </nav>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-400/40 text-emerald-400 px-4 py-2 rounded-full font-semibold text-sm mb-5">
-          📖 500+ Lessons &middot; Updated Every Month
-        </div>
-        <h1 class="font-bold text-white leading-[1.15] text-[28px] sm:text-[36px] md:text-[44px] mb-5">
-          500+ Free Bible Lessons for Kids (Ages 3&ndash;12) | Ready-to-Print Activities
-        </h1>
-        <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-          No signup required. No credit card. Just download, print, and teach.
-        </p>
-        <a href="#lessonGrid" class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-base px-7 py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-colors">
-          Browse Free Lessons Now →
-        </a>
+    <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-400/40 text-orange-400 px-4 py-2 rounded-full font-semibold text-sm mb-5">
+        📖 500+ Lessons &middot; Updated Every Month
       </div>
+      <h1 class="font-bold text-white leading-[1.15] text-[28px] sm:text-[36px] md:text-[44px] mb-5">
+        500+ Free Bible Lessons for Kids (Ages 3&ndash;12) | Ready-to-Print Activities
+      </h1>
+      <p class="text-slate-300 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+        No signup required. No credit card. Just download, print, and teach.
+      </p>
+      <a href="#lessonGrid" class="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-colors mb-10">
+        Browse Free Lessons Now →
+      </a>
 
       <!-- 3 sample lesson covers -->
       <div class="flex items-center justify-center gap-3 sm:gap-4">
@@ -128,6 +140,27 @@
   </div>
 </section>
 
+<script>
+  (function () {
+    var slides = document.querySelectorAll('#freeLessonsHeroCarousel .hero-slide');
+    var current = 0;
+
+    function show(index) {
+      slides.forEach(function (s, i) {
+        s.classList.toggle('opacity-100', i === index);
+        s.classList.toggle('opacity-0', i !== index);
+      });
+      current = index;
+    }
+
+    function next() {
+      show((current + 1) % slides.length);
+    }
+
+    setInterval(next, 5000);
+  })();
+</script>
+
 <!-- ═══════════════════════════════════════════════
      STICKY SEARCH + FILTERS
 ════════════════════════════════════════════════ -->
@@ -140,7 +173,7 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input id="lessonSearch" type="text" placeholder="Search by title or Bible story..."
-          class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          class="w-full pl-11 pr-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500" />
       </div>
 
       <!-- Mobile filter toggle -->
@@ -265,7 +298,7 @@
           <ol id="sidebarByAge" class="space-y-2 text-sm"></ol>
         </div>
         <div class="sidebar-box sidebar-box--tips">
-          <div class="text-xs font-bold uppercase tracking-wide text-emerald-300 mb-2">Related Reading</div>
+          <div class="text-xs font-bold uppercase tracking-wide text-orange-300 mb-2">Related Reading</div>
           <ul class="space-y-2 text-sm">
             <li><a href="blog-kids-engagement.html" class="sidebar-link">How to Keep Kids Engaged in Church: 7 Strategies →</a></li>
             <li><a href="blog-family-devotions.html" class="sidebar-link">Family Devotions for Kids: 5 Simple Ideas →</a></li>
@@ -284,7 +317,7 @@
   <div class="container">
     <div class="max-w-2xl mx-auto text-center">
       <h2 class="text-2xl md:text-3xl font-bold text-white mb-3">Want unlimited access to ALL 500+ lessons + video guides + parent devotionals?</h2>
-      <a href="glory-kids-membership.html" class="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg shadow-blue-500/30 transition-colors mt-4 mb-6">
+      <a href="glory-kids-membership.html" class="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg shadow-orange-500/30 transition-colors mt-4 mb-6">
         Join Glory Kids — $29.99/month →
       </a>
       <p class="flex flex-wrap items-center justify-center gap-2 text-sm text-slate-300">
@@ -307,7 +340,7 @@
     <h3 id="modalTitle" class="text-white font-bold text-xl mb-1"></h3>
     <p id="modalStory" class="text-slate-400 text-sm mb-4"></p>
     <p id="modalDesc" class="text-slate-300 text-sm mb-6"></p>
-    <a id="modalDownload" href="#" class="inline-flex items-center justify-center gap-2 w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold text-base px-6 py-3 rounded-xl transition-colors">
+    <a id="modalDownload" href="#" class="inline-flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-6 py-3 rounded-xl transition-colors">
       ⬇ Download Free PDF
     </a>
   </div>
@@ -410,7 +443,7 @@
 
   .sidebar-box { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.35rem; }
   .sidebar-box__title { font-family: var(--font-heading); font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 0.9rem; }
-  .sidebar-box--tips { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.3); }
+  .sidebar-box--tips { background: rgba(6,182,212,0.08); border-color: rgba(6,182,212,0.3); }
   .sidebar-item { display: flex; align-items: baseline; gap: 0.5rem; color: var(--gray-300); }
   .sidebar-item__num { color: var(--primary); font-weight: 800; flex-shrink: 0; }
   .sidebar-link { color: var(--gray-300); text-decoration: none; }
