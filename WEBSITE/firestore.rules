@@ -9,9 +9,15 @@ service cloud.firestore {
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
 
-    // Blog posts — anyone can read published posts, only the admin can write.
+    // Blog posts — anyone can read a published post once its scheduled
+    // publish time has passed (or immediately if unscheduled); the admin
+    // can always read everything, including drafts and future-scheduled
+    // posts. Only the admin can write.
     match /posts/{postId} {
-      allow read: if resource.data.published == true || isAdmin();
+      allow read: if (
+        resource.data.published == true &&
+        (!('publishAt' in resource.data) || resource.data.publishAt <= request.time.toMillis())
+      ) || isAdmin();
       allow create, update, delete: if isAdmin();
     }
 

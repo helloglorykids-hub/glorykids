@@ -346,7 +346,7 @@
     const baseUrl = 'https://www.childrensministrylessons.com/blog-post.html?slug=' + post.slug;
     const seoTitle = (post.seoTitle || post.title) + " | Children's Ministry Lessons";
     const seoDesc = post.seoDescription || post.excerpt || '';
-    const dateStr = new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const dateStr = new Date(post.publishAt || post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
     const readTime = estimateReadTime(post.bodyHtml);
 
     document.title = seoTitle;
@@ -413,7 +413,7 @@
       headline: post.title,
       description: seoDesc,
       image: post.featuredImage || '',
-      datePublished: new Date(post.createdAt).toISOString(),
+      datePublished: new Date(post.publishAt || post.createdAt).toISOString(),
       dateModified: new Date(post.updatedAt || post.createdAt).toISOString(),
       author: { '@type': 'Person', name: post.author || 'Jandre van der Walt', url: 'https://www.childrensministrylessons.com/contact.html' },
       publisher: { '@type': 'Organization', name: 'Glory Kids Ministries', logo: { '@type': 'ImageObject', url: 'https://www.childrensministrylessons.com/images/logo.png' } },

@@ -342,7 +342,7 @@
       <div class="blog-card reveal" style="--img-bg:linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));--cat-bg:${meta.bg};">
         <div class="blog-card__img">${post.featuredImage ? `<img src="${post.featuredImage}" alt="" style="width:100%;height:100%;object-fit:cover;" />` : (post.icon || '📖')}<span class="blog-card__category" style="--cat-bg:${meta.bg};--cat-color:white;">${meta.label}</span></div>
         <div class="blog-card__body">
-          <div class="blog-card__meta"><span>${new Date(post.createdAt).toLocaleDateString()}</span><span>•</span><span>${readMin} min</span></div>
+          <div class="blog-card__meta"><span>${new Date(post.publishAt || post.createdAt).toLocaleDateString()}</span><span>•</span><span>${readMin} min</span></div>
           <h4 class="blog-card__title">${post.title}</h4>
           <p class="blog-card__excerpt">${post.excerpt || ''}</p>
           <a href="blog-post.html?slug=${post.slug}" class="blog-card__link">Read Article →</a>

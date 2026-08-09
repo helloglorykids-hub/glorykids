@@ -305,8 +305,17 @@
             </div>
 
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
-              <input type="checkbox" id="post-published" style="width:auto;" checked /> Published
+              <input type="checkbox" id="post-published" style="width:auto;" checked onchange="onPublishToggle()" /> Published
             </label>
+
+            <div id="publish-timing-wrap" style="display:grid; grid-template-columns:auto 1fr; gap:0.75rem; align-items:center;">
+              <select id="publish-timing" onchange="onPublishTimingChange()" style="width:auto;">
+                <option value="now">Publish immediately</option>
+                <option value="scheduled">Schedule for later</option>
+              </select>
+              <input type="datetime-local" id="post-publish-at" style="display:none;" />
+            </div>
+
             <div style="display:flex; gap:0.75rem;">
               <button class="btn btn--primary" onclick="savePostForm()">Save Post</button>
               <button class="btn btn--outline" onclick="hidePostForm()">Cancel</button>
@@ -605,6 +614,22 @@ async function doImageUpload(file, onDone, statusElId) {
   }
 }
 
+// Local-time <input type="datetime-local"> value, e.g. "2026-08-09T14:30"
+function toDatetimeLocalValue(ms) {
+  const d = new Date(ms);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function onPublishToggle() {
+  document.getElementById('publish-timing-wrap').style.display =
+    document.getElementById('post-published').checked ? 'grid' : 'none';
+}
+function onPublishTimingChange() {
+  document.getElementById('post-publish-at').style.display =
+    document.getElementById('publish-timing').value === 'scheduled' ? 'block' : 'none';
+}
+
 function showPostForm(post) {
   document.getElementById('post-form-card').style.display = 'block';
   document.getElementById('post-form-title').textContent = post ? 'Edit Post' : 'New Post';
@@ -627,7 +652,14 @@ function showPostForm(post) {
   postTags = post && post.tags ? [...post.tags] : [];
   renderTagChips();
   loadTagSuggestions().then(renderTagChips);
+
   document.getElementById('post-published').checked = post ? !!post.published : true;
+  const publishAt = post && post.publishAt ? post.publishAt : Date.now();
+  const isScheduled = post && post.publishAt && post.publishAt > Date.now();
+  document.getElementById('publish-timing').value = isScheduled ? 'scheduled' : 'now';
+  document.getElementById('post-publish-at').value = toDatetimeLocalValue(publishAt);
+  onPublishToggle();
+  onPublishTimingChange();
 }
 function hidePostForm() { document.getElementById('post-form-card').style.display = 'none'; }
 
@@ -636,6 +668,13 @@ async function savePostForm() {
   if (!title) return alert('Please enter a title.');
   const bodyHtml = document.getElementById('post-body').innerHTML.trim();
   const excerpt = document.getElementById('post-excerpt').value.trim();
+  const timing = document.getElementById('publish-timing').value;
+  const publishAt = timing === 'scheduled'
+    ? new Date(document.getElementById('post-publish-at').value).getTime()
+    : Date.now();
+  if (timing === 'scheduled' && (!publishAt || isNaN(publishAt))) {
+    return alert('Please choose a valid publish date/time.');
+  }
   const post = {
     id: document.getElementById('post-id').value || undefined,
     title,
@@ -650,6 +689,7 @@ async function savePostForm() {
     seoDescription: document.getElementById('post-seo-description').value.trim() || excerpt,
     seoKeywords: document.getElementById('post-seo-keywords').value.trim(),
     published: document.getElementById('post-published').checked,
+    publishAt,
     author: 'Jandre van der Walt'
   };
   await GK.savePost(post);
@@ -673,23 +713,33 @@ async function renderPosts() {
   const posts = await GK.listPosts();
   const el = document.getElementById('posts-list');
   if (posts.length === 0) { el.innerHTML = '<div class="empty-state">No posts yet. Click "+ New Post" to publish your first article.</div>'; return; }
-  el.innerHTML = posts.map(p => `
+  el.innerHTML = posts.map(p => {
+    const isScheduled = p.published && p.publishAt && p.publishAt > Date.now();
+    const isLive = p.published && !isScheduled;
+    const statusBadge = !p.published
+      ? '<span class="badge badge--free">Draft</span>'
+      : isScheduled
+        ? `<span class="badge badge--paused">Scheduled for ${new Date(p.publishAt).toLocaleString()}</span>`
+        : '<span class="badge badge--active">Published</span>';
+    const dateLabel = new Date(p.publishAt || p.createdAt).toLocaleDateString();
+    return `
     <div class="post-row">
       <div class="post-row__icon">${p.icon || '📖'}</div>
       <div style="flex:1;">
         <div class="post-row__title">${p.title}</div>
         <div class="post-row__meta">
-          <span class="badge ${p.published ? 'badge--active' : 'badge--free'}">${p.published ? 'Published' : 'Draft'}</span>
-          &nbsp;${p.category} · /${p.slug} · ${new Date(p.createdAt).toLocaleDateString()}
+          ${statusBadge}
+          &nbsp;${p.category} · /${p.slug} · ${dateLabel}
         </div>
       </div>
       <div class="row-actions">
-        ${p.published ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
+        ${isLive ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
         <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
         <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
       </div>
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 /* ── Members ──────────────────────────────────────────────── */

@@ -75,13 +75,15 @@
     return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   }
 
-  // Public view — only published posts, optionally filtered by category.
-  // Sorted client-side so no composite Firestore index is required.
+  // Public view — only posts that are published AND whose scheduled
+  // publish time has passed. Sorted client-side so no composite
+  // Firestore index is required.
   async function listPublishedPosts(category) {
     const snap = await postsCol().where('published', '==', true).get();
-    let posts = snap.docs.map(docToObj);
+    const now = Date.now();
+    let posts = snap.docs.map(docToObj).filter(p => !p.publishAt || p.publishAt <= now);
     if (category && category !== 'all') posts = posts.filter(p => p.category === category);
-    return posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    return posts.sort((a, b) => (b.publishAt || b.createdAt || 0) - (a.publishAt || a.createdAt || 0));
   }
 
   async function getPost(id) {
@@ -97,9 +99,10 @@
 
   async function relatedPosts(category, excludeId, count) {
     const snap = await postsCol().where('published', '==', true).where('category', '==', category).get();
+    const now = Date.now();
     return snap.docs.map(docToObj)
-      .filter(p => p.id !== excludeId)
-      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+      .filter(p => p.id !== excludeId && (!p.publishAt || p.publishAt <= now))
+      .sort((a, b) => (b.publishAt || b.createdAt || 0) - (a.publishAt || a.createdAt || 0))
       .slice(0, count || 3);
   }
 
