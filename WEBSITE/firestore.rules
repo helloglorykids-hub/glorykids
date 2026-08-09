@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // Blog posts — anyone can read published posts, only the admin can write.
+    match /posts/{postId} {
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // User profiles — a member can read/update their own profile but
+    // cannot grant themselves admin or change their own plan/billing
+    // status; only the admin account can do that (via the admin panel).
+    match /users/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == uid && request.resource.data.isAdmin == false;
+      allow update: if isAdmin() || (
+        isSignedIn() && request.auth.uid == uid &&
+        request.resource.data.isAdmin == resource.data.isAdmin &&
+        request.resource.data.plan == resource.data.plan &&
+        request.resource.data.planStatus == resource.data.planStatus
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Payments — admin only.
+    match /payments/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isAdmin();
+    }
+
+    // Support tickets — anyone (including signed-out visitors) can submit
+    // one via the chatbot/contact form; only the admin can read/manage them.
+    match /tickets/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

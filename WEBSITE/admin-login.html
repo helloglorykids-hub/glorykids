@@ -85,6 +85,10 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="auth.js"></script>
@@ -98,17 +102,18 @@ function showSignin() {
   document.getElementById('signin-mode').style.display = 'block';
 }
 
-onFirebaseReady(() => {
+onFirebaseReady(async () => {
   // If already signed in as admin, skip straight to the panel.
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(async user => {
     if (user) {
-      const rec = GK.getUserRecord(user.uid);
+      const rec = await GK.getUserRecord(user.uid);
       if (rec && rec.isAdmin) { window.location.href = 'admin.html'; return; }
     }
   });
 
   // If no admin exists yet, default to setup mode.
-  const hasAdmin = GK.listUsers().some(u => u.isAdmin);
+  const users = await GK.listUsers();
+  const hasAdmin = users.some(u => u.isAdmin);
   if (!hasAdmin) showSetup();
 });
 
@@ -122,7 +127,7 @@ async function handleAdminLogin(e) {
   setLoading('admin-login-btn', true, 'Signing in...');
   try {
     const cred = await auth.signInWithEmailAndPassword(email, password);
-    const rec = GK.getUserRecord(cred.user.uid);
+    const rec = await GK.getUserRecord(cred.user.uid);
     if (!rec || !rec.isAdmin) {
       await auth.signOut();
       setLoading('admin-login-btn', false);
@@ -138,7 +143,8 @@ async function handleAdminLogin(e) {
 async function handleAdminSetup(e) {
   e.preventDefault();
   clearAuthError('admin-setup-error');
-  if (GK.listUsers().some(u => u.isAdmin)) {
+  const existing = await GK.listUsers();
+  if (existing.some(u => u.isAdmin)) {
     return showAuthError('admin-setup-error', 'An admin account already exists. Please sign in instead.');
   }
   const name = document.getElementById('setup-name').value.trim();
@@ -150,8 +156,22 @@ async function handleAdminSetup(e) {
   try {
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({ displayName: name });
-    GK.updateUserRecord(cred.user.uid, { isAdmin: true });
-    window.location.href = 'admin.html';
+    await GK.ensureUserRecord(cred.user, { displayName: name });
+    // Security rules block a new account from granting itself admin —
+    // that's intentional. Finish setup once in the Firebase console.
+    document.getElementById('setup-mode').innerHTML = `
+      <div class="auth-right__header" style="text-align:center;">
+        <h2 class="auth-form-title">One Last Step</h2>
+        <p class="auth-form-sub">Your account was created. To finish, flip on admin access for this account — it's a safeguard so no one else can self-grant it.</p>
+      </div>
+      <ol style="font-size:0.85rem; color:var(--gray-600); line-height:1.9; padding-left:1.25rem; margin-bottom:1.5rem;">
+        <li>Open the <a href="https://console.firebase.google.com/" target="_blank" class="auth-link">Firebase console</a> → Firestore Database</li>
+        <li>Open the <strong>users</strong> collection → find the document with UID <code style="background:var(--gray-100); padding:0.1rem 0.4rem; border-radius:4px;">${cred.user.uid}</code></li>
+        <li>Edit the <strong>isAdmin</strong> field to boolean <code style="background:var(--gray-100); padding:0.1rem 0.4rem; border-radius:4px;">true</code>, save</li>
+        <li>Come back and sign in below</li>
+      </ol>
+      <button class="auth-submit-btn" onclick="showSignin()">Go to Sign In →</button>
+    `;
   } catch (err) {
     setLoading('admin-setup-btn', false);
     showAuthError('admin-setup-error', friendlyError(err.code));

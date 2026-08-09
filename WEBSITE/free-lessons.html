@@ -330,22 +330,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     PDF PREVIEW LIGHTBOX
-════════════════════════════════════════════════ -->
-<div id="lessonModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-4">
-  <div class="bg-[var(--color-card)] border border-white/10 rounded-2xl max-w-lg w-full p-6 relative">
-    <button id="modalClose" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl" aria-label="Close preview">✕</button>
-    <div id="modalCover" class="rounded-xl aspect-[2/1] flex items-center justify-center text-6xl mb-5"></div>
-    <h3 id="modalTitle" class="text-white font-bold text-xl mb-1"></h3>
-    <p id="modalStory" class="text-slate-400 text-sm mb-4"></p>
-    <p id="modalDesc" class="text-slate-300 text-sm mb-6"></p>
-    <a id="modalDownload" href="#" class="inline-flex items-center justify-center gap-2 w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-6 py-3 rounded-xl transition-colors">
-      ⬇ Download Free PDF
-    </a>
-  </div>
-</div>
-
 <!-- FOOTER -->
 <footer class="gk-footer">
   <div class="container">
@@ -423,7 +407,8 @@
   .lesson-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
   .lesson-card.is-filtered-out { display: none; }
   .lesson-card.is-page-hidden { display: none; }
-  .lesson-card__thumb { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+  .lesson-card__thumb { height: 150px; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
+  .lesson-card__img { width: 100%; height: 100%; object-fit: cover; }
   .lesson-card__age {
     position: absolute; top: 0.6rem; left: 0.6rem; background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
     color: #fff; font-size: 0.68rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 999px;
@@ -433,13 +418,12 @@
   .lesson-card__story { color: var(--gray-500); font-size: 0.78rem; margin-bottom: 0.4rem; }
   .lesson-card__desc { color: var(--gray-400); font-size: 0.82rem; line-height: 1.5; margin-bottom: 0.9rem; }
   .lesson-card__footer { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
-  .lesson-card__preview {
+  .lesson-card__view {
     flex: 1; text-align: center; background: var(--primary); color: #fff; font-weight: 700; font-size: 0.78rem;
     padding: 0.55rem 0.75rem; border-radius: 0.6rem; border: none; cursor: pointer; transition: var(--transition);
+    text-decoration: none; display: inline-block;
   }
-  .lesson-card__preview:hover { background: var(--primary-dark); }
-  .lesson-card__dl { color: var(--gray-400); font-size: 1.1rem; padding: 0.4rem; }
-  .lesson-card__dl:hover { color: #fff; }
+  .lesson-card__view:hover { background: var(--primary-dark); }
 
   .sidebar-box { background: var(--color-card); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.35rem; }
   .sidebar-box__title { font-family: var(--font-heading); font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 0.9rem; }
@@ -453,24 +437,25 @@
 <script>
 (function () {
   var LESSONS = [
-    { title: "David & Goliath", story: "1 Samuel 17", desc: "A shepherd boy's faith topples a giant no soldier dared face.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🦁", downloads: 812, date: "2026-06-20", grad: "#6D5BD0,#38B6A5" },
-    { title: "The Good Samaritan", story: "Luke 10:25-37", desc: "A story-plus-activity lesson on what it really means to love your neighbor.", age: "upper35", ageLabel: "Ages 3-12", topic: "church", type: "activity", season: "general", emoji: "🤝", downloads: 645, date: "2026-06-18", grad: "#E14D5C,#F2994A" },
-    { title: "Jesus Calms the Storm", story: "Mark 4:35-41", desc: "A gentle lesson + craft helping little ones trust Jesus when they're scared.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "craft", season: "general", emoji: "⛵", downloads: 590, date: "2026-06-15", grad: "#4B5EAA,#38B6A5" },
-    { title: "Jonah & the Whale", story: "Jonah 1-2", desc: "What happens when we run from God's plan — and what happens when we turn back.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🐋", downloads: 701, date: "2026-06-10", grad: "#38B6A5,#6D5BD0" },
-    { title: "Moses & the Red Sea", story: "Exodus 14", desc: "God makes a way where there seems to be no way at all.", age: "k2", ageLabel: "Ages 5-12", topic: "heroes", type: "lesson", season: "general", emoji: "🌊", downloads: 733, date: "2026-06-08", grad: "#F2994A,#E14D5C" },
-    { title: "Daniel in the Lions' Den", story: "Daniel 6", desc: "A discussion-driven lesson on staying faithful even when it's costly.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "discussion", season: "general", emoji: "🦁", downloads: 512, date: "2026-05-30", grad: "#7B5EA7,#F2994A" },
-    { title: "The Lord's Prayer, Explained for Kids", story: "Matthew 6:9-13", desc: "Breaking down the Lord's Prayer line-by-line in language kids actually get.", age: "upper35", ageLabel: "Ages 6-12", topic: "prayer", type: "discussion", season: "general", emoji: "🙏", downloads: 486, date: "2026-05-25", grad: "#38B6A5,#4B5EAA" },
-    { title: "When I'm Scared: Trusting God With Big Feelings", story: "Psalm 56:3", desc: "A lesson + craft that gives anxious kids simple, biblical tools for fear.", age: "preschool", ageLabel: "Ages 3-7", topic: "mentalhealth", type: "craft", season: "general", emoji: "💙", downloads: 468, date: "2026-05-20", grad: "#4B5EAA,#8E7CC3" },
-    { title: "Why Do We Go to Church?", story: "Hebrews 10:24-25", desc: "A discussion lesson helping kids see church as family, not just a building.", age: "k2", ageLabel: "Ages 5-10", topic: "church", type: "discussion", season: "general", emoji: "⛪", downloads: 401, date: "2026-05-15", grad: "#3E8E7E,#38B6A5" },
-    { title: "The Nativity Story", story: "Luke 2:1-20", desc: "A lesson + craft retelling the first Christmas in a way little ones love.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "craft", season: "christmas", emoji: "🎄", downloads: 890, date: "2026-05-10", grad: "#C0392B,#3E8E7E" },
-    { title: "He Is Risen: An Easter Lesson for Kids", story: "Matthew 28:1-10", desc: "A hope-filled lesson explaining the resurrection in age-appropriate terms.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "lesson", season: "easter", emoji: "✝️", downloads: 754, date: "2026-05-05", grad: "#F2994A,#7B5EA7" },
-    { title: "Noah's Ark", story: "Genesis 6-9", desc: "A craft-friendly lesson on obedience, patience, and God's promises.", age: "preschool", ageLabel: "Ages 3-7", topic: "heroes", type: "craft", season: "general", emoji: "🌈", downloads: 622, date: "2026-04-28", grad: "#38B6A5,#7ED6A5" },
-    { title: "The Fruit of the Spirit Song & Craft", story: "Galatians 5:22-23", desc: "A sing-along plus craft that helps kids memorize all nine fruits of the Spirit.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "song", season: "general", emoji: "🎵", downloads: 388, date: "2026-04-20", grad: "#D45D9C,#F2994A" },
-    { title: "Giving Thanks: A Thanksgiving Bible Lesson", story: "1 Thessalonians 5:18", desc: "A discussion lesson building real gratitude habits, not just a holiday craft.", age: "k2", ageLabel: "Ages 5-10", topic: "holidays", type: "discussion", season: "thanksgiving", emoji: "🍂", downloads: 355, date: "2026-04-15", grad: "#C47F0D,#F2994A" },
-    { title: "Faith Like a Mustard Seed: Summer Bible Adventure", story: "Matthew 17:20", desc: "A high-energy summer activity lesson on small faith making a big difference.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "activity", season: "summer", emoji: "🌱", downloads: 340, date: "2026-04-10", grad: "#F2C94C,#38B6A5" },
-    { title: "Dealing With Big Feelings", story: "Philippians 4:6-7", desc: "A discussion-based lesson giving kids biblical language for anger and worry.", age: "upper35", ageLabel: "Ages 6-12", topic: "mentalhealth", type: "discussion", season: "general", emoji: "🧠", downloads: 410, date: "2026-04-05", grad: "#4B5EAA,#D45D9C" },
-    { title: "The Prodigal Son", story: "Luke 15:11-32", desc: "A discussion lesson on grace, coming home, and a Father who never stops watching.", age: "upper35", ageLabel: "Ages 6-12", topic: "church", type: "discussion", season: "general", emoji: "🏡", downloads: 375, date: "2026-03-28", grad: "#3E8E7E,#6D5BD0" },
-    { title: "Building on the Rock", story: "Matthew 7:24-27", desc: "A craft lesson on why a faith built on Jesus stands firm in every storm.", age: "k2", ageLabel: "Ages 5-10", topic: "heroes", type: "craft", season: "general", emoji: "🪨", downloads: 298, date: "2026-03-20", grad: "#6D5BD0,#F2994A" }
+    { title: "David & Goliath", slug: "david-and-goliath-bible-lesson", story: "1 Samuel 17", desc: "A shepherd boy's faith topples a giant no soldier dared face.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🦁", downloads: 812, date: "2026-06-20", grad: "#6D5BD0,#38B6A5" },
+    { title: "The Good Samaritan", slug: "good-samaritan-bible-lesson", story: "Luke 10:25-37", desc: "A story-plus-activity lesson on what it really means to love your neighbor.", age: "upper35", ageLabel: "Ages 3-12", topic: "church", type: "activity", season: "general", emoji: "🤝", downloads: 645, date: "2026-06-18", grad: "#E14D5C,#F2994A" },
+    { title: "Jesus Calms the Storm", slug: "jesus-calms-the-storm-bible-lesson", story: "Mark 4:35-41", desc: "A gentle lesson + craft helping little ones trust Jesus when they're scared.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "craft", season: "general", emoji: "⛵", downloads: 590, date: "2026-06-15", grad: "#4B5EAA,#38B6A5" },
+    { title: "Jonah & the Whale", slug: "jonah-and-the-whale-bible-lesson", story: "Jonah 1-2", desc: "What happens when we run from God's plan — and what happens when we turn back.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🐋", downloads: 701, date: "2026-06-10", grad: "#38B6A5,#6D5BD0" },
+    { title: "Moses & the Red Sea", slug: "moses-and-the-red-sea-bible-lesson", story: "Exodus 14", desc: "God makes a way where there seems to be no way at all.", age: "k2", ageLabel: "Ages 5-12", topic: "heroes", type: "lesson", season: "general", emoji: "🌊", downloads: 733, date: "2026-06-08", grad: "#F2994A,#E14D5C" },
+    { title: "Daniel in the Lions' Den", slug: "daniel-in-the-lions-den-bible-lesson", story: "Daniel 6", desc: "A discussion-driven lesson on staying faithful even when it's costly.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "discussion", season: "general", emoji: "🦁", downloads: 512, date: "2026-05-30", grad: "#7B5EA7,#F2994A" },
+    { title: "The Lord's Prayer, Explained for Kids", slug: "lords-prayer-explained-for-kids-bible-lesson", story: "Matthew 6:9-13", desc: "Breaking down the Lord's Prayer line-by-line in language kids actually get.", age: "upper35", ageLabel: "Ages 6-12", topic: "prayer", type: "discussion", season: "general", emoji: "🙏", downloads: 486, date: "2026-05-25", grad: "#38B6A5,#4B5EAA" },
+    { title: "When I'm Scared: Trusting God With Big Feelings", slug: "trusting-god-with-big-feelings-bible-lesson", story: "Psalm 56:3", desc: "A lesson + craft that gives anxious kids simple, biblical tools for fear.", age: "preschool", ageLabel: "Ages 3-7", topic: "mentalhealth", type: "craft", season: "general", emoji: "💙", downloads: 468, date: "2026-05-20", grad: "#4B5EAA,#8E7CC3" },
+    { title: "Why Do We Go to Church?", slug: "why-do-we-go-to-church-bible-lesson", story: "Hebrews 10:24-25", desc: "A discussion lesson helping kids see church as family, not just a building.", age: "k2", ageLabel: "Ages 5-10", topic: "church", type: "discussion", season: "general", emoji: "⛪", downloads: 401, date: "2026-05-15", grad: "#3E8E7E,#38B6A5" },
+    { title: "The Nativity Story", slug: "nativity-story-bible-lesson", story: "Luke 2:1-20", desc: "A lesson + craft retelling the first Christmas in a way little ones love.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "craft", season: "christmas", emoji: "🎄", downloads: 890, date: "2026-05-10", grad: "#C0392B,#3E8E7E" },
+    { title: "He Is Risen: An Easter Lesson for Kids", slug: "he-is-risen-easter-bible-lesson", story: "Matthew 28:1-10", desc: "A hope-filled lesson explaining the resurrection in age-appropriate terms.", age: "sixplus", ageLabel: "Ages 3-12", topic: "holidays", type: "lesson", season: "easter", emoji: "✝️", downloads: 754, date: "2026-05-05", grad: "#F2994A,#7B5EA7" },
+    { title: "Noah's Ark", slug: "teaching-kids-obedience-bible-lesson", story: "Genesis 6-9", desc: "A craft-friendly lesson on obedience, patience, and God's promises.", age: "preschool", ageLabel: "Ages 3-7", topic: "heroes", type: "craft", season: "general", emoji: "🌈", downloads: 622, date: "2026-04-28", grad: "#38B6A5,#7ED6A5" },
+    { title: "The Fruit of the Spirit Song & Craft", slug: "fruit-of-the-spirit-song-and-craft-bible-lesson", story: "Galatians 5:22-23", desc: "A sing-along plus craft that helps kids memorize all nine fruits of the Spirit.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "song", season: "general", emoji: "🎵", downloads: 388, date: "2026-04-20", grad: "#D45D9C,#F2994A" },
+    { title: "Giving Thanks: A Thanksgiving Bible Lesson", slug: "giving-thanks-thanksgiving-bible-lesson", story: "1 Thessalonians 5:18", desc: "A discussion lesson building real gratitude habits, not just a holiday craft.", age: "k2", ageLabel: "Ages 5-10", topic: "holidays", type: "discussion", season: "thanksgiving", emoji: "🍂", downloads: 355, date: "2026-04-15", grad: "#C47F0D,#F2994A" },
+    { title: "Faith Like a Mustard Seed: Summer Bible Adventure", slug: "faith-like-a-mustard-seed-bible-lesson", story: "Matthew 17:20", desc: "A high-energy summer activity lesson on small faith making a big difference.", age: "upper35", ageLabel: "Ages 5-12", topic: "heroes", type: "activity", season: "summer", emoji: "🌱", downloads: 340, date: "2026-04-10", grad: "#F2C94C,#38B6A5" },
+    { title: "Dealing With Big Feelings", slug: "dealing-with-big-feelings-bible-lesson", story: "Philippians 4:6-7", desc: "A discussion-based lesson giving kids biblical language for anger and worry.", age: "upper35", ageLabel: "Ages 6-12", topic: "mentalhealth", type: "discussion", season: "general", emoji: "🧠", downloads: 410, date: "2026-04-05", grad: "#4B5EAA,#D45D9C" },
+    { title: "The Prodigal Son", slug: "prodigal-son-bible-lesson", story: "Luke 15:11-32", desc: "A discussion lesson on grace, coming home, and a Father who never stops watching.", age: "upper35", ageLabel: "Ages 6-12", topic: "church", type: "discussion", season: "general", emoji: "🏡", downloads: 375, date: "2026-03-28", grad: "#3E8E7E,#6D5BD0" },
+    { title: "Building on the Rock", slug: "building-on-the-rock-bible-lesson", story: "Matthew 7:24-27", desc: "A craft lesson on why a faith built on Jesus stands firm in every storm.", age: "k2", ageLabel: "Ages 5-10", topic: "heroes", type: "craft", season: "general", emoji: "🪨", downloads: 298, date: "2026-03-20", grad: "#6D5BD0,#F2994A" },
+    { title: "Adam and Eve for Kids", slug: "adam-and-eve-for-kids", story: "Genesis 2-3", desc: "God's love, our choices, and grace that never stops following us — obedience, temptation, and redemption for kids.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🍎", image: "images/Adam & Eve Cover Page.jpg", downloads: 0, date: "2026-07-15", grad: "#38B6A5,#6D5BD0" }
   ];
 
   var PAGE_SIZE = 12;
@@ -486,7 +471,7 @@
       '<div class="lesson-card" data-index="' + index + '" data-title="' + lesson.title.toLowerCase() + '" data-story="' + lesson.story.toLowerCase() +
       '" data-age="' + lesson.age + '" data-topic="' + lesson.topic + '" data-type="' + lesson.type + '" data-season="' + lesson.season + '">' +
         '<div class="lesson-card__thumb" style="background:linear-gradient(135deg,' + lesson.grad + ');">' +
-          lesson.emoji +
+          (lesson.image ? '<img src="' + lesson.image + '" alt="' + lesson.title + '" class="lesson-card__img" />' : lesson.emoji) +
           '<span class="lesson-card__age">' + lesson.ageLabel + '</span>' +
         '</div>' +
         '<div class="lesson-card__body">' +
@@ -494,8 +479,7 @@
           '<div class="lesson-card__story">📜 ' + lesson.story + '</div>' +
           '<div class="lesson-card__desc">' + lesson.desc + '</div>' +
           '<div class="lesson-card__footer">' +
-            '<button type="button" class="lesson-card__preview" data-index="' + index + '">👁 Preview &amp; Download</button>' +
-            '<button type="button" class="lesson-card__dl" data-index="' + index + '" aria-label="Download">⬇</button>' +
+            '<a href="free-bible-lessons/' + lesson.slug + '/index.html" class="lesson-card__view">View Free Lesson →</a>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -604,31 +588,6 @@
     document.getElementById('sidebarByAge').innerHTML = byAge;
   }
   renderSidebar();
-
-  // PDF preview lightbox
-  var modal = document.getElementById('lessonModal');
-  function openModal(index) {
-    var lesson = LESSONS[index];
-    document.getElementById('modalCover').style.background = 'linear-gradient(135deg,' + lesson.grad + ')';
-    document.getElementById('modalCover').textContent = lesson.emoji;
-    document.getElementById('modalTitle').textContent = lesson.title;
-    document.getElementById('modalStory').textContent = '📜 ' + lesson.story + ' · ' + lesson.ageLabel;
-    document.getElementById('modalDesc').textContent = lesson.desc;
-    document.getElementById('modalDownload').href = '#download-' + index;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  }
-  function closeModal() {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-  cardGrid.addEventListener('click', function (e) {
-    var btn = e.target.closest('.lesson-card__preview, .lesson-card__dl');
-    if (!btn) return;
-    openModal(parseInt(btn.dataset.index, 10));
-  });
-  document.getElementById('modalClose').addEventListener('click', closeModal);
-  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
 })();
 </script>
 
@@ -668,6 +627,10 @@
 </script>
 
 <script src="app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="auth.js"></script>

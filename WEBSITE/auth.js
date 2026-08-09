@@ -189,6 +189,7 @@ async function handleSignup(e) {
   try {
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({ displayName: name });
+    await GK.ensureUserRecord(cred.user, { displayName: name });
     // Trigger state change manually since profile update doesn't fire it
     const params = new URLSearchParams(window.location.search);
     window.location.href = params.get('redirect') || 'dashboard.html';
@@ -203,7 +204,8 @@ async function signInWithGoogle(redirectAfter) {
   clearAuthError('login-error');
   clearAuthError('signup-error');
   try {
-    await auth.signInWithPopup(googleProvider);
+    const cred = await auth.signInWithPopup(googleProvider);
+    await GK.ensureUserRecord(cred.user);
     const params = new URLSearchParams(window.location.search);
     window.location.href = redirectAfter || params.get('redirect') || 'dashboard.html';
   } catch (err) {

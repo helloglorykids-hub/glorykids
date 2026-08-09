@@ -1,99 +1,167 @@
 /* ============================================================
-   ADMIN DATA LAYER (local demo backend)
+   ADMIN DATA LAYER — Firestore backend
    ============================================================
-   Shared read/write helpers for the admin panel: users/members,
-   blog posts, and payments. Backed by localStorage — mirrors
-   what would live in Firestore/a real DB in a production build.
+   Shared read/write helpers for the admin panel and public
+   pages: users/members, blog posts, payments, and support
+   tickets. Backed by Firestore (see firebase-config.js).
+   All functions are async — callers must await/then them.
    Exposed as a single window.GK namespace.
    ============================================================ */
 
 (function () {
-  const USERS_KEY    = 'gk_users';
-  const POSTS_KEY     = 'gk_blog_posts';
-  const PAYMENTS_KEY  = 'gk_payments';
-  const TICKETS_KEY   = 'gk_support_tickets';
+  function usersCol()    { return db.collection('users'); }
+  function postsCol()    { return db.collection('posts'); }
+  function paymentsCol() { return db.collection('payments'); }
+  function ticketsCol()  { return db.collection('tickets'); }
 
-  function read(key, fallback) { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
-  function write(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-  function genId(prefix) { return prefix + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function docToObj(doc) { return { id: doc.id, ...doc.data() }; }
+  function slugify(str) {
+    return String(str || '').toLowerCase().trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
 
   /* ── Users / Members ─────────────────────────────────────── */
-  function listUsers() {
-    return read(USERS_KEY, []).map(u => {
-      const { passwordHash, ...safe } = u;
-      return safe;
-    });
+  async function listUsers() {
+    const snap = await usersCol().get();
+    return snap.docs.map(docToObj);
   }
 
-  function getUserRecord(uid) {
-    const u = read(USERS_KEY, []).find(u => u.uid === uid);
-    if (!u) return null;
-    const { passwordHash, ...safe } = u;
-    return safe;
+  async function getUserRecord(uid) {
+    if (!uid) return null;
+    const doc = await usersCol().doc(uid).get();
+    return doc.exists ? { id: doc.id, ...doc.data() } : null;
   }
 
-  function updateUserRecord(uid, patch) {
-    const users = read(USERS_KEY, []);
-    const rec = users.find(u => u.uid === uid);
-    if (!rec) return null;
-    Object.assign(rec, patch);
-    write(USERS_KEY, users);
-    return rec;
+  // Creates the users/{uid} profile doc the first time we see this
+  // Firebase Auth user (signup, first Google sign-in, admin setup).
+  // No-ops if the doc already exists.
+  async function ensureUserRecord(user, extra) {
+    if (!user) return null;
+    const ref = usersCol().doc(user.uid);
+    const existing = await ref.get();
+    if (existing.exists) return { id: existing.id, ...existing.data() };
+    const rec = {
+      email: user.email || '',
+      displayName: (extra && extra.displayName) || user.displayName || '',
+      photoURL: user.photoURL || null,
+      isAdmin: false,
+      plan: 'free',
+      planStatus: 'active',
+      createdAt: Date.now(),
+      ...(extra || {})
+    };
+    await ref.set(rec);
+    return { id: user.uid, ...rec };
   }
 
-  function deleteUserRecord(uid) {
-    write(USERS_KEY, read(USERS_KEY, []).filter(u => u.uid !== uid));
+  async function updateUserRecord(uid, patch) {
+    await usersCol().doc(uid).set(patch, { merge: true });
+    return getUserRecord(uid);
+  }
+
+  async function deleteUserRecord(uid) {
+    await usersCol().doc(uid).delete();
     localStorage.removeItem('gk_saved_' + uid);
     localStorage.removeItem('gk_activity_' + uid);
   }
 
   /* ── Blog posts ───────────────────────────────────────────── */
-  function listPosts() {
-    return read(POSTS_KEY, []).sort((a, b) => b.createdAt - a.createdAt);
+  // Admin view — every post regardless of published state.
+  async function listPosts() {
+    const snap = await postsCol().get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   }
 
-  function getPost(id) {
-    return read(POSTS_KEY, []).find(p => p.id === id) || null;
+  // Public view — only published posts, optionally filtered by category.
+  // Sorted client-side so no composite Firestore index is required.
+  async function listPublishedPosts(category) {
+    const snap = await postsCol().where('published', '==', true).get();
+    let posts = snap.docs.map(docToObj);
+    if (category && category !== 'all') posts = posts.filter(p => p.category === category);
+    return posts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   }
 
-  function savePost(post) {
-    const posts = read(POSTS_KEY, []);
-    if (post.id) {
-      const idx = posts.findIndex(p => p.id === post.id);
-      if (idx > -1) { posts[idx] = { ...posts[idx], ...post, updatedAt: Date.now() }; write(POSTS_KEY, posts); return posts[idx]; }
+  async function getPost(id) {
+    const doc = await postsCol().doc(id).get();
+    return doc.exists ? docToObj(doc) : null;
+  }
+
+  async function getPostBySlug(slug) {
+    const snap = await postsCol().where('slug', '==', slug).limit(1).get();
+    if (snap.empty) return null;
+    return docToObj(snap.docs[0]);
+  }
+
+  async function relatedPosts(category, excludeId, count) {
+    const snap = await postsCol().where('published', '==', true).where('category', '==', category).get();
+    return snap.docs.map(docToObj)
+      .filter(p => p.id !== excludeId)
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+      .slice(0, count || 3);
+  }
+
+  async function isSlugTaken(slug, excludeId) {
+    const snap = await postsCol().where('slug', '==', slug).get();
+    return snap.docs.some(d => d.id !== excludeId);
+  }
+
+  async function uniqueSlug(baseSlug, excludeId) {
+    let slug = slugify(baseSlug) || 'post';
+    let n = 2;
+    while (await isSlugTaken(slug, excludeId)) {
+      slug = slugify(baseSlug) + '-' + n;
+      n++;
     }
-    const rec = { ...post, id: genId('post'), createdAt: Date.now(), updatedAt: Date.now() };
-    posts.push(rec);
-    write(POSTS_KEY, posts);
-    return rec;
+    return slug;
   }
 
-  function deletePost(id) {
-    write(POSTS_KEY, read(POSTS_KEY, []).filter(p => p.id !== id));
+  async function savePost(post) {
+    const now = Date.now();
+    const id = post.id || undefined;
+    const baseSlug = post.slug ? slugify(post.slug) : slugify(post.title);
+    const slug = await uniqueSlug(baseSlug, id);
+
+    if (id) {
+      const patch = { ...post, slug, updatedAt: now };
+      delete patch.id;
+      await postsCol().doc(id).set(patch, { merge: true });
+      return getPost(id);
+    }
+
+    const rec = { ...post, slug, createdAt: now, updatedAt: now };
+    delete rec.id;
+    const ref = await postsCol().add(rec);
+    return { id: ref.id, ...rec };
+  }
+
+  async function deletePost(id) {
+    await postsCol().doc(id).delete();
   }
 
   /* ── Payments ─────────────────────────────────────────────── */
-  function listPayments() {
-    return read(PAYMENTS_KEY, []).sort((a, b) => b.date - a.date);
+  async function listPayments() {
+    const snap = await paymentsCol().get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.date || 0) - (a.date || 0));
   }
 
-  function addPayment({ uid, email, amount, note }) {
-    const payments = read(PAYMENTS_KEY, []);
-    const rec = { id: genId('pay'), uid, email, amount, note: note || '', status: 'paid', date: Date.now() };
-    payments.push(rec);
-    write(PAYMENTS_KEY, payments);
-    return rec;
+  async function addPayment({ uid, email, amount, note }) {
+    const rec = { uid, email, amount, note: note || '', status: 'paid', date: Date.now() };
+    const ref = await paymentsCol().add(rec);
+    return { id: ref.id, ...rec };
   }
 
-  function deletePayment(id) {
-    write(PAYMENTS_KEY, read(PAYMENTS_KEY, []).filter(p => p.id !== id));
+  async function deletePayment(id) {
+    await paymentsCol().doc(id).delete();
   }
 
   /* ── Analytics ────────────────────────────────────────────── */
-  function getAnalytics() {
-    const users = read(USERS_KEY, []);
-    const payments = read(PAYMENTS_KEY, []);
-    const posts = read(POSTS_KEY, []);
+  async function getAnalytics() {
+    const [users, payments, posts, tickets] = await Promise.all([
+      listUsers(), listPayments(), listPosts(), listTickets()
+    ]);
 
     const totalUsers = users.length;
     const activeMembers = users.filter(u => u.plan === 'glory_kids' && u.planStatus === 'active').length;
@@ -107,19 +175,12 @@
       const dayStart = now - i * 86400000;
       const d = new Date(dayStart);
       const label = d.toLocaleDateString('en-US', { weekday: 'short' });
-      const count = users.filter(u => {
-        const diffDays = Math.floor((now - u.createdAt) / 86400000);
-        return diffDays === i;
-      }).length;
+      const count = users.filter(u => Math.floor((now - u.createdAt) / 86400000) === i).length;
       days.push({ label, count });
     }
 
     let savedTotal = 0;
-    users.forEach(u => {
-      savedTotal += read('gk_saved_' + u.uid, []).length;
-    });
-
-    const tickets = read(TICKETS_KEY, []);
+    users.forEach(u => { savedTotal += JSON.parse(localStorage.getItem('gk_saved_' + u.uid || u.id) || '[]').length; });
 
     return {
       totalUsers, activeMembers, pausedMembers, revenue, mrr,
@@ -130,39 +191,33 @@
   }
 
   /* ── Support tickets (from chatbot escalations / contact form) ─ */
-  function listTickets() {
-    return read(TICKETS_KEY, []).sort((a, b) => b.createdAt - a.createdAt);
+  async function listTickets() {
+    const snap = await ticketsCol().get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
   }
 
-  function addTicket({ name, email, message, transcript }) {
-    const tickets = read(TICKETS_KEY, []);
+  async function addTicket({ name, email, message, transcript }) {
     const rec = {
-      id: genId('ticket'), name, email, message,
+      name, email, message,
       transcript: transcript || [], status: 'open', createdAt: Date.now()
     };
-    tickets.push(rec);
-    write(TICKETS_KEY, tickets);
-    return rec;
+    const ref = await ticketsCol().add(rec);
+    return { id: ref.id, ...rec };
   }
 
-  function updateTicket(id, patch) {
-    const tickets = read(TICKETS_KEY, []);
-    const rec = tickets.find(t => t.id === id);
-    if (!rec) return null;
-    Object.assign(rec, patch);
-    write(TICKETS_KEY, tickets);
-    return rec;
+  async function updateTicket(id, patch) {
+    await ticketsCol().doc(id).set(patch, { merge: true });
   }
 
-  function deleteTicket(id) {
-    write(TICKETS_KEY, read(TICKETS_KEY, []).filter(t => t.id !== id));
+  async function deleteTicket(id) {
+    await ticketsCol().doc(id).delete();
   }
 
   window.GK = {
-    listUsers, getUserRecord, updateUserRecord, deleteUserRecord,
-    listPosts, getPost, savePost, deletePost,
+    listUsers, getUserRecord, ensureUserRecord, updateUserRecord, deleteUserRecord,
+    listPosts, listPublishedPosts, getPost, getPostBySlug, relatedPosts, savePost, deletePost,
     listPayments, addPayment, deletePayment,
     listTickets, addTicket, updateTicket, deleteTicket,
-    getAnalytics
+    getAnalytics, slugify
   };
 })();

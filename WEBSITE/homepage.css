@@ -3,8 +3,8 @@
    ============================================================ */
 
 :root {
-  --color-bg:      #0a0a0b;
-  --color-darkest: #050505;
+  --color-bg:      #1a1a1a;
+  --color-darkest: #1a1a1a;
   --color-card:    #131316;
   --color-card-hover: #1c1c1f;
 
@@ -170,13 +170,13 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
 .nav {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: var(--z-nav);
-  background: rgba(10,10,11,0.85);
+  background: rgba(26,26,26,0.85);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--color-border);
   transition: var(--transition);
 }
-.nav.scrolled { background: rgba(10,10,11,0.96); box-shadow: var(--shadow-sm); }
+.nav.scrolled { background: rgba(26,26,26,0.96); box-shadow: var(--shadow-sm); }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; flex-wrap: nowrap; gap: 16px; }
 .nav__logo { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-headline); font-weight: 700; color: var(--color-white); flex-shrink: 0; white-space: nowrap; }
 .nav__logo-star { font-size: 1.1rem; }
@@ -859,6 +859,12 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
 /* ─── ZOOM CALL ──────────────────────────────────────────────── */
 .gk-zoom-section { background: linear-gradient(135deg, var(--color-darkest), #16213e); }
 .gk-zoom-section .gk-img-placeholder { box-shadow: 0 0 50px rgba(249,115,22,0.22); border-color: rgba(249,115,22,0.35); }
+.gk-zoom__photo {
+  width: 100%; height: auto; max-height: 420px; object-fit: contain;
+  display: block; margin: 0 auto;
+  border-radius: var(--radius-lg);
+  filter: drop-shadow(0 0 40px rgba(249,115,22,0.25));
+}
 .gk-zoom__grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 48px; align-items: center; }
 .gk-zoom__subhead { font-size: 24px; color: var(--color-white); margin-bottom: 1rem; }
 .gk-zoom__body { font-size: 14px; color: var(--color-text-secondary); line-height: 1.8; margin-bottom: 1.25rem; }
@@ -939,15 +945,15 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
 }
 
 /* ─── ALTERNATING SECTION BACKGROUNDS (site-wide rhythm) ────────
-   Every top-level <section> alternates Dark (#0a0a0b) / Light (#f5f5f5).
+   Every top-level <section> alternates Dark (#0a0a0b) / Light (#fafaf8).
    Odd = dark (default page bg, no override needed).
-   Even = light, with text-color variables flipped to dark so every
-   descendant that reads var(--color-white/--color-text-*) inverts
-   automatically. Cards keep var(--color-card) (still dark) so they
-   float as-is on the light band. Hero/banner sections with their own
-   photo carousels or gradients are excluded so they stay untouched. */
+   Even = light (warm cream), with text-color variables flipped to dark
+   so every descendant that reads var(--color-white/--color-text-*)
+   inverts automatically. Cards keep var(--color-card) (still dark) so
+   they float as-is on the light band. Hero/banner sections with their
+   own photo carousels or gradients are excluded so they stay untouched. */
 body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero):not(#filterBar) {
-  background: #f5f5f5 !important;
+  background: #fafaf8 !important;
   --color-white: #1a1a1a;
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #4a4a4a;
@@ -964,7 +970,7 @@ body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero)
   --gray-300: #7a7a7a;
   --gray-200: rgba(0,0,0,0.12);
   --gray-100: rgba(0,0,0,0.06);
-  --gray-50: #f5f5f5;
+  --gray-50: #fafaf8;
 }
 body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero):not(#filterBar) .gk-section-sub,
 body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero):not(#filterBar) p,
@@ -974,7 +980,7 @@ body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero)
 /* Pages that build content with raw Tailwind utility classes (text-white,
    text-slate-*, text-gray-*) instead of the CSS variables above need their
    own override on light sections, or that text would stay near-white and
-   vanish against the new #f5f5f5 background. */
+   vanish against the new #fafaf8 background. */
 body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero):not(#filterBar) :is(.text-white, strong) {
   color: #1a1a1a !important;
 }
@@ -983,4 +989,34 @@ body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero)
 }
 body > section:nth-of-type(even):not(.page-hero):not(.shop-hero):not(.curr-hero):not(#filterBar) :is(.text-slate-400, .text-slate-500, .text-gray-400, .text-gray-500) {
   color: #5a5a5a !important;
+}
+
+/* ─── MARQUEE BANNER ─────────────────────────────────────────── */
+.gk-marquee {
+  background: var(--color-orange);
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 18px 0;
+  border-top: 3px solid var(--color-darkest);
+  border-bottom: 3px solid var(--color-darkest);
+}
+.gk-marquee__track {
+  display: inline-flex;
+  width: max-content;
+  animation: gk-marquee-scroll 22s linear infinite;
+}
+.gk-marquee__item {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-white);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 2.5rem;
+}
+@keyframes gk-marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gk-marquee__track { animation: none; }
 }

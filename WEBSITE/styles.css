@@ -34,7 +34,7 @@
   --rose:           #ec4899;
   --rose-light:     rgba(236,72,153,0.15);
 
-  --navy:           #0a0a0b;
+  --navy:           #1a1a1a;
   --gray-900:       #f5f5f5;
   --gray-700:       #e8e8e8;
   --gray-600:       #cfcfcf;
@@ -43,11 +43,11 @@
   --gray-300:       #6f6f6f;
   --gray-200:       rgba(255,255,255,0.15);
   --gray-100:       rgba(255,255,255,0.08);
-  --gray-50:        #0a0a0b;
+  --gray-50:        #1a1a1a;
   --white:          #f5f5f5;
 
-  --color-bg:       #0a0a0b;
-  --color-darkest:  #050505;
+  --color-bg:       #1a1a1a;
+  --color-darkest:  #1a1a1a;
   --color-card:     #131316;
   --color-card-hover: #1c1c1f;
   --color-border:   rgba(255,255,255,0.12);
@@ -248,7 +248,7 @@ p  { font-size: 1.05rem; line-height: 1.75; }
   transition: var(--transition);
 }
 .nav.scrolled {
-  background: rgba(10,14,39,0.92);
+  background: rgba(26,26,26,0.92);
   backdrop-filter: blur(16px);
   box-shadow: 0 2px 20px rgba(0,0,0,0.35);
   padding: 0.85rem 0;

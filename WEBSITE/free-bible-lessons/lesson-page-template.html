@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  GLORY KIDS — FREE BIBLE LESSON PAGE TEMPLATE
+  ═══════════════════════════════════════════════════════════════
+  How to use this template for a new lesson:
+  1. Duplicate this file into its own folder so the URL is clean:
+       free-bible-lessons/[lesson-slug]/index.html
+     The slug MUST match the `slug` field for this lesson in the
+     LESSONS array in ../free-lessons.html (the card's "View Free
+     Lesson →" button links to /free-bible-lessons/[slug]/).
+  2. Update <title>, meta description, canonical URL, and the
+     JSON-LD schema block (Article / BreadcrumbList) near the
+     bottom of <head>.
+  3. Update the hero: breadcrumb label, H1, scripture reference,
+     age range, and featured image.
+  4. Paste your MailerLite embed code into all THREE
+     `.lesson-optin__embed` containers (marked below). Use the
+     SAME MailerLite form/group for a given lesson across all
+     three spots, per lesson — a different lesson can (and should)
+     point to its own MailerLite form so subscribers get tagged by
+     which lesson they downloaded.
+  5. Replace the bracketed [PLACEHOLDER] copy in the lesson body
+     with the finished lesson content (story, discussion questions,
+     activity, memory verse, prayer, etc.). Standard HTML — swap
+     headings/paragraphs/lists directly.
+  6. Update "Related Resources" (3-4 links to other lessons/blog
+     posts) and the breadcrumb / schema.
+  ═══════════════════════════════════════════════════════════════
+-->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO: title 60-70 chars, description 155-160 chars -->
+  <title>[LESSON TITLE — 60-70 characters] | Free Bible Lesson for Kids</title>
+  <meta name="description" content="[META DESCRIPTION — 155-160 characters summarizing the lesson and who it's for]" />
+  <meta name="keywords" content="[long-tail keyword], free Bible lesson for kids, Glory Kids Ministries" />
+  <link rel="canonical" href="https://www.childrensministrylessons.com/free-bible-lessons/[lesson-slug]/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="../../auth.css" />
+  <link rel="stylesheet" href="../../homepage.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false, container: false } };
+  </script>
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-content">
+    <div class="loader-logo">⭐ Glory Kids</div>
+    <div class="loader-bar"></div>
+  </div>
+</div>
+<div id="progress-bar"></div>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="../../index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="../../free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="../../curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="../../glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="../../comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
+        <li><a href="../../activities.html" class="nav__link">Activities</a></li>
+        <li class="nav__dropdown">
+          <a href="#" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="../../blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="../../blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="../../blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="../../faq/index.html" class="nav__link">FAQ</a></li>
+        <li><a href="../../contact.html" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="../../shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="../../login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="../../glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav__mobile">
+  <a href="../../index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="../../free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="../../curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="../../glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="../../comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="../../activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
+  <a href="../../blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="../../faq/index.html" class="nav__mobile-link">❓ FAQ</a>
+  <a href="../../contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <div class="nav__mobile-cta">
+    <a href="../../glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Glory Kids → $29.99/mo</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     1. HERO (dark — page bg default, no override needed)
+════════════════════════════════════════════════ -->
+<section class="gk-section lesson-hero" style="padding-top:150px;">
+  <div class="container">
+    <nav class="lesson-breadcrumb" aria-label="Breadcrumb">
+      <a href="../../index.html">Home</a>
+      <span>/</span>
+      <a href="../../free-lessons.html">Free Lessons</a>
+      <span>/</span>
+      <span class="lesson-breadcrumb__current">[Lesson Title Short]</span>
+    </nav>
+
+    <div class="lesson-hero__grid">
+      <div class="reveal reveal--left">
+        <div class="lesson-hero__tags">
+          <span class="lesson-hero__tag">📜 [Scripture Reference]</span>
+          <span class="lesson-hero__tag lesson-hero__tag--alt">👶 [Age Range]</span>
+        </div>
+        <h1 class="gk-h2 gk-h2--white gk-h2--left" style="font-size:clamp(28px,4vw,42px);">[LESSON TITLE]</h1>
+        <p class="lesson-hero__desc">[1-2 sentence summary of the lesson — what kids will learn and why it matters, matching the card description on the Free Lessons page.]</p>
+        <a href="#lesson-optin-top" class="gk-btn gk-btn--cta gk-btn--lg">📥 Get the Free PDF</a>
+      </div>
+      <div class="lesson-hero__thumb reveal reveal--right" style="background:linear-gradient(135deg,#38B6A5,#7ED6A5);">
+        [EMOJI / FEATURED IMAGE]
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     2. MAILERLITE OPT-IN — TOP (auto light/cream via
+        nth-of-type(even) alternation — see homepage.css)
+════════════════════════════════════════════════ -->
+<section class="gk-section" id="lesson-optin-top">
+  <div class="container">
+    <div class="lesson-optin reveal">
+      <div class="lesson-optin__copy">
+        <h2 class="lesson-optin__title">Get This Lesson in Your Inbox + PDF Download</h2>
+        <p class="lesson-optin__body">Enter your email and we'll send you the full printable lesson — plus activity sheets — instantly.</p>
+      </div>
+      <div class="lesson-optin__embed">
+        <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (top) ═══
+             Use the same MailerLite form for this lesson in all
+             three .lesson-optin__embed containers on this page. -->
+        <form class="lesson-optin__fallback" onsubmit="return false;">
+          <input type="email" required placeholder="Enter your email address" />
+          <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
+        </form>
+        <!-- ═══ END MAILERLITE EMBED ═══ -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     3. FULL LESSON BODY (dark)
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <div class="lesson-body">
+
+      <h2>The Story</h2>
+      <p>[Retell the Bible story in age-appropriate language — 3-5 paragraphs. This is the core teaching content kids and leaders will read together.]</p>
+
+      <div class="lesson-callout">
+        💡 <strong>Key Point:</strong> [The single most important truth from this story, stated plainly.]
+      </div>
+
+      <h2>Discussion Questions</h2>
+      <ol>
+        <li>[Question 1 — designed to get kids talking about the story.]</li>
+        <li>[Question 2 — connects the story to their own lives.]</li>
+        <li>[Question 3 — points toward the memory verse or key point.]</li>
+      </ol>
+
+      <h2>Activity / Craft</h2>
+      <p>[Step-by-step instructions for a simple, low-prep activity or craft that reinforces the lesson.]</p>
+
+      <h2>Memory Verse</h2>
+      <div class="lesson-verse">"[Memory verse text]" — [Reference]</div>
+
+      <h2>Closing Prayer</h2>
+      <p>[A short, simple prayer leaders can pray with kids to close the lesson.]</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     4. MAILERLITE OPT-IN — MIDDLE (light/cream)
+════════════════════════════════════════════════ -->
+<section class="gk-section" id="lesson-optin-middle">
+  <div class="container">
+    <div class="lesson-optin reveal">
+      <div class="lesson-optin__copy">
+        <h2 class="lesson-optin__title">Get This Lesson in Your Inbox + PDF Download</h2>
+        <p class="lesson-optin__body">Want to teach this lesson this week? Get the printable version delivered straight to your inbox.</p>
+      </div>
+      <div class="lesson-optin__embed">
+        <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (middle) ═══ -->
+        <form class="lesson-optin__fallback" onsubmit="return false;">
+          <input type="email" required placeholder="Enter your email address" />
+          <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
+        </form>
+        <!-- ═══ END MAILERLITE EMBED ═══ -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     5. RELATED RESOURCES (dark)
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <h2 class="gk-h2 gk-h2--white reveal">Related Resources</h2>
+    <p class="gk-section-sub reveal">Keep the momentum going with more free lessons and reading.</p>
+    <div class="gk-cards3 reveal">
+      <a href="../[related-lesson-1-slug]/" class="lesson-related-card">
+        <span class="lesson-related-card__icon">📖</span>
+        <span class="lesson-related-card__title">[Related Lesson Title 1]</span>
+      </a>
+      <a href="../[related-lesson-2-slug]/" class="lesson-related-card">
+        <span class="lesson-related-card__icon">📖</span>
+        <span class="lesson-related-card__title">[Related Lesson Title 2]</span>
+      </a>
+      <a href="../../blog.html" class="lesson-related-card">
+        <span class="lesson-related-card__icon">📝</span>
+        <span class="lesson-related-card__title">[Related Blog Post Title]</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     6. MAILERLITE OPT-IN — BOTTOM (light/cream)
+════════════════════════════════════════════════ -->
+<section class="gk-section">
+  <div class="container">
+    <div class="lesson-optin reveal">
+      <div class="lesson-optin__copy">
+        <h2 class="lesson-optin__title">Get This Lesson in Your Inbox + PDF Download</h2>
+        <p class="lesson-optin__body">Don't lose this lesson — get the free PDF and join 12,000+ ministry leaders getting weekly lesson ideas.</p>
+      </div>
+      <div class="lesson-optin__embed">
+        <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (bottom) ═══ -->
+        <form class="lesson-optin__fallback" onsubmit="return false;">
+          <input type="email" required placeholder="Enter your email address" />
+          <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
+        </form>
+        <!-- ═══ END MAILERLITE EMBED ═══ -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="gk-footer">
+  <div class="container">
+    <div class="gk-footer__grid">
+      <div class="gk-footer__brand">
+        <div class="gk-footer__logo">✝ Glory Kids Ministries</div>
+        <p class="gk-footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith. Founded 2015.</p>
+        <div class="gk-footer__social">
+          <a href="#" aria-label="Facebook">📘</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶️</a>
+          <a href="#" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+      <div>
+        <div class="gk-footer__title">Resources</div>
+        <ul class="gk-footer__links">
+          <li><a href="../../free-lessons.html">Free Bible Lessons</a></li>
+          <li><a href="../../curriculum-packs.html">Curriculum Packs</a></li>
+          <li><a href="../../glory-kids-curriculum.html">Glory Kids Curriculum</a></li>
+          <li><a href="../../comparison.html">Compare Platforms</a></li>
+          <li><a href="../../blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="gk-footer__title">Company</div>
+        <ul class="gk-footer__links">
+          <li><a href="../../contact.html">About Us</a></li>
+          <li><a href="../../faq/index.html">FAQ</a></li>
+          <li><a href="../../contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="gk-footer__title">Stay Inspired</div>
+        <p class="gk-footer__desc">Get free lessons, tips, and ministry inspiration.</p>
+        <form class="newsletter-form gk-newsletter" onsubmit="return false;">
+          <input type="email" placeholder="Enter your email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+    <div class="gk-footer__bottom">
+      <span>© 2026 ChildrensMinistryLessons.com. All rights reserved.</span>
+      <div class="gk-footer__legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="../../contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* ─── LESSON HERO ────────────────────────────────────────────── */
+  .lesson-breadcrumb { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 1.75rem; }
+  .lesson-breadcrumb a { color: var(--gray-400); text-decoration: none; }
+  .lesson-breadcrumb a:hover { color: #fff; text-decoration: underline; }
+  .lesson-breadcrumb span { margin: 0 0.4rem; }
+  .lesson-breadcrumb__current { color: #fff; }
+
+  .lesson-hero__grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: center; }
+  .lesson-hero__tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.1rem; }
+  .lesson-hero__tag {
+    display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--color-orange);
+    background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.35);
+    border-radius: var(--radius-full); padding: 0.35rem 0.9rem;
+  }
+  .lesson-hero__tag--alt { color: #22d3ee; background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.35); }
+  .lesson-hero__desc { color: var(--gray-300); font-size: 1.05rem; line-height: 1.7; margin: 1.1rem 0 1.75rem; max-width: 46ch; }
+  .lesson-hero__thumb {
+    aspect-ratio: 1/1; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; border: 1px solid var(--color-border); box-shadow: 0 0 50px rgba(249,115,22,0.18);
+  }
+
+  /* ─── MAILERLITE OPT-IN BOX ──────────────────────────────────── */
+  .lesson-optin {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+    background: linear-gradient(135deg, var(--color-orange), var(--color-orange-dark));
+    border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow-lg);
+  }
+  .lesson-optin__title { font-family: var(--font-heading); font-weight: 800; color: #fff; font-size: 1.5rem; margin-bottom: 0.6rem; }
+  .lesson-optin__body { color: rgba(255,255,255,0.9); font-size: 0.95rem; line-height: 1.6; }
+  .lesson-optin__embed { min-height: 60px; }
+  .lesson-optin__fallback { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .lesson-optin__fallback input {
+    flex: 1 1 220px; padding: 0.85rem 1.1rem; border-radius: var(--radius); border: none;
+    font-size: 0.9rem; background: #fff; color: #1a1a1a;
+  }
+  .lesson-optin__fallback .gk-btn { flex-shrink: 0; background: #1a1a1a; }
+  .lesson-optin__fallback .gk-btn:hover { background: #000; }
+
+  /* ─── LESSON BODY (long-form content) ────────────────────────── */
+  .lesson-body { max-width: 760px; margin: 0 auto; }
+  .lesson-body h2 { font-family: var(--font-heading); font-weight: 800; color: var(--color-white); font-size: 1.5rem; margin: 2.25rem 0 1rem; }
+  .lesson-body h2:first-child { margin-top: 0; }
+  .lesson-body p, .lesson-body li { color: var(--color-text-secondary); font-size: 1.02rem; line-height: 1.8; }
+  .lesson-body ol, .lesson-body ul { margin: 0.5rem 0 1.25rem 1.25rem; }
+  .lesson-body li { margin-bottom: 0.5rem; }
+  .lesson-callout {
+    background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.3);
+    border-radius: var(--radius-lg); padding: 1.1rem 1.35rem; margin: 1.5rem 0; font-size: 0.95rem; color: var(--color-white);
+  }
+  .lesson-verse {
+    border-left: 3px solid var(--color-orange); background: var(--color-card);
+    padding: 1.1rem 1.5rem; margin: 0.5rem 0 1.5rem; font-style: italic; font-size: 1.1rem; color: var(--color-white);
+  }
+
+  /* ─── RELATED RESOURCES ──────────────────────────────────────── */
+  .lesson-related-card {
+    display: flex; flex-direction: column; gap: 0.75rem; text-decoration: none;
+    background: var(--color-card); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); padding: 1.5rem; transition: var(--transition);
+  }
+  .lesson-related-card:hover { background: var(--color-card-hover); transform: translateY(-3px); }
+  .lesson-related-card__icon { font-size: 1.75rem; }
+  .lesson-related-card__title { color: var(--color-white); font-weight: 600; font-size: 0.95rem; line-height: 1.4; }
+
+  /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .lesson-hero__grid { grid-template-columns: 1fr; }
+    .lesson-hero__thumb { aspect-ratio: 16/9; order: -1; }
+    .lesson-optin { grid-template-columns: 1fr; text-align: center; padding: 2rem 1.5rem; }
+    .lesson-optin__fallback { justify-content: center; }
+  }
+  @media (max-width: 560px) {
+    .lesson-optin__fallback { flex-direction: column; }
+    .lesson-optin__fallback input, .lesson-optin__fallback .gk-btn { width: 100%; }
+  }
+</style>
+
+<!-- ═══════ SEO Schema: Article + BreadcrumbList ═══════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "[LESSON TITLE]",
+  "description": "[META DESCRIPTION]",
+  "image": "https://www.childrensministrylessons.com/images/[featured-image].jpg",
+  "datePublished": "[YYYY-MM-DD]",
+  "dateModified": "[YYYY-MM-DD]",
+  "author": { "@type": "Organization", "name": "Glory Kids Ministries" },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Glory Kids Ministries",
+    "logo": { "@type": "ImageObject", "url": "https://www.childrensministrylessons.com/images/logo.png" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://www.childrensministrylessons.com/free-bible-lessons/[lesson-slug]/" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.childrensministrylessons.com/index.html" },
+    { "@type": "ListItem", "position": 2, "name": "Free Lessons", "item": "https://www.childrensministrylessons.com/free-lessons.html" },
+    { "@type": "ListItem", "position": 3, "name": "[Lesson Title Short]", "item": "https://www.childrensministrylessons.com/free-bible-lessons/[lesson-slug]/" }
+  ]
+}
+</script>
+
+<script src="../../app.js"></script>
+<script src="../../firebase-config.js"></script>
+<script src="../../admin-data.js"></script>
+<script src="../../auth.js"></script>
+<script src="../../chatbot.js"></script>
+</body>
+</html>

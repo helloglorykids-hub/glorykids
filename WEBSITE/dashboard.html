@@ -542,6 +542,10 @@
   </main>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="auth.js"></script>
@@ -557,9 +561,10 @@ let currentUid = null;
 
 // Populate dashboard with user info
 onFirebaseReady(() => {
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(async user => {
     if (!user) { window.location.href = 'login.html'; return; }
     currentUid = user.uid;
+    await GK.ensureUserRecord(user);
 
     const name = user.displayName || user.email.split('@')[0];
     const initials = user.displayName
@@ -591,8 +596,8 @@ onFirebaseReady(() => {
 });
 
 // ── Plan / membership state ──────────────────────────────
-function renderPlanState() {
-  const rec = GK.getUserRecord(currentUid);
+async function renderPlanState() {
+  const rec = await GK.getUserRecord(currentUid);
   const plan = rec ? rec.plan : 'free';
   const status = rec ? rec.planStatus : 'active';
   const isActiveMember = plan === 'glory_kids' && status === 'active';

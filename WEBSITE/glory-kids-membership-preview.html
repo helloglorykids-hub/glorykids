@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Glory Kids Ministries — Membership</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Lora:ital@1&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          oswald: ['Oswald', 'sans-serif'],
+          nunito: ['Nunito', 'sans-serif'],
+          lora: ['Lora', 'serif'],
+        },
+        colors: {
+          heaven: '#1A7FBF',
+          gold: '#F5A623',
+          coral: '#F26522',
+          ink: '#1A2B3C',
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Nunito', sans-serif; }
+
+  /* scroll reveal */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-left { opacity: 0; transform: translateX(-24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal-left.in { opacity: 1; transform: translateX(0); }
+  .reveal-right { opacity: 0; transform: translateX(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal-right.in { opacity: 1; transform: translateX(0); }
+
+  .stagger-1 { transition-delay: .08s; }
+  .stagger-2 { transition-delay: .16s; }
+  .stagger-3 { transition-delay: .24s; }
+  .stagger-4 { transition-delay: .32s; }
+  .stagger-5 { transition-delay: .40s; }
+  .stagger-6 { transition-delay: .48s; }
+
+  .cta-btn { transition: transform .2s ease, box-shadow .2s ease; }
+  .cta-btn:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(0,0,0,.15); }
+  .cta-btn:active { transform: scale(.98); }
+
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s ease; }
+  .faq-answer.open { max-height: 300px; }
+  .faq-plus { transition: transform .2s ease; display: inline-block; }
+  .faq-plus.open { transform: rotate(45deg); }
+  .faq-item.open .faq-question { background-color: rgba(26,127,191,0.1); color: #1A7FBF; }
+</style>
+</head>
+<body class="bg-white text-ink antialiased">
+
+  <!-- ================= HEADER ================= -->
+  <header class="fixed top-0 z-50 w-full border-b border-black/5 bg-white/90 backdrop-blur-sm">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <span class="font-oswald text-xl font-bold tracking-wide text-heaven">Glory Kids Ministries</span>
+      <a href="#pricing" class="cta-btn inline-block rounded-lg bg-gold px-5 py-2.5 font-oswald text-sm font-semibold uppercase tracking-wide text-white shadow-md">
+        Join the Membership
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="relative flex min-h-screen items-center justify-center overflow-hidden pt-24"
+    style="background: linear-gradient(160deg, #1A7FBF 0%, #175f91 45%, #F5A623 130%);">
+    <div class="absolute inset-0 bg-black/25"></div>
+    <div class="reveal in relative z-10 mx-auto max-w-3xl px-6 text-center">
+      <h1 class="font-oswald text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+        Never plan another children's Bible lesson from scratch.
+      </h1>
+      <p class="mx-auto mt-6 max-w-xl font-nunito text-lg text-white/90 sm:text-xl">
+        Access 200+ done-for-you lessons, trainings, and resources—all in one growing vault. New curriculum every month. Cancel anytime.
+      </p>
+      <div class="mt-10 flex justify-center">
+        <a href="#pricing" class="cta-btn inline-block rounded-lg bg-gold px-10 py-5 font-oswald text-lg font-semibold uppercase tracking-wide text-white shadow-md sm:text-xl">
+          Join the Membership
+        </a>
+      </div>
+      <p class="mt-5 font-nunito text-sm font-semibold text-gold">
+        Founding members lock in $19.99/month for life. Only 50 spots.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= WHAT'S INCLUDED ================= -->
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="mx-auto max-w-2xl text-center mb-14">
+      <p class="mb-2 font-nunito text-sm font-bold uppercase tracking-widest text-coral">Everything Included</p>
+      <h2 class="font-oswald text-3xl font-bold text-ink sm:text-4xl">One membership. Everything you need.</h2>
+    </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+      <div class="reveal stagger-1 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">📚</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">New Premium Lessons Every Month</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Complete Bible lessons with teaching, object lessons, games, crafts, small group questions, prayer ministry, and worship suggestions. Everything you need—zero prep time.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+      <div class="reveal stagger-2 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">👨‍👩‍👧‍👦</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">Parent & Family Resources</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Family devotionals, parent handouts, prayer guides, and conversation starters. Disciple kids at home, not just at church or school.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+      <div class="reveal stagger-3 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">🎥</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">Training Library</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Expert training for leaders covering teaching effectively, classroom management, discipleship, and Holy Spirit ministry with children.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+      <div class="reveal stagger-4 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">💬</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">Members-Only Community</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Connect with other leaders, parents, and families. Share ideas, ask questions, and build together.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+      <div class="reveal stagger-5 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">🎁</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">200+ Resource Vault</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Instant access to curriculum, games, crafts, coloring pages, seasonal resources, and everything we've built. Growing every month.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+      <div class="reveal stagger-6 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+        <div class="text-3xl">🚀</div>
+        <h3 class="mt-4 font-oswald text-lg font-bold text-ink">Early Access</h3>
+        <p class="mt-2 font-nunito text-sm leading-relaxed text-ink/75">Members receive new curriculum and products before everyone else. Be first to launch new series in your church or classroom.</p>
+        <div class="mt-4 h-1 w-10 rounded-full bg-coral"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CURRICULUM ROADMAP ================= -->
+  <section class="bg-[#F7F9FB] py-24">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="mx-auto max-w-2xl text-center mb-14">
+        <p class="mb-2 font-nunito text-sm font-bold uppercase tracking-widest text-coral">The Vault</p>
+        <h2 class="font-oswald text-3xl font-bold text-ink sm:text-4xl">Your first year: A journey through Scripture</h2>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+        <div class="reveal stagger-1 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+          <span class="font-oswald text-xs font-bold uppercase tracking-widest text-coral">Q1</span>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Fruits of the Spirit</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">9 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Made for More</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">5 weeks</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="reveal stagger-2 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+          <span class="font-oswald text-xs font-bold uppercase tracking-widest text-coral">Q2</span>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">The Life of Jesus</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">8 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Encounters with Jesus</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">5 weeks</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="reveal stagger-3 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+          <span class="font-oswald text-xs font-bold uppercase tracking-widest text-coral">Q3</span>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Character Builders</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">5 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Heroes of Faith</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">8 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Brave & Unshakeable</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">4 weeks</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="reveal stagger-4 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+          <span class="font-oswald text-xs font-bold uppercase tracking-widest text-coral">Q4</span>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Kids Who Pray</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">3 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">A Grateful Heart</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">4 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Wildly Loved</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">4 weeks</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="reveal stagger-5 rounded-xl border border-heaven/10 bg-heaven/5 p-6">
+          <span class="font-oswald text-xs font-bold uppercase tracking-widest text-coral">Bonus</span>
+          <ul class="mt-3 space-y-3">
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Unshakeable Faith Heroes</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">5 weeks</span>
+            </li>
+            <li class="flex items-baseline justify-between gap-3">
+              <span class="font-oswald text-base font-semibold text-ink">Grow in the Spirit</span>
+              <span class="whitespace-nowrap font-nunito text-xs font-bold text-heaven">3 weeks</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="reveal mt-8 rounded-xl bg-gold p-8 text-center">
+        <p class="font-oswald text-xl font-bold text-white">12 complete curriculum series — 60+ lessons</p>
+        <p class="mx-auto mt-2 max-w-2xl font-nunito text-white/95">
+          Covering Spirit-led discipleship, Bible stories, character building, and faith encounters. All included in your monthly membership from day one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TESTIMONIALS ================= -->
+  <section class="mx-auto max-w-6xl px-6 py-24">
+    <div class="mx-auto max-w-2xl text-center mb-14">
+      <p class="mb-2 font-nunito text-sm font-bold uppercase tracking-widest text-coral">Real Ministry Leaders</p>
+      <h2 class="font-oswald text-3xl font-bold text-ink sm:text-4xl">Here's what ministry leaders say</h2>
+    </div>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+
+      <div class="reveal-left rounded-xl border-l-4 border-gold bg-white p-6 shadow-sm">
+        <div class="mb-3 text-gold">★★★★★</div>
+        <p class="font-lora text-base italic leading-relaxed text-ink/85">
+          "I used to spend 6–7 hours every week planning lessons from scratch. Now I grab what I need from the Glory Kids vault and spend that time actually discipling kids instead of searching Pinterest. Worth every penny."
+        </p>
+        <p class="mt-4 font-oswald text-sm font-bold text-ink">Sarah M.</p>
+        <p class="font-nunito text-xs text-ink/60">Children's Ministry Director, Texas</p>
+      </div>
+
+      <div class="reveal rounded-xl border-l-4 border-gold bg-white p-6 shadow-sm">
+        <div class="mb-3 text-gold">★★★★★</div>
+        <p class="font-lora text-base italic leading-relaxed text-ink/85">
+          "The lessons are biblically rich AND age-appropriate. My kids actually engage with the crafts and discussion questions. For $30/month, I have a complete faith-building curriculum I don't have to create myself."
+        </p>
+        <p class="mt-4 font-oswald text-sm font-bold text-ink">Jennifer K.</p>
+        <p class="font-nunito text-xs text-ink/60">Homeschool Mom, Florida</p>
+      </div>
+
+      <div class="reveal-right rounded-xl border-l-4 border-gold bg-white p-6 shadow-sm">
+        <div class="mb-3 text-gold">★★★★★</div>
+        <p class="font-lora text-base italic leading-relaxed text-ink/85">
+          "I volunteer on Sundays and wasn't trained as a teacher. The training library and ready-to-go lessons gave me the confidence to lead well. Plus, the community helped me realize I'm not alone in this."
+        </p>
+        <p class="mt-4 font-oswald text-sm font-bold text-ink">Marcus T.</p>
+        <p class="font-nunito text-xs text-ink/60">Volunteer Leader, Georgia</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= PRICING ================= -->
+  <section id="pricing" class="bg-[#F7F9FB] py-24">
+    <div class="mx-auto max-w-3xl px-6">
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="mb-2 font-nunito text-sm font-bold uppercase tracking-widest text-coral">Limited Founding Spots</p>
+        <h2 class="font-oswald text-3xl font-bold text-ink sm:text-4xl">Founding Member Pricing</h2>
+      </div>
+
+      <div class="reveal mt-12 rounded-2xl bg-heaven p-8 text-center shadow-lg sm:p-12">
+        <p class="font-oswald text-6xl font-bold text-gold sm:text-7xl">
+          $19.99<span class="text-2xl font-semibold text-white/80 sm:text-3xl">/month</span>
+        </p>
+        <p class="mt-3 font-nunito text-lg font-semibold text-white">Lock in lifetime pricing—only 50 spots available</p>
+        <p class="mt-1 font-nunito text-sm text-white/75">Price increases to $29.99/month after founding member spots fill</p>
+
+        <ul class="mx-auto mt-8 grid max-w-md grid-cols-1 gap-3 text-left sm:grid-cols-2">
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>New premium lessons every month</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>200+ resource vault</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Parent & family resources</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Training library for leaders</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Members-only community</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Live webinars & Q&A</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Monthly bonus resources</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Early access to new products</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>10% member discounts</span></li>
+          <li class="flex items-start gap-2 font-nunito text-sm text-white"><span class="mt-0.5 text-gold">✓</span><span>Cancel anytime</span></li>
+        </ul>
+
+        <div class="mt-10 flex justify-center">
+          <a href="#join" class="cta-btn inline-block rounded-lg bg-gold px-10 py-5 font-oswald text-lg font-bold uppercase tracking-wide text-white shadow-md sm:text-xl">
+            Join the Membership — $19.99/month
+          </a>
+        </div>
+        <p class="mt-4 font-nunito text-xs text-white/70">Cancel anytime. No contracts. 30-day money-back guarantee.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="mx-auto max-w-3xl px-6 py-24">
+    <div class="mx-auto max-w-2xl text-center mb-12">
+      <p class="mb-2 font-nunito text-sm font-bold uppercase tracking-widest text-coral">Questions</p>
+      <h2 class="font-oswald text-3xl font-bold text-ink sm:text-4xl">Common Questions</h2>
+    </div>
+
+    <div class="space-y-3" id="faq-list">
+
+      <div class="faq-item overflow-hidden rounded-lg border border-black/10 transition-colors">
+        <button type="button" class="faq-question flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-oswald font-semibold text-ink transition-colors">
+          <span>Who is this membership for?</span>
+          <span class="faq-plus text-xl leading-none">+</span>
+        </button>
+        <div class="faq-answer px-5">
+          <p class="pb-5 font-nunito text-sm leading-relaxed text-ink/75">It's built for children's ministry leaders, Sunday school teachers, volunteers, and parents who want biblically rich, age-appropriate resources without spending hours creating lessons from scratch.</p>
+        </div>
+      </div>
+
+      <div class="faq-item overflow-hidden rounded-lg border border-black/10 transition-colors">
+        <button type="button" class="faq-question flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-oswald font-semibold text-ink transition-colors">
+          <span>Do I get new content every month?</span>
+          <span class="faq-plus text-xl leading-none">+</span>
+        </button>
+        <div class="faq-answer px-5">
+          <p class="pb-5 font-nunito text-sm leading-relaxed text-ink/75">Yes. Every month you'll receive a new, complete Bible lesson series, plus fresh parent resources, training material, and bonus content added to your vault.</p>
+        </div>
+      </div>
+
+      <div class="faq-item overflow-hidden rounded-lg border border-black/10 transition-colors">
+        <button type="button" class="faq-question flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-oswald font-semibold text-ink transition-colors">
+          <span>Can I cancel anytime?</span>
+          <span class="faq-plus text-xl leading-none">+</span>
+        </button>
+        <div class="faq-answer px-5">
+          <p class="pb-5 font-nunito text-sm leading-relaxed text-ink/75">Absolutely. No contracts, no hidden fees. Cancel your membership whenever you'd like, right from your account.</p>
+        </div>
+      </div>
+
+      <div class="faq-item overflow-hidden rounded-lg border border-black/10 transition-colors">
+        <button type="button" class="faq-question flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-oswald font-semibold text-ink transition-colors">
+          <span>What if I don't love it?</span>
+          <span class="faq-plus text-xl leading-none">+</span>
+        </button>
+        <div class="faq-answer px-5">
+          <p class="pb-5 font-nunito text-sm leading-relaxed text-ink/75">We offer a 30-day money-back guarantee. If it's not the right fit, just reach out and we'll refund you, no questions asked.</p>
+        </div>
+      </div>
+
+      <div class="faq-item overflow-hidden rounded-lg border border-black/10 transition-colors">
+        <button type="button" class="faq-question flex w-full items-center justify-between gap-4 px-5 py-4 text-left font-oswald font-semibold text-ink transition-colors">
+          <span>Is this just curriculum or is there community?</span>
+          <span class="faq-plus text-xl leading-none">+</span>
+        </button>
+        <div class="faq-answer px-5">
+          <p class="pb-5 font-nunito text-sm leading-relaxed text-ink/75">It's both. You get complete lessons plus access to a private community of leaders and families to share ideas, ask questions, and grow together.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CLOSING CTA ================= -->
+  <section id="join" class="bg-coral py-24 text-center">
+    <div class="reveal mx-auto max-w-2xl px-6">
+      <h2 class="font-oswald text-3xl font-bold text-white sm:text-4xl">Start your membership today</h2>
+      <p class="mt-4 font-nunito text-lg text-white/90">
+        Join 50 founding members. Lock in $19.99/month for life. New content every month. Cancel anytime.
+      </p>
+      <div class="mt-8 flex justify-center">
+        <a href="#pricing" class="cta-btn inline-block rounded-lg bg-white px-10 py-5 font-oswald text-lg font-bold uppercase tracking-wide text-coral shadow-md sm:text-xl">
+          Join the Membership
+        </a>
+      </div>
+      <p class="mt-5 font-nunito text-sm text-white/80">
+        30-day money-back guarantee. Founding member pricing closes when 50 spots fill.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-ink py-8 text-center">
+    <p class="font-nunito text-sm text-white/70" id="copyright"></p>
+  </footer>
+
+  <script>
+    document.getElementById('copyright').textContent = '© ' + new Date().getFullYear() + ' Glory Kids Ministries';
+
+    // scroll reveal
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    revealEls.forEach(el => io.observe(el));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const btn = item.querySelector('.faq-question');
+      const answer = item.querySelector('.faq-answer');
+      const plus = item.querySelector('.faq-plus');
+      btn.addEventListener('click', () => {
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(openItem => {
+          if (openItem !== item) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').classList.remove('open');
+            openItem.querySelector('.faq-plus').classList.remove('open');
+          }
+        });
+        item.classList.toggle('open', !isOpen);
+        answer.classList.toggle('open', !isOpen);
+        plus.classList.toggle('open', !isOpen);
+        btn.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+  </script>
+
+</body>
+</html>

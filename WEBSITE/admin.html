@@ -96,6 +96,45 @@
     .post-row__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--white); }
     .post-row__meta { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
     .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
+
+    .tag-input {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 0.6rem; border-radius: var(--radius); border: 1.5px solid var(--gray-200);
+      cursor: text;
+    }
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--primary-light); color: var(--primary);
+      font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.5rem 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+    }
+    .tag-chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; }
+    #tag-input-field { border: none !important; outline: none; flex: 1; min-width: 120px; padding: 0.2rem !important; }
+
+    .rte-toolbar {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem;
+      background: var(--gray-50); border: 1.5px solid var(--gray-200); border-bottom: none;
+      border-radius: var(--radius) var(--radius) 0 0; padding: 0.5rem;
+    }
+    .rte-toolbar button {
+      font-size: 0.78rem; font-weight: 700; padding: 0.35rem 0.6rem; border-radius: var(--radius);
+      border: 1px solid var(--gray-200); background: var(--color-card); color: var(--gray-600); cursor: pointer;
+    }
+    .rte-toolbar button:hover { background: var(--gray-100); }
+    .rte-body {
+      min-height: 300px; max-height: 600px; overflow-y: auto;
+      border: 1.5px solid var(--gray-200); border-radius: 0 0 var(--radius) var(--radius);
+      padding: 1rem 1.1rem; font-size: 0.92rem; line-height: 1.7; color: var(--gray-700);
+    }
+    .rte-body:empty:before { content: attr(data-placeholder); color: var(--gray-400); }
+    .rte-body h2 { font-size: 1.25rem; font-weight: 800; margin: 1rem 0 0.5rem; }
+    .rte-body h3 { font-size: 1.05rem; font-weight: 700; margin: 0.85rem 0 0.4rem; }
+    .rte-body p { margin: 0 0 0.75rem; }
+    .rte-body ul, .rte-body ol { margin: 0 0 0.75rem 1.25rem; }
+    .rte-body a { color: var(--primary); text-decoration: underline; }
+    .rte-body img { max-width: 100%; border-radius: var(--radius); margin: 0.75rem 0; }
+    .rte-body .quote-callout { border-left: 3px solid var(--primary); background: var(--gray-50); padding: 0.85rem 1.1rem; margin: 1rem 0; font-style: italic; }
+    .rte-body .key-point { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: var(--radius); padding: 0.85rem 1.1rem; margin: 1rem 0; }
   </style>
 </head>
 <body>
@@ -168,30 +207,97 @@
           <div class="admin-card__title" id="post-form-title">New Post</div>
           <div class="post-form">
             <input type="hidden" id="post-id" />
+
             <div>
               <label>Title</label>
-              <input type="text" id="post-title" placeholder="Post title" />
+              <input type="text" id="post-title" placeholder="Post title" oninput="onPostTitleInput()" />
             </div>
+
             <div>
-              <label>Category</label>
-              <select id="post-category">
-                <option value="parents">For Parents</option>
-                <option value="pastors">For Pastors</option>
-                <option value="kidmin">For Kidmin Leaders</option>
-              </select>
+              <label>URL Slug <span style="font-weight:400;color:var(--gray-400);">— editable, auto-fills from title</span></label>
+              <div style="display:flex; align-items:center; gap:0.4rem;">
+                <span style="font-size:0.78rem; color:var(--gray-400); white-space:nowrap;">blog-post.html?slug=</span>
+                <input type="text" id="post-slug" placeholder="my-post-title" oninput="slugTouched = true;" />
+              </div>
             </div>
-            <div>
-              <label>Icon (emoji)</label>
-              <input type="text" id="post-icon" placeholder="📖" value="📖" />
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div>
+                <label>Category</label>
+                <select id="post-category">
+                  <option value="parents">For Parents</option>
+                  <option value="pastors">For Pastors</option>
+                  <option value="kidmin">For Kidmin Leaders</option>
+                </select>
+              </div>
+              <div>
+                <label>Icon (emoji)</label>
+                <input type="text" id="post-icon" placeholder="📖" value="📖" />
+              </div>
             </div>
+
             <div>
-              <label>Excerpt</label>
+              <label>Tags <span style="font-weight:400;color:var(--gray-400);">— press Enter or comma to add</span></label>
+              <div class="tag-input" id="tag-input-wrap" onclick="document.getElementById('tag-input-field').focus()">
+                <span id="tag-chips"></span>
+                <input type="text" id="tag-input-field" placeholder="Add a tag..." onkeydown="onTagKeydown(event)" />
+              </div>
+            </div>
+
+            <div>
+              <label>Excerpt <span style="font-weight:400;color:var(--gray-400);">— short summary shown on blog cards</span></label>
               <textarea id="post-excerpt" placeholder="Short summary shown on the blog cards"></textarea>
             </div>
+
             <div>
-              <label>Content</label>
-              <textarea id="post-content" placeholder="Full article content" style="min-height:160px;"></textarea>
+              <label>Featured Image</label>
+              <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                <div id="featured-image-preview" style="width:120px; height:70px; border-radius:var(--radius); background:var(--gray-100); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; border:1.5px solid var(--gray-200);">
+                  <span style="font-size:1.5rem; color:var(--gray-400);">🖼️</span>
+                </div>
+                <div>
+                  <input type="file" id="featured-image-file" accept="image/*" style="display:none;" onchange="uploadFeaturedImage(this.files[0])" />
+                  <button type="button" class="row-btn" onclick="document.getElementById('featured-image-file').click()">Upload Image</button>
+                  <div id="featured-image-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+                </div>
+                <input type="hidden" id="post-featured-image" />
+              </div>
             </div>
+
+            <div>
+              <label>Body <span style="font-weight:400;color:var(--gray-400);">— paste your full article, formatting carries over automatically</span></label>
+              <div class="rte-toolbar">
+                <button type="button" onclick="rteExec('bold')"><b>B</b></button>
+                <button type="button" onclick="rteExec('italic')"><i>I</i></button>
+                <button type="button" onclick="rteExec('formatBlock','H2')">H2</button>
+                <button type="button" onclick="rteExec('formatBlock','H3')">H3</button>
+                <button type="button" onclick="rteExec('insertUnorderedList')">• List</button>
+                <button type="button" onclick="rteExec('insertOrderedList')">1. List</button>
+                <button type="button" onclick="rteLink()">🔗 Link</button>
+                <button type="button" onclick="rteInsertBlock('quote-callout', '&quot;Pull quote goes here.&quot;')">❝ Quote</button>
+                <button type="button" onclick="rteInsertBlock('key-point', '💡 <strong>Key point:</strong> ')">💡 Key Point</button>
+                <button type="button" onclick="document.getElementById('rte-image-file').click()">🖼️ Image</button>
+                <input type="file" id="rte-image-file" accept="image/*" style="display:none;" onchange="insertInlineImage(this.files[0])" />
+              </div>
+              <div id="post-body" class="rte-body" contenteditable="true" data-placeholder="Paste your article here..."></div>
+            </div>
+
+            <div class="admin-card" style="background:var(--gray-50); box-shadow:none; padding:1.25rem; margin-bottom:0;">
+              <div class="admin-card__title" style="font-size:0.85rem; margin-bottom:1rem;">🔍 SEO</div>
+              <div>
+                <label>SEO Title <span style="font-weight:400;color:var(--gray-400);">— defaults to post title, 60-70 chars ideal</span></label>
+                <input type="text" id="post-seo-title" placeholder="Leave blank to use the post title" />
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Meta Description <span style="font-weight:400;color:var(--gray-400);">— 155-160 chars ideal</span></label>
+                <textarea id="post-seo-description" placeholder="Summary shown in Google search results" style="min-height:60px;"></textarea>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Keywords <span style="font-weight:400;color:var(--gray-400);">— comma separated</span></label>
+                <input type="text" id="post-seo-keywords" placeholder="children's ministry, sunday school, kids bible lessons" />
+              </div>
+            </div>
+
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
               <input type="checkbox" id="post-published" style="width:auto;" checked /> Published
             </label>
@@ -273,6 +379,10 @@
   </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="auth.js"></script>
@@ -280,9 +390,9 @@
 let adminUid = null;
 
 onFirebaseReady(() => {
-  auth.onAuthStateChanged(user => {
+  auth.onAuthStateChanged(async user => {
     if (!user) { window.location.href = 'admin-login.html'; return; }
-    const rec = GK.getUserRecord(user.uid);
+    const rec = await GK.getUserRecord(user.uid);
     if (!rec || !rec.isAdmin) {
       window.location.href = 'admin-login.html';
       return;
@@ -314,8 +424,8 @@ function showAdminTab(name, linkEl) {
 }
 
 /* ── Overview ─────────────────────────────────────────────── */
-function renderOverview() {
-  const a = GK.getAnalytics();
+async function renderOverview() {
+  const a = await GK.getAnalytics();
   document.getElementById('stat-total-users').textContent = a.totalUsers;
   document.getElementById('stat-active-members').textContent = a.activeMembers;
   document.getElementById('stat-mrr').textContent = '$' + a.mrr.toFixed(2);
@@ -330,7 +440,8 @@ function renderOverview() {
     </div>
   `).join('');
 
-  const recent = GK.listUsers().sort((a,b) => b.createdAt - a.createdAt).slice(0, 5);
+  const users = await GK.listUsers();
+  const recent = users.sort((a,b) => b.createdAt - a.createdAt).slice(0, 5);
   const el = document.getElementById('recent-signups');
   if (recent.length === 0) { el.innerHTML = '<div class="empty-state">No signups yet.</div>'; return; }
   el.innerHTML = recent.map(u => `
@@ -345,51 +456,193 @@ function renderOverview() {
 }
 
 /* ── Blog Posts ───────────────────────────────────────────── */
+let postTags = [];
+let slugTouched = false;
+
+function onPostTitleInput() {
+  if (slugTouched) return;
+  document.getElementById('post-slug').value = GK.slugify(document.getElementById('post-title').value);
+}
+
+function renderTagChips() {
+  document.getElementById('tag-chips').innerHTML = postTags.map((t, i) => `
+    <span class="tag-chip">${t}<button type="button" onclick="removeTag(${i})">×</button></span>
+  `).join('');
+}
+function onTagKeydown(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    if (val && !postTags.includes(val)) { postTags.push(val); renderTagChips(); }
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && !e.target.value && postTags.length) {
+    postTags.pop();
+    renderTagChips();
+  }
+}
+function removeTag(i) { postTags.splice(i, 1); renderTagChips(); }
+
+/* ── Rich text body editor ───────────────────────────────── */
+function rteExec(cmd, val) {
+  document.getElementById('post-body').focus();
+  document.execCommand(cmd, false, val || null);
+}
+function rteLink() {
+  const url = prompt('Link URL:');
+  if (url) rteExec('createLink', url);
+}
+function rteInsertBlock(className, html) {
+  document.getElementById('post-body').focus();
+  document.execCommand('insertHTML', false, `<div class="${className}">${html}</div><p><br></p>`);
+}
+
+// Strip Word/Google Docs cruft on paste, keep basic structure only.
+function sanitizeHtml(html) {
+  const allowed = { P:1, H2:1, H3:1, STRONG:1, B:1, EM:1, I:1, UL:1, OL:1, LI:1, A:1, BLOCKQUOTE:1, BR:1, IMG:1, DIV:1, SPAN:1 };
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+
+  function clean(node) {
+    [...node.childNodes].forEach(child => {
+      if (child.nodeType === 3) return; // text node, keep as-is
+      if (child.nodeType !== 1 || !allowed[child.tagName]) {
+        // Unwrap disallowed elements (keep their text/children) instead of dropping content
+        const parent = child.parentNode;
+        while (child.firstChild) parent.insertBefore(child.firstChild, child);
+        parent.removeChild(child);
+        return;
+      }
+      // Un-semantic H1s pasted from docs become H2s (never let a post outrank its own title)
+      if (child.tagName === 'H1') {
+        const h2 = document.createElement('h2');
+        h2.innerHTML = child.innerHTML;
+        child.parentNode.replaceChild(h2, child);
+        clean(h2);
+        return;
+      }
+      // Strip all attributes except href on <a> and src/alt on <img>
+      [...child.attributes].forEach(attr => {
+        const keep = (child.tagName === 'A' && attr.name === 'href') ||
+                     (child.tagName === 'IMG' && (attr.name === 'src' || attr.name === 'alt'));
+        if (!keep) child.removeAttribute(attr.name);
+      });
+      if (child.tagName === 'A') child.setAttribute('target', '_blank');
+      clean(child);
+    });
+  }
+  clean(tmp);
+  return tmp.innerHTML;
+}
+
+document.addEventListener('paste', e => {
+  const body = document.getElementById('post-body');
+  if (!body || document.activeElement !== body) return;
+  e.preventDefault();
+  const html = e.clipboardData.getData('text/html');
+  const text = e.clipboardData.getData('text/plain');
+  const clean = html
+    ? sanitizeHtml(html)
+    : text.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  document.execCommand('insertHTML', false, clean);
+});
+
+async function uploadFeaturedImage(file) {
+  if (!file) return;
+  await doImageUpload(file, url => {
+    document.getElementById('post-featured-image').value = url;
+    document.getElementById('featured-image-preview').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" />`;
+  }, 'featured-image-status');
+}
+
+async function insertInlineImage(file) {
+  if (!file) return;
+  await doImageUpload(file, url => {
+    document.getElementById('post-body').focus();
+    document.execCommand('insertHTML', false, `<img src="${url}" alt="" />`);
+  });
+}
+
+async function doImageUpload(file, onDone, statusElId) {
+  const statusEl = statusElId && document.getElementById(statusElId);
+  if (statusEl) statusEl.textContent = 'Uploading...';
+  try {
+    const path = 'post-images/' + Date.now() + '_' + file.name.replace(/[^\w.\-]/g, '_');
+    const ref = storage.ref(path);
+    await ref.put(file);
+    const url = await ref.getDownloadURL();
+    onDone(url);
+    if (statusEl) statusEl.textContent = 'Uploaded ✓';
+  } catch (err) {
+    if (statusEl) statusEl.textContent = 'Upload failed: ' + err.message;
+    else alert('Upload failed: ' + err.message);
+  }
+}
+
 function showPostForm(post) {
   document.getElementById('post-form-card').style.display = 'block';
   document.getElementById('post-form-title').textContent = post ? 'Edit Post' : 'New Post';
   document.getElementById('post-id').value = post ? post.id : '';
   document.getElementById('post-title').value = post ? post.title : '';
+  document.getElementById('post-slug').value = post ? post.slug : '';
+  slugTouched = !!post;
   document.getElementById('post-category').value = post ? post.category : 'parents';
   document.getElementById('post-icon').value = post ? post.icon : '📖';
   document.getElementById('post-excerpt').value = post ? post.excerpt : '';
-  document.getElementById('post-content').value = post ? post.content : '';
+  document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
+  document.getElementById('post-featured-image').value = post ? (post.featuredImage || '') : '';
+  document.getElementById('featured-image-preview').innerHTML = post && post.featuredImage
+    ? `<img src="${post.featuredImage}" style="width:100%;height:100%;object-fit:cover;" />`
+    : `<span style="font-size:1.5rem; color:var(--gray-400);">🖼️</span>`;
+  document.getElementById('featured-image-status').textContent = '';
+  document.getElementById('post-seo-title').value = post ? (post.seoTitle || '') : '';
+  document.getElementById('post-seo-description').value = post ? (post.seoDescription || '') : '';
+  document.getElementById('post-seo-keywords').value = post ? (post.seoKeywords || '') : '';
+  postTags = post && post.tags ? [...post.tags] : [];
+  renderTagChips();
   document.getElementById('post-published').checked = post ? !!post.published : true;
 }
 function hidePostForm() { document.getElementById('post-form-card').style.display = 'none'; }
 
-function savePostForm() {
+async function savePostForm() {
   const title = document.getElementById('post-title').value.trim();
   if (!title) return alert('Please enter a title.');
+  const bodyHtml = document.getElementById('post-body').innerHTML.trim();
+  const excerpt = document.getElementById('post-excerpt').value.trim();
   const post = {
     id: document.getElementById('post-id').value || undefined,
     title,
+    slug: document.getElementById('post-slug').value.trim(),
     category: document.getElementById('post-category').value,
     icon: document.getElementById('post-icon').value.trim() || '📖',
-    excerpt: document.getElementById('post-excerpt').value.trim(),
-    content: document.getElementById('post-content').value.trim(),
+    tags: postTags,
+    excerpt,
+    bodyHtml,
+    featuredImage: document.getElementById('post-featured-image').value || '',
+    seoTitle: document.getElementById('post-seo-title').value.trim() || title,
+    seoDescription: document.getElementById('post-seo-description').value.trim() || excerpt,
+    seoKeywords: document.getElementById('post-seo-keywords').value.trim(),
     published: document.getElementById('post-published').checked,
-    author: 'Admin'
+    author: 'Jandre van der Walt'
   };
-  GK.savePost(post);
+  await GK.savePost(post);
   hidePostForm();
   renderPosts();
 }
 
-function editPost(id) {
-  const post = GK.getPost(id);
+async function editPost(id) {
+  const post = await GK.getPost(id);
   if (post) showPostForm(post);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function deletePostRow(id) {
+async function deletePostRow(id) {
   if (!confirm('Delete this post permanently?')) return;
-  GK.deletePost(id);
+  await GK.deletePost(id);
   renderPosts();
 }
 
-function renderPosts() {
-  const posts = GK.listPosts();
+async function renderPosts() {
+  const posts = await GK.listPosts();
   const el = document.getElementById('posts-list');
   if (posts.length === 0) { el.innerHTML = '<div class="empty-state">No posts yet. Click "+ New Post" to publish your first article.</div>'; return; }
   el.innerHTML = posts.map(p => `
@@ -399,10 +652,11 @@ function renderPosts() {
         <div class="post-row__title">${p.title}</div>
         <div class="post-row__meta">
           <span class="badge ${p.published ? 'badge--active' : 'badge--free'}">${p.published ? 'Published' : 'Draft'}</span>
-          &nbsp;${p.category} · ${new Date(p.createdAt).toLocaleDateString()}
+          &nbsp;${p.category} · /${p.slug} · ${new Date(p.createdAt).toLocaleDateString()}
         </div>
       </div>
       <div class="row-actions">
+        ${p.published ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
         <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
         <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
       </div>
@@ -411,8 +665,9 @@ function renderPosts() {
 }
 
 /* ── Members ──────────────────────────────────────────────── */
-function renderMembers() {
-  const users = GK.listUsers().sort((a,b) => b.createdAt - a.createdAt);
+async function renderMembers() {
+  const all = await GK.listUsers();
+  const users = all.sort((a,b) => b.createdAt - a.createdAt);
   const tbody = document.getElementById('members-tbody');
   if (users.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No members yet.</td></tr>'; return; }
   tbody.innerHTML = users.map(u => {
@@ -425,15 +680,15 @@ function renderMembers() {
 
     let actions = '';
     if (u.plan !== 'glory_kids') {
-      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.uid}','glory_kids','active')">Make Glory Kids</button>`;
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.id}','glory_kids','active')">Make Glory Kids</button>`;
     } else if (u.planStatus === 'active') {
-      actions += `<button class="row-btn row-btn--warn" onclick="setMemberPlan('${u.uid}','glory_kids','paused')">Pause</button>`;
-      actions += `<button class="row-btn" onclick="setMemberPlan('${u.uid}','free','active')">Cancel</button>`;
+      actions += `<button class="row-btn row-btn--warn" onclick="setMemberPlan('${u.id}','glory_kids','paused')">Pause</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.id}','free','active')">Cancel</button>`;
     } else if (u.planStatus === 'paused') {
-      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.uid}','glory_kids','active')">Resume</button>`;
-      actions += `<button class="row-btn" onclick="setMemberPlan('${u.uid}','free','active')">Cancel</button>`;
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.id}','glory_kids','active')">Resume</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.id}','free','active')">Cancel</button>`;
     }
-    actions += `<button class="row-btn row-btn--danger" onclick="deleteMember('${u.uid}')">Delete</button>`;
+    actions += `<button class="row-btn row-btn--danger" onclick="deleteMember('${u.id}')">Delete</button>`;
 
     return `
       <tr>
@@ -448,55 +703,54 @@ function renderMembers() {
   }).join('');
 }
 
-function setMemberPlan(uid, plan, status) {
-  GK.updateUserRecord(uid, { plan, planStatus: status });
-  const rec = GK.getUserRecord(uid);
+async function setMemberPlan(uid, plan, status) {
+  await GK.updateUserRecord(uid, { plan, planStatus: status });
   const label = plan === 'glory_kids' ? (status === 'active' ? 'Glory Kids membership activated' : 'Glory Kids membership paused') : 'Membership set to Free';
   gkLogActivity(uid, plan === 'glory_kids' && status === 'active' ? '✨' : (status === 'paused' ? '⏸️' : '🔻'), label);
   renderMembers();
   renderOverview();
 }
 
-function deleteMember(uid) {
+async function deleteMember(uid) {
   if (!confirm('Permanently delete this member and all their data?')) return;
   if (uid === adminUid) return alert('You cannot delete your own admin account from here.');
-  GK.deleteUserRecord(uid);
+  await GK.deleteUserRecord(uid);
   renderMembers();
   renderOverview();
 }
 
 /* ── Payments ─────────────────────────────────────────────── */
-function showPaymentForm() {
+async function showPaymentForm() {
   const select = document.getElementById('payment-member');
-  const users = GK.listUsers();
-  select.innerHTML = users.map(u => `<option value="${u.uid}" data-email="${u.email}">${u.displayName || u.email}</option>`).join('');
+  const users = await GK.listUsers();
+  select.innerHTML = users.map(u => `<option value="${u.id}" data-email="${u.email}">${u.displayName || u.email}</option>`).join('');
   document.getElementById('payment-form-card').style.display = 'block';
 }
 function hidePaymentForm() { document.getElementById('payment-form-card').style.display = 'none'; }
 
-function recordPayment() {
+async function recordPayment() {
   const select = document.getElementById('payment-member');
   const uid = select.value;
   const email = select.options[select.selectedIndex]?.dataset.email;
   const amount = parseFloat(document.getElementById('payment-amount').value) || 0;
   const note = document.getElementById('payment-note').value.trim();
   if (!uid) return alert('Please select a member.');
-  GK.addPayment({ uid, email, amount, note });
+  await GK.addPayment({ uid, email, amount, note });
   gkLogActivity(uid, '💳', 'Payment of $' + amount.toFixed(2) + ' recorded');
   hidePaymentForm();
   renderPayments();
   renderOverview();
 }
 
-function deletePaymentRow(id) {
+async function deletePaymentRow(id) {
   if (!confirm('Delete this payment record?')) return;
-  GK.deletePayment(id);
+  await GK.deletePayment(id);
   renderPayments();
   renderOverview();
 }
 
-function renderPayments() {
-  const payments = GK.listPayments();
+async function renderPayments() {
+  const payments = await GK.listPayments();
   const tbody = document.getElementById('payments-tbody');
   if (payments.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No payments recorded yet.</td></tr>'; return; }
   tbody.innerHTML = payments.map(p => `
@@ -511,8 +765,8 @@ function renderPayments() {
 }
 
 /* ── Support tickets ──────────────────────────────────────── */
-function renderTickets() {
-  const tickets = GK.listTickets();
+async function renderTickets() {
+  const tickets = await GK.listTickets();
   const el = document.getElementById('tickets-list');
   if (tickets.length === 0) { el.innerHTML = '<div class="empty-state">No support messages yet. When a visitor can\'t get an answer from the chatbot, their message will show up here.</div>'; return; }
   el.innerHTML = tickets.map(t => `
@@ -535,11 +789,11 @@ function renderTickets() {
   `).join('');
 }
 
-function resolveTicket(id) { GK.updateTicket(id, { status: 'resolved' }); renderTickets(); renderOverview(); }
-function reopenTicket(id) { GK.updateTicket(id, { status: 'open' }); renderTickets(); renderOverview(); }
-function deleteTicketRow(id) {
+async function resolveTicket(id) { await GK.updateTicket(id, { status: 'resolved' }); renderTickets(); renderOverview(); }
+async function reopenTicket(id) { await GK.updateTicket(id, { status: 'open' }); renderTickets(); renderOverview(); }
+async function deleteTicketRow(id) {
   if (!confirm('Delete this support message?')) return;
-  GK.deleteTicket(id);
+  await GK.deleteTicket(id);
   renderTickets();
   renderOverview();
 }
