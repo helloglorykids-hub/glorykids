@@ -93,6 +93,8 @@
     .post-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--gray-100); }
     .post-row:last-child { border-bottom: none; }
     .post-row__icon { width: 44px; height: 44px; border-radius: var(--radius); background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .post-row__thumb { width: 68px; height: 68px; border-radius: var(--radius); background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; overflow: hidden; }
+    .post-row__thumb img { width: 100%; height: 100%; object-fit: cover; }
     .post-row__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--white); }
     .post-row__meta { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
     .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
@@ -281,11 +283,17 @@
                 </div>
               </div>
               <div style="margin-top:1rem;">
-                <label>Testament</label>
-                <select id="post-testament">
-                  <option value="old">Old Testament</option>
-                  <option value="new">New Testament</option>
-                </select>
+                <label>Lesson Topic <span style="font-weight:400;color:var(--gray-400);">— select all that apply</span></label>
+                <div style="display:flex; flex-wrap:wrap; gap:0.75rem 1rem; margin-top:0.35rem;">
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="old-testament" style="width:auto;" /> Old Testament</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="new-testament" style="width:auto;" /> New Testament</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="jesus" style="width:auto;" /> Jesus</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="gospels" style="width:auto;" /> The Gospels</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="psalms" style="width:auto;" /> Psalms</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="bible-characters" style="width:auto;" /> Bible Characters</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="holy-spirit" style="width:auto;" /> Holy Spirit</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="faith-prayer" style="width:auto;" /> Faith & Prayer</label>
+                </div>
               </div>
             </div>
 
@@ -828,7 +836,9 @@ function showPostForm(post) {
   document.querySelectorAll('.lesson-age').forEach(cb => {
     cb.checked = !!(post && post.ageGroups && post.ageGroups.includes(cb.value));
   });
-  document.getElementById('post-testament').value = post ? (post.testament || 'old') : 'old';
+  document.querySelectorAll('.lesson-topic').forEach(cb => {
+    cb.checked = !!(post && post.lessonTopics && post.lessonTopics.includes(cb.value));
+  });
   onCategoryChange();
   document.getElementById('post-excerpt').value = post ? post.excerpt : '';
   document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
@@ -874,7 +884,7 @@ async function savePostForm() {
     category: document.getElementById('post-category').value,
     icon: document.getElementById('post-icon').value.trim() || '📖',
     ageGroups: [...document.querySelectorAll('.lesson-age:checked')].map(cb => cb.value),
-    testament: document.getElementById('post-testament').value,
+    lessonTopics: [...document.querySelectorAll('.lesson-topic:checked')].map(cb => cb.value),
     tags: postTags,
     excerpt,
     bodyHtml,
@@ -919,7 +929,7 @@ async function renderPosts() {
     const dateLabel = new Date(p.publishAt || p.createdAt).toLocaleDateString();
     return `
     <div class="post-row">
-      <div class="post-row__icon">${p.icon || '📖'}</div>
+      <div class="post-row__thumb">${p.featuredImage ? `<img src="${p.featuredImage}" alt="" />` : (p.icon || '📖')}</div>
       <div style="flex:1;">
         <div class="post-row__title">${p.title}</div>
         <div class="post-row__meta">
