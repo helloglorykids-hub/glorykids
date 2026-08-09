@@ -110,6 +110,11 @@
     }
     .tag-chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; }
     #tag-input-field { border: none !important; outline: none; flex: 1; min-width: 120px; padding: 0.2rem !important; }
+    .tag-suggestion {
+      font-size: 0.76rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200); background: var(--color-card); color: var(--gray-500); cursor: pointer;
+    }
+    .tag-suggestion:hover { background: var(--gray-100); }
 
     .rte-toolbar {
       display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem;
@@ -242,6 +247,7 @@
                 <span id="tag-chips"></span>
                 <input type="text" id="tag-input-field" placeholder="Add a tag..." onkeydown="onTagKeydown(event)" />
               </div>
+              <div id="tag-suggestions" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;"></div>
             </div>
 
             <div>
@@ -458,6 +464,17 @@ async function renderOverview() {
 /* ── Blog Posts ───────────────────────────────────────────── */
 let postTags = [];
 let slugTouched = false;
+const SEED_TAGS = ['Family Devotions', 'Volunteer Tips', 'Curriculum', 'Prayer', 'Object Lessons', 'Budget', 'Parenting', 'Worship'];
+let tagSuggestions = [...SEED_TAGS];
+
+async function loadTagSuggestions() {
+  try {
+    const posts = await GK.listPosts();
+    const used = new Set(SEED_TAGS);
+    posts.forEach(p => (p.tags || []).forEach(t => used.add(t)));
+    tagSuggestions = [...used];
+  } catch (e) { /* fall back to seed list */ }
+}
 
 function onPostTitleInput() {
   if (slugTouched) return;
@@ -468,6 +485,16 @@ function renderTagChips() {
   document.getElementById('tag-chips').innerHTML = postTags.map((t, i) => `
     <span class="tag-chip">${t}<button type="button" onclick="removeTag(${i})">×</button></span>
   `).join('');
+  renderTagSuggestions();
+}
+function renderTagSuggestions() {
+  const remaining = tagSuggestions.filter(t => !postTags.includes(t));
+  document.getElementById('tag-suggestions').innerHTML = remaining.map(t => `
+    <button type="button" class="tag-suggestion" onclick="addSuggestedTag('${t.replace(/'/g, "\\'")}')">+ ${t}</button>
+  `).join('');
+}
+function addSuggestedTag(t) {
+  if (!postTags.includes(t)) { postTags.push(t); renderTagChips(); }
 }
 function onTagKeydown(e) {
   if (e.key === 'Enter' || e.key === ',') {
@@ -599,6 +626,7 @@ function showPostForm(post) {
   document.getElementById('post-seo-keywords').value = post ? (post.seoKeywords || '') : '';
   postTags = post && post.tags ? [...post.tags] : [];
   renderTagChips();
+  loadTagSuggestions().then(renderTagChips);
   document.getElementById('post-published').checked = post ? !!post.published : true;
 }
 function hidePostForm() { document.getElementById('post-form-card').style.display = 'none'; }
