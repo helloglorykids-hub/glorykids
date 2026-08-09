@@ -466,7 +466,10 @@
 
 <script>
 (function () {
-  var LESSONS = [
+  var AGE_LABELS = { preschool: 'Preschool (2-5)', k2: 'K-2nd', upper35: '3rd-5th', sixplus: '6th+' };
+  var GRAD_PALETTE = ['#6D5BD0,#38B6A5', '#E14D5C,#F2994A', '#4B5EAA,#38B6A5', '#F2994A,#7B5EA7', '#3E8E7E,#6D5BD0', '#D45D9C,#F2994A'];
+
+  var LEGACY_LESSONS = [
     { title: "David & Goliath", slug: "david-and-goliath-bible-lesson", story: "1 Samuel 17", desc: "A shepherd boy's faith topples a giant no soldier dared face.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🦁", downloads: 812, date: "2026-06-20", grad: "#6D5BD0,#38B6A5" },
     { title: "The Good Samaritan", slug: "good-samaritan-bible-lesson", story: "Luke 10:25-37", desc: "A story-plus-activity lesson on what it really means to love your neighbor.", age: "upper35", ageLabel: "Ages 3-12", topic: "church", type: "activity", season: "general", emoji: "🤝", downloads: 645, date: "2026-06-18", grad: "#E14D5C,#F2994A" },
     { title: "Jesus Calms the Storm", slug: "jesus-calms-the-storm-bible-lesson", story: "Mark 4:35-41", desc: "A gentle lesson + craft helping little ones trust Jesus when they're scared.", age: "preschool", ageLabel: "Ages 3-7", topic: "emotions", type: "craft", season: "general", emoji: "⛵", downloads: 590, date: "2026-06-15", grad: "#4B5EAA,#38B6A5" },
@@ -488,6 +491,41 @@
     { title: "Adam and Eve for Kids", slug: "adam-and-eve-for-kids", story: "Genesis 2-3", desc: "God's love, our choices, and grace that never stops following us — obedience, temptation, and redemption for kids.", age: "sixplus", ageLabel: "Ages 3-12", topic: "heroes", type: "lesson", season: "general", emoji: "🍎", image: "images/Adam & Eve Cover Page.jpg", downloads: 0, date: "2026-07-15", grad: "#38B6A5,#6D5BD0" }
   ];
 
+  // Legacy items have a single age/topic; normalize everyone to the same
+  // shape (ageGroups[]/topicIds[]) so filtering logic only has to handle
+  // one case, whether the lesson came from the static list or Firestore.
+  function normalizeLegacy(l) {
+    return Object.assign({}, l, {
+      ageGroups: [l.age],
+      topicIds: [l.topic],
+      href: 'free-bible-lessons/' + l.slug + '/index.html'
+    });
+  }
+
+  function normalizeDynamic(post, index) {
+    var ageGroups = post.ageGroups && post.ageGroups.length ? post.ageGroups : ['sixplus'];
+    var ageLabel = ageGroups.map(function (a) { return AGE_LABELS[a] || a; }).join(' / ');
+    return {
+      title: post.title,
+      slug: post.slug,
+      story: post.scripture || '',
+      desc: post.excerpt || '',
+      ageGroups: ageGroups,
+      ageLabel: ageLabel,
+      topicIds: post.lessonTopics && post.lessonTopics.length ? post.lessonTopics : [],
+      type: post.lessonType || 'lesson',
+      season: post.season || 'general',
+      emoji: post.icon || '📖',
+      image: post.featuredImage || null,
+      downloads: 0,
+      date: new Date(post.publishAt || post.createdAt).toISOString().slice(0, 10),
+      grad: GRAD_PALETTE[index % GRAD_PALETTE.length],
+      href: 'blog-post.html?slug=' + post.slug
+    };
+  }
+
+  var LESSONS = LEGACY_LESSONS.map(normalizeLegacy);
+
   var PAGE_SIZE = 12;
   var visibleCount = PAGE_SIZE;
 
@@ -499,17 +537,17 @@
   function cardHtml(lesson, index) {
     return (
       '<div class="lesson-card" data-index="' + index + '" data-title="' + lesson.title.toLowerCase() + '" data-story="' + lesson.story.toLowerCase() +
-      '" data-age="' + lesson.age + '" data-topic="' + lesson.topic + '" data-type="' + lesson.type + '" data-season="' + lesson.season + '">' +
+      '" data-age="' + lesson.ageGroups.join(' ') + '" data-topic="' + lesson.topicIds.join(' ') + '" data-type="' + lesson.type + '" data-season="' + lesson.season + '">' +
         '<div class="lesson-card__thumb" style="background:linear-gradient(135deg,' + lesson.grad + ');">' +
           (lesson.image ? '<img src="' + lesson.image + '" alt="' + lesson.title + '" class="lesson-card__img" />' : lesson.emoji) +
           '<span class="lesson-card__age">' + lesson.ageLabel + '</span>' +
         '</div>' +
         '<div class="lesson-card__body">' +
           '<div class="lesson-card__title">' + lesson.title + '</div>' +
-          '<div class="lesson-card__story">📜 ' + lesson.story + '</div>' +
+          (lesson.story ? '<div class="lesson-card__story">📜 ' + lesson.story + '</div>' : '') +
           '<div class="lesson-card__desc">' + lesson.desc + '</div>' +
           '<div class="lesson-card__footer">' +
-            '<a href="free-bible-lessons/' + lesson.slug + '/index.html" class="lesson-card__view">View Free Lesson →</a>' +
+            '<a href="' + lesson.href + '" class="lesson-card__view">View Free Lesson →</a>' +
           '</div>' +
         '</div>' +
       '</div>'
@@ -543,8 +581,8 @@
     var matches = [];
     sorted.forEach(function (card) {
       var matchesQuery = !query || card.dataset.title.indexOf(query) !== -1 || card.dataset.story.indexOf(query) !== -1;
-      var matchesAge = age === 'all' || card.dataset.age === age;
-      var matchesTopic = topic === 'all' || card.dataset.topic === topic;
+      var matchesAge = age === 'all' || card.dataset.age.split(' ').indexOf(age) !== -1;
+      var matchesTopic = topic === 'all' || card.dataset.topic.split(' ').indexOf(topic) !== -1;
       var matchesType = type === 'all' || card.dataset.type === type;
       var matchesSeason = season === 'all' || card.dataset.season === season;
       var isMatch = matchesQuery && matchesAge && matchesTopic && matchesType && matchesSeason;
@@ -612,12 +650,26 @@
     var ageGroups = ['preschool', 'k2', 'upper35', 'sixplus'];
     var ageLabels = { preschool: 'Preschool', k2: 'K-2nd', upper35: '3rd-5th', sixplus: '6th+' };
     var byAge = ageGroups.map(function (age) {
-      var top = LESSONS.filter(function (l) { return l.age === age; }).sort(function (a, b) { return b.downloads - a.downloads; })[0];
+      var top = LESSONS.filter(function (l) { return l.ageGroups.indexOf(age) !== -1; }).sort(function (a, b) { return b.downloads - a.downloads; })[0];
       return top ? '<li class="sidebar-item"><span>' + ageLabels[age] + ':</span><span>' + top.title + '</span></li>' : '';
     }).join('');
     document.getElementById('sidebarByAge').innerHTML = byAge;
   }
   renderSidebar();
+
+  // Merge in live lessons published from the admin panel, once Firebase's
+  // scripts (loaded further down the page) have finished executing.
+  document.addEventListener('DOMContentLoaded', function () {
+    if (typeof GK === 'undefined') return;
+    GK.listPublishedPosts('free_lessons').then(function (posts) {
+      if (!posts.length) return;
+      var dynamicLessons = posts.map(normalizeDynamic);
+      LESSONS = dynamicLessons.concat(LESSONS);
+      renderGrid();
+      applyFiltersAndSort();
+      renderSidebar();
+    }).catch(function () { /* keep showing the static list */ });
+  });
 })();
 </script>
 

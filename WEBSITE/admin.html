@@ -298,6 +298,32 @@
                   <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="armor-of-god" style="width:auto;" /> Armor of God</label>
                 </div>
               </div>
+              <div style="margin-top:1rem;">
+                <label>Scripture Reference <span style="font-weight:400;color:var(--gray-400);">— e.g. Genesis 2–3</span></label>
+                <input type="text" id="post-scripture" placeholder="Genesis 2-3" />
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+                <div>
+                  <label>Lesson Type</label>
+                  <select id="post-lesson-type">
+                    <option value="lesson">Bible Lesson</option>
+                    <option value="craft">Craft</option>
+                    <option value="activity">Activity</option>
+                    <option value="discussion">Discussion Questions</option>
+                    <option value="song">Song</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Season</label>
+                  <select id="post-season">
+                    <option value="general">General</option>
+                    <option value="christmas">Christmas</option>
+                    <option value="easter">Easter</option>
+                    <option value="backtoschool">Back to School</option>
+                    <option value="thanksgiving">Thanksgiving</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -842,6 +868,9 @@ function showPostForm(post) {
   document.querySelectorAll('.lesson-topic').forEach(cb => {
     cb.checked = !!(post && post.lessonTopics && post.lessonTopics.includes(cb.value));
   });
+  document.getElementById('post-scripture').value = post ? (post.scripture || '') : '';
+  document.getElementById('post-lesson-type').value = post ? (post.lessonType || 'lesson') : 'lesson';
+  document.getElementById('post-season').value = post ? (post.season || 'general') : 'general';
   onCategoryChange();
   document.getElementById('post-excerpt').value = post ? post.excerpt : '';
   document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
@@ -888,6 +917,9 @@ async function savePostForm() {
     icon: document.getElementById('post-icon').value.trim() || '📖',
     ageGroups: [...document.querySelectorAll('.lesson-age:checked')].map(cb => cb.value),
     lessonTopics: [...document.querySelectorAll('.lesson-topic:checked')].map(cb => cb.value),
+    scripture: document.getElementById('post-scripture').value.trim(),
+    lessonType: document.getElementById('post-lesson-type').value,
+    season: document.getElementById('post-season').value,
     tags: postTags,
     excerpt,
     bodyHtml,
