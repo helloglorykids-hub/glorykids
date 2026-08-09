@@ -256,15 +256,36 @@
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
               <div>
                 <label>Category</label>
-                <select id="post-category">
+                <select id="post-category" onchange="onCategoryChange()">
                   <option value="parents">For Parents</option>
                   <option value="pastors">For Pastors</option>
                   <option value="kidmin">For Kidmin Leaders</option>
+                  <option value="free_lessons">Free Bible Lessons</option>
                 </select>
               </div>
               <div>
                 <label>Icon (emoji)</label>
                 <input type="text" id="post-icon" placeholder="📖" value="📖" />
+              </div>
+            </div>
+
+            <div id="lesson-fields-wrap" style="display:none; background:var(--gray-50); border-radius:var(--radius-lg); padding:1.25rem;">
+              <div style="font-size:0.85rem; font-weight:800; color:var(--gray-700); margin-bottom:1rem;">📖 Free Lesson Details</div>
+              <div>
+                <label>Age Group <span style="font-weight:400;color:var(--gray-400);">— select all that apply</span></label>
+                <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem;">
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="preschool" style="width:auto;" /> Preschool (2–5)</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="k2" style="width:auto;" /> K–2nd Grade</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="upper35" style="width:auto;" /> 3rd–5th Grade</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="sixplus" style="width:auto;" /> 6th Grade+</label>
+                </div>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Testament</label>
+                <select id="post-testament">
+                  <option value="old">Old Testament</option>
+                  <option value="new">New Testament</option>
+                </select>
               </div>
             </div>
 
@@ -790,6 +811,11 @@ function onPublishTimingChange() {
     document.getElementById('publish-timing').value === 'scheduled' ? 'block' : 'none';
 }
 
+function onCategoryChange() {
+  document.getElementById('lesson-fields-wrap').style.display =
+    document.getElementById('post-category').value === 'free_lessons' ? 'block' : 'none';
+}
+
 function showPostForm(post) {
   document.getElementById('post-form-card').style.display = 'block';
   document.getElementById('post-form-title').textContent = post ? 'Edit Post' : 'New Post';
@@ -799,6 +825,11 @@ function showPostForm(post) {
   slugTouched = !!post;
   document.getElementById('post-category').value = post ? post.category : 'parents';
   document.getElementById('post-icon').value = post ? post.icon : '📖';
+  document.querySelectorAll('.lesson-age').forEach(cb => {
+    cb.checked = !!(post && post.ageGroups && post.ageGroups.includes(cb.value));
+  });
+  document.getElementById('post-testament').value = post ? (post.testament || 'old') : 'old';
+  onCategoryChange();
   document.getElementById('post-excerpt').value = post ? post.excerpt : '';
   document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
   document.getElementById('post-featured-image').value = post ? (post.featuredImage || '') : '';
@@ -842,6 +873,8 @@ async function savePostForm() {
     slug: document.getElementById('post-slug').value.trim(),
     category: document.getElementById('post-category').value,
     icon: document.getElementById('post-icon').value.trim() || '📖',
+    ageGroups: [...document.querySelectorAll('.lesson-age:checked')].map(cb => cb.value),
+    testament: document.getElementById('post-testament').value,
     tags: postTags,
     excerpt,
     bodyHtml,

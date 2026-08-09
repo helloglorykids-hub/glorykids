@@ -357,6 +357,9 @@
     try {
       posts = await GK.listPublishedPosts();
     } catch (e) { return; }
+    // Free Bible Lessons are a separate content type — they belong on
+    // free-lessons.html, not the blog feed.
+    posts = posts.filter(p => p.category !== 'free_lessons');
     if (posts.length === 0) return;
 
     const allGrid = document.getElementById('blog-grid-all');
