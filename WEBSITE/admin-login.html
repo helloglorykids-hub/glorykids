@@ -102,19 +102,17 @@ function showSignin() {
   document.getElementById('signin-mode').style.display = 'block';
 }
 
-onFirebaseReady(async () => {
+onFirebaseReady(() => {
   // If already signed in as admin, skip straight to the panel.
+  // (Security rules only let a signed-in user read their own doc, or an
+  // admin read anyone's — so this never throws for a normal visitor.)
   auth.onAuthStateChanged(async user => {
-    if (user) {
+    if (!user) return;
+    try {
       const rec = await GK.getUserRecord(user.uid);
-      if (rec && rec.isAdmin) { window.location.href = 'admin.html'; return; }
-    }
+      if (rec && rec.isAdmin) window.location.href = 'admin.html';
+    } catch (e) { /* not signed in with access yet — stay on this page */ }
   });
-
-  // If no admin exists yet, default to setup mode.
-  const users = await GK.listUsers();
-  const hasAdmin = users.some(u => u.isAdmin);
-  if (!hasAdmin) showSetup();
 });
 
 async function handleAdminLogin(e) {
@@ -143,10 +141,9 @@ async function handleAdminLogin(e) {
 async function handleAdminSetup(e) {
   e.preventDefault();
   clearAuthError('admin-setup-error');
-  const existing = await GK.listUsers();
-  if (existing.some(u => u.isAdmin)) {
-    return showAuthError('admin-setup-error', 'An admin account already exists. Please sign in instead.');
-  }
+  // No pre-check needed here — the Firestore rules already force
+  // isAdmin:false on any self-created account, so this form can never
+  // grant admin by itself regardless of whether one already exists.
   const name = document.getElementById('setup-name').value.trim();
   const email = document.getElementById('setup-email').value.trim();
   const password = document.getElementById('setup-password').value;
