@@ -162,6 +162,12 @@
 
           <div id="postContent" class="prose prose-invert prose-lg max-w-none post-prose"></div>
 
+          <!-- Free PDF signup (MailerLite embed, if this post has one) -->
+          <div id="mailerliteWrap" class="mailerlite-box" style="display:none;">
+            <h3 class="text-white font-bold text-lg mb-3">📥 Get This as a Free PDF</h3>
+            <div id="mailerliteEmbedTarget"></div>
+          </div>
+
           <!-- CTA box -->
           <div class="cta-box">
             <h3 class="text-white font-bold text-xl mb-2">Ready to put this into practice?</h3>
@@ -285,6 +291,11 @@
     padding: 2rem; margin: 2.5rem 0; text-align: center;
   }
 
+  .mailerlite-box {
+    background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.3);
+    border-radius: var(--radius-lg); padding: 1.75rem; margin: 2.5rem 0;
+  }
+
   .related-post-card {
     display: flex; flex-direction: column; gap: 0.75rem;
     background: var(--color-card); border: 1px solid var(--color-border);
@@ -306,6 +317,18 @@
 
 <script>
   const CATEGORY_LABELS = { parents: 'For Parents', pastors: 'For Pastors', kidmin: 'For Kidmin Leaders' };
+
+  // innerHTML strips <script> execution — MailerLite embeds rely on a
+  // script tag running, so re-create each one manually to force it to run.
+  function injectHtmlWithScripts(container, html) {
+    container.innerHTML = html;
+    container.querySelectorAll('script').forEach(oldScript => {
+      const newScript = document.createElement('script');
+      [...oldScript.attributes].forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      newScript.textContent = oldScript.textContent;
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
 
   function estimateReadTime(html) {
     const text = (html || '').replace(/<[^>]+>/g, ' ');
@@ -376,6 +399,11 @@
 
     const contentEl = document.getElementById('postContent');
     contentEl.innerHTML = post.bodyHtml || '';
+
+    if (post.mailerliteEmbed) {
+      document.getElementById('mailerliteWrap').style.display = 'block';
+      injectHtmlWithScripts(document.getElementById('mailerliteEmbedTarget'), post.mailerliteEmbed);
+    }
 
     // Build TOC from rendered H2s
     const headings = contentEl.querySelectorAll('h2');

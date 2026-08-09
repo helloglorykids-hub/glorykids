@@ -140,6 +140,33 @@
     .rte-body img { max-width: 100%; border-radius: var(--radius); margin: 0.75rem 0; }
     .rte-body .quote-callout { border-left: 3px solid var(--primary); background: var(--gray-50); padding: 0.85rem 1.1rem; margin: 1rem 0; font-style: italic; }
     .rte-body .key-point { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: var(--radius); padding: 0.85rem 1.1rem; margin: 1rem 0; }
+
+    .featured-dropzone {
+      display: flex; align-items: center; gap: 1rem; padding: 1rem;
+      border: 1.5px dashed var(--gray-200); border-radius: var(--radius-lg);
+      cursor: pointer; transition: var(--transition);
+    }
+    .featured-dropzone:hover, .featured-dropzone.is-dragover { border-color: var(--primary); background: var(--primary-light); }
+    .featured-dropzone__preview {
+      width: 120px; height: 60px; border-radius: var(--radius); background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
+      border: 1.5px solid var(--gray-200);
+    }
+    .featured-dropzone__text { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; }
+
+    .crop-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100;
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .crop-modal__box { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.5rem; max-width: 560px; width: 100%; }
+    .crop-modal__title { font-family: var(--font-heading); font-weight: 800; margin-bottom: 1rem; }
+    .crop-viewport {
+      width: 100%; aspect-ratio: 2 / 1; border-radius: var(--radius); overflow: hidden;
+      position: relative; background: var(--gray-100); cursor: grab; touch-action: none;
+    }
+    .crop-viewport:active { cursor: grabbing; }
+    .crop-viewport img { position: absolute; top: 0; left: 0; user-select: none; pointer-events: none; }
+    .crop-modal__controls { margin-top: 0.85rem; }
   </style>
 </head>
 <body>
@@ -256,18 +283,19 @@
             </div>
 
             <div>
-              <label>Featured Image</label>
-              <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-                <div id="featured-image-preview" style="width:120px; height:70px; border-radius:var(--radius); background:var(--gray-100); display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; border:1.5px solid var(--gray-200);">
-                  <span style="font-size:1.5rem; color:var(--gray-400);">🖼️</span>
+              <label>Featured Image <span style="font-weight:400;color:var(--gray-400);">— recommended 1200×600</span></label>
+              <div id="featured-dropzone" class="featured-dropzone" onclick="document.getElementById('featured-image-file').click()">
+                <div id="featured-image-preview" class="featured-dropzone__preview">
+                  <span style="font-size:1.8rem; color:var(--gray-400);">🖼️</span>
                 </div>
-                <div>
-                  <input type="file" id="featured-image-file" accept="image/*" style="display:none;" onchange="uploadFeaturedImage(this.files[0])" />
-                  <button type="button" class="row-btn" onclick="document.getElementById('featured-image-file').click()">Upload Image</button>
-                  <div id="featured-image-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+                <div class="featured-dropzone__text">
+                  <strong>Drag & drop an image</strong> or click to browse<br />
+                  <span style="color:var(--gray-400);">You'll get to crop it to the right size next</span>
                 </div>
-                <input type="hidden" id="post-featured-image" />
               </div>
+              <input type="file" id="featured-image-file" accept="image/*" style="display:none;" onchange="handleFeaturedFileChosen(this.files[0])" />
+              <div id="featured-image-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+              <input type="hidden" id="post-featured-image" />
             </div>
 
             <div>
@@ -302,6 +330,14 @@
                 <label>Keywords <span style="font-weight:400;color:var(--gray-400);">— comma separated</span></label>
                 <input type="text" id="post-seo-keywords" placeholder="children's ministry, sunday school, kids bible lessons" />
               </div>
+            </div>
+
+            <div class="admin-card" style="background:var(--gray-50); box-shadow:none; padding:1.25rem; margin-bottom:0;">
+              <div class="admin-card__title" style="font-size:0.85rem; margin-bottom:0.5rem;">📧 Free PDF Email Capture (MailerLite)</div>
+              <p style="font-size:0.78rem; color:var(--gray-500); margin-bottom:1rem; line-height:1.6;">
+                Optional. In MailerLite, create a Group for this post's PDF, then get that group's <strong>embedded form</strong> snippet (Forms → Embedded → copy code) and paste it below. No API key needed — MailerLite hosts the form. Leave blank to skip.
+              </p>
+              <textarea id="post-mailerlite-embed" placeholder="Paste the MailerLite embed code here..." style="min-height:100px; font-family:monospace; font-size:0.8rem;"></textarea>
             </div>
 
             <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
@@ -391,6 +427,25 @@
       </div>
 
     </main>
+  </div>
+</div>
+
+<!-- CROP MODAL -->
+<div id="crop-modal" class="crop-modal" style="display:none;">
+  <div class="crop-modal__box">
+    <div class="crop-modal__title">Crop Featured Image <span style="font-weight:400;color:var(--gray-400);font-size:0.8rem;">— 1200×600</span></div>
+    <div class="crop-viewport" id="crop-viewport">
+      <img id="crop-image" draggable="false" />
+    </div>
+    <div class="crop-modal__controls">
+      <label style="font-size:0.8rem; color:var(--gray-500); display:flex; align-items:center; gap:0.5rem; flex:1;">
+        🔍 <input type="range" id="crop-zoom" min="1" max="3" step="0.01" value="1" oninput="onCropZoomChange()" style="flex:1;" />
+      </label>
+    </div>
+    <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+      <button class="btn btn--primary" onclick="applyCrop()">Use This Crop</button>
+      <button class="btn btn--outline" onclick="closeCropModal()">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -582,12 +637,116 @@ document.addEventListener('paste', e => {
   document.execCommand('insertHTML', false, clean);
 });
 
-async function uploadFeaturedImage(file) {
-  if (!file) return;
-  await doImageUpload(file, url => {
+function handleFeaturedFileChosen(file) {
+  if (file) openCropModal(file);
+  document.getElementById('featured-image-file').value = '';
+}
+
+// Drag & drop wiring for the featured-image dropzone
+(function () {
+  const zone = document.getElementById('featured-dropzone');
+  ['dragenter', 'dragover'].forEach(evt => zone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.add('is-dragover');
+  }));
+  ['dragleave', 'drop'].forEach(evt => zone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.remove('is-dragover');
+  }));
+  zone.addEventListener('drop', e => {
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) openCropModal(file);
+  });
+})();
+
+/* ── Crop modal ───────────────────────────────────────────── */
+let cropState = null; // { naturalW, naturalH, viewportW, viewportH, baseScale, scale, offsetX, offsetY }
+
+function openCropModal(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('crop-image');
+    img.onload = () => {
+      const viewport = document.getElementById('crop-viewport');
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      const baseScale = Math.max(vw / img.naturalWidth, vh / img.naturalHeight);
+      cropState = {
+        naturalW: img.naturalWidth, naturalH: img.naturalHeight,
+        viewportW: vw, viewportH: vh, baseScale, scale: baseScale,
+        offsetX: (vw - img.naturalWidth * baseScale) / 2,
+        offsetY: (vh - img.naturalHeight * baseScale) / 2
+      };
+      document.getElementById('crop-zoom').value = 1;
+      renderCropImage();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('crop-modal').style.display = 'flex';
+}
+
+function closeCropModal() {
+  document.getElementById('crop-modal').style.display = 'none';
+  cropState = null;
+}
+
+function renderCropImage() {
+  const img = document.getElementById('crop-image');
+  img.style.width = (cropState.naturalW * cropState.scale) + 'px';
+  img.style.height = (cropState.naturalH * cropState.scale) + 'px';
+  img.style.transform = `translate(${cropState.offsetX}px, ${cropState.offsetY}px)`;
+}
+
+function clampCropOffsets() {
+  const dispW = cropState.naturalW * cropState.scale;
+  const dispH = cropState.naturalH * cropState.scale;
+  cropState.offsetX = Math.min(0, Math.max(cropState.viewportW - dispW, cropState.offsetX));
+  cropState.offsetY = Math.min(0, Math.max(cropState.viewportH - dispH, cropState.offsetY));
+}
+
+function onCropZoomChange() {
+  if (!cropState) return;
+  const zoom = parseFloat(document.getElementById('crop-zoom').value);
+  cropState.scale = cropState.baseScale * zoom;
+  clampCropOffsets();
+  renderCropImage();
+}
+
+(function () {
+  const viewport = document.getElementById('crop-viewport');
+  let dragging = false, lastX = 0, lastY = 0;
+  viewport.addEventListener('pointerdown', e => {
+    if (!cropState) return;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    viewport.setPointerCapture(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', e => {
+    if (!dragging || !cropState) return;
+    cropState.offsetX += e.clientX - lastX;
+    cropState.offsetY += e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    clampCropOffsets();
+    renderCropImage();
+  });
+  ['pointerup', 'pointercancel'].forEach(evt => viewport.addEventListener(evt, () => dragging = false));
+})();
+
+async function applyCrop() {
+  if (!cropState) return;
+  const img = document.getElementById('crop-image');
+  const srcX = -cropState.offsetX / cropState.scale;
+  const srcY = -cropState.offsetY / cropState.scale;
+  const srcW = cropState.viewportW / cropState.scale;
+  const srcH = cropState.viewportH / cropState.scale;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 1200; canvas.height = 600;
+  canvas.getContext('2d').drawImage(img, srcX, srcY, srcW, srcH, 0, 0, 1200, 600);
+
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.9));
+  closeCropModal();
+  await doImageUpload(blob, url => {
     document.getElementById('post-featured-image').value = url;
     document.getElementById('featured-image-preview').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" />`;
-  }, 'featured-image-status');
+  }, 'featured-image-status', 'featured.jpg');
 }
 
 async function insertInlineImage(file) {
@@ -595,16 +754,17 @@ async function insertInlineImage(file) {
   await doImageUpload(file, url => {
     document.getElementById('post-body').focus();
     document.execCommand('insertHTML', false, `<img src="${url}" alt="" />`);
-  });
+  }, null, file.name);
 }
 
-async function doImageUpload(file, onDone, statusElId) {
+async function doImageUpload(fileOrBlob, onDone, statusElId, filename) {
   const statusEl = statusElId && document.getElementById(statusElId);
   if (statusEl) statusEl.textContent = 'Uploading...';
   try {
-    const path = 'post-images/' + Date.now() + '_' + file.name.replace(/[^\w.\-]/g, '_');
+    const safeName = (filename || fileOrBlob.name || 'image.jpg').replace(/[^\w.\-]/g, '_');
+    const path = 'post-images/' + Date.now() + '_' + safeName;
     const ref = storage.ref(path);
-    await ref.put(file);
+    await ref.put(fileOrBlob);
     const url = await ref.getDownloadURL();
     onDone(url);
     if (statusEl) statusEl.textContent = 'Uploaded ✓';
@@ -649,6 +809,7 @@ function showPostForm(post) {
   document.getElementById('post-seo-title').value = post ? (post.seoTitle || '') : '';
   document.getElementById('post-seo-description').value = post ? (post.seoDescription || '') : '';
   document.getElementById('post-seo-keywords').value = post ? (post.seoKeywords || '') : '';
+  document.getElementById('post-mailerlite-embed').value = post ? (post.mailerliteEmbed || '') : '';
   postTags = post && post.tags ? [...post.tags] : [];
   renderTagChips();
   loadTagSuggestions().then(renderTagChips);
@@ -688,6 +849,7 @@ async function savePostForm() {
     seoTitle: document.getElementById('post-seo-title').value.trim() || title,
     seoDescription: document.getElementById('post-seo-description').value.trim() || excerpt,
     seoKeywords: document.getElementById('post-seo-keywords').value.trim(),
+    mailerliteEmbed: document.getElementById('post-mailerlite-embed').value.trim(),
     published: document.getElementById('post-published').checked,
     publishAt,
     author: 'Jandre van der Walt'
