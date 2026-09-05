@@ -405,7 +405,11 @@
     const rec = { ...p };
     delete rec.id;
     rec.slug = slugify(p.slug || p.title);
-    rec.priceZAR = Number(p.priceZAR) || 0;
+    rec.priceUSD = Number(p.priceUSD) || 0;
+    rec.compareAtUSD = Number(p.compareAtUSD) || 0;
+    if (p.priceZAR != null) rec.priceZAR = Number(p.priceZAR) || 0; // legacy, optional
+    rec.files = Array.isArray(p.files) ? p.files.filter(f => f && f.path) : [];
+    rec.features = Array.isArray(p.features) ? p.features.filter(Boolean) : [];
     rec.active = p.active !== false;
     rec.type = 'digital';
     if (p.id) {

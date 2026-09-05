@@ -2564,15 +2564,40 @@ function showShopTab(name, btn) {
 }
 function renderShop() { renderProducts(); }
 
-async function uploadShopFile(file, statusElId) {
-  const el = statusElId && document.getElementById(statusElId);
-  if (el) el.textContent = 'Uploading PDF…';
-  const safe = (file.name || 'file.pdf').replace(/[^\w.\-]/g, '_');
-  const path = 'shop-files/' + Date.now() + '_' + safe;
-  const ref = storage.ref(path);
-  await ref.put(file);
-  if (el) el.textContent = 'PDF uploaded ✓';
-  return path; // storagePath, not a URL — served via /api/download
+async function uploadShopFile(file, onProgress) {
+  const safe = (file.name || 'file').replace(/[^\w.\-]/g, '_');
+  const path = 'shop-files/' + Date.now() + '_' + Math.random().toString(36).slice(2, 7) + '_' + safe;
+  const task = storage.ref(path).put(file);
+  if (onProgress) task.on('state_changed', s => onProgress(Math.round((s.bytesTransferred / s.totalBytes) * 100)));
+  await task;
+  return { path, name: file.name || safe }; // path is a storagePath, served via /api/download
+}
+
+/* Reusable drag-&-drop / click uploader.
+   wireDropzone(el, { accept, multiple, onFile(file, setPct) → any }) */
+function wireDropzone(zone, opts) {
+  const accept = opts.accept || '';
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = accept;
+  if (opts.multiple) input.multiple = true;
+  input.style.display = 'none';
+  zone.appendChild(input);
+  zone.addEventListener('click', e => { if (e.target.tagName !== 'A' && e.target.tagName !== 'BUTTON') input.click(); });
+  input.addEventListener('change', () => { handle([...input.files]); input.value = ''; });
+  ['dragenter', 'dragover'].forEach(ev => zone.addEventListener(ev, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.add('is-dragover');
+  }));
+  ['dragleave', 'drop'].forEach(ev => zone.addEventListener(ev, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.remove('is-dragover');
+  }));
+  zone.addEventListener('drop', e => handle([...(e.dataTransfer.files || [])]));
+  async function handle(files) {
+    if (!files.length) return;
+    for (const f of (opts.multiple ? files : files.slice(0, 1))) {
+      await opts.onFile(f, () => {});
+    }
+  }
 }
 
 let gkProducts = [];
@@ -2586,7 +2611,7 @@ async function renderProducts() {
       <div class="post-card__thumb">${p.images && p.images[0] ? `<img src="${esc(p.images[0])}" alt="">` : '📦'}</div>
       <div class="post-card__body">
         <div class="post-card__title">${esc(p.title)}</div>
-        <div class="post-card__meta">R${p.priceZAR} · ${esc(p.category || '—')} ${p.active ? '' : '· <span style="color:var(--rose)">hidden</span>'}</div>
+        <div class="post-card__meta">$${Number(p.priceUSD ?? p.priceZAR ?? 0).toFixed(2)} · ${esc(p.category || '—')} · ${(p.files && p.files.length) || (p.storagePath ? 1 : 0)} file(s) ${p.active ? '' : '· <span style="color:var(--rose)">hidden</span>'}</div>
         <div style="margin-top:0.5rem;display:flex;gap:0.4rem;">
           <button class="row-btn" onclick="editProduct('${p.id}')">Edit</button>
           <button class="row-btn row-btn--danger" onclick="removeProduct('${p.id}')">Delete</button>
@@ -2595,11 +2620,18 @@ async function renderProducts() {
     </div>`).join('');
 }
 
+let pFiles = [];   // [{path,name}]  working copy for the open editor
+let pImage = '';
+
 function editProduct(id) {
   const p = id ? gkProducts.find(x => x.id === id) : {
-    title: '', slug: '', blurb: '', descriptionHtml: '', images: [], priceZAR: '',
-    compareAtZAR: '', category: 'curriculum', storagePath: '', active: true, featured: false, sortOrder: gkProducts.length
+    title: '', slug: '', blurb: '', descriptionHtml: '', images: [], priceUSD: '',
+    compareAtUSD: '', category: 'curriculum', files: [], features: [],
+    ageRange: '', weeks: '', fileNote: '', active: true, featured: false, sortOrder: gkProducts.length
   };
+  pFiles = (p.files && p.files.length) ? p.files.slice()
+         : (p.storagePath ? [{ path: p.storagePath, name: p.storagePath.split('/').pop() }] : []);
+  pImage = (p.images && p.images[0]) || '';
   const box = document.getElementById('product-editor');
   box.style.display = 'block';
   box.innerHTML = `
@@ -2609,32 +2641,43 @@ function editProduct(id) {
         <div class="gk-field"><label>Title</label><input type="text" id="p-title" value="${esc(p.title)}"></div>
         <div class="gk-field"><label>Category</label>
           <select id="p-category">
-            ${['curriculum', 'lessons', 'activities', 'bundles'].map(c => `<option value="${c}" ${p.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+            ${['curriculum', 'resource', 'bundle'].map(c => `<option value="${c}" ${p.category === c ? 'selected' : ''}>${c}</option>`).join('')}
           </select></div>
       </div>
       <div class="gk-grid2">
-        <div class="gk-field"><label>Price (R)</label><input type="text" id="p-price" value="${esc(p.priceZAR)}"></div>
-        <div class="gk-field"><label>Compare-at price (R, optional)</label><input type="text" id="p-compare" value="${esc(p.compareAtZAR || '')}"></div>
+        <div class="gk-field"><label>Price (USD $)</label><input type="text" id="p-price" value="${esc(p.priceUSD ?? '')}" placeholder="29.99"></div>
+        <div class="gk-field"><label>Compare-at price ($, optional)</label><input type="text" id="p-compare" value="${esc(p.compareAtUSD || '')}"></div>
+      </div>
+      <div class="gk-grid2">
+        <div class="gk-field"><label>Age range (optional)</label><input type="text" id="p-age" value="${esc(p.ageRange || '')}" placeholder="Ages 3–5"></div>
+        <div class="gk-field"><label>Weeks / lessons (optional)</label><input type="text" id="p-weeks" value="${esc(p.weeks || '')}" placeholder="8 Weeks"></div>
       </div>
       <div class="gk-field"><label>Short blurb (shown on the card)</label><input type="text" id="p-blurb" value="${esc(p.blurb || '')}"></div>
-      <div class="gk-field"><label>Full description (HTML ok)</label><textarea id="p-desc">${esc(p.descriptionHtml || '')}</textarea></div>
+      <div class="gk-field"><label>Full description (HTML ok)</label><textarea id="p-desc" style="min-height:120px;">${esc(p.descriptionHtml || '')}</textarea></div>
+      <div class="gk-field"><label>What's included — one item per line</label><textarea id="p-features" style="min-height:100px;">${esc((p.features || []).join('\n'))}</textarea></div>
+      <div class="gk-field"><label>File note (e.g. "PDF · 100+ pages")</label><input type="text" id="p-filenote" value="${esc(p.fileNote || '')}"></div>
+
       <div class="gk-field">
-        <label>Cover image</label>
-        <div style="display:flex;align-items:center;gap:1rem;">
-          <img id="p-img-preview" class="gk-favicon-preview" style="width:90px;height:60px;" src="${esc((p.images && p.images[0]) || '')}">
-          <input type="file" id="p-img-file" accept="image/*">
+        <label>Cover image — drag &amp; drop or click</label>
+        <div id="p-img-zone" class="featured-dropzone">
+          <img id="p-img-preview" class="featured-dropzone__preview" src="${esc(pImage)}" style="${pImage ? '' : 'display:none;'}max-width:140px;border-radius:8px;">
+          <div class="featured-dropzone__text"><strong>Drag &amp; drop an image</strong> or click to browse</div>
         </div>
-        <input type="hidden" id="p-img-url" value="${esc((p.images && p.images[0]) || '')}">
+        <div class="gk-hint" id="p-img-status"></div>
       </div>
+
       <div class="gk-field">
-        <label>Product file (PDF that the buyer downloads)</label>
-        <input type="file" id="p-pdf-file" accept="application/pdf">
-        <div class="gk-hint" id="p-pdf-status">${p.storagePath ? 'Current: ' + esc(p.storagePath.split('/').pop()) : 'No file yet'}</div>
-        <input type="hidden" id="p-pdf-path" value="${esc(p.storagePath || '')}">
+        <label>Product file(s) the buyer downloads — drag &amp; drop or click (multiple allowed)</label>
+        <div id="p-files-zone" class="featured-dropzone">
+          <div class="featured-dropzone__text"><strong>Drag &amp; drop files</strong> or click to browse — PDF, ZIP, any type</div>
+        </div>
+        <div class="gk-hint" id="p-files-status"></div>
+        <ul id="p-files-list" style="list-style:none;padding:0;margin:0.5rem 0 0;"></ul>
       </div>
+
       <div class="gk-field" style="display:flex;gap:1.5rem;align-items:center;">
         <label style="display:flex;gap:0.5rem;align-items:center;margin:0;"><input type="checkbox" id="p-active" ${p.active !== false ? 'checked' : ''}> Visible in shop</label>
-        <label style="display:flex;gap:0.5rem;align-items:center;margin:0;"><input type="checkbox" id="p-featured" ${p.featured ? 'checked' : ''}> Featured</label>
+        <label style="display:flex;gap:0.5rem;align-items:center;margin:0;"><input type="checkbox" id="p-featured" ${p.featured ? 'checked' : ''}> Featured / bestseller</label>
       </div>
       <div style="display:flex;gap:0.75rem;">
         <button class="row-btn row-btn--primary" onclick="saveProductForm('${id || ''}')">Save product</button>
@@ -2642,40 +2685,67 @@ function editProduct(id) {
         <span class="gk-status" id="p-save-status"></span>
       </div>
     </div>`;
-  document.getElementById('p-img-file').addEventListener('change', async e => {
-    if (!e.target.files[0]) return;
-    const url = await uploadSiteAsset(e.target.files[0], 'p-save-status');
-    document.getElementById('p-img-url').value = url;
-    document.getElementById('p-img-preview').src = url;
-    if (window.GK.addMedia) GK.addMedia({ url, name: e.target.files[0].name, kind: 'image' });
+
+  wireDropzone(document.getElementById('p-img-zone'), {
+    accept: 'image/*',
+    onFile: async (file) => {
+      const s = document.getElementById('p-img-status'); s.textContent = 'Uploading…';
+      const url = await uploadSiteAsset(file, 'p-img-status');
+      pImage = url;
+      const img = document.getElementById('p-img-preview');
+      img.src = url; img.style.display = '';
+      s.textContent = 'Image set ✓';
+      if (window.GK.addMedia) GK.addMedia({ url, name: file.name, kind: 'image' });
+    }
   });
-  document.getElementById('p-pdf-file').addEventListener('change', async e => {
-    if (!e.target.files[0]) return;
-    const path = await uploadShopFile(e.target.files[0], 'p-pdf-status');
-    document.getElementById('p-pdf-path').value = path;
+  wireDropzone(document.getElementById('p-files-zone'), {
+    accept: '', multiple: true,
+    onFile: async (file) => {
+      const s = document.getElementById('p-files-status');
+      s.textContent = `Uploading ${file.name}…`;
+      const rec = await uploadShopFile(file, pct => { s.textContent = `Uploading ${file.name}… ${pct}%`; });
+      pFiles.push(rec);
+      s.textContent = `${file.name} uploaded ✓`;
+      drawProductFiles();
+    }
   });
+  drawProductFiles();
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function drawProductFiles() {
+  const ul = document.getElementById('p-files-list');
+  if (!ul) return;
+  ul.innerHTML = pFiles.map((f, i) => `
+    <li style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.45rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;margin-bottom:0.35rem;font-size:0.85rem;">
+      <span>📄 ${esc(f.name)}</span>
+      <button class="row-btn row-btn--danger" onclick="pFiles.splice(${i},1);drawProductFiles()">Remove</button>
+    </li>`).join('');
+}
+
 async function saveProductForm(id) {
-  const g = i => document.getElementById(i).value.trim();
+  const g = i => (document.getElementById(i).value || '').trim();
   const status = document.getElementById('p-save-status');
-  if (!g('p-title') || !g('p-price')) { status.textContent = 'Title and price required'; return; }
+  if (!g('p-title') || !g('p-price')) { status.textContent = 'Title and USD price required'; return; }
   status.textContent = 'Saving…';
   const rec = {
     title: g('p-title'), slug: g('p-title'), category: g('p-category'),
-    priceZAR: Number(g('p-price')), compareAtZAR: Number(g('p-compare')) || 0,
+    priceUSD: Number(g('p-price')), compareAtUSD: Number(g('p-compare')) || 0,
+    ageRange: g('p-age'), weeks: g('p-weeks'), fileNote: g('p-filenote'),
     blurb: g('p-blurb'), descriptionHtml: g('p-desc'),
-    images: g('p-img-url') ? [g('p-img-url')] : [],
-    storagePath: g('p-pdf-path'),
+    features: g('p-features').split('\n').map(s => s.trim()).filter(Boolean),
+    images: pImage ? [pImage] : [],
+    files: pFiles.slice(),
     active: document.getElementById('p-active').checked,
     featured: document.getElementById('p-featured').checked
   };
   if (id) rec.id = id;
-  await GK.saveProduct(rec);
-  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
-  document.getElementById('product-editor').style.display = 'none';
-  renderProducts();
+  try {
+    await GK.saveProduct(rec);
+    try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+    document.getElementById('product-editor').style.display = 'none';
+    renderProducts();
+  } catch (e) { status.textContent = 'Error: ' + e.message; }
 }
 async function removeProduct(id) {
   if (!confirm('Delete this product? Existing orders keep working.')) return;

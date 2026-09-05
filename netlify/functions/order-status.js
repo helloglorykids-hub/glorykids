@@ -16,7 +16,9 @@ exports.handler = async (event) => {
 
   const out = {
     status: o.status,
-    total: o.totalZAR,
+    total: o.totalUSD != null ? o.totalUSD : o.totalZAR,
+    totalZAR: o.totalZAR,
+    currency: o.totalUSD != null ? 'USD' : 'ZAR',
     items: (o.items || []).map(i => ({ title: i.title })),
     email: o.buyerEmail
   };

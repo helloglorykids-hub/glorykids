@@ -28,7 +28,8 @@ exports.handler = async (event) => {
     .map(o => ({
       id: o.id,
       date: o.paidAt || o.createdAt,
-      total: o.totalZAR,
+      total: o.totalUSD != null ? o.totalUSD : o.totalZAR,
+      currency: o.totalUSD != null ? 'USD' : 'ZAR',
       items: (o.items || []).map(it => ({
         title: it.title,
         url: `${SITE}/api/download?token=${encodeURIComponent(sign({ orderId: o.id, productId: it.productId }, 7 * 86400000))}`

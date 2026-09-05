@@ -9,6 +9,12 @@ const { json, parseBody } = require('./_lib/http');
 
 const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 
+// PayFast settles in ZAR. Products are priced in USD on-site; convert here.
+// Set USD_ZAR_RATE in Netlify env (update it periodically). Fallback is a
+// conservative rate so checkout never breaks if the var is missing.
+const USD_ZAR_RATE = Number(process.env.USD_ZAR_RATE) || 18.5;
+const usdToZar = usd => Math.round(usd * USD_ZAR_RATE * 100) / 100;
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });
   const { json: body } = parseBody(event);
@@ -19,15 +25,22 @@ exports.handler = async (event) => {
     return json(400, { error: 'A valid email is required' });
   }
 
-  // Resolve products server-side
+  // Resolve products server-side (prices in USD → converted to ZAR for PayFast)
   const resolved = [];
   for (const it of items) {
     const snap = await db.collection('products').doc(String(it.id)).get();
     if (!snap.exists) return json(400, { error: `Unknown product: ${it.id}` });
     const p = snap.data();
     if (!p.active) return json(400, { error: `Not available: ${p.title}` });
-    resolved.push({ productId: snap.id, title: p.title, priceZAR: Number(p.priceZAR) });
+    const priceUSD = Number(p.priceUSD != null ? p.priceUSD : p.priceZAR); // back-compat
+    resolved.push({
+      productId: snap.id,
+      title: p.title,
+      priceUSD,
+      priceZAR: usdToZar(priceUSD)
+    });
   }
+  const subtotalUSD = resolved.reduce((s, r) => s + r.priceUSD, 0);
   const subtotal = resolved.reduce((s, r) => s + r.priceZAR, 0);
 
   // Discount
@@ -55,15 +68,19 @@ exports.handler = async (event) => {
   }
 
   const total = Math.max(0, Math.round((subtotal - discount) * 100) / 100);
-  if (total < 5) return json(400, { error: 'Order total is below the R5 minimum for card payment.' });
+  const totalUSD = Math.round((subtotalUSD - discount / USD_ZAR_RATE) * 100) / 100;
+  if (total < 5) return json(400, { error: 'Order total is below the minimum for card payment.' });
 
   const orderRef = db.collection('orders').doc();
   await orderRef.set({
     items: resolved,
+    subtotalUSD,
     subtotalZAR: subtotal,
     discountCode,
     discountZAR: discount,
+    totalUSD,
     totalZAR: total,
+    fxRateUsdZar: USD_ZAR_RATE,
     buyerEmail: buyer.email.toLowerCase(),
     buyerName: buyer.name || '',
     uid: buyer.uid || null,
@@ -88,5 +105,5 @@ exports.handler = async (event) => {
     custom_str1: orderRef.id
   });
 
-  return json(200, { orderId: orderRef.id, processUrl, fields, total });
+  return json(200, { orderId: orderRef.id, processUrl, fields, total, totalUSD });
 };
