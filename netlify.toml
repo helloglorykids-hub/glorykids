@@ -5,6 +5,13 @@
   command = "node build.js"
   publish = "."
 
+[build.environment]
+  # The Firebase *Web* API key (AIzaSy...) is a public client identifier, not a
+  # secret — it ships in every Firebase web app's JS by design. Security is
+  # enforced by Firestore/Storage rules (and, optionally, API-key referrer
+  # restrictions + App Check). Tell Netlify's secret scanner it is expected.
+  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyBkGSjwewBHTwf1SSNb7hbNkLaD89X-onk"
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
