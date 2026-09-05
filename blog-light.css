@@ -1,0 +1,54 @@
+/* ============================================================
+   BLOG LIGHT THEME
+   Scoped override so blog page content renders on an off-white
+   background with dark text, while shared chrome (nav/footer)
+   and branded gradient heroes keep their original look.
+   ============================================================ */
+
+.blog-light {
+  --color-bg:          #FFF9ED;
+  --color-darkest:     #FFF9ED;
+  --color-card:        #FFFFFF;
+  --color-card-hover:  #F3EBD9;
+  --color-border:      rgba(43,38,32,0.1);
+
+  --white:    #2B2620;
+  --gray-900: #2B2620;
+  --gray-700: #3F3A33;
+  --gray-600: #55504A;
+  --gray-500: #6B665F;
+  --gray-400: #837E77;
+  --gray-300: #A39D94;
+  --gray-200: rgba(43,38,32,0.08);
+  --gray-100: rgba(43,38,32,0.05);
+  --gray-50:  #FFF9ED;
+
+  /* homepage.css uses its own token names for the same roles */
+  --color-text-primary:   #2B2620;
+  --color-text-secondary: #55504A;
+  --color-white:          #2B2620;
+
+  background: var(--color-bg);
+  color: var(--gray-700);
+}
+
+/* Tailwind utility classes used on blog-post pages don't read CSS
+   variables, so they need direct overrides within the light scope. */
+.blog-light .text-white,
+.blog-light .hover\:text-white:hover { color: var(--white) !important; }
+.blog-light .text-slate-100,
+.blog-light .text-slate-200 { color: var(--gray-700) !important; }
+.blog-light .text-slate-300 { color: var(--gray-600) !important; }
+.blog-light .text-slate-400 { color: var(--gray-500) !important; }
+.blog-light .text-slate-500 { color: var(--gray-400) !important; }
+.blog-light .border-white\/10,
+.blog-light .border-white\/15 { border-color: var(--color-border) !important; }
+.blog-light .bg-white\/5 { background-color: rgba(43,38,32,0.04) !important; }
+.blog-light .placeholder-slate-500::placeholder { color: var(--gray-400) !important; }
+
+/* Branded gradient heroes stay dark/colorful by design — restore
+   white text for them inside the light scope. */
+.blog-light .page-hero,
+.blog-light .page-hero h1,
+.blog-light .page-hero p,
+.blog-light .post-hero h1 { color: #fff; }

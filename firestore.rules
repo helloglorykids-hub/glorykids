@@ -1,0 +1,125 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      return isSignedIn() &&
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // Blog posts — anyone can read a published post once its scheduled
+    // publish time has passed (or immediately if unscheduled); the admin
+    // can always read everything, including drafts and future-scheduled
+    // posts. Only the admin can write.
+    match /posts/{postId} {
+      allow read: if (
+        resource.data.published == true &&
+        (!('publishAt' in resource.data) || resource.data.publishAt <= request.time.toMillis())
+      ) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // User profiles — a member can read/update their own profile but
+    // cannot grant themselves admin or change their own plan/billing
+    // status; only the admin account can do that (via the admin panel).
+    match /users/{uid} {
+      allow read: if isSignedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if isSignedIn() && request.auth.uid == uid && request.resource.data.isAdmin == false;
+      allow update: if isAdmin() || (
+        isSignedIn() && request.auth.uid == uid &&
+        request.resource.data.isAdmin == resource.data.isAdmin &&
+        request.resource.data.plan == resource.data.plan &&
+        request.resource.data.planStatus == resource.data.planStatus
+      );
+      allow delete: if isAdmin();
+    }
+
+    // Payments — admin only.
+    match /payments/{id} {
+      allow read, update, delete: if isAdmin();
+      allow create: if isAdmin();
+    }
+
+    // Support tickets — anyone (including signed-out visitors) can submit
+    // one via the chatbot/contact form; only the admin can read/manage them.
+    match /tickets/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // ── Site backend (admin panel "Squarespace-style" controls) ──────────
+    // Settings that shape every public page. Anyone can read them (the
+    // shared site-settings.js applies them at page load); only the admin
+    // writes. site/config is a single doc; pages/redirects/navMenus are
+    // small collections.
+    match /site/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /pages/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /redirects/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /navMenus/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // First-party, cookie-free analytics. Every visitor (signed out
+    // included) may create today's counter doc and increment its numeric
+    // fields; nobody may delete, and only the admin can read the totals.
+    match /analyticsDaily/{day} {
+      allow read: if isAdmin();
+      allow create, update: if true;
+      allow delete: if false;
+    }
+
+    // ── Shop ────────────────────────────────────────────────────────────
+    // Storefront reads active products / discount codes; only the admin
+    // writes. Orders are created/fulfilled by the Netlify functions via the
+    // Admin SDK (which bypasses these rules) — a signed-in buyer may read
+    // their own orders for the dashboard "My Purchases" list.
+    match /products/{id} {
+      allow read: if resource.data.active == true || isAdmin();
+      allow write: if isAdmin();
+    }
+    match /discountCodes/{code} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+    match /orders/{id} {
+      allow read: if isAdmin() ||
+        (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
+    // ── Editable page content + media library ───────────────────────────
+    // Public read (content.js / the storefront apply them); admin write.
+    match /content/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /media/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Forms ──────────────────────────────────────────────────────────
+    // Anyone may submit; only the admin reads the inbox. Form definitions
+    // are public-readable (the page renderer needs them).
+    match /formSubmissions/{id} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+    match /forms/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

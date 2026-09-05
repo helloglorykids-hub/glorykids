@@ -1,0 +1,2894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Children's Ministry Lessons</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { background: var(--gray-50); }
+    .admin-layout { display: block; min-height: 100vh; }
+    .admin-topbar {
+      background: var(--navy); color: white; padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .admin-topbar__brand { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-heading); font-weight: 800; }
+    .admin-topbar__brand span { color: var(--gold); }
+    .admin-topbar__user { display: flex; align-items: center; gap: 1rem; font-size: 0.85rem; color: rgba(255,255,255,0.75); }
+    .admin-topbar__signout { background: rgba(255,255,255,0.1); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+    .admin-topbar__signout:hover { background: rgba(255,255,255,0.18); }
+
+    .admin-body { display: flex; align-items: flex-start; }
+    .admin-sidebar {
+      width: 240px; flex-shrink: 0; background: var(--color-card);
+      border-right: 1px solid var(--gray-200); padding: 1.5rem 1rem;
+      min-height: calc(100vh - 65px); position: sticky; top: 65px;
+    }
+    @media(max-width:800px) {
+      .admin-body { flex-direction: column; }
+      .admin-sidebar { width: 100%; position: static; display: flex; gap: 0.5rem; overflow-x: auto; min-height: auto; }
+    }
+    .admin-nav-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.7rem 0.9rem; border-radius: var(--radius);
+      font-family: var(--font-heading); font-size: 0.875rem; font-weight: 600;
+      color: var(--gray-600); cursor: pointer; text-decoration: none;
+      flex-shrink: 0;
+    }
+    .admin-nav-item:hover { background: var(--gray-100); color: var(--white); }
+    .admin-nav-item.active { background: var(--primary-light); color: var(--primary); }
+
+    .admin-main { flex: 1; padding: 2rem; min-width: 0; }
+    .admin-section-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 1.25rem; }
+
+    .admin-stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media(max-width:1100px) { .admin-stats { grid-template-columns: repeat(3,1fr); } }
+    @media(max-width:600px) { .admin-stats { grid-template-columns: repeat(2,1fr); } }
+    .admin-stat-card { background: var(--color-card); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100); }
+    .admin-stat-card__label { font-size: 0.8rem; color: var(--gray-500); margin-bottom: 0.4rem; }
+    .admin-stat-card__num { font-family: var(--font-heading); font-size: 1.9rem; font-weight: 900; color: var(--white); line-height: 1; }
+    .admin-stat-card__num.accent { color: var(--primary); }
+    .admin-stat-card__num.gold { color: var(--gold-dark); }
+
+    .admin-card { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.75rem; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-100); margin-bottom: 2rem; }
+    .admin-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1rem; color: var(--white); margin-bottom: 1.25rem; }
+
+    .chart-bars { display: flex; align-items: flex-end; gap: 0.75rem; height: 140px; }
+    .chart-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.5rem; height: 100%; }
+    .chart-bar__fill { width: 100%; background: linear-gradient(180deg, var(--primary), var(--primary-dark)); border-radius: 6px 6px 0 0; min-height: 4px; }
+    .chart-bar__label { font-size: 0.72rem; color: var(--gray-400); }
+
+    table.admin-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .admin-table th { text-align: left; font-family: var(--font-heading); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-400); padding: 0.6rem 0.75rem; border-bottom: 2px solid var(--gray-100); }
+    .admin-table td { padding: 0.85rem 0.75rem; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: var(--radius-full); font-size: 0.72rem; font-weight: 700; }
+    .badge--free { background: var(--gray-100); color: var(--gray-600); }
+    .badge--gold { background: var(--gold-light); color: var(--gold-dark); }
+    .badge--active { background: var(--green-light); color: #047857; }
+    .badge--paused { background: #FEF0D3; color: #E09E00; }
+    .badge--cancelled { background: var(--rose-light); color: var(--rose); }
+    .badge--admin { background: var(--primary-light); color: var(--primary); }
+    .row-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    .access-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 120;
+      display: flex; align-items: flex-start; justify-content: center; padding: 3rem 1.5rem; overflow-y: auto; }
+    .access-box { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.6rem;
+      max-width: 500px; width: 100%; border: 1px solid var(--gray-100); }
+    .access-box h3 { font-family: var(--font-heading); font-weight: 800; color: var(--white); margin: 0 0 0.1rem; }
+    .access-box__sub { font-size: 0.78rem; color: var(--gray-400); margin-bottom: 0.4rem; word-break: break-all; }
+    .access-sec { border-top: 1px solid var(--gray-100); padding: 1rem 0; }
+    .access-sec:last-of-type { border-bottom: 1px solid var(--gray-100); margin-bottom: 1rem; }
+    .access-sec__label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--gray-400); font-weight: 800; margin-bottom: 0.55rem; }
+    .access-choice { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .access-choice button { flex: 1; min-width: 84px; font-size: 0.78rem; font-weight: 700; padding: 0.5rem 0.4rem;
+      border-radius: var(--radius); border: 1.5px solid var(--gray-200); background: var(--color-card);
+      color: var(--gray-600); cursor: pointer; }
+    .access-choice button:hover { border-color: var(--primary); }
+    .access-choice button.is-on { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .access-choice button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .access-summary { list-style: none; padding: 0; margin: 0; font-size: 0.83rem; }
+    .access-summary li { display: flex; gap: 0.5rem; padding: 0.22rem 0; color: var(--gray-600); }
+    .access-warn { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.5rem; line-height: 1.5; }
+    .access-pay { font-size: 0.8rem; color: var(--gray-600); display: flex; justify-content: space-between; padding: 0.2rem 0; }
+    .row-btn {
+      font-size: 0.72rem; font-weight: 700; padding: 0.35rem 0.65rem;
+      border-radius: var(--radius-full); cursor: pointer; border: 1px solid var(--gray-200);
+      background: var(--color-card); color: var(--gray-600);
+    }
+    .row-btn:hover { background: var(--gray-100); }
+    .row-btn--primary { background: var(--primary); color: white; border-color: var(--primary); }
+    .row-btn--warn { background: #FEF0D3; color: #E09E00; border-color: #EFC26B; }
+    .row-btn--danger { background: var(--rose-light); color: var(--rose); border-color: #FECDD3; }
+
+    .post-form { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
+    .post-form input, .post-form select, .post-form textarea {
+      width: 100%; padding: 0.7rem 0.9rem; border-radius: var(--radius); border: 1.5px solid var(--gray-200);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .post-form textarea { resize: vertical; min-height: 90px; }
+    .post-form label { font-size: 0.8rem; font-weight: 700; color: var(--gray-600); margin-bottom: 0.35rem; display: block; }
+    .post-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--gray-100); }
+    .post-row:last-child { border-bottom: none; }
+    .post-row__icon { width: 44px; height: 44px; border-radius: var(--radius); background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .post-row__thumb { width: 68px; height: 68px; border-radius: var(--radius); background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; overflow: hidden; }
+    .post-row__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .post-row__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem; color: var(--white); }
+    .post-row__meta { font-size: 0.75rem; color: var(--gray-400); margin-top: 0.15rem; }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--gray-400); }
+
+    .post-tab {
+      display: flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: var(--radius-full);
+      border: 1.5px solid var(--gray-200); background: var(--white); color: var(--gray-600);
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+    }
+    .post-tab:hover { border-color: var(--primary); }
+    .post-tab--active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .post-tab__count {
+      background: rgba(0,0,0,0.12); border-radius: var(--radius-full); padding: 0.1rem 0.5rem; font-size: 0.72rem;
+    }
+    .post-tab--active .post-tab__count { background: rgba(255,255,255,0.25); }
+
+    .post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+    .post-card { border: 1px solid var(--gray-100); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; }
+    .post-card__thumb { aspect-ratio: 16/9; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .post-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .post-card__body { padding: 0.85rem; }
+    .post-card__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.88rem; color: var(--white); line-height: 1.35; }
+    .post-card__meta { font-size: 0.72rem; color: var(--gray-400); margin-top: 0.35rem; }
+
+    .tag-input {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+      padding: 0.5rem 0.6rem; border-radius: var(--radius); border: 1.5px solid var(--gray-200);
+      cursor: text;
+    }
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      background: var(--primary-light); color: var(--primary);
+      font-size: 0.78rem; font-weight: 700; padding: 0.25rem 0.5rem 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+    }
+    .tag-chip button { background: none; border: none; color: inherit; cursor: pointer; font-size: 0.9rem; line-height: 1; padding: 0; }
+    #tag-input-field { border: none !important; outline: none; flex: 1; min-width: 120px; padding: 0.2rem !important; }
+    .tag-suggestion {
+      font-size: 0.76rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200); background: var(--color-card); color: var(--gray-500); cursor: pointer;
+    }
+    .tag-suggestion:hover { background: var(--gray-100); }
+
+    .rte-toolbar {
+      display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem;
+      background: var(--gray-50); border: 1.5px solid var(--gray-200); border-bottom: none;
+      border-radius: var(--radius) var(--radius) 0 0; padding: 0.5rem;
+    }
+    .rte-toolbar button {
+      font-size: 0.78rem; font-weight: 700; padding: 0.35rem 0.6rem; border-radius: var(--radius);
+      border: 1px solid var(--gray-200); background: var(--color-card); color: var(--gray-600); cursor: pointer;
+    }
+    .rte-toolbar button:hover { background: var(--gray-100); }
+    .rte-body {
+      min-height: 300px; max-height: 600px; overflow-y: auto;
+      border: 1.5px solid var(--gray-200); border-radius: 0 0 var(--radius) var(--radius);
+      padding: 1rem 1.1rem; font-size: 0.92rem; line-height: 1.7; color: var(--gray-700);
+    }
+    .rte-body:empty:before { content: attr(data-placeholder); color: var(--gray-400); }
+    .rte-body h2 { font-size: 1.25rem; font-weight: 800; margin: 1rem 0 0.5rem; }
+    .rte-body h3 { font-size: 1.05rem; font-weight: 700; margin: 0.85rem 0 0.4rem; }
+    .rte-body p { margin: 0 0 0.75rem; }
+    .rte-body ul, .rte-body ol { margin: 0 0 0.75rem 1.25rem; }
+    .rte-body a { color: var(--primary); text-decoration: underline; }
+    .rte-body img { max-width: 100%; border-radius: var(--radius); margin: 0.75rem 0; }
+    .rte-body .quote-callout { border-left: 3px solid var(--primary); background: var(--gray-50); padding: 0.85rem 1.1rem; margin: 1rem 0; font-style: italic; }
+    .rte-body .key-point { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: var(--radius); padding: 0.85rem 1.1rem; margin: 1rem 0; }
+
+    .featured-dropzone {
+      display: flex; align-items: center; gap: 1rem; padding: 1rem;
+      border: 1.5px dashed var(--gray-200); border-radius: var(--radius-lg);
+      cursor: pointer; transition: var(--transition);
+    }
+    .featured-dropzone:hover, .featured-dropzone.is-dragover { border-color: var(--primary); background: var(--primary-light); }
+    .featured-dropzone__preview {
+      width: 120px; height: 60px; border-radius: var(--radius); background: var(--gray-100);
+      display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;
+      border: 1.5px solid var(--gray-200);
+    }
+    .featured-dropzone__text { font-size: 0.85rem; color: var(--gray-600); line-height: 1.6; }
+
+    .crop-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100;
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .btn-photosearch {
+      margin-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.8rem; font-weight: 600; padding: 0.45rem 0.8rem; cursor: pointer;
+      border: 1px solid var(--gray-300); border-radius: var(--radius); background: var(--color-card); color: var(--gray-700);
+    }
+    .btn-photosearch:hover { border-color: var(--primary); color: var(--primary); }
+    .photopick { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 110;
+      display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
+    .photopick__box { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.5rem;
+      max-width: 760px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; }
+    .photopick__title { font-family: var(--font-heading); font-weight: 800; margin-bottom: 0.85rem; }
+    .photopick__search { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .photopick__search input { flex: 1; }
+    .photopick__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.6rem; overflow-y: auto; flex: 1; align-content: start; }
+    .photopick__tile { position: relative; aspect-ratio: 3 / 2; border-radius: var(--radius); overflow: hidden;
+      cursor: pointer; background: var(--gray-100); border: 2px solid transparent; }
+    .photopick__tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photopick__tile:hover { border-color: var(--primary); }
+    .photopick__tile span { position: absolute; left: 0; right: 0; bottom: 0; font-size: 0.62rem;
+      color: #fff; background: linear-gradient(transparent, rgba(0,0,0,0.7)); padding: 1rem 0.4rem 0.3rem;
+      opacity: 0; transition: opacity 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .photopick__tile:hover span { opacity: 1; }
+    .photopick__msg { color: var(--gray-500); font-size: 0.85rem; padding: 1.5rem 0; text-align: center; }
+    .photopick__foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+      margin-top: 1rem; font-size: 0.75rem; color: var(--gray-400); }
+    .crop-modal__box { background: var(--color-card); border-radius: var(--radius-xl); padding: 1.5rem; max-width: 560px; width: 100%; }
+    .crop-modal__title { font-family: var(--font-heading); font-weight: 800; margin-bottom: 1rem; }
+    .crop-viewport {
+      width: 100%; aspect-ratio: 2 / 1; border-radius: var(--radius); overflow: hidden;
+      position: relative; background: var(--gray-100); cursor: grab; touch-action: none;
+    }
+    .crop-viewport:active { cursor: grabbing; }
+    .crop-viewport img { position: absolute; top: 0; left: 0; user-select: none; pointer-events: none; }
+    .crop-viewport canvas.spot-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    .crop-viewport.spot-mode canvas.spot-overlay { cursor: crosshair; }
+    .crop-modal__controls { margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .crop-modal__slider { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--gray-500); }
+    .crop-modal__slider input[type="range"] { flex: 1; }
+    .crop-modal__slider span.val { width: 3ch; text-align: right; color: var(--gray-600); font-variant-numeric: tabular-nums; }
+    .crop-modal__tools { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .crop-tool-btn { font-size: 0.78rem; padding: 0.4rem 0.7rem; border-radius: var(--radius); border: 1px solid var(--gray-200); background: var(--color-card); cursor: pointer; }
+    .crop-tool-btn:hover { background: var(--gray-100); }
+    .crop-tool-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .rte-toolbar select { font-size: 0.78rem; padding: 0.3rem 0.4rem; border-radius: var(--radius); border: 1px solid var(--gray-200); background: var(--color-card); }
+
+    /* ── Site backend tabs ─────────────────────────────────── */
+    .gk-field { margin-bottom: 1rem; }
+    .gk-field > label { font-size: 0.8rem; font-weight: 700; color: var(--gray-600); margin-bottom: 0.35rem; display: block; }
+    .gk-field input[type="text"], .gk-field input[type="url"], .gk-field input[type="email"],
+    .gk-field input[type="color"], .gk-field textarea, .gk-field select {
+      width: 100%; padding: 0.7rem 0.9rem; border-radius: var(--radius); border: 1.5px solid var(--gray-200);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .gk-field textarea { resize: vertical; min-height: 70px; }
+    .gk-hint { font-size: 0.74rem; color: var(--gray-400); margin-top: 0.3rem; line-height: 1.5; }
+    .gk-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media(max-width:700px){ .gk-grid2 { grid-template-columns: 1fr; } }
+    .gk-charcount { font-size: 0.72rem; color: var(--gray-400); float: right; font-weight: 600; }
+    .gk-charcount.over { color: var(--rose); }
+    .gk-switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+    .gk-switch input { opacity: 0; width: 0; height: 0; }
+    .gk-switch span { position: absolute; inset: 0; background: var(--gray-300); border-radius: 999px; transition: .15s; cursor: pointer; }
+    .gk-switch span:before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .15s; }
+    .gk-switch input:checked + span { background: var(--primary); }
+    .gk-switch input:checked + span:before { transform: translateX(18px); }
+    .gk-favicon-preview { width: 48px; height: 48px; border-radius: 10px; border: 1.5px solid var(--gray-200); background: var(--gray-50); object-fit: contain; }
+    .gk-serp { border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 0.9rem 1rem; background: var(--white); max-width: 600px; }
+    .gk-serp__title { color: #1a0dab; font-size: 1.05rem; line-height: 1.3; }
+    .gk-serp__url { color: #006621; font-size: 0.8rem; margin: 0.15rem 0; }
+    .gk-serp__desc { color: #4d5156; font-size: 0.82rem; line-height: 1.5; }
+    .gk-drawer-row td { background: var(--gray-50); }
+    .gk-save-bar { position: sticky; bottom: 0; background: var(--color-card); border-top: 1px solid var(--gray-200);
+      padding: 1rem 0; margin-top: 1rem; display: flex; gap: 0.75rem; align-items: center; }
+    .gk-save-bar .gk-status { font-size: 0.8rem; color: var(--gray-500); }
+  </style>
+</head>
+<body>
+
+<div class="admin-layout">
+  <div class="admin-topbar">
+    <div class="admin-topbar__brand">🛡️ Admin<span>Panel</span></div>
+    <div class="admin-topbar__user">
+      <span id="admin-name-label">Loading...</span>
+      <span class="admin-topbar__signout" onclick="adminSignOut()">Sign Out</span>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <aside class="admin-sidebar">
+      <a href="#overview" class="admin-nav-item active" onclick="showAdminTab('overview',this)">📊 Overview</a>
+      <a href="#posts" class="admin-nav-item" onclick="showAdminTab('posts',this)">📝 Blog Posts</a>
+      <a href="#members" class="admin-nav-item" onclick="showAdminTab('members',this)">👥 Members</a>
+      <a href="#payments" class="admin-nav-item" onclick="showAdminTab('payments',this)">💳 Payments</a>
+      <a href="#support" class="admin-nav-item" onclick="showAdminTab('support',this)">💬 Support</a>
+      <a href="#shop" class="admin-nav-item" onclick="showAdminTab('shop',this)">🛍️ Shop</a>
+      <a href="#forms" class="admin-nav-item" onclick="showAdminTab('forms',this)">📬 Forms</a>
+      <div style="height:1px;background:var(--gray-200);margin:0.6rem 0.3rem;"></div>
+      <a href="#site" class="admin-nav-item" onclick="showAdminTab('site',this)">⚙️ Site Settings</a>
+      <a href="#content" class="admin-nav-item" onclick="showAdminTab('content',this)">📝 Content</a>
+      <a href="#media" class="admin-nav-item" onclick="showAdminTab('media',this)">🖼️ Media</a>
+      <a href="#pages" class="admin-nav-item" onclick="showAdminTab('pages',this)">📄 Pages &amp; SEO</a>
+      <a href="#seo" class="admin-nav-item" onclick="showAdminTab('seo',this)">🔗 SEO &amp; Redirects</a>
+      <a href="#navigation" class="admin-nav-item" onclick="showAdminTab('navigation',this)">🧭 Navigation</a>
+      <a href="#analytics" class="admin-nav-item" onclick="showAdminTab('analytics',this)">📈 Analytics</a>
+    </aside>
+
+    <main class="admin-main">
+
+      <!-- OVERVIEW -->
+      <div id="admin-tab-overview">
+        <div class="admin-section-title">📊 Overview</div>
+        <div class="admin-stats">
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Total Users</div>
+            <div class="admin-stat-card__num" id="stat-total-users">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Active Glory Kids Members</div>
+            <div class="admin-stat-card__num accent" id="stat-active-members">0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Estimated MRR</div>
+            <div class="admin-stat-card__num gold" id="stat-mrr">$0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Total Revenue Collected</div>
+            <div class="admin-stat-card__num gold" id="stat-revenue">$0</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-card__label">Open Support Tickets</div>
+            <div class="admin-stat-card__num accent" id="stat-open-tickets">0</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">📈 Signups — Last 7 Days</div>
+          <div class="chart-bars" id="signup-chart"></div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">🆕 Recent Signups</div>
+          <div id="recent-signups"></div>
+        </div>
+      </div>
+
+      <!-- BLOG POSTS -->
+      <div id="admin-tab-posts" style="display:none;">
+        <div id="posts-list-section">
+          <div class="admin-section-title" style="display:flex; align-items:center; justify-content:space-between;">
+            📝 Blog Posts
+            <button class="btn btn--primary btn--sm" onclick="showPostForm(null, activePostCategory === 'all' ? null : activePostCategory)">+ New Post</button>
+          </div>
+
+          <div id="posts-category-tabs" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;"></div>
+
+          <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+            <input type="text" id="posts-search" placeholder="🔍 Search posts by title or slug..." oninput="renderPostsList()" style="flex:1 1 260px; max-width:360px;" />
+            <div style="display:flex; gap:0.4rem;">
+              <button id="posts-view-list-btn" class="btn btn--outline btn--sm btn--primary" onclick="setPostViewMode('list')">☰ List</button>
+              <button id="posts-view-grid-btn" class="btn btn--outline btn--sm" onclick="setPostViewMode('grid')">▦ Grid</button>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <div id="posts-list"></div>
+          </div>
+        </div>
+
+        <div class="admin-card" id="post-form-card" style="display:none;">
+          <button class="btn btn--outline btn--sm" onclick="hidePostForm()" style="margin-bottom:1rem;">← Back to All Posts</button>
+          <div class="admin-card__title" id="post-form-title">New Post</div>
+          <div class="post-form">
+            <input type="hidden" id="post-id" />
+
+            <div>
+              <label>Title</label>
+              <input type="text" id="post-title" placeholder="Post title" oninput="onPostTitleInput()" />
+            </div>
+
+            <div>
+              <label>URL Slug <span style="font-weight:400;color:var(--gray-400);">— editable, auto-fills from title</span></label>
+              <div style="display:flex; align-items:center; gap:0.4rem;">
+                <span style="font-size:0.78rem; color:var(--gray-400); white-space:nowrap;">blog-post.html?slug=</span>
+                <input type="text" id="post-slug" placeholder="my-post-title" oninput="slugTouched = true;" />
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div>
+                <label>Category</label>
+                <select id="post-category" onchange="onCategoryChange()">
+                  <option value="parents">For Parents</option>
+                  <option value="pastors">For Pastors</option>
+                  <option value="kidmin">For Kidmin Leaders</option>
+                  <option value="free_lessons">Free Bible Lessons</option>
+                </select>
+              </div>
+              <div>
+                <label>Icon (emoji)</label>
+                <input type="text" id="post-icon" placeholder="📖" value="📖" />
+              </div>
+            </div>
+
+            <div id="lesson-fields-wrap" style="display:none; background:var(--gray-50); border-radius:var(--radius-lg); padding:1.25rem;">
+              <div style="font-size:0.85rem; font-weight:800; color:var(--gray-700); margin-bottom:1rem;">📖 Free Lesson Details</div>
+              <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
+                  <input type="checkbox" id="post-free-lesson" style="width:auto;" /> Include in the 10 Free Lessons
+                </label>
+                <p style="font-size:0.78rem; color:var(--gray-500); margin:0.4rem 0 0; line-height:1.5;">
+                  Checked: this lesson shows the MailerLite signup below and is downloadable for free.
+                  Unchecked (default): the signup box is replaced with a "Join Glory Kids Membership" prompt instead — only check this for the 10 lessons you're giving away free.
+                </p>
+              </div>
+              <div>
+                <label>Age Group <span style="font-weight:400;color:var(--gray-400);">— select all that apply</span></label>
+                <div style="display:flex; flex-wrap:wrap; gap:1rem; margin-top:0.35rem;">
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="preschool" style="width:auto;" /> Preschool (2–5)</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="k2" style="width:auto;" /> K–2nd Grade</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="upper35" style="width:auto;" /> 3rd–5th Grade</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-age" value="sixplus" style="width:auto;" /> 6th Grade+</label>
+                </div>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Lesson Topic <span style="font-weight:400;color:var(--gray-400);">— select all that apply</span></label>
+                <div style="display:flex; flex-wrap:wrap; gap:0.75rem 1rem; margin-top:0.35rem;">
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="old-testament" style="width:auto;" /> Old Testament</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="new-testament" style="width:auto;" /> New Testament</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="jesus" style="width:auto;" /> Jesus</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="gospels" style="width:auto;" /> The Gospels</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="psalms" style="width:auto;" /> Psalms</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="bible-characters" style="width:auto;" /> Bible Characters</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="holy-spirit" style="width:auto;" /> Holy Spirit</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="faith-prayer" style="width:auto;" /> Faith & Prayer</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="christian-living" style="width:auto;" /> Christian Living</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="fruit-of-spirit" style="width:auto;" /> Fruit of the Spirit</label>
+                  <label style="display:flex; align-items:center; gap:0.4rem; font-weight:500; color:var(--gray-600);"><input type="checkbox" class="lesson-topic" value="armor-of-god" style="width:auto;" /> Armor of God</label>
+                </div>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Scripture Reference <span style="font-weight:400;color:var(--gray-400);">— e.g. Genesis 2–3</span></label>
+                <input type="text" id="post-scripture" placeholder="Genesis 2-3" />
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+                <div>
+                  <label>Lesson Type</label>
+                  <select id="post-lesson-type">
+                    <option value="lesson">Bible Lesson</option>
+                    <option value="craft">Craft</option>
+                    <option value="activity">Activity</option>
+                    <option value="discussion">Discussion Questions</option>
+                    <option value="song">Song</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Season</label>
+                  <select id="post-season">
+                    <option value="general">General</option>
+                    <option value="christmas">Christmas</option>
+                    <option value="easter">Easter</option>
+                    <option value="backtoschool">Back to School</option>
+                    <option value="thanksgiving">Thanksgiving</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Gallery Images <span style="font-weight:400;color:var(--gray-400);">— shown as an image carousel on the lesson page, below the description</span></label>
+                <div id="gallery-thumbs" style="display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:0.6rem;"></div>
+                <div id="gallery-dropzone" style="border:1.5px dashed var(--gray-300); border-radius:var(--radius); padding:0.85rem; text-align:center; cursor:pointer; color:var(--gray-500); font-size:0.82rem;" onclick="document.getElementById('gallery-image-file').click()">
+                  + Add image(s) to the carousel
+                </div>
+                <input type="file" id="gallery-image-file" accept="image/*" multiple style="display:none;" onchange="handleGalleryFilesChosen(this.files)" />
+                <div id="gallery-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+              </div>
+            </div>
+
+            <div>
+              <label>Tags <span style="font-weight:400;color:var(--gray-400);">— press Enter or comma to add</span></label>
+              <div class="tag-input" id="tag-input-wrap" onclick="document.getElementById('tag-input-field').focus()">
+                <span id="tag-chips"></span>
+                <input type="text" id="tag-input-field" placeholder="Add a tag..." onkeydown="onTagKeydown(event)" />
+              </div>
+              <div id="tag-suggestions" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;"></div>
+            </div>
+
+            <div>
+              <label>Excerpt <span style="font-weight:400;color:var(--gray-400);">— short summary shown on blog cards</span></label>
+              <textarea id="post-excerpt" placeholder="Short summary shown on the blog cards"></textarea>
+            </div>
+
+            <div>
+              <label>Featured Image <span style="font-weight:400;color:var(--gray-400);">— recommended 1200×600</span></label>
+              <div id="featured-dropzone" class="featured-dropzone" onclick="document.getElementById('featured-image-file').click()">
+                <div id="featured-image-preview" class="featured-dropzone__preview">
+                  <span style="font-size:1.8rem; color:var(--gray-400);">🖼️</span>
+                </div>
+                <div class="featured-dropzone__text">
+                  <strong>Drag & drop an image</strong> or click to browse<br />
+                  <span style="color:var(--gray-400);">You'll get to crop it to the right size next</span>
+                </div>
+              </div>
+              <input type="file" id="featured-image-file" accept="image/*" style="display:none;" onchange="handleFeaturedFileChosen(this.files[0])" />
+              <button type="button" class="btn-photosearch" onclick="openPhotoPicker('featured')">🔎 Search free photos</button>
+              <button type="button" class="btn-photosearch" onclick="openMediaPicker('featured')">🖼️ Media library</button>
+              <div id="featured-image-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+              <input type="hidden" id="post-featured-image" />
+            </div>
+
+            <div>
+              <label>Body <span style="font-weight:400;color:var(--gray-400);">— paste your full article, formatting carries over automatically</span></label>
+              <div class="rte-toolbar">
+                <select id="rte-font-family" onchange="rteSetFontFamily(this.value)">
+                  <option value="">Font...</option>
+                  <option value="Poppins, sans-serif">Poppins</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="Verdana, sans-serif">Verdana</option>
+                  <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                  <option value="Merriweather, serif">Merriweather</option>
+                </select>
+                <select id="rte-font-size" onchange="rteSetFontSize(this.value)">
+                  <option value="">Size...</option>
+                  <option value="14">Small</option>
+                  <option value="16">Normal</option>
+                  <option value="18">Medium</option>
+                  <option value="22">Large</option>
+                  <option value="28">X-Large</option>
+                </select>
+                <button type="button" onclick="rteExec('bold')"><b>B</b></button>
+                <button type="button" onclick="rteExec('italic')"><i>I</i></button>
+                <button type="button" onclick="rteExec('formatBlock','H2')">H2</button>
+                <button type="button" onclick="rteExec('formatBlock','H3')">H3</button>
+                <button type="button" onclick="rteExec('insertUnorderedList')">• List</button>
+                <button type="button" onclick="rteExec('insertOrderedList')">1. List</button>
+                <button type="button" onclick="rteLink()">🔗 Link</button>
+                <button type="button" onclick="rteInsertBlock('quote-callout', '&quot;Pull quote goes here.&quot;')">❝ Quote</button>
+                <button type="button" onclick="rteInsertBlock('key-point', '💡 <strong>Key point:</strong> ')">💡 Key Point</button>
+                <button type="button" onclick="document.getElementById('rte-image-file').click()">🖼️ Image</button>
+                <button type="button" onclick="openPhotoPicker('inline')">🔎 Free Photo</button>
+                <button type="button" onclick="openMediaPicker('inline')">🖼️ Media</button>
+                <input type="file" id="rte-image-file" accept="image/*" style="display:none;" onchange="insertInlineImage(this.files[0])" />
+              </div>
+              <div id="post-body" class="rte-body" contenteditable="true" data-placeholder="Paste your article here..."></div>
+            </div>
+
+            <div class="admin-card" style="background:var(--gray-50); box-shadow:none; padding:1.25rem; margin-bottom:0;">
+              <div class="admin-card__title" style="font-size:0.85rem; margin-bottom:1rem;">🔍 SEO</div>
+              <div>
+                <label>SEO Title <span style="font-weight:400;color:var(--gray-400);">— defaults to post title, 60-70 chars ideal</span></label>
+                <input type="text" id="post-seo-title" placeholder="Leave blank to use the post title" />
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Meta Description <span style="font-weight:400;color:var(--gray-400);">— 155-160 chars ideal</span></label>
+                <textarea id="post-seo-description" placeholder="Summary shown in Google search results" style="min-height:60px;"></textarea>
+              </div>
+              <div style="margin-top:1rem;">
+                <label>Keywords <span style="font-weight:400;color:var(--gray-400);">— comma separated</span></label>
+                <input type="text" id="post-seo-keywords" placeholder="children's ministry, sunday school, kids bible lessons" />
+              </div>
+            </div>
+
+            <div class="admin-card" style="background:var(--gray-50); box-shadow:none; padding:1.25rem; margin-bottom:0;">
+              <div class="admin-card__title" style="font-size:0.85rem; margin-bottom:0.5rem;">📧 Free PDF Email Capture (MailerLite)</div>
+              <p style="font-size:0.78rem; color:var(--gray-500); margin-bottom:1rem; line-height:1.6;">
+                Optional. In MailerLite, create a Group for this post's PDF, then get that group's <strong>embedded form</strong> snippet (Forms → Embedded → copy code) and paste it below. No API key needed — MailerLite hosts the form. Leave blank to skip.
+              </p>
+              <textarea id="post-mailerlite-embed" placeholder="Paste the MailerLite embed code here..." style="min-height:100px; font-family:monospace; font-size:0.8rem;"></textarea>
+            </div>
+
+            <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
+              <input type="checkbox" id="post-published" style="width:auto;" checked onchange="onPublishToggle()" /> Published
+            </label>
+
+            <div id="publish-timing-wrap" style="display:grid; grid-template-columns:auto 1fr; gap:0.75rem; align-items:center;">
+              <select id="publish-timing" onchange="onPublishTimingChange()" style="width:auto;">
+                <option value="now">Publish immediately</option>
+                <option value="scheduled">Schedule for later</option>
+              </select>
+              <input type="datetime-local" id="post-publish-at" style="display:none;" />
+            </div>
+
+            <div style="display:flex; gap:0.75rem;">
+              <button class="btn btn--primary" onclick="savePostForm()">Save Post</button>
+              <button class="btn btn--outline" onclick="hidePostForm()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div id="admin-tab-members" style="display:none;">
+        <div class="admin-section-title">👥 Members</div>
+        <div class="admin-card" style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="members-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- PAYMENTS -->
+      <div id="admin-tab-payments" style="display:none;">
+        <div class="admin-section-title" style="display:flex; align-items:center; justify-content:space-between;">
+          💳 Payments
+          <button class="btn btn--primary btn--sm" onclick="showPaymentForm()">+ Record Payment</button>
+        </div>
+
+        <div class="admin-card" id="payment-form-card" style="display:none;">
+          <div class="admin-card__title">Record Payment</div>
+          <div class="post-form">
+            <div>
+              <label>Member</label>
+              <select id="payment-member"></select>
+            </div>
+            <div>
+              <label>Amount (USD)</label>
+              <input type="number" id="payment-amount" value="29.99" step="0.01" />
+            </div>
+            <div>
+              <label>Note</label>
+              <input type="text" id="payment-note" placeholder="e.g. Monthly renewal" />
+            </div>
+            <div style="display:flex; gap:0.75rem;">
+              <button class="btn btn--primary" onclick="recordPayment()">Save Payment</button>
+              <button class="btn btn--outline" onclick="hidePaymentForm()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card" style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Member</th><th>Amount</th><th>Note</th><th>Date</th><th></th></tr>
+            </thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUPPORT -->
+      <div id="admin-tab-support" style="display:none;">
+        <div class="admin-section-title">💬 Support Inbox</div>
+        <p style="color:var(--gray-500); margin-top:-0.75rem; margin-bottom:1.25rem; font-size:0.9rem;">
+          Messages from the chatbot's "talk to a live agent" hand-off, plus anything visitors couldn't get answered. Reply within 24 hours.
+        </p>
+        <div class="admin-card" id="tickets-list"></div>
+      </div>
+
+      <!-- SITE SETTINGS -->
+      <div id="admin-tab-site" style="display:none;">
+        <div class="admin-section-title">⚙️ Site Settings</div>
+        <p style="color:var(--gray-500);margin-top:-0.75rem;margin-bottom:1.5rem;font-size:0.9rem;">
+          Site-wide identity, favicon, social sharing defaults, the announcement bar, and tracking IDs.
+          Changes apply to every public page within 5 minutes (or immediately on hard reload).
+        </p>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Identity &amp; Favicon</div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Site name</label><input type="text" id="s-siteName" /></div>
+            <div class="gk-field"><label>Tagline</label><input type="text" id="s-tagline" /></div>
+          </div>
+          <div class="gk-field">
+            <label>Favicon</label>
+            <div style="display:flex;align-items:center;gap:1rem;">
+              <img id="s-favicon-preview" class="gk-favicon-preview" alt="" />
+              <div>
+                <input type="file" id="s-favicon-file" accept="image/png,image/x-icon,image/svg+xml,image/jpeg" />
+                <div class="gk-hint" id="s-favicon-status">PNG or ICO, 32×32 or 512×512. Uploads to Firebase Storage.</div>
+              </div>
+            </div>
+            <input type="hidden" id="s-faviconUrl" />
+          </div>
+          <div class="gk-field">
+            <label>Apple touch icon (optional, 180×180)</label>
+            <input type="file" id="s-appleicon-file" accept="image/png,image/jpeg" />
+            <div class="gk-hint" id="s-appleicon-status"></div>
+            <input type="hidden" id="s-appleTouchIconUrl" />
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Social sharing defaults</div>
+          <div class="gk-field">
+            <label>Default meta description</label>
+            <textarea id="s-defaultMetaDescription" maxlength="320"></textarea>
+            <div class="gk-hint">Used on any page without its own description. Aim for 150–160 characters.</div>
+          </div>
+          <div class="gk-field">
+            <label>Default share image (Open Graph)</label>
+            <input type="file" id="s-ogimage-file" accept="image/*" />
+            <div class="gk-hint" id="s-ogimage-status">1200×630 recommended. Shown when a link is shared on Facebook, WhatsApp, LinkedIn, etc.</div>
+            <input type="hidden" id="s-defaultOgImageUrl" />
+          </div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Twitter/X handle</label><input type="text" id="s-twitterHandle" placeholder="@glorykids" /></div>
+            <div class="gk-field"><label>Sitewide keywords (optional)</label><input type="text" id="s-keywords" /></div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Announcement bar</div>
+          <div class="gk-field" style="display:flex;align-items:center;gap:0.6rem;">
+            <label class="gk-switch"><input type="checkbox" id="s-ann-enabled" /><span></span></label>
+            <span style="font-size:0.85rem;color:var(--gray-600);">Show the bar at the top of every page</span>
+          </div>
+          <div class="gk-field"><label>Message</label><input type="text" id="s-ann-text" /></div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Link URL (optional)</label><input type="text" id="s-ann-linkUrl" /></div>
+            <div class="gk-field"><label>Link label (optional)</label><input type="text" id="s-ann-linkLabel" /></div>
+          </div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Background colour</label><input type="color" id="s-ann-bg" value="#1f2937" /></div>
+            <div class="gk-field"><label>Text colour</label><input type="color" id="s-ann-fg" value="#ffffff" /></div>
+          </div>
+          <div id="s-ann-preview" style="border-radius:8px;padding:10px;text-align:center;font-weight:600;font-size:14px;">Preview</div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Tracking &amp; verification</div>
+          <div class="gk-grid2">
+            <div class="gk-field">
+              <label>Google Analytics 4 — Measurement ID</label>
+              <input type="text" id="s-ga4MeasurementId" placeholder="G-XXXXXXXXXX" />
+              <div class="gk-hint">From Analytics → Admin → Data streams. The gtag.js tag is injected site-wide automatically.</div>
+            </div>
+            <div class="gk-field">
+              <label>Google Search Console — verification token</label>
+              <input type="text" id="s-gscVerification" />
+              <div class="gk-hint">The content value of the <code>google-site-verification</code> meta tag.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Custom code injection</div>
+          <div class="gk-field">
+            <label>Header code — added inside &lt;head&gt; on every page</label>
+            <textarea id="s-headCode" style="min-height:90px;font-family:monospace;font-size:0.8rem;" placeholder="&lt;!-- Meta Pixel, Hotjar, verification tags… --&gt;"></textarea>
+          </div>
+          <div class="gk-field">
+            <label>Footer code — added before &lt;/body&gt; on every page</label>
+            <textarea id="s-bodyEndCode" style="min-height:90px;font-family:monospace;font-size:0.8rem;" placeholder="&lt;!-- chat widget, extra scripts… --&gt;"></textarea>
+            <div class="gk-hint">⚠️ Whatever you paste runs on every visitor's browser. Only add code from sources you trust.</div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Organization (Google Knowledge Panel / schema.org)</div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Legal / brand name</label><input type="text" id="s-org-name" /></div>
+            <div class="gk-field"><label>Website URL</label><input type="text" id="s-org-url" placeholder="https://www.childrensministrylessons.com" /></div>
+          </div>
+          <div class="gk-field"><label>Logo URL</label><input type="text" id="s-org-logoUrl" /></div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Contact email</label><input type="email" id="s-contactEmail" /></div>
+            <div class="gk-field"><label>Contact phone</label><input type="text" id="s-contactPhone" /></div>
+          </div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>Facebook URL</label><input type="text" id="s-soc-facebook" /></div>
+            <div class="gk-field"><label>Instagram URL</label><input type="text" id="s-soc-instagram" /></div>
+          </div>
+          <div class="gk-grid2">
+            <div class="gk-field"><label>YouTube URL</label><input type="text" id="s-soc-youtube" /></div>
+            <div class="gk-field"><label>TikTok URL</label><input type="text" id="s-soc-tiktok" /></div>
+          </div>
+        </div>
+
+        <div class="gk-save-bar">
+          <button class="row-btn row-btn--primary" style="font-size:0.85rem;padding:0.6rem 1.4rem;" onclick="saveSiteSettings()">Save all settings</button>
+          <span class="gk-status" id="s-save-status"></span>
+        </div>
+      </div>
+
+      <!-- PAGES & SEO -->
+      <div id="admin-tab-pages" style="display:none;">
+        <div class="admin-section-title">📄 Pages &amp; SEO</div>
+        <p style="color:var(--gray-500);margin-top:-0.75rem;margin-bottom:1.25rem;font-size:0.9rem;">
+          Show or hide any page, keep it out of Google, control whether it appears in the menu, and set its
+          title &amp; description for search results and link previews.
+        </p>
+        <div style="margin-bottom:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <button class="row-btn" onclick="reseedPages()">↻ Detect new pages</button>
+          <span class="gk-status" id="pages-status" style="align-self:center;font-size:0.8rem;color:var(--gray-500);"></span>
+        </div>
+        <div class="admin-card" style="padding:0.5rem;">
+          <table class="admin-table" id="pages-table">
+            <thead><tr>
+              <th>Page</th><th style="text-align:center;">Visible</th><th style="text-align:center;">In menu</th>
+              <th style="text-align:center;">Index on Google</th><th></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SEO & REDIRECTS -->
+      <div id="admin-tab-seo" style="display:none;">
+        <div class="admin-section-title">🔗 SEO &amp; Redirects</div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">Redirects</div>
+          <p style="font-size:0.82rem;color:var(--gray-500);margin-top:-0.5rem;">
+            Send an old or mistyped URL to the right page. Applied instantly on the live site; also written to
+            <code>_redirects</code> / <code>netlify.toml</code> when you run the build.
+          </p>
+          <table class="admin-table" id="redirects-table">
+            <thead><tr><th>From path</th><th>To</th><th>Type</th><th>On</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="gk-grid2" style="margin-top:1rem;">
+            <div class="gk-field"><label>From (e.g. /old-pricing)</label><input type="text" id="r-from" /></div>
+            <div class="gk-field"><label>To (path or full URL)</label><input type="text" id="r-to" /></div>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:end;">
+            <div class="gk-field" style="margin:0;"><label>Type</label>
+              <select id="r-code"><option value="301">301 — permanent</option><option value="302">302 — temporary</option></select>
+            </div>
+            <button class="row-btn row-btn--primary" onclick="addRedirect()">Add redirect</button>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card__title">robots.txt &amp; sitemap</div>
+          <div class="gk-field">
+            <label>robots.txt contents</label>
+            <textarea id="seo-robots" style="min-height:120px;font-family:monospace;font-size:0.82rem;"></textarea>
+            <div class="gk-hint">Saved into <code>robots.txt</code> by the build. A <code>Sitemap:</code> line is appended automatically.</div>
+          </div>
+          <button class="row-btn" onclick="previewSitemap()">Preview sitemap URLs</button>
+          <pre id="seo-sitemap-preview" style="margin-top:0.75rem;font-size:0.75rem;color:var(--gray-500);white-space:pre-wrap;max-height:220px;overflow:auto;"></pre>
+        </div>
+
+        <div class="gk-save-bar">
+          <button class="row-btn row-btn--primary" style="font-size:0.85rem;padding:0.6rem 1.4rem;" onclick="saveSeoExtras()">Save</button>
+          <span class="gk-status" id="seo-save-status"></span>
+        </div>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div id="admin-tab-navigation" style="display:none;">
+        <div class="admin-section-title">🧭 Navigation</div>
+        <p style="color:var(--gray-500);margin-top:-0.75rem;margin-bottom:1.25rem;font-size:0.9rem;">
+          The header menu shown on every page. Reorder with the arrows, rename, hide, or add a custom link.
+          Hidden/invisible pages are removed from the live menu automatically regardless of this list.
+        </p>
+        <div class="admin-card">
+          <table class="admin-table" id="nav-table">
+            <thead><tr><th>Label</th><th>URL</th><th style="text-align:center;">Shown</th><th>Order</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="gk-grid2" style="margin-top:1rem;">
+            <div class="gk-field"><label>New item label</label><input type="text" id="nav-new-label" /></div>
+            <div class="gk-field"><label>URL</label><input type="text" id="nav-new-url" /></div>
+          </div>
+          <button class="row-btn row-btn--primary" onclick="addNavItem()">Add menu item</button>
+        </div>
+        <div class="gk-save-bar">
+          <button class="row-btn row-btn--primary" style="font-size:0.85rem;padding:0.6rem 1.4rem;" onclick="saveNav()">Save menu</button>
+          <span class="gk-status" id="nav-save-status"></span>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="admin-tab-analytics" style="display:none;">
+        <div class="admin-section-title">📈 Analytics</div>
+        <div style="margin-bottom:1.25rem;display:flex;gap:0.5rem;">
+          <button class="post-tab post-tab--active" data-range="7" onclick="loadAnalytics(7,this)">7 days</button>
+          <button class="post-tab" data-range="30" onclick="loadAnalytics(30,this)">30 days</button>
+          <button class="post-tab" data-range="90" onclick="loadAnalytics(90,this)">90 days</button>
+          <a id="ga4-link" href="#" target="_blank" rel="noopener" class="post-tab" style="display:none;margin-left:auto;">↗ Open Google Analytics</a>
+        </div>
+        <div class="admin-stats" style="grid-template-columns:repeat(3,1fr);">
+          <div class="admin-stat-card"><div class="admin-stat-card__label">Page views</div><div class="admin-stat-card__num" id="an-views">0</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-card__label">Busiest day</div><div class="admin-stat-card__num accent" id="an-peak" style="font-size:1.1rem;">—</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-card__label">Top page</div><div class="admin-stat-card__num gold" id="an-toppage" style="font-size:1.1rem;">—</div></div>
+        </div>
+        <div class="admin-card">
+          <div class="admin-card__title">Views over time</div>
+          <div class="chart-bars" id="an-chart"></div>
+        </div>
+        <div class="gk-grid2">
+          <div class="admin-card"><div class="admin-card__title">Top pages</div><div id="an-pages"></div></div>
+          <div class="admin-card"><div class="admin-card__title">Top referrers</div><div id="an-referrers"></div></div>
+        </div>
+        <p class="gk-hint">First-party, cookie-free counts collected by <code>site-settings.js</code>. Google Analytics (if configured) reports separately in its own dashboard.</p>
+      </div>
+
+      <!-- SHOP -->
+      <div id="admin-tab-shop" style="display:none;">
+        <div class="admin-section-title">🛍️ Shop</div>
+        <div style="margin-bottom:1.25rem;display:flex;gap:0.5rem;">
+          <button class="post-tab post-tab--active" data-shoptab="products" onclick="showShopTab('products',this)">Products</button>
+          <button class="post-tab" data-shoptab="orders" onclick="showShopTab('orders',this)">Orders</button>
+          <button class="post-tab" data-shoptab="discounts" onclick="showShopTab('discounts',this)">Discount codes</button>
+        </div>
+
+        <div id="shop-pane-products">
+          <div style="margin-bottom:1rem;"><button class="row-btn row-btn--primary" onclick="editProduct(null)">+ New product</button></div>
+          <div id="product-editor" style="display:none;"></div>
+          <div class="post-grid" id="product-grid"></div>
+        </div>
+
+        <div id="shop-pane-orders" style="display:none;">
+          <div class="admin-card" style="padding:0.5rem;">
+            <table class="admin-table" id="orders-table">
+              <thead><tr><th>Date</th><th>Buyer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="shop-pane-discounts" style="display:none;">
+          <div class="admin-card">
+            <table class="admin-table" id="discounts-table">
+              <thead><tr><th>Code</th><th>Discount</th><th>Limits</th><th>Used</th><th>On</th><th></th></tr></thead>
+              <tbody></tbody>
+            </table>
+            <div class="gk-grid2" style="margin-top:1rem;">
+              <div class="gk-field"><label>Code</label><input type="text" id="dc-code" placeholder="LAUNCH20" /></div>
+              <div class="gk-field"><label>Type</label>
+                <select id="dc-type"><option value="percent">% off</option><option value="fixed">R off</option></select>
+              </div>
+            </div>
+            <div class="gk-grid2">
+              <div class="gk-field"><label>Value</label><input type="text" id="dc-value" placeholder="20" /></div>
+              <div class="gk-field"><label>Max uses (0 = unlimited)</label><input type="text" id="dc-maxuses" value="0" /></div>
+            </div>
+            <div class="gk-grid2">
+              <div class="gk-field"><label>Min cart subtotal (R, 0 = none)</label><input type="text" id="dc-min" value="0" /></div>
+              <div class="gk-field"><label>Expires (optional)</label><input type="date" id="dc-expires" /></div>
+            </div>
+            <button class="row-btn row-btn--primary" onclick="addDiscount()">Add code</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMS -->
+      <div id="admin-tab-forms" style="display:none;">
+        <div class="admin-section-title">📬 Form submissions</div>
+        <div style="margin-bottom:1rem;display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+          <select id="forms-filter" onchange="renderSubmissions()" style="padding:0.5rem 0.8rem;border-radius:var(--radius);border:1.5px solid var(--gray-200);">
+            <option value="all">All forms</option>
+            <option value="contact">Contact</option>
+            <option value="newsletter">Newsletter</option>
+          </select>
+          <button class="row-btn" onclick="exportSubmissionsCsv()">Export CSV</button>
+        </div>
+        <div class="admin-card" style="padding:0.5rem;">
+          <table class="admin-table" id="submissions-table">
+            <thead><tr><th>When</th><th>Form</th><th>Details</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div id="admin-tab-content" style="display:none;">
+        <div class="admin-section-title">📝 Content</div>
+        <p style="color:var(--gray-500);margin-top:-0.75rem;margin-bottom:1.25rem;font-size:0.9rem;">
+          Edit headings, text, images and prices on the main marketing pages. Blank fields keep
+          whatever is hard-coded on the page. Changes apply within 5 minutes (or hard-reload).
+        </p>
+        <div class="gk-field" style="max-width:320px;">
+          <label>Page</label>
+          <select id="content-page" onchange="renderContentForm()">
+            <option value="home">Homepage</option>
+            <option value="curriculum">Curriculum page</option>
+            <option value="membership">Membership page</option>
+            <option value="church-pricing">Church pricing page</option>
+            <option value="pricing">Pricing cards (all pages)</option>
+          </select>
+        </div>
+        <div id="content-fields"></div>
+        <div class="gk-save-bar">
+          <button class="row-btn row-btn--primary" style="font-size:0.85rem;padding:0.6rem 1.4rem;" onclick="saveContentForm()">Save content</button>
+          <span class="gk-status" id="content-save-status"></span>
+        </div>
+      </div>
+
+      <!-- MEDIA -->
+      <div id="admin-tab-media" style="display:none;">
+        <div class="admin-section-title">🖼️ Media Library</div>
+        <div style="margin-bottom:1rem;display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+          <input type="file" id="media-upload" accept="image/*,application/pdf" multiple />
+          <input type="text" id="media-search" placeholder="Search…" oninput="renderMedia()" style="padding:0.5rem 0.8rem;border-radius:var(--radius);border:1.5px solid var(--gray-200);" />
+          <span class="gk-status" id="media-status"></span>
+        </div>
+        <div class="photopick__grid" id="media-grid" style="max-height:none;"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- CROP MODAL -->
+<div id="crop-modal" class="crop-modal" style="display:none;">
+  <div class="crop-modal__box">
+    <div class="crop-modal__title">Crop Featured Image <span style="font-weight:400;color:var(--gray-400);font-size:0.8rem;">— 1200×600</span></div>
+    <div class="crop-viewport" id="crop-viewport">
+      <img id="crop-image" draggable="false" />
+      <canvas class="spot-overlay" id="crop-spot-overlay"></canvas>
+    </div>
+    <div class="crop-modal__controls">
+      <label class="crop-modal__slider">
+        🔍 <input type="range" id="crop-zoom" min="1" max="3" step="0.01" value="1" oninput="onCropZoomChange()" />
+      </label>
+      <label class="crop-modal__slider">
+        ☀️ Brightness <input type="range" id="crop-brightness" min="50" max="150" value="100" oninput="onCropFilterChange()" /> <span class="val" id="crop-brightness-val">100%</span>
+      </label>
+      <label class="crop-modal__slider">
+        ✨ Clarity <input type="range" id="crop-clarity" min="50" max="150" value="100" oninput="onCropFilterChange()" /> <span class="val" id="crop-clarity-val">100%</span>
+      </label>
+      <div class="crop-modal__tools">
+        <button type="button" class="crop-tool-btn" id="spot-tool-btn" onclick="toggleSpotTool()">🩹 Remove Spot</button>
+        <button type="button" class="crop-tool-btn" onclick="undoLastSpot()">↩️ Undo Spot</button>
+        <button type="button" class="crop-tool-btn" onclick="clearSpots()">Clear Spots</button>
+      </div>
+      <div id="spot-hint" style="display:none; font-size:0.72rem; color:var(--gray-400);">Click on a blemish in the photo to remove it.</div>
+    </div>
+    <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+      <button class="btn btn--primary" onclick="applyCrop()">Use This Crop</button>
+      <button class="btn btn--outline" onclick="closeCropModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MEMBER ACCESS MANAGER -->
+<div id="access-modal" class="access-modal" style="display:none;">
+  <div class="access-box">
+    <h3 id="access-name">Member</h3>
+    <div class="access-box__sub" id="access-email"></div>
+    <div class="access-box__sub" id="access-meta"></div>
+
+    <div class="access-sec">
+      <div class="access-sec__label">Membership plan</div>
+      <div class="access-choice" id="access-plan-choice">
+        <button type="button" onclick="accessSetPlan('free')">Free</button>
+        <button type="button" onclick="accessSetPlan('glory_kids')">Glory Kids</button>
+      </div>
+    </div>
+
+    <div class="access-sec" id="access-status-sec">
+      <div class="access-sec__label">Membership status</div>
+      <div class="access-choice" id="access-status-choice">
+        <button type="button" onclick="accessSetStatus('active')">Active</button>
+        <button type="button" onclick="accessSetStatus('paused')">Paused</button>
+        <button type="button" onclick="accessSetStatus('cancelled')">Cancelled</button>
+      </div>
+    </div>
+
+    <div class="access-sec">
+      <div class="access-sec__label">Admin access</div>
+      <div class="access-choice" id="access-admin-choice">
+        <button type="button" onclick="accessSetAdmin(false)">Not admin</button>
+        <button type="button" onclick="accessSetAdmin(true)">Administrator</button>
+      </div>
+      <div class="access-warn">Administrators can see and change everything in this panel — members, posts, payments, and other admins. Only grant this to people you fully trust.</div>
+    </div>
+
+    <div class="access-sec">
+      <div class="access-sec__label">What this account can access right now</div>
+      <ul class="access-summary" id="access-summary"></ul>
+    </div>
+
+    <div class="access-sec">
+      <div class="access-sec__label">Billing history</div>
+      <div id="access-payments"></div>
+    </div>
+
+    <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+      <button class="btn btn--primary" onclick="closeAccessDrawer()">Done</button>
+      <button class="btn btn--outline" style="color:var(--rose); border-color:var(--rose);" onclick="accessDeleteMember()">Delete account</button>
+    </div>
+  </div>
+</div>
+
+<!-- FREE PHOTO PICKER (Unsplash) -->
+<div id="photopick-modal" class="photopick" style="display:none;">
+  <div class="photopick__box">
+    <div class="photopick__title">Search free photos <span style="font-weight:400;color:var(--gray-400);font-size:0.8rem;">— powered by Unsplash</span></div>
+    <form class="photopick__search" onsubmit="event.preventDefault(); photoPickSearch(1);">
+      <input type="text" id="photopick-q" placeholder="e.g. children praying, church, family, sunrise" autocomplete="off" />
+      <button type="submit" class="btn btn--primary">Search</button>
+      <button type="button" class="btn btn--outline" onclick="closePhotoPicker()">Close</button>
+    </form>
+    <div id="photopick-grid" class="photopick__grid"></div>
+    <div id="photopick-msg" class="photopick__msg">Type a search term above to find a photo.</div>
+    <div class="photopick__foot">
+      <span>Photos from <a href="https://unsplash.com/?utm_source=glory_kids&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a> — free to use, no attribution required.</span>
+      <button type="button" id="photopick-more" class="btn btn--outline" style="display:none;" onclick="photoPickSearch(photoPickState.page + 1)">Load more</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script>
+let adminUid = null;
+
+/* ── Free photo search (Unsplash) ─────────────────────────────
+   Get a free key at https://unsplash.com/developers →
+   "New Application" (accept the API terms, it's free). Copy the
+   "Access Key" and paste it below. Demo tier allows 50 searches/hour,
+   which is plenty for editing posts. This page is admin-only + noindex. */
+const UNSPLASH_ACCESS_KEY = '4A1LTkY_uGmZ4NmEQLY3bGm85pD8U7COS5zGYwHbKPA';
+
+onFirebaseReady(() => {
+  auth.onAuthStateChanged(async user => {
+    if (!user) { window.location.href = 'admin-login.html'; return; }
+    const rec = await GK.getUserRecord(user.uid);
+    if (!rec || !rec.isAdmin) {
+      window.location.href = 'admin-login.html';
+      return;
+    }
+    adminUid = user.uid;
+    document.getElementById('admin-name-label').textContent = (user.displayName || user.email) + ' 👋';
+    renderOverview();
+    renderPosts();
+    renderMembers();
+    renderPayments();
+    renderTickets();
+  });
+});
+
+async function adminSignOut() {
+  await auth.signOut();
+  window.location.href = 'admin-login.html';
+}
+
+function showAdminTab(name, linkEl) {
+  document.querySelectorAll('[id^="admin-tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('admin-tab-' + name).style.display = 'block';
+  document.querySelectorAll('.admin-nav-item').forEach(l => l.classList.remove('active'));
+  if (linkEl) linkEl.classList.add('active');
+  if (name === 'overview') renderOverview();
+  if (name === 'members') renderMembers();
+  if (name === 'payments') renderPayments();
+  if (name === 'support') renderTickets();
+  if (name === 'site') loadSiteSettings();
+  if (name === 'pages') renderPagesTab();
+  if (name === 'seo') renderSeoTab();
+  if (name === 'navigation') renderNavTab();
+  if (name === 'analytics') loadAnalytics(7);
+  if (name === 'shop') renderShop();
+  if (name === 'forms') renderSubmissions();
+  if (name === 'content') renderContentForm();
+  if (name === 'media') renderMedia();
+}
+
+/* ── Overview ─────────────────────────────────────────────── */
+async function renderOverview() {
+  const a = await GK.getAnalytics();
+  document.getElementById('stat-total-users').textContent = a.totalUsers;
+  document.getElementById('stat-active-members').textContent = a.activeMembers;
+  document.getElementById('stat-mrr').textContent = '$' + a.mrr.toFixed(2);
+  document.getElementById('stat-revenue').textContent = '$' + a.revenue.toFixed(2);
+  document.getElementById('stat-open-tickets').textContent = a.openTickets;
+
+  const maxCount = Math.max(1, ...a.signupsByDay.map(d => d.count));
+  document.getElementById('signup-chart').innerHTML = a.signupsByDay.map(d => `
+    <div class="chart-bar">
+      <div class="chart-bar__fill" style="height:${Math.max(4, (d.count / maxCount) * 100)}%;" title="${d.count} signups"></div>
+      <div class="chart-bar__label">${d.label}</div>
+    </div>
+  `).join('');
+
+  const users = await GK.listUsers();
+  const recent = users.sort((a,b) => b.createdAt - a.createdAt).slice(0, 5);
+  const el = document.getElementById('recent-signups');
+  if (recent.length === 0) { el.innerHTML = '<div class="empty-state">No signups yet.</div>'; return; }
+  el.innerHTML = recent.map(u => `
+    <div class="post-row">
+      <div class="post-row__icon">${(u.displayName || u.email)[0].toUpperCase()}</div>
+      <div>
+        <div class="post-row__title">${u.displayName || u.email.split('@')[0]}</div>
+        <div class="post-row__meta">${u.email} · joined ${new Date(u.createdAt).toLocaleDateString()}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── Blog Posts ───────────────────────────────────────────── */
+let postTags = [];
+let galleryImages = [];
+let slugTouched = false;
+const SEED_TAGS = ['Family Devotions', 'Volunteer Tips', 'Curriculum', 'Prayer', 'Object Lessons', 'Budget', 'Parenting', 'Worship'];
+let tagSuggestions = [...SEED_TAGS];
+
+async function loadTagSuggestions() {
+  try {
+    const posts = await GK.listPosts();
+    const used = new Set(SEED_TAGS);
+    posts.forEach(p => (p.tags || []).forEach(t => used.add(t)));
+    tagSuggestions = [...used];
+  } catch (e) { /* fall back to seed list */ }
+}
+
+function onPostTitleInput() {
+  if (slugTouched) return;
+  document.getElementById('post-slug').value = GK.slugify(document.getElementById('post-title').value);
+}
+
+function renderTagChips() {
+  document.getElementById('tag-chips').innerHTML = postTags.map((t, i) => `
+    <span class="tag-chip">${t}<button type="button" onclick="removeTag(${i})">×</button></span>
+  `).join('');
+  renderTagSuggestions();
+}
+function renderTagSuggestions() {
+  const remaining = tagSuggestions.filter(t => !postTags.includes(t));
+  document.getElementById('tag-suggestions').innerHTML = remaining.map(t => `
+    <button type="button" class="tag-suggestion" onclick="addSuggestedTag('${t.replace(/'/g, "\\'")}')">+ ${t}</button>
+  `).join('');
+}
+function addSuggestedTag(t) {
+  if (!postTags.includes(t)) { postTags.push(t); renderTagChips(); }
+}
+function onTagKeydown(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/, '');
+    if (val && !postTags.includes(val)) { postTags.push(val); renderTagChips(); }
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && !e.target.value && postTags.length) {
+    postTags.pop();
+    renderTagChips();
+  }
+}
+function removeTag(i) { postTags.splice(i, 1); renderTagChips(); }
+
+/* ── Rich text body editor ───────────────────────────────── */
+function rteExec(cmd, val) {
+  document.getElementById('post-body').focus();
+  document.execCommand(cmd, false, val || null);
+}
+function rteLink() {
+  const url = prompt('Link URL:');
+  if (url) rteExec('createLink', url);
+}
+function rteInsertBlock(className, html) {
+  document.getElementById('post-body').focus();
+  document.execCommand('insertHTML', false, `<div class="${className}">${html}</div><p><br></p>`);
+}
+
+// Applies font-family/size as a clean <span style="..."> instead of legacy <font> tags,
+// since bodyHtml is saved and rendered as raw HTML on the live post.
+function rteApplyInlineStyle(styleProp, value) {
+  const body = document.getElementById('post-body');
+  body.focus();
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const span = document.createElement('span');
+  span.style[styleProp] = value;
+  try {
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+  } catch (e) { /* selection spans non-text nodes oddly; ignore */ }
+}
+function rteSetFontFamily(value) {
+  if (value) rteApplyInlineStyle('fontFamily', value);
+  document.getElementById('rte-font-family').value = '';
+}
+function rteSetFontSize(value) {
+  if (value) rteApplyInlineStyle('fontSize', value + 'px');
+  document.getElementById('rte-font-size').value = '';
+}
+
+// Strip Word/Google Docs cruft on paste, keep basic structure only.
+function sanitizeHtml(html) {
+  const allowed = { P:1, H2:1, H3:1, STRONG:1, B:1, EM:1, I:1, UL:1, OL:1, LI:1, A:1, BLOCKQUOTE:1, BR:1, IMG:1, DIV:1, SPAN:1 };
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+
+  function clean(node) {
+    [...node.childNodes].forEach(child => {
+      if (child.nodeType === 3) return; // text node, keep as-is
+      if (child.nodeType !== 1 || !allowed[child.tagName]) {
+        // Unwrap disallowed elements (keep their text/children) instead of dropping content
+        const parent = child.parentNode;
+        while (child.firstChild) parent.insertBefore(child.firstChild, child);
+        parent.removeChild(child);
+        return;
+      }
+      // Un-semantic H1s pasted from docs become H2s (never let a post outrank its own title)
+      if (child.tagName === 'H1') {
+        const h2 = document.createElement('h2');
+        h2.innerHTML = child.innerHTML;
+        child.parentNode.replaceChild(h2, child);
+        clean(h2);
+        return;
+      }
+      // Strip all attributes except href on <a> and src/alt on <img>
+      [...child.attributes].forEach(attr => {
+        const keep = (child.tagName === 'A' && attr.name === 'href') ||
+                     (child.tagName === 'IMG' && (attr.name === 'src' || attr.name === 'alt'));
+        if (!keep) child.removeAttribute(attr.name);
+      });
+      if (child.tagName === 'A') child.setAttribute('target', '_blank');
+      clean(child);
+    });
+  }
+  clean(tmp);
+  return tmp.innerHTML;
+}
+
+document.addEventListener('paste', e => {
+  const body = document.getElementById('post-body');
+  if (!body || document.activeElement !== body) return;
+  e.preventDefault();
+  const html = e.clipboardData.getData('text/html');
+  const text = e.clipboardData.getData('text/plain');
+  const clean = html
+    ? sanitizeHtml(html)
+    : text.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+  document.execCommand('insertHTML', false, clean);
+});
+
+function handleFeaturedFileChosen(file) {
+  if (file) openCropModal(file);
+  document.getElementById('featured-image-file').value = '';
+}
+
+/* ── Free photo picker ────────────────────────────────────────── */
+let photoPickState = { mode: 'featured', page: 1, query: '', results: [] };
+
+function openPhotoPicker(mode) {
+  photoPickState = { mode: mode || 'featured', page: 1, query: '', results: [] };
+  document.getElementById('photopick-grid').innerHTML = '';
+  document.getElementById('photopick-more').style.display = 'none';
+  const msg = document.getElementById('photopick-msg');
+  msg.style.display = 'block';
+  if (!UNSPLASH_ACCESS_KEY) {
+    msg.innerHTML = 'No Unsplash key set yet. Add a free key in <code>admin.html</code> ' +
+      '(see the note next to <code>UNSPLASH_ACCESS_KEY</code>) — grab one at ' +
+      '<a href="https://unsplash.com/developers" target="_blank" rel="noopener">unsplash.com/developers</a>.';
+  } else {
+    msg.textContent = 'Type a search term above to find a photo.';
+  }
+  document.getElementById('photopick-q').value = '';
+  document.getElementById('photopick-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('photopick-q').focus(), 50);
+}
+
+function closePhotoPicker() {
+  document.getElementById('photopick-modal').style.display = 'none';
+}
+
+async function photoPickSearch(page) {
+  if (!UNSPLASH_ACCESS_KEY) return;
+  const q = document.getElementById('photopick-q').value.trim();
+  if (!q) return;
+  const grid = document.getElementById('photopick-grid');
+  const msg = document.getElementById('photopick-msg');
+  const more = document.getElementById('photopick-more');
+  if (page === 1) { grid.innerHTML = ''; photoPickState.results = []; }
+  photoPickState.query = q;
+  photoPickState.page = page;
+  msg.style.display = 'block';
+  msg.textContent = 'Searching…';
+  try {
+    const url = 'https://api.unsplash.com/search/photos?per_page=24&content_filter=high'
+      + '&query=' + encodeURIComponent(q) + '&page=' + page
+      + '&client_id=' + UNSPLASH_ACCESS_KEY;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Unsplash returned ' + res.status + (res.status === 401 ? ' — check your Access Key' : ''));
+    const data = await res.json();
+    const hits = data.results || [];
+    if (!hits.length && page === 1) { msg.textContent = 'No photos found for “' + q + '”.'; more.style.display = 'none'; return; }
+    msg.style.display = 'none';
+    hits.forEach(photo => {
+      photoPickState.results.push(photo);
+      const tile = document.createElement('div');
+      tile.className = 'photopick__tile';
+      tile.innerHTML = '<img src="' + photo.urls.thumb + '" alt="" loading="lazy" />'
+        + '<span>' + (photo.user && photo.user.name ? 'by ' + photo.user.name : '') + '</span>';
+      tile.onclick = () => choosePhoto(photo);
+      grid.appendChild(tile);
+    });
+    more.style.display = (page < (data.total_pages || 1)) ? 'inline-block' : 'none';
+  } catch (err) {
+    msg.textContent = 'Search failed: ' + err.message;
+  }
+}
+
+async function choosePhoto(photo) {
+  const msg = document.getElementById('photopick-msg');
+  msg.style.display = 'block';
+  msg.textContent = 'Fetching photo…';
+  try {
+    // Unsplash API guideline: ping the download endpoint when a photo is selected.
+    if (photo.links && photo.links.download_location) {
+      fetch(photo.links.download_location + '&client_id=' + UNSPLASH_ACCESS_KEY).catch(() => {});
+    }
+    const imgRes = await fetch(photo.urls.regular);
+    const blob = await imgRes.blob();
+    const file = new File([blob], 'unsplash-' + photo.id + '.jpg', { type: blob.type || 'image/jpeg' });
+    const mode = photoPickState.mode;
+    closePhotoPicker();
+    if (mode === 'inline') {
+      await insertInlineImage(file);
+    } else {
+      openCropModal(file);
+    }
+  } catch (err) {
+    msg.textContent = 'Could not load that photo: ' + err.message;
+  }
+}
+
+// Drag & drop wiring for the featured-image dropzone
+(function () {
+  const zone = document.getElementById('featured-dropzone');
+  ['dragenter', 'dragover'].forEach(evt => zone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.add('is-dragover');
+  }));
+  ['dragleave', 'drop'].forEach(evt => zone.addEventListener(evt, e => {
+    e.preventDefault(); e.stopPropagation(); zone.classList.remove('is-dragover');
+  }));
+  zone.addEventListener('drop', e => {
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) openCropModal(file);
+  });
+})();
+
+/* ── Crop modal ───────────────────────────────────────────── */
+let cropState = null; // { naturalW, naturalH, viewportW, viewportH, baseScale, scale, offsetX, offsetY, brightness, contrast, spots, spotMode }
+
+function openCropModal(file) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('crop-image');
+    img.onload = () => {
+      const viewport = document.getElementById('crop-viewport');
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      const baseScale = Math.max(vw / img.naturalWidth, vh / img.naturalHeight);
+      cropState = {
+        naturalW: img.naturalWidth, naturalH: img.naturalHeight,
+        viewportW: vw, viewportH: vh, baseScale, scale: baseScale,
+        offsetX: (vw - img.naturalWidth * baseScale) / 2,
+        offsetY: (vh - img.naturalHeight * baseScale) / 2,
+        brightness: 100, contrast: 100, spots: [], spotMode: false
+      };
+      document.getElementById('crop-zoom').value = 1;
+      document.getElementById('crop-brightness').value = 100;
+      document.getElementById('crop-clarity').value = 100;
+      document.getElementById('crop-brightness-val').textContent = '100%';
+      document.getElementById('crop-clarity-val').textContent = '100%';
+      setSpotMode(false);
+      const overlay = document.getElementById('crop-spot-overlay');
+      overlay.width = vw; overlay.height = vh;
+      renderCropImage();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('crop-modal').style.display = 'flex';
+}
+
+function closeCropModal() {
+  document.getElementById('crop-modal').style.display = 'none';
+  cropState = null;
+}
+
+function renderCropImage() {
+  const img = document.getElementById('crop-image');
+  img.style.width = (cropState.naturalW * cropState.scale) + 'px';
+  img.style.height = (cropState.naturalH * cropState.scale) + 'px';
+  img.style.transform = `translate(${cropState.offsetX}px, ${cropState.offsetY}px)`;
+  img.style.filter = `brightness(${cropState.brightness}%) contrast(${cropState.contrast}%)`;
+  renderSpotOverlay();
+}
+
+function renderSpotOverlay() {
+  const overlay = document.getElementById('crop-spot-overlay');
+  const ctx = overlay.getContext('2d');
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  ctx.strokeStyle = '#ef4444';
+  ctx.lineWidth = 2;
+  cropState.spots.forEach(spot => {
+    const vx = spot.x * cropState.scale + cropState.offsetX;
+    const vy = spot.y * cropState.scale + cropState.offsetY;
+    const vr = spot.radius * cropState.scale;
+    ctx.beginPath();
+    ctx.arc(vx, vy, vr, 0, Math.PI * 2);
+    ctx.stroke();
+  });
+}
+
+function onCropFilterChange() {
+  if (!cropState) return;
+  cropState.brightness = parseInt(document.getElementById('crop-brightness').value, 10);
+  cropState.contrast = parseInt(document.getElementById('crop-clarity').value, 10);
+  document.getElementById('crop-brightness-val').textContent = cropState.brightness + '%';
+  document.getElementById('crop-clarity-val').textContent = cropState.contrast + '%';
+  renderCropImage();
+}
+
+function setSpotMode(on) {
+  if (!cropState) return;
+  cropState.spotMode = on;
+  document.getElementById('spot-tool-btn').classList.toggle('active', on);
+  document.getElementById('crop-viewport').classList.toggle('spot-mode', on);
+  document.getElementById('spot-hint').style.display = on ? 'block' : 'none';
+}
+function toggleSpotTool() { if (cropState) setSpotMode(!cropState.spotMode); }
+function undoLastSpot() { if (cropState && cropState.spots.length) { cropState.spots.pop(); renderSpotOverlay(); } }
+function clearSpots() { if (cropState) { cropState.spots = []; renderSpotOverlay(); } }
+
+(function () {
+  const overlay = document.getElementById('crop-spot-overlay');
+  overlay.addEventListener('click', e => {
+    if (!cropState || !cropState.spotMode) return;
+    const rect = overlay.getBoundingClientRect();
+    const vx = e.clientX - rect.left, vy = e.clientY - rect.top;
+    const naturalX = (vx - cropState.offsetX) / cropState.scale;
+    const naturalY = (vy - cropState.offsetY) / cropState.scale;
+    const radius = Math.max(cropState.naturalW, cropState.naturalH) * 0.02;
+    cropState.spots.push({ x: naturalX, y: naturalY, radius });
+    renderSpotOverlay();
+  });
+})();
+
+// Feathered clone-stamp: samples an unblemished patch near the spot and blends it in.
+function stampSpot(ctx, sourceCanvas, x, y, radius) {
+  const w = sourceCanvas.width, h = sourceCanvas.height;
+  const dirX = x < w / 2 ? 1 : -1;
+  let sampleX = x + dirX * radius * 2.2;
+  sampleX = Math.max(radius, Math.min(w - radius, sampleX));
+  const sampleY = Math.max(radius, Math.min(h - radius, y));
+
+  const size = radius * 2;
+  const patch = document.createElement('canvas');
+  patch.width = size; patch.height = size;
+  const pctx = patch.getContext('2d');
+  pctx.drawImage(sourceCanvas, sampleX - radius, sampleY - radius, size, size, 0, 0, size, size);
+  pctx.globalCompositeOperation = 'destination-in';
+  const grad = pctx.createRadialGradient(radius, radius, radius * 0.5, radius, radius, radius);
+  grad.addColorStop(0, 'rgba(0,0,0,1)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  pctx.fillStyle = grad;
+  pctx.beginPath(); pctx.arc(radius, radius, radius, 0, Math.PI * 2); pctx.fill();
+
+  ctx.drawImage(patch, x - radius, y - radius);
+}
+
+function clampCropOffsets() {
+  const dispW = cropState.naturalW * cropState.scale;
+  const dispH = cropState.naturalH * cropState.scale;
+  cropState.offsetX = Math.min(0, Math.max(cropState.viewportW - dispW, cropState.offsetX));
+  cropState.offsetY = Math.min(0, Math.max(cropState.viewportH - dispH, cropState.offsetY));
+}
+
+function onCropZoomChange() {
+  if (!cropState) return;
+  const zoom = parseFloat(document.getElementById('crop-zoom').value);
+  cropState.scale = cropState.baseScale * zoom;
+  clampCropOffsets();
+  renderCropImage();
+}
+
+(function () {
+  const viewport = document.getElementById('crop-viewport');
+  let dragging = false, lastX = 0, lastY = 0;
+  viewport.addEventListener('pointerdown', e => {
+    if (!cropState) return;
+    dragging = true; lastX = e.clientX; lastY = e.clientY;
+    viewport.setPointerCapture(e.pointerId);
+  });
+  viewport.addEventListener('pointermove', e => {
+    if (!dragging || !cropState) return;
+    cropState.offsetX += e.clientX - lastX;
+    cropState.offsetY += e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    clampCropOffsets();
+    renderCropImage();
+  });
+  ['pointerup', 'pointercancel'].forEach(evt => viewport.addEventListener(evt, () => dragging = false));
+})();
+
+async function applyCrop() {
+  if (!cropState) return;
+  const img = document.getElementById('crop-image');
+  const srcX = -cropState.offsetX / cropState.scale;
+  const srcY = -cropState.offsetY / cropState.scale;
+  const srcW = cropState.viewportW / cropState.scale;
+  const srcH = cropState.viewportH / cropState.scale;
+  const scaleX = 1200 / srcW, scaleY = 600 / srcH;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = 1200; canvas.height = 600;
+  const ctx = canvas.getContext('2d');
+  ctx.filter = `brightness(${cropState.brightness}%) contrast(${cropState.contrast}%)`;
+  ctx.drawImage(img, srcX, srcY, srcW, srcH, 0, 0, 1200, 600);
+  ctx.filter = 'none';
+
+  cropState.spots.forEach(spot => {
+    stampSpot(ctx, canvas, (spot.x - srcX) * scaleX, (spot.y - srcY) * scaleY, spot.radius * scaleX);
+  });
+
+  // JPEG at 1200x600 keeps featured images fast-loading regardless of the source photo's size.
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.85));
+  closeCropModal();
+  await doImageUpload(blob, url => {
+    document.getElementById('post-featured-image').value = url;
+    document.getElementById('featured-image-preview').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;" />`;
+  }, 'featured-image-status', 'featured.jpg');
+}
+
+// Downscales/compresses large uploads client-side so page loads don't ship a 12MB phone photo.
+async function compressImageFile(file, maxDim, quality) {
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+  const img = await new Promise((resolve, reject) => {
+    const im = new Image();
+    im.onload = () => resolve(im);
+    im.onerror = reject;
+    im.src = dataUrl;
+  });
+  if (img.naturalWidth <= maxDim && img.naturalHeight <= maxDim && file.size < 400 * 1024) return file;
+
+  const scale = Math.min(1, maxDim / Math.max(img.naturalWidth, img.naturalHeight));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(img.naturalWidth * scale);
+  canvas.height = Math.round(img.naturalHeight * scale);
+  canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+  const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+  return blob || file;
+}
+
+async function insertInlineImage(file) {
+  if (!file) return;
+  const compressed = await compressImageFile(file, 1600, 0.85);
+  await doImageUpload(compressed, url => {
+    document.getElementById('post-body').focus();
+    document.execCommand('insertHTML', false, `<img src="${url}" alt="" loading="lazy" decoding="async" />`);
+  }, null, file.name);
+}
+
+function renderGalleryThumbs() {
+  const wrap = document.getElementById('gallery-thumbs');
+  wrap.innerHTML = galleryImages.map((url, i) => `
+    <div style="position:relative; width:70px; height:70px;">
+      <img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius);" />
+      <button type="button" onclick="removeGalleryImage(${i})" style="position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#06245A; color:#fff; border:none; font-size:0.7rem; cursor:pointer; line-height:1;">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeGalleryImage(i) {
+  galleryImages.splice(i, 1);
+  renderGalleryThumbs();
+}
+
+async function handleGalleryFilesChosen(fileList) {
+  const files = [...fileList];
+  document.getElementById('gallery-image-file').value = '';
+  for (const file of files) {
+    const compressed = await compressImageFile(file, 1600, 0.85);
+    await doImageUpload(compressed, url => {
+      galleryImages.push(url);
+      renderGalleryThumbs();
+    }, 'gallery-status', file.name);
+  }
+}
+
+async function doImageUpload(fileOrBlob, onDone, statusElId, filename) {
+  const statusEl = statusElId && document.getElementById(statusElId);
+  if (statusEl) statusEl.textContent = 'Uploading...';
+  try {
+    const safeName = (filename || fileOrBlob.name || 'image.jpg').replace(/[^\w.\-]/g, '_');
+    const path = 'post-images/' + Date.now() + '_' + safeName;
+    const ref = storage.ref(path);
+    await ref.put(fileOrBlob);
+    const url = await ref.getDownloadURL();
+    onDone(url);
+    // Register in the Media Library so every upload is reusable.
+    if (window.GK && GK.addMedia) {
+      GK.addMedia({ url, storagePath: path, name: safeName, kind: 'image', bytes: fileOrBlob.size || 0 }).catch(() => {});
+    }
+    if (statusEl) statusEl.textContent = 'Uploaded ✓';
+  } catch (err) {
+    if (statusEl) statusEl.textContent = 'Upload failed: ' + err.message;
+    else alert('Upload failed: ' + err.message);
+  }
+}
+
+// Local-time <input type="datetime-local"> value, e.g. "2026-08-09T14:30"
+function toDatetimeLocalValue(ms) {
+  const d = new Date(ms);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function onPublishToggle() {
+  document.getElementById('publish-timing-wrap').style.display =
+    document.getElementById('post-published').checked ? 'grid' : 'none';
+}
+function onPublishTimingChange() {
+  document.getElementById('post-publish-at').style.display =
+    document.getElementById('publish-timing').value === 'scheduled' ? 'block' : 'none';
+}
+
+function onCategoryChange() {
+  document.getElementById('lesson-fields-wrap').style.display =
+    document.getElementById('post-category').value === 'free_lessons' ? 'block' : 'none';
+}
+
+function showPostForm(post, presetCategory) {
+  document.getElementById('posts-list-section').style.display = 'none';
+  document.getElementById('post-form-card').style.display = 'block';
+  document.getElementById('post-form-card').scrollIntoView({ behavior: 'instant', block: 'start' });
+  document.getElementById('post-form-title').textContent = post ? 'Edit Post' : 'New Post';
+  document.getElementById('post-id').value = post ? post.id : '';
+  document.getElementById('post-title').value = post ? post.title : '';
+  document.getElementById('post-slug').value = post ? post.slug : '';
+  slugTouched = !!post;
+  document.getElementById('post-category').value = post ? post.category : (presetCategory || 'parents');
+  document.getElementById('post-icon').value = post ? post.icon : '📖';
+  document.querySelectorAll('.lesson-age').forEach(cb => {
+    cb.checked = !!(post && post.ageGroups && post.ageGroups.includes(cb.value));
+  });
+  document.querySelectorAll('.lesson-topic').forEach(cb => {
+    cb.checked = !!(post && post.lessonTopics && post.lessonTopics.includes(cb.value));
+  });
+  document.getElementById('post-scripture').value = post ? (post.scripture || '') : '';
+  document.getElementById('post-lesson-type').value = post ? (post.lessonType || 'lesson') : 'lesson';
+  document.getElementById('post-season').value = post ? (post.season || 'general') : 'general';
+  document.getElementById('post-free-lesson').checked = !!(post && post.isFreeLesson);
+  galleryImages = post && post.galleryImages ? [...post.galleryImages] : [];
+  renderGalleryThumbs();
+  document.getElementById('gallery-status').textContent = '';
+  onCategoryChange();
+  document.getElementById('post-excerpt').value = post ? post.excerpt : '';
+  document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
+  document.getElementById('post-featured-image').value = post ? (post.featuredImage || '') : '';
+  document.getElementById('featured-image-preview').innerHTML = post && post.featuredImage
+    ? `<img src="${post.featuredImage}" style="width:100%;height:100%;object-fit:cover;" />`
+    : `<span style="font-size:1.5rem; color:var(--gray-400);">🖼️</span>`;
+  document.getElementById('featured-image-status').textContent = '';
+  document.getElementById('post-seo-title').value = post ? (post.seoTitle || '') : '';
+  document.getElementById('post-seo-description').value = post ? (post.seoDescription || '') : '';
+  document.getElementById('post-seo-keywords').value = post ? (post.seoKeywords || '') : '';
+  document.getElementById('post-mailerlite-embed').value = post ? (post.mailerliteEmbed || '') : '';
+  postTags = post && post.tags ? [...post.tags] : [];
+  renderTagChips();
+  loadTagSuggestions().then(renderTagChips);
+
+  document.getElementById('post-published').checked = post ? !!post.published : true;
+  const publishAt = post && post.publishAt ? post.publishAt : Date.now();
+  const isScheduled = post && post.publishAt && post.publishAt > Date.now();
+  document.getElementById('publish-timing').value = isScheduled ? 'scheduled' : 'now';
+  document.getElementById('post-publish-at').value = toDatetimeLocalValue(publishAt);
+  onPublishToggle();
+  onPublishTimingChange();
+}
+function hidePostForm() {
+  document.getElementById('post-form-card').style.display = 'none';
+  document.getElementById('posts-list-section').style.display = 'block';
+}
+
+async function savePostForm() {
+  const title = document.getElementById('post-title').value.trim();
+  if (!title) return alert('Please enter a title.');
+  const bodyHtml = document.getElementById('post-body').innerHTML.trim();
+  const excerpt = document.getElementById('post-excerpt').value.trim();
+  const timing = document.getElementById('publish-timing').value;
+  const publishAt = timing === 'scheduled'
+    ? new Date(document.getElementById('post-publish-at').value).getTime()
+    : Date.now();
+  if (timing === 'scheduled' && (!publishAt || isNaN(publishAt))) {
+    return alert('Please choose a valid publish date/time.');
+  }
+  const post = {
+    id: document.getElementById('post-id').value || undefined,
+    title,
+    slug: document.getElementById('post-slug').value.trim(),
+    category: document.getElementById('post-category').value,
+    icon: document.getElementById('post-icon').value.trim() || '📖',
+    ageGroups: [...document.querySelectorAll('.lesson-age:checked')].map(cb => cb.value),
+    lessonTopics: [...document.querySelectorAll('.lesson-topic:checked')].map(cb => cb.value),
+    scripture: document.getElementById('post-scripture').value.trim(),
+    lessonType: document.getElementById('post-lesson-type').value,
+    season: document.getElementById('post-season').value,
+    isFreeLesson: document.getElementById('post-free-lesson').checked,
+    galleryImages: [...galleryImages],
+    tags: postTags,
+    excerpt,
+    bodyHtml,
+    featuredImage: document.getElementById('post-featured-image').value || '',
+    seoTitle: document.getElementById('post-seo-title').value.trim() || title,
+    seoDescription: document.getElementById('post-seo-description').value.trim() || excerpt,
+    seoKeywords: document.getElementById('post-seo-keywords').value.trim(),
+    mailerliteEmbed: document.getElementById('post-mailerlite-embed').value.trim(),
+    published: document.getElementById('post-published').checked,
+    publishAt,
+    author: 'Jandre van der Walt'
+  };
+  await GK.savePost(post);
+  hidePostForm();
+  renderPosts();
+}
+
+async function editPost(id) {
+  const post = await GK.getPost(id);
+  if (post) showPostForm(post);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function deletePostRow(id) {
+  if (!confirm('Delete this post permanently?')) return;
+  await GK.deletePost(id);
+  renderPosts();
+}
+
+const POST_CATEGORIES = [
+  { value: 'free_lessons', label: '📖 Free Bible Lessons' },
+  { value: 'parents', label: '👨‍👩‍👧 For Parents' },
+  { value: 'pastors', label: '💰 For Pastors' },
+  { value: 'kidmin', label: '🌟 For Kidmin Leaders' }
+];
+
+let cachedPosts = [];
+let activePostCategory = 'all';
+let postViewMode = 'list';
+
+function postRowHtml(p) {
+  const isScheduled = p.published && p.publishAt && p.publishAt > Date.now();
+  const isLive = p.published && !isScheduled;
+  const statusBadge = !p.published
+    ? '<span class="badge badge--free">Draft</span>'
+    : isScheduled
+      ? `<span class="badge badge--paused">Scheduled for ${new Date(p.publishAt).toLocaleString()}</span>`
+      : '<span class="badge badge--active">Published</span>';
+  const dateLabel = new Date(p.publishAt || p.createdAt).toLocaleDateString();
+  return `
+    <div class="post-row">
+      <div class="post-row__thumb">${p.featuredImage ? `<img src="${p.featuredImage}" alt="" />` : (p.icon || '📖')}</div>
+      <div style="flex:1;">
+        <div class="post-row__title">${p.title}</div>
+        <div class="post-row__meta">
+          ${statusBadge}
+          &nbsp;/${p.slug} · ${dateLabel}
+        </div>
+      </div>
+      <div class="row-actions">
+        ${isLive ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
+        <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
+        <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
+      </div>
+    </div>
+  `;
+}
+
+function postCardHtml(p) {
+  const isScheduled = p.published && p.publishAt && p.publishAt > Date.now();
+  const isLive = p.published && !isScheduled;
+  const statusBadge = !p.published
+    ? '<span class="badge badge--free">Draft</span>'
+    : isScheduled
+      ? '<span class="badge badge--paused">Scheduled</span>'
+      : '<span class="badge badge--active">Published</span>';
+  return `
+    <div class="post-card">
+      <div class="post-card__thumb">${p.featuredImage ? `<img src="${p.featuredImage}" alt="" />` : (p.icon || '📖')}</div>
+      <div class="post-card__body">
+        <div class="post-card__title">${p.title}</div>
+        <div class="post-card__meta">${statusBadge}&nbsp;/${p.slug}</div>
+        <div class="row-actions" style="margin-top:0.6rem;">
+          ${isLive ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
+          <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
+          <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPostTabs() {
+  const wrap = document.getElementById('posts-category-tabs');
+  const tabs = [{ value: 'all', label: 'All Posts' }, ...POST_CATEGORIES];
+  wrap.innerHTML = tabs.map(t => {
+    const count = t.value === 'all' ? cachedPosts.length : cachedPosts.filter(p => p.category === t.value).length;
+    const isActive = activePostCategory === t.value;
+    return `<button class="post-tab${isActive ? ' post-tab--active' : ''}" onclick="setPostCategory('${t.value}')">${t.label} <span class="post-tab__count">${count}</span></button>`;
+  }).join('');
+}
+
+function setPostCategory(cat) {
+  activePostCategory = cat;
+  renderPostTabs();
+  renderPostsList();
+}
+
+function setPostViewMode(mode) {
+  postViewMode = mode;
+  document.getElementById('posts-view-list-btn').classList.toggle('btn--primary', mode === 'list');
+  document.getElementById('posts-view-grid-btn').classList.toggle('btn--primary', mode === 'grid');
+  renderPostsList();
+}
+
+function renderPostsList() {
+  const query = document.getElementById('posts-search').value.trim().toLowerCase();
+  const el = document.getElementById('posts-list');
+
+  let posts = activePostCategory === 'all' ? cachedPosts : cachedPosts.filter(p => p.category === activePostCategory);
+  if (query) {
+    posts = posts.filter(p => p.title.toLowerCase().includes(query) || (p.slug || '').toLowerCase().includes(query));
+  }
+
+  if (posts.length === 0) {
+    el.innerHTML = '<div class="empty-state">No posts found. Try a different search or category, or click "+ New Post" to create one.</div>';
+    return;
+  }
+
+  el.innerHTML = postViewMode === 'grid'
+    ? `<div class="post-grid">${posts.map(postCardHtml).join('')}</div>`
+    : posts.map(postRowHtml).join('');
+}
+
+async function renderPosts() {
+  cachedPosts = await GK.listPosts();
+  document.getElementById('posts-search').value = '';
+  renderPostTabs();
+  renderPostsList();
+}
+
+/* ── Members ──────────────────────────────────────────────── */
+let membersCache = [];
+let paymentsCache = [];
+
+async function renderMembers() {
+  const [all, payments] = await Promise.all([GK.listUsers(), GK.listPayments()]);
+  membersCache = all.sort((a,b) => b.createdAt - a.createdAt);
+  paymentsCache = payments;
+  const tbody = document.getElementById('members-tbody');
+  if (membersCache.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No members yet.</td></tr>'; return; }
+  tbody.innerHTML = membersCache.map(u => {
+    const planBadge = u.plan === 'glory_kids' ? '<span class="badge badge--gold">Glory Kids</span>' : '<span class="badge badge--free">Free</span>';
+    const statusBadge = u.plan !== 'glory_kids' ? '' :
+      u.planStatus === 'active' ? '<span class="badge badge--active">Active</span>' :
+      u.planStatus === 'paused' ? '<span class="badge badge--paused">Paused</span>' :
+      '<span class="badge badge--cancelled">Cancelled</span>';
+    const adminBadge = u.isAdmin ? '<span class="badge badge--admin">Admin</span>' : '';
+
+    let actions = '';
+    if (u.plan !== 'glory_kids') {
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.id}','glory_kids','active')">Make Glory Kids</button>`;
+    } else if (u.planStatus === 'active') {
+      actions += `<button class="row-btn row-btn--warn" onclick="setMemberPlan('${u.id}','glory_kids','paused')">Pause</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.id}','free','active')">Cancel</button>`;
+    } else if (u.planStatus === 'paused') {
+      actions += `<button class="row-btn row-btn--primary" onclick="setMemberPlan('${u.id}','glory_kids','active')">Resume</button>`;
+      actions += `<button class="row-btn" onclick="setMemberPlan('${u.id}','free','active')">Cancel</button>`;
+    }
+    actions += `<button class="row-btn" onclick="openAccessDrawer('${u.id}')">Manage access</button>`;
+    actions += `<button class="row-btn row-btn--danger" onclick="deleteMember('${u.id}')">Delete</button>`;
+
+    return `
+      <tr>
+        <td>${u.displayName || u.email.split('@')[0]} ${adminBadge}</td>
+        <td>${u.email}</td>
+        <td>${planBadge}</td>
+        <td>${statusBadge}</td>
+        <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+        <td><div class="row-actions">${actions}</div></td>
+      </tr>
+    `;
+  }).join('');
+
+  if (accessUid && !membersCache.some(u => u.id === accessUid)) closeAccessDrawer();
+  else if (accessUid) renderAccessDrawer();
+}
+
+async function setMemberPlan(uid, plan, status) {
+  await GK.updateUserRecord(uid, { plan, planStatus: status });
+  const label = plan === 'glory_kids' ? (status === 'active' ? 'Glory Kids membership activated' : (status === 'paused' ? 'Glory Kids membership paused' : 'Glory Kids membership cancelled')) : 'Membership set to Free';
+  gkLogActivity(uid, plan === 'glory_kids' && status === 'active' ? '✨' : (status === 'paused' ? '⏸️' : '🔻'), label);
+  await renderMembers();
+  renderOverview();
+}
+
+async function deleteMember(uid) {
+  if (uid === adminUid) return alert('You cannot delete your own admin account from here.');
+  const u = membersCache.find(m => m.id === uid);
+  if (!confirm(`Permanently delete ${u ? (u.displayName || u.email) : 'this member'} and all their data? This cannot be undone.`)) return;
+  await GK.deleteUserRecord(uid);
+  if (accessUid === uid) closeAccessDrawer();
+  await renderMembers();
+  renderOverview();
+}
+
+/* ── Member access manager ───────────────────────────────────
+   View and change exactly what an account can reach: membership
+   plan + status (gates the curriculum library on the dashboard),
+   and admin rights (gates this whole panel). Writes go through
+   GK.updateUserRecord; the Firestore rules already allow an admin
+   to change any user's isAdmin / plan / planStatus. */
+let accessUid = null;
+
+function openAccessDrawer(uid) {
+  accessUid = uid;
+  renderAccessDrawer();
+  document.getElementById('access-modal').style.display = 'flex';
+}
+
+function closeAccessDrawer() {
+  accessUid = null;
+  document.getElementById('access-modal').style.display = 'none';
+}
+
+function renderAccessDrawer() {
+  const u = membersCache.find(m => m.id === accessUid);
+  if (!u) { closeAccessDrawer(); return; }
+  const plan = u.plan === 'glory_kids' ? 'glory_kids' : 'free';
+  const status = u.planStatus || 'active';
+  const isMember = plan === 'glory_kids' && status === 'active';
+  const isPaused = plan === 'glory_kids' && status === 'paused';
+
+  document.getElementById('access-name').textContent = (u.displayName || u.email.split('@')[0]) + (u.isAdmin ? '  ·  Admin' : '');
+  document.getElementById('access-email').textContent = u.email;
+  document.getElementById('access-meta').textContent =
+    'Joined ' + new Date(u.createdAt).toLocaleDateString() + '   ·   User ID ' + u.id;
+
+  // Plan buttons
+  const planBtns = document.querySelectorAll('#access-plan-choice button');
+  planBtns[0].classList.toggle('is-on', plan === 'free');
+  planBtns[1].classList.toggle('is-on', plan === 'glory_kids');
+
+  // Status section — only relevant for Glory Kids
+  document.getElementById('access-status-sec').style.display = plan === 'glory_kids' ? 'block' : 'none';
+  const stBtns = document.querySelectorAll('#access-status-choice button');
+  stBtns[0].classList.toggle('is-on', status === 'active');
+  stBtns[1].classList.toggle('is-on', status === 'paused');
+  stBtns[2].classList.toggle('is-on', status === 'cancelled');
+
+  // Admin buttons
+  const adBtns = document.querySelectorAll('#access-admin-choice button');
+  adBtns[0].classList.toggle('is-on', !u.isAdmin);
+  adBtns[1].classList.toggle('is-on', !!u.isAdmin);
+  const selfLock = (u.id === adminUid);
+  adBtns[0].disabled = selfLock;
+  adBtns[1].disabled = selfLock;
+
+  // Live access summary
+  const yes = '<span style="color:#047857;">✅</span>';
+  const no = '<span style="color:var(--rose);">🔒</span>';
+  const pause = '<span style="color:#E09E00;">⏸️</span>';
+  const rows = [];
+  rows.push(`<li>${isMember ? yes : (isPaused ? pause : no)} Full curriculum library &amp; member downloads ${isMember ? '' : (isPaused ? '<span style="color:var(--gray-400);">— paused</span>' : '<span style="color:var(--gray-400);">— members only</span>')}</li>`);
+  rows.push(`<li>${yes} The 10 free Bible lessons <span style="color:var(--gray-400);">— everyone</span></li>`);
+  rows.push(`<li>${yes} Blog &amp; free resources <span style="color:var(--gray-400);">— everyone</span></li>`);
+  rows.push(`<li>${u.isAdmin ? yes : no} Admin panel (this page) ${u.isAdmin ? '' : '<span style="color:var(--gray-400);">— admins only</span>'}</li>`);
+  rows.push(`<li style="color:var(--gray-400); padding-top:0.4rem;">Dashboard shows: <strong style="color:var(--gray-600);">${isMember ? 'Glory Kids Member — Active' : (isPaused ? 'Membership Paused' : 'Free Account')}</strong></li>`);
+  document.getElementById('access-summary').innerHTML = rows.join('');
+
+  // Billing history for this member (matched by email)
+  const mine = paymentsCache.filter(p => (p.uid && p.uid === u.id) || (p.email && p.email.toLowerCase() === u.email.toLowerCase()));
+  const total = mine.reduce((s, p) => s + Number(p.amount || 0), 0);
+  const payEl = document.getElementById('access-payments');
+  if (!mine.length) {
+    payEl.innerHTML = '<div style="font-size:0.8rem; color:var(--gray-400);">No payments recorded. Use the Payments tab to add one.</div>';
+  } else {
+    payEl.innerHTML = mine.map(p =>
+      `<div class="access-pay"><span>${new Date(p.date).toLocaleDateString()}${p.note ? ' · ' + p.note : ''}</span><span>$${Number(p.amount).toFixed(2)}</span></div>`
+    ).join('') + `<div class="access-pay" style="border-top:1px solid var(--gray-100); margin-top:0.3rem; padding-top:0.4rem; font-weight:700; color:var(--white);"><span>Total paid</span><span>$${total.toFixed(2)}</span></div>`;
+  }
+}
+
+async function accessSetPlan(plan) {
+  const u = membersCache.find(m => m.id === accessUid);
+  if (!u) return;
+  if (plan === (u.plan === 'glory_kids' ? 'glory_kids' : 'free')) return;
+  if (plan === 'free' && u.plan === 'glory_kids' &&
+      !confirm(`Remove ${u.displayName || u.email}'s Glory Kids membership? They'll lose access to the curriculum library.`)) return;
+  const status = plan === 'glory_kids' ? 'active' : 'active';
+  await setMemberPlan(accessUid, plan, status);
+}
+
+async function accessSetStatus(status) {
+  const u = membersCache.find(m => m.id === accessUid);
+  if (!u || u.plan !== 'glory_kids') return;
+  if ((u.planStatus || 'active') === status) return;
+  if (status === 'cancelled' &&
+      !confirm(`Cancel ${u.displayName || u.email}'s membership? They keep the Glory Kids plan on record but lose access until it's set back to Active.`)) return;
+  await setMemberPlan(accessUid, 'glory_kids', status);
+}
+
+async function accessSetAdmin(makeAdmin) {
+  const u = membersCache.find(m => m.id === accessUid);
+  if (!u) return;
+  if (u.id === adminUid) return alert("You can't change your own admin rights here — ask another admin.");
+  if (!!u.isAdmin === !!makeAdmin) return;
+  const who = u.displayName || u.email;
+  if (makeAdmin && !confirm(`Make ${who} an administrator? They will get full control of this panel, including members and other admins.`)) return;
+  if (!makeAdmin && !confirm(`Remove admin access from ${who}?`)) return;
+  await GK.updateUserRecord(accessUid, { isAdmin: !!makeAdmin });
+  gkLogActivity(accessUid, makeAdmin ? '🛡️' : '🔻', makeAdmin ? 'Granted admin access' : 'Admin access removed');
+  await renderMembers();
+  renderOverview();
+}
+
+function accessDeleteMember() {
+  if (accessUid) deleteMember(accessUid);
+}
+
+/* ── Payments ─────────────────────────────────────────────── */
+async function showPaymentForm() {
+  const select = document.getElementById('payment-member');
+  const users = await GK.listUsers();
+  select.innerHTML = users.map(u => `<option value="${u.id}" data-email="${u.email}">${u.displayName || u.email}</option>`).join('');
+  document.getElementById('payment-form-card').style.display = 'block';
+}
+function hidePaymentForm() { document.getElementById('payment-form-card').style.display = 'none'; }
+
+async function recordPayment() {
+  const select = document.getElementById('payment-member');
+  const uid = select.value;
+  const email = select.options[select.selectedIndex]?.dataset.email;
+  const amount = parseFloat(document.getElementById('payment-amount').value) || 0;
+  const note = document.getElementById('payment-note').value.trim();
+  if (!uid) return alert('Please select a member.');
+  await GK.addPayment({ uid, email, amount, note });
+  gkLogActivity(uid, '💳', 'Payment of $' + amount.toFixed(2) + ' recorded');
+  hidePaymentForm();
+  renderPayments();
+  renderMembers();
+  renderOverview();
+}
+
+async function deletePaymentRow(id) {
+  if (!confirm('Delete this payment record?')) return;
+  await GK.deletePayment(id);
+  renderPayments();
+  renderMembers();
+  renderOverview();
+}
+
+async function renderPayments() {
+  const payments = await GK.listPayments();
+  const tbody = document.getElementById('payments-tbody');
+  if (payments.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No payments recorded yet.</td></tr>'; return; }
+  tbody.innerHTML = payments.map(p => `
+    <tr>
+      <td>${p.email}</td>
+      <td>$${Number(p.amount).toFixed(2)}</td>
+      <td>${p.note || '—'}</td>
+      <td>${new Date(p.date).toLocaleDateString()}</td>
+      <td><button class="row-btn row-btn--danger" onclick="deletePaymentRow('${p.id}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+/* ── Support tickets ──────────────────────────────────────── */
+async function renderTickets() {
+  const tickets = await GK.listTickets();
+  const el = document.getElementById('tickets-list');
+  if (tickets.length === 0) { el.innerHTML = '<div class="empty-state">No support messages yet. When a visitor can\'t get an answer from the chatbot, their message will show up here.</div>'; return; }
+  el.innerHTML = tickets.map(t => `
+    <div class="post-row" style="align-items:flex-start;">
+      <div class="post-row__icon">${t.status === 'open' ? '🟠' : '✅'}</div>
+      <div style="flex:1;">
+        <div class="post-row__title">${t.name} <span style="font-weight:400;color:var(--gray-400);">— ${t.email}</span></div>
+        <div class="post-row__meta">${new Date(t.createdAt).toLocaleString()} · <span class="badge ${t.status === 'open' ? 'badge--paused' : 'badge--active'}">${t.status === 'open' ? 'Open' : 'Resolved'}</span></div>
+        <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--gray-700);">${t.message}</p>
+        ${t.transcript && t.transcript.length ? `<details style="margin-top:0.5rem;"><summary style="cursor:pointer; font-size:0.78rem; color:var(--primary); font-weight:600;">View chat transcript (${t.transcript.length})</summary><div style="margin-top:0.5rem; background:var(--gray-50); border-radius:var(--radius); padding:0.75rem; font-size:0.78rem; color:var(--gray-600); max-height:160px; overflow-y:auto;">${t.transcript.map(m => `<div style="margin-bottom:0.4rem;"><strong>${m.role === 'user' ? 'Visitor' : 'Bot'}:</strong> ${m.text}</div>`).join('')}</div></details>` : ''}
+      </div>
+      <div class="row-actions">
+        <a class="row-btn row-btn--primary" href="mailto:${t.email}?subject=Re: your question&body=Hi ${t.name},%0D%0A%0D%0A">Reply by Email</a>
+        ${t.status === 'open'
+          ? `<button class="row-btn row-btn--warn" onclick="resolveTicket('${t.id}')">Mark Resolved</button>`
+          : `<button class="row-btn" onclick="reopenTicket('${t.id}')">Reopen</button>`}
+        <button class="row-btn row-btn--danger" onclick="deleteTicketRow('${t.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function resolveTicket(id) { await GK.updateTicket(id, { status: 'resolved' }); renderTickets(); renderOverview(); }
+async function reopenTicket(id) { await GK.updateTicket(id, { status: 'open' }); renderTickets(); renderOverview(); }
+async function deleteTicketRow(id) {
+  if (!confirm('Delete this support message?')) return;
+  await GK.deleteTicket(id);
+  renderTickets();
+  renderOverview();
+}
+
+/* ============================================================
+   SITE BACKEND — Site Settings / Pages / SEO / Nav / Analytics
+   ============================================================ */
+
+const GK_PAGE_DEFS = [
+  { path: 'index.html', label: 'Home', group: 'Main', inHeaderNav: true },
+  { path: 'free-lessons.html', label: 'Free Bible Lessons', group: 'Main', inHeaderNav: true },
+  { path: 'glory-kids-curriculum.html', label: 'Curriculum', group: 'Main', inHeaderNav: true },
+  { path: 'curriculum-packs.html', label: 'Curriculum Packs', group: 'Main' },
+  { path: 'glory-kids-membership.html', label: 'Membership', group: 'Main', inHeaderNav: true },
+  { path: 'glory-kids-membership-preview.html', label: 'Membership Preview', group: 'Main' },
+  { path: 'church-pricing.html', label: 'Church Pricing', group: 'Main' },
+  { path: 'comparison.html', label: 'Comparison', group: 'Main' },
+  { path: 'activities.html', label: 'Activities', group: 'Main' },
+  { path: 'blog.html', label: 'Blog', group: 'Content', inHeaderNav: true },
+  { path: 'blog-post.html', label: 'Blog Post (template)', group: 'Content' },
+  { path: 'contact.html', label: 'Contact', group: 'Main', inFooterNav: true },
+  { path: 'shop.html', label: 'Shop', group: 'Main' },
+  { path: 'dashboard.html', label: 'Member Dashboard', group: 'Members' },
+  { path: 'login.html', label: 'Log In', group: 'Members' },
+  { path: 'signup.html', label: 'Sign Up', group: 'Members' },
+  { path: 'forgot-password.html', label: 'Forgot Password', group: 'Members' },
+  { path: 'glory-kids-membership.html', label: 'Membership', group: 'Main' }
+];
+
+/* ── Site asset upload (favicon / og image) ─────────────────── */
+async function uploadSiteAsset(file, statusElId) {
+  const el = statusElId && document.getElementById(statusElId);
+  if (el) el.textContent = 'Uploading…';
+  const safe = (file.name || 'asset').replace(/[^\w.\-]/g, '_');
+  const ref = storage.ref('site-assets/' + Date.now() + '_' + safe);
+  await ref.put(file);
+  const url = await ref.getDownloadURL();
+  if (el) el.textContent = 'Uploaded ✓';
+  return url;
+}
+
+/* ── Site Settings tab ─────────────────────────────────────── */
+let gkSiteCfg = null;
+
+async function loadSiteSettings() {
+  gkSiteCfg = await GK.getSiteConfig();
+  const c = gkSiteCfg;
+  const v = (id, val) => { const e = document.getElementById(id); if (e) e.value = val ?? ''; };
+  v('s-siteName', c.siteName); v('s-tagline', c.tagline);
+  v('s-faviconUrl', c.faviconUrl); v('s-appleTouchIconUrl', c.appleTouchIconUrl);
+  document.getElementById('s-favicon-preview').src = c.faviconUrl || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  v('s-defaultMetaDescription', c.defaultMetaDescription);
+  v('s-defaultOgImageUrl', c.defaultOgImageUrl);
+  v('s-twitterHandle', c.twitterHandle); v('s-keywords', c.keywords);
+  const a = c.announcement || {};
+  document.getElementById('s-ann-enabled').checked = !!a.enabled;
+  v('s-ann-text', a.text); v('s-ann-linkUrl', a.linkUrl); v('s-ann-linkLabel', a.linkLabel);
+  v('s-ann-bg', a.bg || '#1f2937'); v('s-ann-fg', a.fg || '#ffffff');
+  v('s-ga4MeasurementId', c.ga4MeasurementId); v('s-gscVerification', c.gscVerification);
+  v('s-headCode', c.headCode); v('s-bodyEndCode', c.bodyEndCode);
+  const o = c.organization || {};
+  v('s-org-name', o.name || c.siteName); v('s-org-url', o.url);
+  v('s-org-logoUrl', o.logoUrl);
+  v('s-contactEmail', c.contactEmail); v('s-contactPhone', c.contactPhone);
+  const sl = c.socialLinks || {};
+  v('s-soc-facebook', sl.facebook); v('s-soc-instagram', sl.instagram);
+  v('s-soc-youtube', sl.youtube); v('s-soc-tiktok', sl.tiktok);
+  updateAnnPreview();
+
+  if (!loadSiteSettings._wired) {
+    loadSiteSettings._wired = true;
+    ['s-ann-text','s-ann-linkLabel','s-ann-bg','s-ann-fg'].forEach(id =>
+      document.getElementById(id).addEventListener('input', updateAnnPreview));
+    document.getElementById('s-favicon-file').addEventListener('change', async e => {
+      if (!e.target.files[0]) return;
+      const url = await uploadSiteAsset(e.target.files[0], 's-favicon-status');
+      document.getElementById('s-faviconUrl').value = url;
+      document.getElementById('s-favicon-preview').src = url;
+    });
+    document.getElementById('s-appleicon-file').addEventListener('change', async e => {
+      if (!e.target.files[0]) return;
+      document.getElementById('s-appleTouchIconUrl').value = await uploadSiteAsset(e.target.files[0], 's-appleicon-status');
+    });
+    document.getElementById('s-ogimage-file').addEventListener('change', async e => {
+      if (!e.target.files[0]) return;
+      document.getElementById('s-defaultOgImageUrl').value = await uploadSiteAsset(e.target.files[0], 's-ogimage-status');
+    });
+  }
+}
+
+function updateAnnPreview() {
+  const p = document.getElementById('s-ann-preview');
+  if (!p) return;
+  p.style.background = document.getElementById('s-ann-bg').value;
+  p.style.color = document.getElementById('s-ann-fg').value;
+  const t = document.getElementById('s-ann-text').value || 'Your announcement text';
+  const l = document.getElementById('s-ann-linkLabel').value;
+  p.textContent = t + (l ? ' — ' + l : '');
+}
+
+async function saveSiteSettings() {
+  const g = id => document.getElementById(id).value.trim();
+  const status = document.getElementById('s-save-status');
+  status.textContent = 'Saving…';
+  const patch = {
+    siteName: g('s-siteName'), tagline: g('s-tagline'),
+    faviconUrl: g('s-faviconUrl'), appleTouchIconUrl: g('s-appleTouchIconUrl'),
+    defaultMetaDescription: g('s-defaultMetaDescription'),
+    defaultOgImageUrl: g('s-defaultOgImageUrl'),
+    twitterHandle: g('s-twitterHandle'), keywords: g('s-keywords'),
+    announcement: {
+      enabled: document.getElementById('s-ann-enabled').checked,
+      text: g('s-ann-text'), linkUrl: g('s-ann-linkUrl'), linkLabel: g('s-ann-linkLabel'),
+      bg: g('s-ann-bg'), fg: g('s-ann-fg')
+    },
+    ga4MeasurementId: g('s-ga4MeasurementId'), gscVerification: g('s-gscVerification'),
+    headCode: document.getElementById('s-headCode').value,
+    bodyEndCode: document.getElementById('s-bodyEndCode').value,
+    contactEmail: g('s-contactEmail'), contactPhone: g('s-contactPhone'),
+    socialLinks: {
+      facebook: g('s-soc-facebook'), instagram: g('s-soc-instagram'),
+      youtube: g('s-soc-youtube'), tiktok: g('s-soc-tiktok')
+    },
+    organization: {
+      name: g('s-org-name') || g('s-siteName'), url: g('s-org-url'), logoUrl: g('s-org-logoUrl'),
+      sameAs: [g('s-soc-facebook'), g('s-soc-instagram'), g('s-soc-youtube'), g('s-soc-tiktok')].filter(Boolean)
+    }
+  };
+  try {
+    await GK.saveSiteConfig(patch);
+    try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+    status.textContent = 'Saved ✓ — live within 5 min (or hard-reload a page now)';
+  } catch (e) { status.textContent = 'Error: ' + e.message; }
+}
+
+/* ── Pages & SEO tab ───────────────────────────────────────── */
+let gkPages = [];
+
+async function renderPagesTab() {
+  const tbody = document.querySelector('#pages-table tbody');
+  tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Loading…</td></tr>';
+  await GK.seedPages(GK_PAGE_DEFS);
+  gkPages = await GK.listPages();
+  if (!gkPages.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No pages yet.</td></tr>'; return; }
+  tbody.innerHTML = gkPages.map(p => `
+    <tr data-id="${p.id}">
+      <td>
+        <div class="post-row__title">${esc(p.label || p.path)}</div>
+        <div class="post-row__meta">/${esc(p.path)} · ${esc(p.group || '')}</div>
+      </td>
+      <td style="text-align:center;"><label class="gk-switch"><input type="checkbox" ${p.visible !== false ? 'checked' : ''} onchange="togglePage('${p.id}','visible',this.checked)"><span></span></label></td>
+      <td style="text-align:center;"><label class="gk-switch"><input type="checkbox" ${p.inHeaderNav ? 'checked' : ''} onchange="togglePage('${p.id}','inHeaderNav',this.checked)"><span></span></label></td>
+      <td style="text-align:center;"><label class="gk-switch"><input type="checkbox" ${!p.noindex ? 'checked' : ''} onchange="togglePage('${p.id}','noindex',!this.checked)"><span></span></label></td>
+      <td style="text-align:right;"><button class="row-btn" onclick="togglePageSeo('${p.id}')">SEO ▾</button></td>
+    </tr>`).join('');
+}
+
+async function togglePage(id, field, val) {
+  await GK.savePage(id, { [field]: val });
+  const p = gkPages.find(x => x.id === id); if (p) p[field] = val;
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  document.getElementById('pages-status').textContent = 'Saved ✓';
+}
+
+function togglePageSeo(id) {
+  const row = document.querySelector(`#pages-table tr[data-id="${id}"]`);
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains('gk-drawer-row')) { next.remove(); return; }
+  const p = gkPages.find(x => x.id === id);
+  const dr = document.createElement('tr');
+  dr.className = 'gk-drawer-row';
+  dr.innerHTML = `<td colspan="5">
+    <div class="gk-field"><label>Meta title <span class="gk-charcount" id="ct-${id}"></span></label>
+      <input type="text" id="st-${id}" value="${esc(p.seoTitle || '')}" oninput="seoCount('${id}')"></div>
+    <div class="gk-field"><label>Meta description <span class="gk-charcount" id="cd-${id}"></span></label>
+      <textarea id="sd-${id}" oninput="seoCount('${id}')">${esc(p.seoDescription || '')}</textarea></div>
+    <div class="gk-grid2">
+      <div class="gk-field"><label>Social image URL</label><input type="text" id="so-${id}" value="${esc(p.ogImageUrl || '')}"></div>
+      <div class="gk-field"><label>Canonical URL (optional)</label><input type="text" id="sc-${id}" value="${esc(p.canonicalUrl || '')}"></div>
+    </div>
+    <div class="gk-serp">
+      <div class="gk-serp__title" id="pr-t-${id}"></div>
+      <div class="gk-serp__url">www.childrensministrylessons.com/${esc(p.path)}</div>
+      <div class="gk-serp__desc" id="pr-d-${id}"></div>
+    </div>
+    <div style="margin-top:0.75rem;"><button class="row-btn row-btn--primary" onclick="savePageSeo('${id}')">Save SEO</button>
+      <span class="gk-status" id="ss-${id}" style="margin-left:0.5rem;font-size:0.8rem;color:var(--gray-500);"></span></div>
+  </td>`;
+  row.after(dr);
+  seoCount(id);
+}
+
+function seoCount(id) {
+  const t = document.getElementById('st-' + id).value;
+  const d = document.getElementById('sd-' + id).value;
+  const ct = document.getElementById('ct-' + id), cd = document.getElementById('cd-' + id);
+  ct.textContent = t.length + ' / 60'; ct.classList.toggle('over', t.length > 60);
+  cd.textContent = d.length + ' / 160'; cd.classList.toggle('over', d.length > 160);
+  const p = gkPages.find(x => x.id === id);
+  document.getElementById('pr-t-' + id).textContent = t || p.label || p.path;
+  document.getElementById('pr-d-' + id).textContent = d || (gkSiteCfg && gkSiteCfg.defaultMetaDescription) || '(no description set)';
+}
+
+async function savePageSeo(id) {
+  const g = pre => document.getElementById(pre + '-' + id).value.trim();
+  document.getElementById('ss-' + id).textContent = 'Saving…';
+  await GK.savePage(id, { seoTitle: g('st'), seoDescription: g('sd'), ogImageUrl: g('so'), canonicalUrl: g('sc') });
+  const p = gkPages.find(x => x.id === id);
+  Object.assign(p, { seoTitle: g('st'), seoDescription: g('sd'), ogImageUrl: g('so'), canonicalUrl: g('sc') });
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  document.getElementById('ss-' + id).textContent = 'Saved ✓';
+}
+
+async function reseedPages() {
+  document.getElementById('pages-status').textContent = 'Scanning…';
+  const n = await GK.seedPages(GK_PAGE_DEFS);
+  document.getElementById('pages-status').textContent = n ? `Added ${n} page(s)` : 'No new pages';
+  renderPagesTab();
+}
+
+/* ── SEO & Redirects tab ───────────────────────────────────── */
+async function renderSeoTab() {
+  if (!gkSiteCfg) gkSiteCfg = await GK.getSiteConfig();
+  document.getElementById('seo-robots').value = gkSiteCfg.robotsTxt ||
+    'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html\nDisallow: /admin-import.html';
+  renderRedirects();
+}
+
+async function renderRedirects() {
+  const tbody = document.querySelector('#redirects-table tbody');
+  const rows = await GK.listRedirects();
+  tbody.innerHTML = rows.length ? rows.map(r => `
+    <tr>
+      <td><code>${esc(r.from)}</code></td><td>${esc(r.to)}</td><td>${r.code}</td>
+      <td><label class="gk-switch"><input type="checkbox" ${r.enabled !== false ? 'checked' : ''} onchange="toggleRedirect('${r.id}',this.checked)"><span></span></label></td>
+      <td style="text-align:right;"><button class="row-btn row-btn--danger" onclick="delRedirect('${r.id}')">Delete</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-state">No redirects yet.</td></tr>';
+}
+
+async function addRedirect() {
+  const from = document.getElementById('r-from').value.trim();
+  const to = document.getElementById('r-to').value.trim();
+  if (!from || !to) { alert('Both fields required'); return; }
+  await GK.saveRedirect({ from: from.startsWith('/') ? from : '/' + from, to, code: document.getElementById('r-code').value });
+  document.getElementById('r-from').value = ''; document.getElementById('r-to').value = '';
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  renderRedirects();
+}
+async function toggleRedirect(id, on) { await GK.saveRedirect({ id, enabled: on, from: undefined, to: undefined }); try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {} }
+async function delRedirect(id) { if (confirm('Delete this redirect?')) { await GK.deleteRedirect(id); try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {} renderRedirects(); } }
+
+async function saveSeoExtras() {
+  document.getElementById('seo-save-status').textContent = 'Saving…';
+  await GK.saveSiteConfig({ robotsTxt: document.getElementById('seo-robots').value });
+  document.getElementById('seo-save-status').textContent = 'Saved ✓ (applied on next build)';
+}
+
+async function previewSitemap() {
+  const pages = await GK.listPages();
+  const posts = await GK.listPosts();
+  const base = 'https://www.childrensministrylessons.com/';
+  const urls = pages.filter(p => p.visible !== false && !p.noindex && p.path.indexOf('template') === -1)
+    .map(p => base + (p.path === 'index.html' ? '' : p.path));
+  posts.filter(p => p.published).forEach(p => urls.push(base + 'blog-post.html?slug=' + p.slug));
+  document.getElementById('seo-sitemap-preview').textContent = urls.join('\n');
+}
+
+/* ── Navigation tab ────────────────────────────────────────── */
+let gkNav = [];
+async function renderNavTab() {
+  gkNav = await GK.getNavMenu('header');
+  if (!gkNav.length) {
+    gkNav = GK_PAGE_DEFS.filter(d => d.inHeaderNav).map((d, i) => ({ label: d.label, url: d.path, visible: true, order: i }));
+  }
+  drawNav();
+}
+function drawNav() {
+  const tbody = document.querySelector('#nav-table tbody');
+  gkNav.forEach((it, i) => it.order = i);
+  tbody.innerHTML = gkNav.map((it, i) => `
+    <tr>
+      <td><input type="text" value="${esc(it.label)}" onchange="gkNav[${i}].label=this.value"></td>
+      <td><input type="text" value="${esc(it.url)}" onchange="gkNav[${i}].url=this.value"></td>
+      <td style="text-align:center;"><label class="gk-switch"><input type="checkbox" ${it.visible !== false ? 'checked' : ''} onchange="gkNav[${i}].visible=this.checked"><span></span></label></td>
+      <td style="white-space:nowrap;">
+        <button class="row-btn" ${i === 0 ? 'disabled' : ''} onclick="moveNav(${i},-1)">↑</button>
+        <button class="row-btn" ${i === gkNav.length - 1 ? 'disabled' : ''} onclick="moveNav(${i},1)">↓</button>
+      </td>
+      <td style="text-align:right;"><button class="row-btn row-btn--danger" onclick="gkNav.splice(${i},1);drawNav()">Delete</button></td>
+    </tr>`).join('');
+}
+function moveNav(i, dir) {
+  const j = i + dir;
+  [gkNav[i], gkNav[j]] = [gkNav[j], gkNav[i]];
+  drawNav();
+}
+function addNavItem() {
+  const label = document.getElementById('nav-new-label').value.trim();
+  const url = document.getElementById('nav-new-url').value.trim();
+  if (!label || !url) { alert('Label and URL required'); return; }
+  gkNav.push({ label, url, visible: true, order: gkNav.length });
+  document.getElementById('nav-new-label').value = ''; document.getElementById('nav-new-url').value = '';
+  drawNav();
+}
+async function saveNav() {
+  document.getElementById('nav-save-status').textContent = 'Saving…';
+  await GK.saveNavMenu('header', gkNav.map((it, i) => ({ label: it.label, url: it.url, visible: it.visible !== false, order: i })));
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  document.getElementById('nav-save-status').textContent = 'Saved ✓ (applied on next build)';
+}
+
+/* ── Analytics tab ─────────────────────────────────────────── */
+async function loadAnalytics(days, btn) {
+  if (btn) {
+    document.querySelectorAll('#admin-tab-analytics .post-tab[data-range]').forEach(b => b.classList.remove('post-tab--active'));
+    btn.classList.add('post-tab--active');
+  }
+  const cfg = gkSiteCfg || await GK.getSiteConfig();
+  const link = document.getElementById('ga4-link');
+  if (cfg.ga4MeasurementId) { link.style.display = ''; link.href = 'https://analytics.google.com/'; }
+
+  const a = await GK.getAnalyticsRange(days);
+  document.getElementById('an-views').textContent = a.totals.views.toLocaleString();
+  const peak = a.daily.reduce((m, d) => d.views > m.views ? d : m, { views: 0, date: '—' });
+  document.getElementById('an-peak').textContent = peak.views ? peak.date.slice(5) + ' (' + peak.views + ')' : '—';
+  document.getElementById('an-toppage').textContent = a.topPages[0] ? a.topPages[0][0].replace(/_html$/, '.html') : '—';
+
+  const max = Math.max(1, ...a.daily.map(d => d.views));
+  document.getElementById('an-chart').innerHTML = a.daily.map(d => `
+    <div class="chart-bar">
+      <div class="chart-bar__fill" style="height:${Math.max(4, d.views / max * 100)}%;" title="${d.date}: ${d.views} views"></div>
+      <div class="chart-bar__label">${d.date.slice(8)}</div>
+    </div>`).join('');
+
+  const list = rows => rows.length ? rows.map(([k, v]) => `
+    <div class="post-row" style="padding:0.5rem 0;">
+      <div class="post-row__title" style="flex:1;">${esc(k.replace(/_html$/, '.html').replace(/_/g, '/'))}</div>
+      <div class="post-row__meta">${v}</div>
+    </div>`).join('') : '<div class="empty-state" style="padding:1rem;">No data yet.</div>';
+  document.getElementById('an-pages').innerHTML = list(a.topPages);
+  document.getElementById('an-referrers').innerHTML = list(a.topReferrers);
+}
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/* ============================================================
+   SHOP — products / orders / discounts
+   ============================================================ */
+function showShopTab(name, btn) {
+  ['products', 'orders', 'discounts'].forEach(n =>
+    document.getElementById('shop-pane-' + n).style.display = n === name ? 'block' : 'none');
+  document.querySelectorAll('#admin-tab-shop .post-tab[data-shoptab]').forEach(b => b.classList.remove('post-tab--active'));
+  if (btn) btn.classList.add('post-tab--active');
+  if (name === 'orders') renderOrders();
+  if (name === 'discounts') renderDiscounts();
+}
+function renderShop() { renderProducts(); }
+
+async function uploadShopFile(file, statusElId) {
+  const el = statusElId && document.getElementById(statusElId);
+  if (el) el.textContent = 'Uploading PDF…';
+  const safe = (file.name || 'file.pdf').replace(/[^\w.\-]/g, '_');
+  const path = 'shop-files/' + Date.now() + '_' + safe;
+  const ref = storage.ref(path);
+  await ref.put(file);
+  if (el) el.textContent = 'PDF uploaded ✓';
+  return path; // storagePath, not a URL — served via /api/download
+}
+
+let gkProducts = [];
+async function renderProducts() {
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = '<div class="empty-state">Loading…</div>';
+  gkProducts = await GK.listProducts();
+  if (!gkProducts.length) { grid.innerHTML = '<div class="empty-state">No products yet. Click “New product”.</div>'; return; }
+  grid.innerHTML = gkProducts.map(p => `
+    <div class="post-card">
+      <div class="post-card__thumb">${p.images && p.images[0] ? `<img src="${esc(p.images[0])}" alt="">` : '📦'}</div>
+      <div class="post-card__body">
+        <div class="post-card__title">${esc(p.title)}</div>
+        <div class="post-card__meta">R${p.priceZAR} · ${esc(p.category || '—')} ${p.active ? '' : '· <span style="color:var(--rose)">hidden</span>'}</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;">
+          <button class="row-btn" onclick="editProduct('${p.id}')">Edit</button>
+          <button class="row-btn row-btn--danger" onclick="removeProduct('${p.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function editProduct(id) {
+  const p = id ? gkProducts.find(x => x.id === id) : {
+    title: '', slug: '', blurb: '', descriptionHtml: '', images: [], priceZAR: '',
+    compareAtZAR: '', category: 'curriculum', storagePath: '', active: true, featured: false, sortOrder: gkProducts.length
+  };
+  const box = document.getElementById('product-editor');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="admin-card">
+      <div class="admin-card__title">${id ? 'Edit product' : 'New product'}</div>
+      <div class="gk-grid2">
+        <div class="gk-field"><label>Title</label><input type="text" id="p-title" value="${esc(p.title)}"></div>
+        <div class="gk-field"><label>Category</label>
+          <select id="p-category">
+            ${['curriculum', 'lessons', 'activities', 'bundles'].map(c => `<option value="${c}" ${p.category === c ? 'selected' : ''}>${c}</option>`).join('')}
+          </select></div>
+      </div>
+      <div class="gk-grid2">
+        <div class="gk-field"><label>Price (R)</label><input type="text" id="p-price" value="${esc(p.priceZAR)}"></div>
+        <div class="gk-field"><label>Compare-at price (R, optional)</label><input type="text" id="p-compare" value="${esc(p.compareAtZAR || '')}"></div>
+      </div>
+      <div class="gk-field"><label>Short blurb (shown on the card)</label><input type="text" id="p-blurb" value="${esc(p.blurb || '')}"></div>
+      <div class="gk-field"><label>Full description (HTML ok)</label><textarea id="p-desc">${esc(p.descriptionHtml || '')}</textarea></div>
+      <div class="gk-field">
+        <label>Cover image</label>
+        <div style="display:flex;align-items:center;gap:1rem;">
+          <img id="p-img-preview" class="gk-favicon-preview" style="width:90px;height:60px;" src="${esc((p.images && p.images[0]) || '')}">
+          <input type="file" id="p-img-file" accept="image/*">
+        </div>
+        <input type="hidden" id="p-img-url" value="${esc((p.images && p.images[0]) || '')}">
+      </div>
+      <div class="gk-field">
+        <label>Product file (PDF that the buyer downloads)</label>
+        <input type="file" id="p-pdf-file" accept="application/pdf">
+        <div class="gk-hint" id="p-pdf-status">${p.storagePath ? 'Current: ' + esc(p.storagePath.split('/').pop()) : 'No file yet'}</div>
+        <input type="hidden" id="p-pdf-path" value="${esc(p.storagePath || '')}">
+      </div>
+      <div class="gk-field" style="display:flex;gap:1.5rem;align-items:center;">
+        <label style="display:flex;gap:0.5rem;align-items:center;margin:0;"><input type="checkbox" id="p-active" ${p.active !== false ? 'checked' : ''}> Visible in shop</label>
+        <label style="display:flex;gap:0.5rem;align-items:center;margin:0;"><input type="checkbox" id="p-featured" ${p.featured ? 'checked' : ''}> Featured</label>
+      </div>
+      <div style="display:flex;gap:0.75rem;">
+        <button class="row-btn row-btn--primary" onclick="saveProductForm('${id || ''}')">Save product</button>
+        <button class="row-btn" onclick="document.getElementById('product-editor').style.display='none'">Cancel</button>
+        <span class="gk-status" id="p-save-status"></span>
+      </div>
+    </div>`;
+  document.getElementById('p-img-file').addEventListener('change', async e => {
+    if (!e.target.files[0]) return;
+    const url = await uploadSiteAsset(e.target.files[0], 'p-save-status');
+    document.getElementById('p-img-url').value = url;
+    document.getElementById('p-img-preview').src = url;
+    if (window.GK.addMedia) GK.addMedia({ url, name: e.target.files[0].name, kind: 'image' });
+  });
+  document.getElementById('p-pdf-file').addEventListener('change', async e => {
+    if (!e.target.files[0]) return;
+    const path = await uploadShopFile(e.target.files[0], 'p-pdf-status');
+    document.getElementById('p-pdf-path').value = path;
+  });
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function saveProductForm(id) {
+  const g = i => document.getElementById(i).value.trim();
+  const status = document.getElementById('p-save-status');
+  if (!g('p-title') || !g('p-price')) { status.textContent = 'Title and price required'; return; }
+  status.textContent = 'Saving…';
+  const rec = {
+    title: g('p-title'), slug: g('p-title'), category: g('p-category'),
+    priceZAR: Number(g('p-price')), compareAtZAR: Number(g('p-compare')) || 0,
+    blurb: g('p-blurb'), descriptionHtml: g('p-desc'),
+    images: g('p-img-url') ? [g('p-img-url')] : [],
+    storagePath: g('p-pdf-path'),
+    active: document.getElementById('p-active').checked,
+    featured: document.getElementById('p-featured').checked
+  };
+  if (id) rec.id = id;
+  await GK.saveProduct(rec);
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  document.getElementById('product-editor').style.display = 'none';
+  renderProducts();
+}
+async function removeProduct(id) {
+  if (!confirm('Delete this product? Existing orders keep working.')) return;
+  await GK.deleteProduct(id);
+  renderProducts();
+}
+
+async function renderOrders() {
+  const tbody = document.querySelector('#orders-table tbody');
+  tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Loading…</td></tr>';
+  const orders = await GK.listOrders();
+  tbody.innerHTML = orders.length ? orders.map(o => `
+    <tr>
+      <td>${new Date(o.createdAt).toLocaleDateString()}</td>
+      <td>${esc(o.buyerName || '')}<div class="post-row__meta">${esc(o.buyerEmail || '')}</div></td>
+      <td>${(o.items || []).map(i => esc(i.title)).join(', ')}</td>
+      <td>R${o.totalZAR}</td>
+      <td><span class="badge badge--${o.status === 'paid' ? 'active' : (o.status === 'failed' ? 'cancelled' : 'paused')}">${o.status}</span></td>
+      <td style="text-align:right;"><button class="row-btn" onclick="orderDetail('${o.id}')">View</button></td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty-state">No orders yet.</td></tr>';
+}
+async function orderDetail(id) {
+  const o = await GK.getOrder(id);
+  if (!o) return;
+  const dl = (o.downloadTokens || []).map(t => `<div>• ${esc(t.title)}</div>`).join('') || '—';
+  alert(`Order ${id}\n\nBuyer: ${o.buyerName} <${o.buyerEmail}>\nStatus: ${o.status}\nSubtotal: R${o.subtotalZAR}\nDiscount: ${o.discountCode || '—'} (R${o.discountZAR || 0})\nTotal: R${o.totalZAR}\nPayFast ID: ${o.pfPaymentId || '—'}\n${o.lastItnError ? '\n⚠ ITN error: ' + o.lastItnError : ''}`);
+}
+
+async function renderDiscounts() {
+  const tbody = document.querySelector('#discounts-table tbody');
+  const rows = await GK.listDiscountCodes();
+  tbody.innerHTML = rows.length ? rows.map(d => `
+    <tr>
+      <td><code>${esc(d.id)}</code></td>
+      <td>${d.type === 'percent' ? d.value + '%' : 'R' + d.value}</td>
+      <td>${d.maxUses ? d.maxUses + ' uses' : '∞'}${d.minSubtotalZAR ? ' · min R' + d.minSubtotalZAR : ''}${d.expiresAt ? ' · exp ' + new Date(d.expiresAt).toLocaleDateString() : ''}</td>
+      <td>${d.usageCount || 0}</td>
+      <td><label class="gk-switch"><input type="checkbox" ${d.active !== false ? 'checked' : ''} onchange="GK.saveDiscountCode({code:'${d.id}',type:'${d.type}',value:${d.value},active:this.checked,maxUses:${d.maxUses || 0},minSubtotalZAR:${d.minSubtotalZAR || 0},expiresAt:${d.expiresAt || null},usageCount:${d.usageCount || 0}})"><span></span></label></td>
+      <td style="text-align:right;"><button class="row-btn row-btn--danger" onclick="delDiscount('${d.id}')">Delete</button></td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty-state">No codes yet.</td></tr>';
+}
+async function addDiscount() {
+  const code = document.getElementById('dc-code').value.trim();
+  if (!code) { alert('Code required'); return; }
+  const exp = document.getElementById('dc-expires').value;
+  await GK.saveDiscountCode({
+    code, type: document.getElementById('dc-type').value,
+    value: document.getElementById('dc-value').value,
+    maxUses: document.getElementById('dc-maxuses').value,
+    minSubtotalZAR: document.getElementById('dc-min').value,
+    expiresAt: exp ? new Date(exp + 'T23:59:59').getTime() : null
+  });
+  document.getElementById('dc-code').value = '';
+  renderDiscounts();
+}
+async function delDiscount(code) { if (confirm('Delete code ' + code + '?')) { await GK.deleteDiscountCode(code); renderDiscounts(); } }
+
+/* ============================================================
+   FORMS INBOX
+   ============================================================ */
+let gkSubmissions = [];
+async function renderSubmissions() {
+  const tbody = document.querySelector('#submissions-table tbody');
+  tbody.innerHTML = '<tr><td colspan="4" class="empty-state">Loading…</td></tr>';
+  const filter = document.getElementById('forms-filter').value;
+  gkSubmissions = await GK.listSubmissions(filter);
+  tbody.innerHTML = gkSubmissions.length ? gkSubmissions.map(s => `
+    <tr style="${s.read ? 'opacity:.6' : ''}">
+      <td>${new Date(s.createdAt).toLocaleString()}</td>
+      <td>${esc(s.formId)}</td>
+      <td style="font-size:0.8rem;">${Object.entries(s.data || {}).map(([k, v]) => `<strong>${esc(k)}:</strong> ${esc(String(v)).slice(0, 120)}`).join('<br>')}</td>
+      <td style="text-align:right;white-space:nowrap;">
+        <button class="row-btn" onclick="toggleSubRead('${s.id}',${!s.read})">${s.read ? 'Unread' : 'Mark read'}</button>
+        <button class="row-btn row-btn--danger" onclick="delSub('${s.id}')">Delete</button>
+      </td>
+    </tr>`).join('') : '<tr><td colspan="4" class="empty-state">No submissions.</td></tr>';
+}
+async function toggleSubRead(id, read) { await GK.markSubmissionRead(id, read); renderSubmissions(); }
+async function delSub(id) { if (confirm('Delete this submission?')) { await GK.deleteSubmission(id); renderSubmissions(); } }
+function exportSubmissionsCsv() {
+  if (!gkSubmissions.length) return;
+  const keys = [...new Set(gkSubmissions.flatMap(s => Object.keys(s.data || {})))];
+  const rows = [['date', 'form', ...keys]];
+  gkSubmissions.forEach(s => rows.push([new Date(s.createdAt).toISOString(), s.formId, ...keys.map(k => (s.data || {})[k] || '')]));
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'form-submissions.csv';
+  a.click();
+}
+
+/* ============================================================
+   CONTENT EDITOR
+   ============================================================ */
+const GK_CONTENT_KEYS = {
+  home: [
+    { key: 'hero.eyebrow', label: 'Hero — small label', type: 'text' },
+    { key: 'hero.title', label: 'Hero — headline', type: 'text' },
+    { key: 'hero.subtitle', label: 'Hero — sub-headline', type: 'textarea' },
+    { key: 'hero.ctaText', label: 'Hero — button text', type: 'text' },
+    { key: 'hero.image', label: 'Hero — image URL', type: 'image' }
+  ],
+  curriculum: [
+    { key: 'hero.title', label: 'Page headline', type: 'text' },
+    { key: 'hero.subtitle', label: 'Page sub-headline', type: 'textarea' }
+  ],
+  membership: [
+    { key: 'hero.title', label: 'Page headline', type: 'text' },
+    { key: 'hero.subtitle', label: 'Page sub-headline', type: 'textarea' }
+  ],
+  'church-pricing': [
+    { key: 'hero.title', label: 'Page headline', type: 'text' },
+    { key: 'hero.subtitle', label: 'Page sub-headline', type: 'textarea' }
+  ],
+  pricing: [
+    { key: 'membership.price', label: 'Membership — main price (HTML ok)', type: 'text' },
+    { key: 'membership.priceSub', label: 'Membership — secondary price', type: 'text' },
+    { key: 'membership.save', label: 'Membership — “save” badge', type: 'text' },
+    { key: 'church.price', label: 'Church — from price', type: 'text' }
+  ]
+};
+let gkContentValues = {};
+async function renderContentForm() {
+  const pageId = document.getElementById('content-page').value;
+  const defs = GK_CONTENT_KEYS[pageId] || [];
+  gkContentValues = await GK.getContent(pageId);
+  document.getElementById('content-fields').innerHTML = defs.map(d => {
+    const v = gkContentValues[d.key] || '';
+    if (d.type === 'textarea') return `<div class="gk-field"><label>${esc(d.label)}</label><textarea data-ckey="${d.key}">${esc(v)}</textarea></div>`;
+    if (d.type === 'image') return `<div class="gk-field"><label>${esc(d.label)}</label><input type="text" data-ckey="${d.key}" value="${esc(v)}" placeholder="https://…"></div>`;
+    return `<div class="gk-field"><label>${esc(d.label)}</label><input type="text" data-ckey="${d.key}" value="${esc(v)}"></div>`;
+  }).join('') || '<p class="gk-hint">No editable fields configured for this page.</p>';
+}
+async function saveContentForm() {
+  const pageId = document.getElementById('content-page').value;
+  const out = {};
+  document.querySelectorAll('#content-fields [data-ckey]').forEach(el => { out[el.dataset.ckey] = el.value.trim(); });
+  document.getElementById('content-save-status').textContent = 'Saving…';
+  await GK.saveContent(pageId, out);
+  try { localStorage.removeItem('gk_site_settings_v1'); } catch (e) {}
+  document.getElementById('content-save-status').textContent = 'Saved ✓ — live within 5 min';
+}
+
+/* ============================================================
+   MEDIA LIBRARY
+   ============================================================ */
+let gkMedia = [];
+
+// Shared image picker. arg: a callback(url) OR a mode string
+// ('featured' → crop modal, 'inline' → insert into the post body).
+async function openMediaPicker(arg) {
+  let items = [];
+  try { items = await GK.listMedia(); } catch (e) { /* rules not deployed / offline */ }
+  const images = items.filter(m => m.kind !== 'pdf');
+  let modal = document.getElementById('gk-media-picker');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'gk-media-picker';
+    modal.className = 'photopick';
+    modal.innerHTML = `<div class="photopick__box">
+      <div class="photopick__title">Media Library <button onclick="document.getElementById('gk-media-picker').style.display='none'" style="float:right;border:0;background:none;font-size:1.2rem;cursor:pointer;">✕</button></div>
+      <div class="photopick__grid" id="gk-media-picker-grid" style="max-height:60vh;"></div>
+    </div>`;
+    document.body.appendChild(modal);
+  }
+  const grid = modal.querySelector('#gk-media-picker-grid');
+  grid.innerHTML = images.length ? images.map(m =>
+    `<div class="photopick__tile" data-url="${esc(m.url)}"><img src="${esc(m.url)}" alt=""><span>${esc(m.name)}</span></div>`
+  ).join('') : '<div class="photopick__msg">No images in the library yet. Upload some in the Media tab.</div>';
+  grid.querySelectorAll('.photopick__tile').forEach(t => {
+    t.onclick = async () => {
+      const url = t.dataset.url;
+      modal.style.display = 'none';
+      if (typeof arg === 'function') { arg(url); return; }
+      try {
+        const blob = await (await fetch(url)).blob();
+        const file = new File([blob], (url.split('/').pop() || 'image').split('?')[0] + '.jpg', { type: blob.type || 'image/jpeg' });
+        if (arg === 'inline') await insertInlineImage(file);
+        else openCropModal(file);
+      } catch (e) { alert('Could not load that image: ' + e.message); }
+    };
+  });
+  modal.style.display = 'flex';
+}
+async function renderMedia() {
+  const grid = document.getElementById('media-grid');
+  gkMedia = await GK.listMedia();
+  const q = (document.getElementById('media-search').value || '').toLowerCase();
+  const rows = gkMedia.filter(m => !q || (m.name || '').toLowerCase().includes(q));
+  grid.innerHTML = rows.length ? rows.map(m => `
+    <div class="photopick__tile" onclick="navigator.clipboard.writeText('${esc(m.url)}');document.getElementById('media-status').textContent='URL copied ✓'">
+      ${m.kind === 'pdf' ? '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;">📄</div>' : `<img src="${esc(m.url)}" alt="">`}
+      <span>${esc(m.name)}</span>
+    </div>`).join('') : '<div class="photopick__msg">No media yet. Upload above.</div>';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const mu = document.getElementById('media-upload');
+  if (mu) mu.addEventListener('change', async e => {
+    const status = document.getElementById('media-status');
+    for (const file of [...e.target.files]) {
+      status.textContent = 'Uploading ' + file.name + '…';
+      const isPdf = file.type === 'application/pdf';
+      const safe = file.name.replace(/[^\w.\-]/g, '_');
+      const path = 'media-library/' + Date.now() + '_' + safe;
+      const ref = storage.ref(path);
+      await ref.put(file);
+      const url = await ref.getDownloadURL();
+      await GK.addMedia({ url, storagePath: path, name: file.name, kind: isPdf ? 'pdf' : 'image', bytes: file.size });
+    }
+    status.textContent = 'Done ✓';
+    renderMedia();
+  });
+});
+</script>
+</body>
+</html>

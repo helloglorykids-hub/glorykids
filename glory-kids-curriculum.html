@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glory Kids Curriculum | Children's Ministry Lessons</title>
+  <meta name="description" content="Our flagship children's ministry curriculum — beautifully designed, theologically rich multi-week series that kids love and leaders find easy to teach." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="homepage.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false, container: false } };
+  </script>
+  <style>
+    .series-card {
+      background: var(--color-card); border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-md); overflow: hidden; transition: var(--transition);
+      border: 1px solid var(--gray-100);
+    }
+    .series-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .series-card__header { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
+    .series-card__weeks { position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.4); color: white; padding: 0.3rem 0.85rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); }
+    .series-card__new { position: absolute; top: 1rem; right: 1rem; background: var(--gold); color: var(--white); padding: 0.3rem 0.85rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700; }
+    .series-card__body { padding: 1.75rem; }
+    .series-card__title { font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
+    .series-card__desc { font-size: 0.875rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 1rem; }
+    .series-card__ages { display: flex; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .age-chip { padding: 0.2rem 0.65rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; background: var(--primary-light); color: var(--primary); }
+    .series-card__footer { border-top: 1px solid var(--gray-100); padding-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .series-card__lessons { font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600; color: var(--gray-500); }
+    .series-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+    @media(max-width:1024px) { .series-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:640px) { .series-grid { grid-template-columns: 1fr; } }
+    .what-inside { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; }
+    @media(max-width:640px) { .what-inside { grid-template-columns: 1fr; } }
+    .inside-item { background: var(--color-card); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); display: flex; gap: 1rem; align-items: flex-start; }
+    .inside-item__icon { font-size: 2rem; flex-shrink: 0; }
+    .inside-item__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--white); margin-bottom: 0.3rem; }
+    .inside-item__desc { font-size: 0.82rem; color: var(--gray-500); line-height: 1.6; }
+    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 1.5rem; }
+    @media(max-width:768px) { .process-steps { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:480px) { .process-steps { grid-template-columns: 1fr; } }
+    .step { text-align: center; position: relative; }
+    .step__num { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-family: var(--font-heading); font-weight: 900; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; box-shadow: var(--shadow-purple); }
+    .step__title { font-family: var(--font-heading); font-weight: 700; color: var(--white); margin-bottom: 0.35rem; }
+    .step__desc { font-size: 0.85rem; color: var(--gray-500); line-height: 1.65; }
+  </style>
+  <!-- gk:managed:start -->
+  <link rel="canonical" href="https://www.childrensministrylessons.com/glory-kids-curriculum.html">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.childrensministrylessons.com/glory-kids-curriculum.html">
+  <meta name="twitter:card" content="summary">
+  <!-- gk:managed:end -->
+</head>
+<body data-gk-content="curriculum">
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">✨ Glory Kids</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+        <span class="nav__logo-star">⭐</span>
+        <div class="nav__logo-icon">✝</div>
+        <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li class="nav__dropdown">
+          <a href="curriculum-packs.html" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
+        <li><a href="activities.html" class="nav__link">Activities</a></li>
+        <li class="nav__dropdown">
+          <a href="blog.html" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join the Waitlist</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="activities.html" class="nav__mobile-link">🎨 Activities & Resources</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="login.html" class="nav__mobile-link">👤 Login</a>
+  <div class="nav__mobile-cta">
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join the Waitlist · $29.99/mo</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="page-hero curr-hero">
+  <div class="page-hero__fx" aria-hidden="true">
+    <span class="ph-orb ph-orb--a"></span>
+    <span class="ph-orb ph-orb--b"></span>
+    <span class="ph-orb ph-orb--c"></span>
+    <span class="ph-spark" style="top:14%;left:10%;animation-delay:0s">✨</span>
+    <span class="ph-spark" style="top:22%;left:88%;animation-delay:.6s">⭐</span>
+    <span class="ph-spark" style="top:68%;left:6%;animation-delay:1.1s">✨</span>
+    <span class="ph-spark" style="top:78%;left:92%;animation-delay:1.6s">⭐</span>
+    <span class="ph-spark" style="top:8%;left:52%;animation-delay:2s">✨</span>
+  </div>
+  <div class="container" style="position:relative;z-index:3;">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Glory Kids Curriculum</span></div>
+    <h1 data-gk-edit="hero.title">The Glory Kids<br><span style="color:var(--gold);">Curriculum Series</span></h1>
+    <p data-gk-edit="hero.subtitle">Beautifully designed, theologically rich multi-week series that kids love and leaders find a joy to teach. Included free with Glory Kids Membership — launching September 15, 2026.</p>
+    <div class="page-hero__deck" aria-hidden="true">
+      <div class="ph-card ph-card--1" style="background:linear-gradient(135deg,#66249A,#00BFC4)"><span class="ph-card__emoji">⭐</span><span class="ph-card__label">Flagship Series</span></div>
+      <div class="ph-card ph-card--2" style="background:linear-gradient(135deg,#FF4B32,#FFB000)"><span class="ph-card__emoji">📖</span><span class="ph-card__label">Multi-Week</span></div>
+      <div class="ph-card ph-card--3" style="background:linear-gradient(135deg,#FFB000,#66249A)"><span class="ph-card__emoji">🎨</span><span class="ph-card__label">Beautifully Designed</span></div>
+      <div class="ph-card ph-card--4" style="background:linear-gradient(135deg,#00BFC4,#0B2E67)"><span class="ph-card__emoji">✝️</span><span class="ph-card__label">Theologically Rich</span></div>
+      <div class="ph-card ph-card--5" style="background:linear-gradient(135deg,#E13C24,#009BA0)"><span class="ph-card__emoji">💛</span><span class="ph-card__label">Kids Love It</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT MAKES IT DIFFERENT -->
+<section style="background:var(--primary-lighter);">
+  <div class="container">
+    <div class="section-label reveal">Why Glory Kids?</div>
+    <h2 class="section-heading reveal">Curriculum That <span class="highlight">Actually Works</span></h2>
+    <p class="section-subheading reveal">Every series in the Glory Kids Curriculum is built on four non-negotiables.</p>
+    <div class="what-inside">
+      <div class="inside-item reveal reveal-delay-1">
+        <div class="inside-item__icon">📖</div>
+        <div><div class="inside-item__title">Biblically Faithful</div><div class="inside-item__desc">Every lesson is deeply rooted in Scripture and reviewed by pastors and theologians. Kids leave knowing God's Word, not just a story.</div></div>
+      </div>
+      <div class="inside-item reveal reveal-delay-2">
+        <div class="inside-item__icon">🎯</div>
+        <div><div class="inside-item__title">Age-Appropriate</div><div class="inside-item__desc">Each series comes in age-differentiated versions — Preschool, Lower Elementary, and Upper Elementary — so every child engages at the right level.</div></div>
+      </div>
+      <div class="inside-item reveal reveal-delay-3">
+        <div class="inside-item__icon">🎨</div>
+        <div><div class="inside-item__title">Beautifully Designed</div><div class="inside-item__desc">Stunning visuals, printable materials, and engaging layouts that make your ministry look world-class — even with a tiny team.</div></div>
+      </div>
+      <div class="inside-item reveal reveal-delay-1">
+        <div class="inside-item__icon">⚡</div>
+        <div><div class="inside-item__title">Ready in 15 Minutes</div><div class="inside-item__desc">Detailed lesson scripts, teacher prep notes, and step-by-step guides mean even a first-time volunteer can deliver an outstanding lesson.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S IN EVERY SERIES -->
+<section>
+  <div class="container">
+    <div class="section-label reveal">What You Get</div>
+    <h2 class="section-heading reveal">Inside Every <span class="highlight">Series</span></h2>
+    <p class="section-subheading reveal">Each Glory Kids series comes complete — nothing to add, nothing to buy separately.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;" class="reveal">
+      <div style="background:var(--primary-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">📝</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Complete Lesson Scripts</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">Word-for-word scripts with teaching notes, discussion questions, and timing guides.</div>
+      </div>
+      <div style="background:var(--gold-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🖨️</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Printable Activity Sheets</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">Beautifully designed activity and coloring sheets for every lesson in the series.</div>
+      </div>
+      <div style="background:var(--green-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🏠</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Take-Home Devotionals</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">Weekly family devotionals that help parents reinforce the lesson throughout the week.</div>
+      </div>
+      <div style="background:var(--teal-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🧠</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Memory Verse Resources</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">Cards, games, and creative tools to help kids memorize the key Scripture for each lesson.</div>
+      </div>
+      <div style="background:var(--rose-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🎮</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Games & Object Lessons</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">Ready-to-run game and object lesson ideas that reinforce the Big Idea in a memorable way.</div>
+      </div>
+      <div style="background:var(--coral-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem;">👩‍🏫</div>
+        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Volunteer Training Guide</div>
+        <div style="font-size:0.85rem;color:var(--gray-500);">A simple one-page guide for each lesson so volunteers know exactly what to do and when.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERIES LIBRARY -->
+<section class="section--gray" id="series">
+  <div class="container">
+    <div class="section-label reveal">Series Library</div>
+    <h2 class="section-heading reveal">Browse the <span class="highlight">Series</span></h2>
+    <p class="section-subheading reveal">All series are included with Glory Kids Membership, launching September 15, 2026. New series added regularly.</p>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="curriculumFilters">
+      <button data-filter="all" class="curr-filter-btn is-active px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">All Series</button>
+      <button data-filter="popular" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Most Popular</button>
+      <button data-filter="new" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">New Releases</button>
+      <button data-filter="seasonal" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Seasonal</button>
+      <button data-filter="age" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">By Age Group</button>
+    </div>
+
+    <!-- Grid -->
+    <div id="curriculumGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Rooted -->
+      <div class="curr-card group" data-category="all popular">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#66249A,#FFB000);">
+            🌳
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 12 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Rooted: A Series on Faith</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 12 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Twelve weeks digging into what it really means to have faith that holds — through doubt, growth, and everyday life.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brave Heart -->
+      <div class="curr-card group" data-category="all popular">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#FF4B32,#FFB000);">
+            🦁
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Brave Heart</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bible heroes who faced their fears with God at their side — helping kids find courage for their own battles.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Have a Nice Day -->
+      <div class="curr-card group" data-category="all age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#00BFC4,#7ED6A5);">
+            😊
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
+            <span class="curr-preview-badge">✨ Free Preview</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Have a Nice Day</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-8 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A kindness-first series that turns "be nice" into real habits — sharing, patience, and gentle words.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bullies in My Brain -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#0B2E67,#8E7CC3);">
+            🧠
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
+            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Bullies in My Brain</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A gentle, biblical look at anxious thoughts and negative self-talk — arming kids with truth that quiets the noise.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- In My Feelings -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#D45D9C,#FFB000);">
+            💗
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">In My Feelings</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Naming big emotions through Scripture — helping kids process sadness, anger, and worry in healthy ways.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Home -->
+      <div class="curr-card group" data-category="all">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#009BA0,#00BFC4);">
+            🏠
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Welcome Home</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">What church is, why it matters, and how kids belong — building excitement for community and the family of God.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summer Soundtrack -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#F2C94C,#00BFC4);">
+            🎧
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">☀️ Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Summer Soundtrack</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A high-energy summer series with worship, water games, and Scripture kids will be singing all season.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Christmas Playlist -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#E13C24,#009BA0);">
+            🎄
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">❄️ Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Christmas Playlist</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Four weeks of Advent wonder — the songs, the star, the shepherds — pointing straight to the newborn King.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Youth Will Win -->
+      <div class="curr-card group" data-category="all new age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#66249A,#D45D9C);">
+            🏆
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">The Youth Will Win</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bold, preteen-focused lessons on standing firm in faith and leading well — for kids stepping into their calling.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- It's Giving Thanks -->
+      <div class="curr-card group" data-category="all seasonal">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#E09E00,#FFB000);">
+            🍂
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
+            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🍁 Seasonal</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">It's Giving Thanks</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A short, joyful series building real gratitude habits — perfect for the weeks leading into Thanksgiving.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- What Was I Made For -->
+      <div class="curr-card group" data-category="all popular age">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#00BFC4,#66249A);">
+            🌟
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">What Was I Made For</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Helping preteens explore identity and purpose in Christ — who God made them to be, on purpose, for a purpose.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Move of God -->
+      <div class="curr-card group" data-category="all new">
+        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
+          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#0B2E67,#00BFC4);">
+            🔥
+            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
+            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-extrabold text-white text-lg mb-1.5">Move of God</h3>
+            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
+            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Stories of revival and the Holy Spirit's power at work — stirring kids to expect God to move today.</p>
+            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-12 reveal">
+      <a href="free-lessons.html" class="btn btn--outline btn--lg">View All 500+ Lessons →</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .curr-filter-btn { background: transparent; color: var(--gray-500); }
+  .curr-filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
+  .curr-filter-btn.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .curr-card { transition: opacity 0.35s ease, transform 0.35s ease; }
+  .curr-card.is-hidden { opacity: 0; transform: scale(0.94); pointer-events: none; position: absolute; visibility: hidden; height: 0; overflow: hidden; margin: 0; }
+  .curr-card__cta {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
+    color: var(--primary); opacity: 0; transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  .group:hover .curr-card__cta { opacity: 1; transform: translateY(0); }
+  .curr-preview-badge {
+    position: absolute; bottom: 0.75rem; left: 0.75rem;
+    background: rgba(255,255,255,0.9); color: #1a1f3a;
+    font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 999px;
+  }
+</style>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.curr-filter-btn');
+    var cards = document.querySelectorAll('.curr-card');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('is-active'); });
+        btn.classList.add('is-active');
+        var filter = btn.dataset.filter;
+        cards.forEach(function (card) {
+          var cats = card.dataset.category.split(' ');
+          if (cats.indexOf(filter) !== -1) {
+            card.classList.remove('is-hidden');
+          } else {
+            card.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+  })();
+</script>
+
+<!-- HOW IT WORKS -->
+<section>
+  <div class="container">
+    <div class="section-label reveal">Simple Process</div>
+    <h2 class="section-heading reveal">Ready to Teach in <span class="highlight">15 Minutes</span></h2>
+    <p class="section-subheading reveal">We've done all the heavy lifting so you can focus on what matters most — the kids.</p>
+    <div class="process-steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step__num">1</div>
+        <div class="step__title">Join Membership</div>
+        <div class="step__desc">Join the Glory Kids Membership waitlist. Membership opens September 15, 2026, with instant access to every series and lesson.</div>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step__num">2</div>
+        <div class="step__title">Choose a Series</div>
+        <div class="step__desc">Browse the library and pick the series that fits your ministry season and age group.</div>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step__num">3</div>
+        <div class="step__title">Download & Print</div>
+        <div class="step__desc">Download the full series pack, print your materials, and review the lesson in 15 minutes.</div>
+      </div>
+      <div class="step reveal reveal-delay-4">
+        <div class="step__num">4</div>
+        <div class="step__title">Teach with Confidence</div>
+        <div class="step__desc">Follow the simple script, watch kids engage deeply, and see faith come alive in their hearts.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section--gray">
+  <div class="container">
+    <div class="section-label reveal">What Leaders Say</div>
+    <h2 class="section-heading reveal">Trusted by <span class="highlight">Leaders Worldwide</span></h2>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">The Glory Kids Curriculum is genuinely the best children's ministry content I've ever used. Theologically solid, beautifully made, and kids absolutely love it. It's transformed our Sunday mornings.</p>
+        <div class="testimonial-card__author"><div class="testimonial-card__avatar">👩</div><div><div class="testimonial-card__name">Pastor Michelle Davis</div><div class="testimonial-card__role">Children's Pastor, 12 years experience</div></div></div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">We launched our children's ministry from scratch using Glory Kids Curriculum. Within a month, we had 40 kids attending, parents raving, and a volunteer team that was actually excited to serve.</p>
+        <div class="testimonial-card__author"><div class="testimonial-card__avatar">🧔</div><div><div class="testimonial-card__name">Pastor Emmanuel Asante</div><div class="testimonial-card__role">Lead Pastor, New Life Church</div></div></div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-3">
+        <div class="testimonial-card__quote">"</div>
+        <div class="testimonial-card__stars">★★★★★</div>
+        <p class="testimonial-card__text">My volunteers used to dread preparing lessons. Now they love it. The scripts make it so easy — even brand new volunteers teach like pros. The "Heroes of Faith" series is our all-time favourite.</p>
+        <div class="testimonial-card__author"><div class="testimonial-card__avatar">👩‍🦱</div><div><div class="testimonial-card__name">Kelly Mwangi</div><div class="testimonial-card__role">Kidmin Director, Nairobi Community Church</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section style="padding:4rem 0;">
+  <div class="container">
+    <div class="cta-banner reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary),#66249A);">
+      <h2 style="color:white;">Get Every Series with Glory Kids Membership</h2>
+      <p>Join today and get instant access to every series, lesson, activity, and resource we've ever created — plus new content added every week.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join the Waitlist →</a>
+        <a href="free-lessons.html" class="btn btn--outline-white">Try Free Lessons First</a>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">14-day money-back guarantee · Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><div class="container">
+  <div class="footer__top">
+    <div class="footer__brand"><div class="footer__logo"><div class="logo-mark">✝</div> ChildrensMinistryLessons</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
+    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
+    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="faq/index.html" class="footer__link">FAQ</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
+    <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" data-gk-form="newsletter"><input type="email" name="email" required placeholder="Your email" ><button>Subscribe</button></form></div>
+  </div>
+  <div class="footer__bottom"><span>© 2026 ChildrensMinistryLessons.com</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
+</div></footer>
+<script src="app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="site-settings.js" defer></script>
+<script src="gk-forms.js" defer></script>
+<script src="content.js" defer></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>

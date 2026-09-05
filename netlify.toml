@@ -1,0 +1,398 @@
+# Netlify configuration — hand-maintained (build.js does NOT touch this file).
+# build.js writes _redirects and _headers, which Netlify merges with the rules here.
+
+[build]
+  command = "node build.js"
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Pretty API paths → serverless functions
+[[redirects]]
+  from = "/api/payfast-checkout"
+  to = "/.netlify/functions/payfast-checkout"
+  status = 200
+[[redirects]]
+  from = "/api/payfast-notify"
+  to = "/.netlify/functions/payfast-notify"
+  status = 200
+[[redirects]]
+  from = "/api/download"
+  to = "/.netlify/functions/download"
+  status = 200
+[[redirects]]
+  from = "/api/mailerlite"
+  to = "/.netlify/functions/mailerlite"
+  status = 200
+[[redirects]]
+  from = "/api/form-submit"
+  to = "/.netlify/functions/form-submit"
+  status = 200
+[[redirects]]
+  from = "/api/order-status"
+  to = "/.netlify/functions/order-status"
+  status = 200
+[[redirects]]
+  from = "/api/my-downloads"
+  to = "/.netlify/functions/my-downloads"
+  status = 200
+
+# ─────────────────────────────────────────────────────────────
+# Squarespace → new-site 301s (domain cutover). Keep these ABOVE
+# the catch-all 404. First match wins, so list exact paths before
+# the wildcard fallbacks. Mirror any change into the admin
+# Redirects tab once Firestore rules are redeployed.
+# ─────────────────────────────────────────────────────────────
+
+# --- individual free-lesson pages ---
+[[redirects]]
+  from = "/free-bible-lessons/adam-and-eve-for-kids"
+  to = "/blog-post.html?slug=adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
+  to = "/blog-post.html?slug=noahs-ark-trusting-gods-plan-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/noahs-ark-kids-lesson"
+  to = "/blog-post.html?slug=noahs-ark-trusting-gods-plan-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/pentecost-bible-lesson-kids"
+  to = "/blog-post.html?slug=pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "/blog-post.html?slug=free-paul-and-silas-in-prison-bible-lesson-for-kids-acts"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
+  to = "/blog-post.html?slug=the-good-shepherd-bible-lesson-on-jesus-love-for-kids"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "/blog-post.html?slug=the-fruit-of-the-spirit-bible-lesson-for-kids"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "/blog-post.html?slug=elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
+  to = "/blog-post.html?slug=thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "/blog-post.html?slug=zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "/blog-post.html?slug=gods-word-stands-forever-bible-lesson-for-kids-isaiah-408"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
+  to = "/blog-post.html?slug=harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "/blog-post.html?slug=joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/abraham-bible-lesson-trusting-promises"
+  to = "/blog-post.html?slug=abraham-trusting-gods-promises-kids-bible-lesson-genesis-12"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
+  to = "/blog-post.html?slug=you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/serve-like-jesus-bible-lesson-kids"
+  to = "/blog-post.html?slug=serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
+  to = "/blog-post.html?slug=light-of-the-world-bible-lesson-for-kids-john-812"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/gratitude-psalm-136-bible-lesson-kids"
+  to = "/blog-post.html?slug=thankfulness-gratitude-bible-lesson-for-kids-psalm-136"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
+  to = "/blog-post.html?slug=back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/share-gods-love-evangelism-kids-lesson"
+  to = "/blog-post.html?slug=fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
+  to = "/blog-post.html?slug=celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/god-is-with-me-in-every-season"
+  to = "/blog-post.html?slug=god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/creation-bible-lesson-genesis-1-kids"
+  to = "/blog-post.html?slug=creation-bible-lesson-for-kids-god-made-everything"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "/blog-post.html?slug=jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "/blog-post.html?slug=moses-the-red-sea-god-makes-a-way-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "/blog-post.html?slug=resurrection-jesus-is-alive-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/christmas-birth-jesus-emmanuel-kids-lesson"
+  to = "/blog-post.html?slug=jesus-is-born-god-with-us-christmas-bible-lesson-for-kids"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/lords-prayer-bible-lesson-kids-matthew-6"
+  to = "/blog-post.html?slug=the-lords-prayer-learning-how-to-pray-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
+  to = "/blog-post.html?slug=jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "/blog-post.html?slug=daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
+  to = "/blog-post.html?slug=jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "/blog-post.html?slug=the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/free-bible-lesson-on-david-and-goliath"
+  to = "/blog-post.html?slug=david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "/blog-post.html?slug=armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
+  to = "/blog-post.html?slug=the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037"
+  status = 301
+  force = true
+
+# --- blog / resource posts ---
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
+  to = "/blog-post.html?slug=how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
+  to = "/blog-post.html?slug=behavior-management-in-kids-church-strategies-that-actually-work"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
+  to = "/blog-post.html?slug=faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
+  to = "/blog-post.html?slug=best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
+  to = "/blog-post.html?slug=how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs/family-devotions-kids-engaged"
+  to = "/blog-post.html?slug=family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs/teach-child-prayer"
+  to = "/blog-post.html?slug=how-to-teach-your-child-about-prayer"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs/child-anxiety-christian-guide"
+  to = "/blog-post.html?slug=when-your-child-has-anxietya-christian-parents-guide"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs/child-questions-about-god"
+  to = "/blog-post.html?slug=when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture"
+  status = 301
+  force = true
+
+# --- legal pages ---
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy-policy.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/terms-of-use"
+  to = "/terms-of-use.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/refund-policy"
+  to = "/refund-policy.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/delivery-policy"
+  to = "/delivery-policy.html"
+  status = 301
+  force = true
+
+# --- collection / structural pages ---
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/glory-kids-membership"
+  to = "/glory-kids-membership.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/glory-kids-membership-1"
+  to = "/glory-kids-membership.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/armor-of-god-kids-curriculum"
+  to = "/curriculum-packs.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/heroes-of-faith-bible-curriculum"
+  to = "/curriculum-packs.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/easter-bible-lessons-for-kids"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/kids-bible-resources"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/freelessons/*"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+
+# --- wildcard fallbacks for old collections (keep LAST, after exact paths) ---
+[[redirects]]
+  from = "/free-bible-lessons/*"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-bible-lessons"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/bible-lessons-by-age/*"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/bible-lessons-by-age"
+  to = "/free-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/bible-activities-for-kids/*"
+  to = "/activities.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/bible-activities-for-kids"
+  to = "/activities.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors/*"
+  to = "/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/childrens-ministry-resources-for-pastors"
+  to = "/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs/*"
+  to = "/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/christian-parenting-blogs"
+  to = "/blog.html"
+  status = 301
+  force = true
+
+# Branded 404 for any unmatched path (static files still win over this).
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

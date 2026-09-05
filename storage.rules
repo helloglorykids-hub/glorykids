@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /post-images/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Favicon, apple-touch icon, default social-share images, and any other
+    // site-wide assets uploaded from the admin panel's Site Settings tab.
+    match /site-assets/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Central media library (images + PDFs) surfaced in the admin Media tab.
+    match /media-library/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    // Paid digital products. Never publicly readable — the `download`
+    // Netlify function serves them via short-lived signed URLs after
+    // verifying a paid order.
+    match /shop-files/{allPaths=**} {
+      allow read: if false;
+      allow write: if request.auth != null;
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

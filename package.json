@@ -1,0 +1,10 @@
+{
+  "name": "glory-kids-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Glory Kids Ministries marketing site — static HTML + Firebase backend",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node serve.js"
+  }
+}
