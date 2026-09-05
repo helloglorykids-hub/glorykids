@@ -69,14 +69,21 @@
     /* FEATURED PRODUCT */
     .featured-product {
       background: linear-gradient(135deg, var(--primary-light), var(--gold-light));
-      border: 2px solid var(--primary-lighter);
+      border: 1px solid var(--primary-lighter);
       border-radius: var(--radius-xl);
-      padding: 2.5rem;
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 2.5rem; align-items: center;
-      margin-bottom: 3rem; position: relative; overflow: hidden;
+      padding: 1.75rem;
+      display: grid; grid-template-columns: 300px 1fr;
+      gap: 2rem; align-items: center;
+      margin-bottom: 2.5rem; position: relative; overflow: hidden;
     }
-    @media(max-width:768px) { .featured-product { grid-template-columns: 1fr; } }
+    @media(max-width:768px) { .featured-product { grid-template-columns: 1fr; padding: 1.25rem; } }
+    .featured-product__cover {
+      aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 14px 40px rgba(11,46,103,.22);
+    }
+    .featured-product__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .featured-product__info h2 { font-size: 1.4rem; }
+    .featured-product__includes li { font-size: .82rem; }
     .featured-product::before {
       content: '⭐ BEST SELLER';
       position: absolute; top: 1.25rem; right: -2rem;
@@ -133,9 +140,67 @@
     .shop-section-head a  { font-size: 0.82rem; color: var(--primary); font-weight: 600; white-space: nowrap; }
 
     /* PRODUCT GRID */
-    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2.5rem; }
     @media(max-width:900px)  { .product-grid { grid-template-columns: repeat(2,1fr); } }
-    @media(max-width:480px)  { .product-grid { grid-template-columns: 1fr; } }
+    @media(max-width:520px)  { .product-grid { grid-template-columns: 1fr; } }
+
+    /* ── COMPACT PRODUCT CARD (gk-pc) ───────────────────────── */
+    .gk-pc {
+      background: var(--color-card); border: 1px solid var(--gray-200);
+      border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .gk-pc:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.14); border-color: var(--primary-lighter); }
+    .gk-pc__cover { aspect-ratio: 4 / 3; position: relative; overflow: hidden; background: var(--gray-100); }
+    .gk-pc__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gk-pc__ph {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: .4rem; text-align: center; padding: 1rem;
+      background: linear-gradient(140deg, var(--g1, #66249A), var(--g2, #00BFC4));
+    }
+    .gk-pc__ph::after {
+      content: '✝'; position: absolute; right: -0.5rem; bottom: -1.5rem;
+      font-size: 7rem; color: rgba(255,255,255,.12); line-height: 1;
+    }
+    .gk-pc__ph-name {
+      position: relative; font-family: var(--font-heading); font-weight: 800;
+      color: #fff; font-size: .95rem; line-height: 1.25; text-shadow: 0 2px 10px rgba(0,0,0,.25);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gk-pc__ph-kind {
+      position: relative; font-size: .62rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; color: rgba(255,255,255,.8);
+    }
+    .gk-pc__tag {
+      position: absolute; top: .6rem; left: .6rem; z-index: 2;
+      background: var(--gold); color: #3d2c00; font-family: var(--font-heading);
+      font-size: .62rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+      padding: .22rem .55rem; border-radius: 999px;
+    }
+    .gk-pc__note {
+      position: absolute; bottom: .55rem; right: .55rem; z-index: 2;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(3px); color: #fff;
+      font-size: .62rem; font-weight: 700; padding: .18rem .5rem; border-radius: 999px;
+    }
+    .gk-pc__body { padding: .9rem .95rem 1rem; display: flex; flex-direction: column; flex: 1; }
+    .gk-pc__title {
+      font-family: var(--font-heading); font-weight: 800; font-size: .92rem; line-height: 1.3;
+      color: var(--white); margin: 0 0 .3rem;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gk-pc__blurb {
+      font-size: .78rem; color: var(--gray-500); line-height: 1.5; margin: 0 0 .8rem; flex: 1;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .gk-pc__foot { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .gk-pc__price { font-family: var(--font-heading); font-weight: 900; font-size: 1.15rem; color: var(--primary); }
+    .gk-pc__price s { font-size: .72rem; color: var(--gray-400); font-weight: 600; margin-left: .35rem; }
+    .gk-pc__add {
+      background: var(--primary); color: #fff; border: none; cursor: pointer;
+      font-family: var(--font-heading); font-weight: 700; font-size: .78rem;
+      padding: .5rem .95rem; border-radius: 999px; transition: background .15s ease, transform .15s ease;
+    }
+    .gk-pc__add:hover { background: var(--primary-dark); transform: translateY(-1px); }
 
     /* PRODUCT CARD */
     .product-card {
@@ -1008,15 +1073,20 @@
       document.querySelectorAll('.shop-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     }
-    document.querySelectorAll('.product-card, .featured-product').forEach(card => {
+    document.querySelectorAll('.gk-pc, .featured-product').forEach(card => {
       const match = category === 'all' || card.dataset.category === category;
       card.style.display = match ? '' : 'none';
+    });
+    document.querySelectorAll('.shop-section-head').forEach(h => {
+      const grid = h.nextElementSibling;
+      const anyVisible = grid && [...grid.children].some(c => c.style.display !== 'none');
+      h.style.display = anyVisible ? '' : 'none';
     });
   }
 
   function searchProducts(query) {
     const q = query.toLowerCase();
-    document.querySelectorAll('.product-card').forEach(card => {
+    document.querySelectorAll('.gk-pc').forEach(card => {
       const name = (card.dataset.name || '').toLowerCase();
       card.style.display = (!q || name.includes(q)) ? '' : 'none';
     });
@@ -1040,26 +1110,33 @@
   };
   const money = n => '$' + Number(n || 0).toFixed(2).replace(/\.00$/, '');
   const priceOf = p => Number(p.priceUSD != null ? p.priceUSD : p.priceZAR || 0);
+  const GRADS = [['#66249A', '#00BFC4'], ['#FF4B32', '#FFB000'], ['#0B2E67', '#00BFC4'], ['#FFB000', '#66249A'], ['#00BFC4', '#7ED6A5'], ['#E13C24', '#009BA0']];
+  function gradFor(s) { let h = 0; for (let i = 0; i < (s || '').length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return GRADS[h % GRADS.length]; }
+  const KIND = { curriculum: 'Curriculum', bundle: 'Bundle', resource: 'Printable' };
+
+  function coverHtml(p) {
+    if (p.images && p.images[0]) return `<img src="${p.images[0]}" alt="${(p.title || '').replace(/"/g, '')}" loading="lazy">`;
+    const g = gradFor(p.title || p.id || '');
+    return `<div class="gk-pc__ph" style="--g1:${g[0]};--g2:${g[1]}">
+      <span class="gk-pc__ph-kind">${KIND[p.category] || 'Resource'}</span>
+      <span class="gk-pc__ph-name">${p.title || ''}</span>
+    </div>`;
+  }
 
   function productCardHtml(p) {
-    const img = (p.images && p.images[0])
-      ? `<img src="${p.images[0]}" alt="${(p.title || '').replace(/"/g, '')}">`
-      : `<span style="font-size:2rem;">📦</span>`;
-    const compare = p.compareAtUSD && p.compareAtUSD > priceOf(p)
-      ? `<div class="product-card__price-orig">${money(p.compareAtUSD)}</div>` : '';
-    const meta = [p.ageRange, p.weeks, p.fileNote].filter(Boolean)
-      .map(t => `<span class="age-badge">${t}</span>`).join(' ');
-    const payload = JSON.stringify({ id: p.id, name: p.title, price: priceOf(p), image: (p.images && p.images[0]) || '', type: p.fileNote || p.category || 'Digital download' }).replace(/"/g, '&quot;');
+    const compare = p.compareAtUSD && p.compareAtUSD > priceOf(p) ? `<s>${money(p.compareAtUSD)}</s>` : '';
+    const note = p.fileNote ? `<span class="gk-pc__note">${p.fileNote}</span>` : '';
+    const tag = p.weeks ? `<span class="gk-pc__tag">${p.weeks}</span>` : (p.ageRange ? `<span class="gk-pc__tag">${p.ageRange}</span>` : '');
+    const payload = JSON.stringify({ id: p.id, name: p.title, price: priceOf(p), image: (p.images && p.images[0]) || '', type: p.fileNote || KIND[p.category] || 'Digital download' }).replace(/"/g, '&quot;');
     return `
-      <div class="product-card reveal" data-category="${p.category || 'resource'}" data-name="${(p.title || '').toLowerCase()}">
-        <div class="product-card__thumb">${img}</div>
-        <div class="product-card__body">
-          <div class="product-card__title">${p.title || ''}</div>
-          ${meta ? `<div class="pack-age-row" style="margin:0.25rem 0 0.5rem;">${meta}</div>` : ''}
-          <p class="product-card__desc">${p.blurb || ''}</p>
-          <div class="product-card__foot">
-            <div><div class="product-card__price">${money(priceOf(p))}</div>${compare}</div>
-            <button class="product-card__buy" onclick='addToCart(${payload})'>🛒 Add</button>
+      <div class="gk-pc reveal" data-category="${p.category || 'resource'}" data-name="${(p.title || '').toLowerCase()}">
+        <div class="gk-pc__cover">${tag}${note}${coverHtml(p)}</div>
+        <div class="gk-pc__body">
+          <h3 class="gk-pc__title">${p.title || ''}</h3>
+          <p class="gk-pc__blurb">${p.blurb || ''}</p>
+          <div class="gk-pc__foot">
+            <div class="gk-pc__price">${money(priceOf(p))}${compare}</div>
+            <button class="gk-pc__add" onclick='addToCart(${payload})'>Add&nbsp;to&nbsp;cart</button>
           </div>
         </div>
       </div>`;
@@ -1082,16 +1159,16 @@
     let html = '';
     if (featured) {
       const fPayload = JSON.stringify({ id: featured.id, name: featured.title, price: priceOf(featured), image: (featured.images && featured.images[0]) || '', type: featured.fileNote || 'Digital download' }).replace(/"/g, '&quot;');
+      const fCover = featured.images && featured.images[0]
+        ? `<img src="${featured.images[0]}" alt="">`
+        : `<div class="gk-pc__ph" style="--g1:${gradFor(featured.title)[0]};--g2:${gradFor(featured.title)[1]}"><span class="gk-pc__ph-name" style="font-size:1.2rem;">${featured.title}</span></div>`;
       html += `
       <div class="featured-product reveal" data-category="${featured.category || 'bundle'}">
-        <div class="featured-product__mock">
-          ${featured.images && featured.images[0] ? `<img src="${featured.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : '<span class="featured-product__mock-icon">📖</span>'}
-        </div>
+        <div class="featured-product__cover">${fCover}</div>
         <div class="featured-product__info">
-          <div class="featured-product__mock-badge" style="position:static;display:inline-block;margin-bottom:0.75rem;">🏆 Bestseller</div>
           <h2>${featured.title}</h2>
           <p>${featured.blurb || ''}</p>
-          ${(featured.features && featured.features.length) ? `<ul class="featured-product__includes">${featured.features.slice(0, 6).map(f => `<li>${f}</li>`).join('')}</ul>` : ''}
+          ${(featured.features && featured.features.length) ? `<ul class="featured-product__includes">${featured.features.slice(0, 5).map(f => `<li>${f}</li>`).join('')}</ul>` : ''}
           <div class="featured-product__price-row">
             <div>
               <div class="featured-product__price">${money(priceOf(featured))}</div>
