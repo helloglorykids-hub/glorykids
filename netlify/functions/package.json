@@ -1,9 +1,0 @@
-{
-  "name": "glory-kids-functions",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Netlify serverless functions for the Glory Kids shop, PayFast, MailerLite and forms",
-  "dependencies": {
-    "firebase-admin": "^12.7.0"
-  }
-}
