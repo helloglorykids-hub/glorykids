@@ -618,10 +618,9 @@
   <div class="container">
     <div class="shop-filters">
       <button class="shop-filter-btn active" onclick="filterProducts('all', this)">All Products</button>
-      <button class="shop-filter-btn" onclick="filterProducts('lessons', this)">📖 Lesson Packs</button>
-      <button class="shop-filter-btn" onclick="filterProducts('curriculum', this)">✨ Curriculum Series</button>
-      <button class="shop-filter-btn" onclick="filterProducts('activities', this)">🎨 Activity Sheets</button>
-      <button class="shop-filter-btn" onclick="filterProducts('bundles', this)">📦 Bundles</button>
+      <button class="shop-filter-btn" onclick="filterProducts('curriculum', this)">✨ Curriculum</button>
+      <button class="shop-filter-btn" onclick="filterProducts('bundle', this)">📦 Bundles</button>
+      <button class="shop-filter-btn" onclick="filterProducts('resource', this)">🎨 Activities &amp; Printables</button>
     </div>
     <div class="shop-search">
       <span class="shop-search__icon">🔍</span>
@@ -633,520 +632,8 @@
 <!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
 <main id="products" style="padding: 3rem 0;">
   <div class="container">
-
-    <!-- FEATURED PRODUCT -->
-    <div class="featured-product reveal" data-category="bundles">
-      <div class="featured-product__mock">
-        <div class="featured-product__mock-badge">🏆 Most Popular</div>
-        <span class="featured-product__mock-icon">📖</span>
-        <div class="featured-product__mock-title">Complete Lesson Bundle</div>
-        <div class="featured-product__mock-sub">50 Bible Lessons · All Ages</div>
-        <div class="featured-product__pages-chip">📄 500+ Pages of Content</div>
-      </div>
-      <div class="featured-product__info">
-        <h2>Complete Bible Lesson Bundle — 50 Lessons</h2>
-        <p>Our best-selling collection. 50 fully scripted Bible lessons covering Old Testament, New Testament, Heroes of Faith, and the Life of Jesus. Every lesson includes a teacher's guide, discussion questions, memory verse activities, and take-home page.</p>
-        <ul class="featured-product__includes">
-          <li>50 fully scripted lesson plans</li>
-          <li>Teacher's guide + prep notes for every lesson</li>
-          <li>Memory verse activities & printable cards</li>
-          <li>Discussion questions (ages 3–12)</li>
-          <li>Take-home family devotional pages</li>
-          <li>Print-ready PDF — instant download</li>
-        </ul>
-        <div class="featured-product__price-row">
-          <div>
-            <div class="featured-product__price">R349</div>
-            <div class="featured-product__price-orig">R699</div>
-          </div>
-          <div class="featured-product__save-chip">Save 50%</div>
-          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'bundle-50',name:'Complete Bible Lesson Bundle (50 Lessons)',price:349,icon:'📖',color:'#66249A',type:'PDF Bundle'})">
-            🛒 Add to Cart
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- GUARANTEE STRIP -->
-    <div class="guarantee-strip">
-      <div class="guarantee-item">
-        <div class="guarantee-item__icon">⚡</div>
-        <h4>Instant Download</h4>
-        <p>Receive your PDFs immediately after payment. No waiting, no shipping.</p>
-      </div>
-      <div class="guarantee-item">
-        <div class="guarantee-item__icon">🖨️</div>
-        <h4>Print-Ready</h4>
-        <p>A4 & US Letter formatted. Works with any home or office printer.</p>
-      </div>
-      <div class="guarantee-item">
-        <div class="guarantee-item__icon">🔄</div>
-        <h4>Lifetime Access</h4>
-        <p>Re-download anytime. Lost your files? We'll resend them free.</p>
-      </div>
-      <div class="guarantee-item">
-        <div class="guarantee-item__icon">💬</div>
-        <h4>Ministry Support</h4>
-        <p>Questions about adapting a lesson? Our team is here to help.</p>
-      </div>
-    </div>
-
-    <!-- LESSON PACKS -->
-    <div class="shop-section-head">
-      <div>
-        <h2>📖 Lesson Packs</h2>
-        <p>Fully scripted, print-ready Bible lesson PDFs</p>
-      </div>
-    </div>
-    <div class="product-grid">
-
-      <!-- Product 1 -->
-      <div class="product-card reveal" data-category="lessons" data-name="old testament heroes 10 lesson pack">
-        <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#66249A,#66249A);">
-          <div class="product-card__cover-inner">
-            <div>🦁</div>
-            <div class="product-card__cover-title">OT Heroes Pack</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · Old Testament</div>
-          <div class="product-card__title">Old Testament Heroes — 10 Lesson Pack</div>
-          <div class="product-card__desc">Abraham, Moses, David, Elijah, Daniel & more. Each lesson includes full script, discussion questions, and memory verse activity.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 10 Lessons</span>
-            <span class="product-card__chip">👶 Ages 5–12</span>
-            <span class="product-card__chip">🖨️ Print-Ready</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R149</div>
-              <div class="product-card__price-orig">R249</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'ot-heroes',name:'Old Testament Heroes — 10 Lesson Pack',price:149,icon:'🦁',color:'#66249A',type:'PDF · 10 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-card reveal" data-category="lessons" data-name="life of jesus 8 lesson pack">
-        <div class="product-card__badge badge--new">New</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#FFB000,#FF4B32);">
-          <div class="product-card__cover-inner">
-            <div>✝️</div>
-            <div class="product-card__cover-title">Life of Jesus Pack</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · New Testament</div>
-          <div class="product-card__title">Life of Jesus — 8 Lesson Pack</div>
-          <div class="product-card__desc">Birth, miracles, parables, crucifixion & resurrection. Chronological journey through the life of Christ designed for children.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 8 Lessons</span>
-            <span class="product-card__chip">👶 Ages 4–10</span>
-            <span class="product-card__chip">🖨️ Print-Ready</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R129</div>
-              <div class="product-card__price-orig">R199</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'life-jesus',name:'Life of Jesus — 8 Lesson Pack',price:129,icon:'✝️',color:'#FFB000',type:'PDF · 8 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card reveal" data-category="lessons" data-name="power of prayer 6 lesson pack">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#3BAB5A,#1A7FBF);">
-          <div class="product-card__cover-inner">
-            <div>🙏</div>
-            <div class="product-card__cover-title">Power of Prayer Pack</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · Prayer</div>
-          <div class="product-card__title">Power of Prayer — 6 Lesson Pack</div>
-          <div class="product-card__desc">Help children discover the joy of prayer. Covers why we pray, how to pray, answered prayers in the Bible, and building a prayer habit.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 6 Lessons</span>
-            <span class="product-card__chip">👶 Ages 5–12</span>
-            <span class="product-card__chip">🖨️ Print-Ready</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R99</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'prayer-pack',name:'Power of Prayer — 6 Lesson Pack',price:99,icon:'🙏',color:'#3BAB5A',type:'PDF · 6 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 4 -->
-      <div class="product-card reveal" data-category="lessons" data-name="christmas easter holiday lessons">
-        <div class="product-card__badge badge--sale">Sale</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#EF4444,#C2410C);">
-          <div class="product-card__cover-inner">
-            <div>🎄</div>
-            <div class="product-card__cover-title">Holiday Pack</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · Holiday</div>
-          <div class="product-card__title">Christmas & Easter Mega Pack</div>
-          <div class="product-card__desc">8 Christmas lessons + 6 Easter lessons packed with crafts, drama scripts, memory verses, and family devotionals. Perfect for special services.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 14 Lessons</span>
-            <span class="product-card__chip">👶 Ages 3–12</span>
-            <span class="product-card__chip">🎭 Drama Scripts</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R179</div>
-              <div class="product-card__price-orig">R299</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'holiday-pack',name:'Christmas & Easter Mega Pack',price:179,icon:'🎄',color:'#EF4444',type:'PDF · 14 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 5 -->
-      <div class="product-card reveal" data-category="lessons" data-name="new testament miracles 5 lessons">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#66249A,#C2410C);">
-          <div class="product-card__cover-inner">
-            <div>🌊</div>
-            <div class="product-card__cover-title">Miracles of Jesus</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · New Testament</div>
-          <div class="product-card__title">Miracles of Jesus — 5 Lesson Pack</div>
-          <div class="product-card__desc">Walking on water, feeding 5000, healing the blind, raising Lazarus, and the wedding at Cana. Awe-inspiring lessons about Jesus's power.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 5 Lessons</span>
-            <span class="product-card__chip">👶 Ages 5–11</span>
-            <span class="product-card__chip">🖨️ Print-Ready</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R89</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'miracles',name:'Miracles of Jesus — 5 Lesson Pack',price:89,icon:'🌊',color:'#66249A',type:'PDF · 5 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product 6 -->
-      <div class="product-card reveal" data-category="lessons" data-name="fruit of the spirit character lessons">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#1A7FBF,#3BAB5A);">
-          <div class="product-card__cover-inner">
-            <div>🍎</div>
-            <div class="product-card__cover-title">Fruit of the Spirit</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Lesson Pack · Character</div>
-          <div class="product-card__title">Fruit of the Spirit — 9 Lesson Pack</div>
-          <div class="product-card__desc">One lesson per fruit: love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control. Practical character building.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 9 Lessons</span>
-            <span class="product-card__chip">👶 Ages 4–10</span>
-            <span class="product-card__chip">🌱 Character</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R139</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'fruit-spirit',name:'Fruit of the Spirit — 9 Lesson Pack',price:139,icon:'🍎',color:'#1A7FBF',type:'PDF · 9 Lessons'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- ACTIVITY SHEETS -->
-    <div class="shop-section-head">
-      <div>
-        <h2>🎨 Activity Sheets</h2>
-        <p>Crafts, coloring pages, games, and take-home sheets</p>
-      </div>
-    </div>
-    <div class="product-grid">
-
-      <div class="product-card reveal" data-category="activities" data-name="bible coloring pages mega pack">
-        <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#FF4B32,#FFB000);">
-          <div class="product-card__cover-inner">
-            <div>🖍️</div>
-            <div class="product-card__cover-title">Coloring Mega Pack</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Activity Sheets · Coloring</div>
-          <div class="product-card__title">Bible Coloring Pages — 100 Page Mega Pack</div>
-          <div class="product-card__desc">100 beautifully illustrated Bible scenes for children to color. OT & NT stories, memory verse borders, character portraits, and holiday themes.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 100 Pages</span>
-            <span class="product-card__chip">👶 Ages 2–10</span>
-            <span class="product-card__chip">🖨️ A4 & Letter</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R119</div>
-              <div class="product-card__price-orig">R199</div>
-            </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'coloring-mega',name:'Bible Coloring Pages — 100 Page Mega Pack',price:119,icon:'🖍️',color:'#FF4B32',type:'PDF · 100 Pages'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal" data-category="activities" data-name="bible memory verse cards printable">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#C2410C,#66249A);">
-          <div class="product-card__cover-inner">
-            <div>📜</div>
-            <div class="product-card__cover-title">Memory Verse Cards</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Activity Sheets · Memory Verse</div>
-          <div class="product-card__title">Memory Verse Card Pack — 52 Verses</div>
-          <div class="product-card__desc">One verse for every week of the year. Beautiful illustrated cards, wallet-sized version, and wristband template. Perfect for Sunday school rewards.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 52 Cards</span>
-            <span class="product-card__chip">👶 All Ages</span>
-            <span class="product-card__chip">🎴 Printable</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R79</div>
-            </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'memory-verses',name:'Memory Verse Card Pack — 52 Verses',price:79,icon:'📜',color:'#C2410C',type:'PDF · 52 Cards'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal" data-category="activities" data-name="bible craft templates kids sunday school">
-        <div class="product-card__badge badge--new">New</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#3BAB5A,#1A7FBF);">
-          <div class="product-card__cover-inner">
-            <div>✂️</div>
-            <div class="product-card__cover-title">Craft Templates</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Activity Sheets · Crafts</div>
-          <div class="product-card__title">Bible Craft Templates — 30 Projects</div>
-          <div class="product-card__desc">Cut-and-paste, fold-and-build, and colouring crafts. Each template includes step-by-step instructions and supply list. Zero art skills needed!</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">✂️ 30 Projects</span>
-            <span class="product-card__chip">👶 Ages 3–10</span>
-            <span class="product-card__chip">📋 Instructions</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R99</div>
-            </div>
-            <button class="product-card__buy product-card__buy--gold" onclick="addToCart({id:'craft-templates',name:'Bible Craft Templates — 30 Projects',price:99,icon:'✂️',color:'#3BAB5A',type:'PDF · 30 Projects'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- CURRICULUM SERIES -->
-    <div class="shop-section-head">
-      <div>
-        <h2>✨ Curriculum Series</h2>
-        <p>Multi-week series with everything you need</p>
-      </div>
-    </div>
-    <div class="product-grid">
-
-      <div class="product-card reveal" data-category="curriculum" data-name="god's big story 12 week curriculum series">
-        <div class="product-card__badge badge--bundle">Bundle</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#06245A,#66249A);">
-          <div class="product-card__cover-inner">
-            <div>📖</div>
-            <div class="product-card__cover-title">God's Big Story</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Curriculum Series · 12 Weeks</div>
-          <div class="product-card__title">God's Big Story — 12-Week Curriculum</div>
-          <div class="product-card__desc">The complete meta-narrative of the Bible told for children. Creation to Revelation. Includes lesson plans, activity sheets, memory verses, parent emails, and a leader guide.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 12 Weeks</span>
-            <span class="product-card__chip">👶 Ages 5–12</span>
-            <span class="product-card__chip">📧 Parent Emails</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R249</div>
-              <div class="product-card__price-orig">R399</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'gods-big-story',name:\"God's Big Story — 12-Week Curriculum\",price:249,icon:'📖',color:'#06245A',type:'PDF Curriculum · 12 Weeks'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal" data-category="curriculum" data-name="heroes of faith 10 week curriculum">
-        <div class="product-card__badge badge--popular">Popular</div>
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#E09E00,#FFB000);">
-          <div class="product-card__cover-inner">
-            <div>🦸</div>
-            <div class="product-card__cover-title">Heroes of Faith</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Curriculum Series · 10 Weeks</div>
-          <div class="product-card__title">Heroes of Faith — 10-Week Curriculum</div>
-          <div class="product-card__desc">Abraham, Noah, Esther, David, Ruth, and more. Each week profiles a biblical hero with character lessons kids can apply to their lives today.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 10 Weeks</span>
-            <span class="product-card__chip">👶 Ages 6–12</span>
-            <span class="product-card__chip">🌟 Character</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R219</div>
-              <div class="product-card__price-orig">R349</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'heroes-faith',name:'Heroes of Faith — 10-Week Curriculum',price:219,icon:'🦸',color:'#E09E00',type:'PDF Curriculum · 10 Weeks'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card reveal" data-category="curriculum" data-name="little ones big god preschool curriculum 8 week">
-        <div class="product-card__cover" style="background:linear-gradient(145deg,#C2410C,#FF4B32);">
-          <div class="product-card__cover-inner">
-            <div>🌈</div>
-            <div class="product-card__cover-title">Little Ones, Big God</div>
-          </div>
-          <div class="product-card__pdf-chip">📄 PDF</div>
-        </div>
-        <div class="product-card__body">
-          <div class="product-card__category">Curriculum Series · Preschool</div>
-          <div class="product-card__title">Little Ones, Big God — 8-Week Preschool Series</div>
-          <div class="product-card__desc">Designed for ages 2–5. Simple truths, big visuals, movement activities, simple crafts, and songs. Perfect for nursery or early childhood ministry.</div>
-          <div class="product-card__meta">
-            <span class="product-card__chip">📄 8 Weeks</span>
-            <span class="product-card__chip">👶 Ages 2–5</span>
-            <span class="product-card__chip">🎵 Songs Included</span>
-          </div>
-          <div class="product-card__footer">
-            <div>
-              <div class="product-card__price">R199</div>
-            </div>
-            <button class="product-card__buy" onclick="addToCart({id:'little-ones',name:'Little Ones, Big God — 8-Week Preschool Series',price:199,icon:'🌈',color:'#C2410C',type:'PDF Curriculum · 8 Weeks'})">
-              🛒 Add to Cart
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- BUNDLE BANNER -->
-    <div class="bundle-banner reveal">
-      <div>
-        <div class="bundle-banner__kicker">💰 Best Value</div>
-        <h2>The Ultimate Ministry Bundle — Everything in One</h2>
-        <p>Every lesson pack, every curriculum series, every activity sheet in our store. One payment, unlimited use in your ministry forever. Perfect for new churches or growing kids' programs.</p>
-        <div style="margin-top:1.5rem;">
-          <button class="btn btn--gold btn--lg" onclick="addToCart({id:'ultimate-bundle',name:'Ultimate Ministry Bundle — All Products',price:699,icon:'📦',color:'#06245A',type:'Complete PDF Library'})">
-            🛒 Add to Cart — R699
-          </button>
-          <span style="margin-left:1rem;color:rgba(255,255,255,0.6);font-size:0.85rem;">R1,899 if bought separately</span>
-        </div>
-      </div>
-      <div class="bundle-banner__pricing">
-        <div class="bundle-banner__orig">R1,899 separately</div>
-        <div class="bundle-banner__price">R699</div>
-        <div class="bundle-banner__save">Save 63%</div>
-        <div style="color:rgba(255,255,255,0.55);font-size:0.72rem;">One-time payment · Instant download</div>
-      </div>
-    </div>
-
-    <!-- TESTIMONIALS -->
-    <div class="shop-testimonials reveal">
-      <div class="shop-testimonial">
-        <div class="shop-testimonial__stars">★★★★★</div>
-        <div class="shop-testimonial__text">"The Old Testament Heroes pack was incredible. My kids were engaged the entire lesson — they didn't want to stop! Professional quality at an amazing price."</div>
-        <div class="shop-testimonial__author">
-          <div class="shop-testimonial__avatar">👩</div>
-          <div>
-            <span class="shop-testimonial__name">Sarah M.</span>
-            <span class="shop-testimonial__role">Children's Director, Cape Town</span>
-          </div>
-        </div>
-      </div>
-      <div class="shop-testimonial">
-        <div class="shop-testimonial__stars">★★★★★</div>
-        <div class="shop-testimonial__text">"Downloaded the Complete Bundle on a Friday night and taught on Sunday morning. The lessons are so well structured — even a first-time teacher can run them."</div>
-        <div class="shop-testimonial__author">
-          <div class="shop-testimonial__avatar">👨</div>
-          <div>
-            <span class="shop-testimonial__name">Pastor James K.</span>
-            <span class="shop-testimonial__role">Lead Pastor, Johannesburg</span>
-          </div>
-        </div>
-      </div>
-      <div class="shop-testimonial">
-        <div class="shop-testimonial__stars">★★★★★</div>
-        <div class="shop-testimonial__text">"We've used the God's Big Story curriculum for two school terms. Parents keep telling us how much their children are talking about the lessons at home."</div>
-        <div class="shop-testimonial__author">
-          <div class="shop-testimonial__avatar">👩</div>
-          <div>
-            <span class="shop-testimonial__name">Michelle T.</span>
-            <span class="shop-testimonial__role">Sunday School Co-ordinator, Durban</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MEMBERSHIP CTA -->
-    <div style="background:linear-gradient(135deg,var(--primary-light),var(--gold-light));border-radius:var(--radius-xl);padding:2.5rem;text-align:center;border:2px solid var(--primary-lighter);">
-      <div style="font-size:2rem;margin-bottom:0.75rem;">✨</div>
-      <h2 style="color:var(--white);margin-bottom:0.5rem;">Buy Once — or Get Everything for $29.99/mo</h2>
-      <p style="color:var(--gray-600);max-width:560px;margin:0 auto 1.5rem;line-height:1.7;">
-        Glory Kids Membership launches <strong>September 15, 2026</strong>, giving you access to <strong>500+ lessons</strong>, all curriculum series, activity sheets, video guides, and new content every week — for less than a cup of coffee a day. Join the waitlist now.
-      </p>
-      <a href="glory-kids-membership.html" class="btn btn--primary btn--lg">✨ Join the Waitlist — $29.99/mo →</a>
-    </div>
-
+    <div class="shop-filter-note" style="text-align:center;color:var(--gray-400);font-size:0.85rem;margin-bottom:1.5rem;">Prices in USD · Instant digital download · Secure checkout with card or Apple Pay</div>
+    <div id="shop-loading" style="text-align:center;color:var(--gray-400);padding:4rem 0;">Loading products…</div>
   </div>
 </main>
 
@@ -1182,7 +669,7 @@
     </div>
     <div class="footer__bottom">
       <p>© 2025 Glory Kids Ministries. All rights reserved.</p>
-      <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:0.25rem;">Payments secured by PayFast · PDF downloads for personal & ministry use</p>
+      <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:0.25rem;">Secure checkout · Instant digital downloads for personal & ministry use</p>
     </div>
   </div>
 </footer>
@@ -1207,16 +694,15 @@
   <div class="cart-drawer__footer" id="cart-footer" style="display:none;">
     <div class="cart-subtotal">
       <span>Subtotal</span>
-      <span id="cart-total">R0</span>
+      <span id="cart-total">$0</span>
     </div>
-    <div class="cart-note">💡 PDF downloads — no shipping costs</div>
+    <div class="cart-note">💡 Instant digital downloads — no shipping</div>
     <button class="cart-checkout-btn" onclick="openCheckout()">
       🔒 Proceed to Checkout
     </button>
     <div class="cart-payfast-note">
-      <span>Secured by</span>
-      <strong style="color:var(--primary);">PayFast</strong>
-      <span>· Visa · Mastercard · EFT · Instant EFT</span>
+      <span>Secure checkout</span>
+      <span>· Visa · Mastercard · Apple Pay</span>
     </div>
   </div>
 </div>
@@ -1236,7 +722,7 @@
         <div id="checkout-order-items"></div>
         <div class="checkout-order-total">
           <span>Total</span>
-          <span id="checkout-total">R0</span>
+          <span id="checkout-total">$0</span>
         </div>
       </div>
 
@@ -1274,25 +760,23 @@
       <div class="payfast-info">
         <div class="payfast-info__icon">🔒</div>
         <div>
-          <h4>Secure Payment via PayFast</h4>
-          <p>You'll be redirected to PayFast's secure payment page to complete your purchase. We never see or store your card details.</p>
+          <h4>Secure checkout</h4>
+          <p>You'll be redirected to our secure payment page. Prices are in USD; you can choose your local currency at checkout. We never see or store your card details.</p>
           <div class="payfast-methods">
             <span class="payfast-method-chip">💳 Visa</span>
             <span class="payfast-method-chip">💳 Mastercard</span>
-            <span class="payfast-method-chip">🏦 Instant EFT</span>
-            <span class="payfast-method-chip">📱 Capitec Pay</span>
-            <span class="payfast-method-chip">🏧 SCode</span>
-            <span class="payfast-method-chip">💵 SnapScan</span>
+            <span class="payfast-method-chip"> Apple Pay</span>
+            <span class="payfast-method-chip">🌍 Multi-currency</span>
           </div>
         </div>
       </div>
     </div>
     <div class="checkout-modal__footer">
       <button class="checkout-pay-btn" onclick="submitToPayFast()">
-        🔒 Pay Now via PayFast
+        🔒 Pay Now
       </button>
       <div class="checkout-secure">
-        🔐 Your payment is encrypted and secured by PayFast
+        🔐 Your payment is encrypted and secure
       </div>
     </div>
   </div>
@@ -1389,17 +873,17 @@
     } else {
       container.innerHTML = cart.map(item => `
         <div class="cart-item">
-          <div class="cart-item__icon" style="background:${item.color}22;">${item.icon}</div>
+          <div class="cart-item__icon" style="overflow:hidden;background:#66249A22;">${item.image ? `<img src="${item.image}" alt="" style="width:100%;height:100%;object-fit:cover;">` : '📖'}</div>
           <div class="cart-item__info">
             <div class="cart-item__name">${item.name}</div>
-            <div class="cart-item__type">${item.type}</div>
-            <div class="cart-item__price">R${item.price}</div>
+            <div class="cart-item__type">${item.type || 'Digital download'}</div>
+            <div class="cart-item__price">${'$' + Number(item.price).toFixed(2).replace(/\.00$/, '')}</div>
           </div>
           <button class="cart-item__remove" onclick="removeFromCart('${item.id}')" title="Remove">✕</button>
         </div>
       `).join('');
       footer.style.display = 'block';
-      totalEl.textContent = 'R' + getTotal();
+      totalEl.textContent = '$' + getTotal().toFixed(2).replace(/\.00$/, '');
     }
   }
 
@@ -1433,11 +917,11 @@
     const itemsEl = document.getElementById('checkout-order-items');
     itemsEl.innerHTML = cart.map(i => `
       <div class="checkout-order-item">
-        <span>${i.icon} ${i.name.split('—')[0].trim()}</span>
-        <strong>R${i.price}</strong>
+        <span>${i.name.split('—')[0].trim()}</span>
+        <strong>${'$' + Number(i.price).toFixed(2).replace(/\.00$/, '')}</strong>
       </div>
     `).join('');
-    document.getElementById('checkout-total').textContent = 'R' + getTotal();
+    document.getElementById('checkout-total').textContent = '$' + getTotal().toFixed(2).replace(/\.00$/, '');
 
     // Pre-fill email if logged in
     if (typeof auth !== 'undefined') {
@@ -1484,7 +968,7 @@
     const discountCode = (document.getElementById('co-discount') || {}).value
       ? document.getElementById('co-discount').value.trim() : '';
 
-    if (btn) { btn.disabled = true; btn.textContent = 'Connecting to PayFast…'; }
+    if (btn) { btn.disabled = true; btn.textContent = "Connecting…"; }
     try {
       const res = await fetch('/api/payfast-checkout', {
         method: 'POST',
@@ -1514,7 +998,7 @@
       f.submit();
     } catch (err) {
       alert('Sorry — ' + err.message);
-      if (btn) { btn.disabled = false; btn.textContent = '🔒 Pay Now via PayFast'; }
+      if (btn) { btn.disabled = false; btn.textContent = '🔒 Pay Now'; }
     }
   }
 
@@ -1551,26 +1035,30 @@
   // hard-coded demo cards. Falls back to the static markup otherwise.
   const CATEGORY_META = {
     curriculum: { icon: '📚', title: 'Curriculum Series', blurb: 'Multi-week, fully scripted teaching series' },
-    lessons:    { icon: '📖', title: 'Lesson Packs', blurb: 'Fully scripted, print-ready Bible lesson PDFs' },
-    activities: { icon: '🎨', title: 'Activities & Printables', blurb: 'Coloring pages, crafts, memory verse cards' },
-    bundles:    { icon: '📦', title: 'Bundles', blurb: 'Best value — big collections at a discount' }
+    bundle:     { icon: '📦', title: 'Bundles', blurb: 'Best value — big collections at a discount' },
+    resource:   { icon: '🎨', title: 'Activities & Printables', blurb: 'Coloring pages, bookmarks, crafts and printable resources' }
   };
+  const money = n => '$' + Number(n || 0).toFixed(2).replace(/\.00$/, '');
+  const priceOf = p => Number(p.priceUSD != null ? p.priceUSD : p.priceZAR || 0);
 
   function productCardHtml(p) {
     const img = (p.images && p.images[0])
       ? `<img src="${p.images[0]}" alt="${(p.title || '').replace(/"/g, '')}">`
       : `<span style="font-size:2rem;">📦</span>`;
-    const compare = p.compareAtZAR && p.compareAtZAR > p.priceZAR
-      ? `<div class="product-card__price-orig">R${p.compareAtZAR}</div>` : '';
-    const payload = JSON.stringify({ id: p.id, name: p.title, price: p.priceZAR, icon: '📖', color: '#66249A', type: p.category || 'PDF' }).replace(/"/g, '&quot;');
+    const compare = p.compareAtUSD && p.compareAtUSD > priceOf(p)
+      ? `<div class="product-card__price-orig">${money(p.compareAtUSD)}</div>` : '';
+    const meta = [p.ageRange, p.weeks, p.fileNote].filter(Boolean)
+      .map(t => `<span class="age-badge">${t}</span>`).join(' ');
+    const payload = JSON.stringify({ id: p.id, name: p.title, price: priceOf(p), image: (p.images && p.images[0]) || '', type: p.fileNote || p.category || 'Digital download' }).replace(/"/g, '&quot;');
     return `
-      <div class="product-card reveal" data-category="${p.category || 'lessons'}" data-name="${(p.title || '').toLowerCase()}">
+      <div class="product-card reveal" data-category="${p.category || 'resource'}" data-name="${(p.title || '').toLowerCase()}">
         <div class="product-card__thumb">${img}</div>
         <div class="product-card__body">
           <div class="product-card__title">${p.title || ''}</div>
+          ${meta ? `<div class="pack-age-row" style="margin:0.25rem 0 0.5rem;">${meta}</div>` : ''}
           <p class="product-card__desc">${p.blurb || ''}</p>
           <div class="product-card__foot">
-            <div><div class="product-card__price">R${p.priceZAR}</div>${compare}</div>
+            <div><div class="product-card__price">${money(priceOf(p))}</div>${compare}</div>
             <button class="product-card__buy" onclick='addToCart(${payload})'>🛒 Add</button>
           </div>
         </div>
@@ -1578,12 +1066,12 @@
   }
 
   async function renderShopProducts() {
-    if (!window.GK || !GK.listActiveProducts) return;
-    let products;
-    try { products = await GK.listActiveProducts(); } catch (e) { return; }
-    if (!products || !products.length) return; // keep static demo markup
-
     const container = document.querySelector('#products .container');
+    const loading = document.getElementById('shop-loading');
+    if (!window.GK || !GK.listActiveProducts) { if (loading) loading.textContent = 'Products are temporarily unavailable.'; return; }
+    let products;
+    try { products = await GK.listActiveProducts(); } catch (e) { if (loading) loading.textContent = 'Products are temporarily unavailable.'; return; }
+    if (!products || !products.length) { if (loading) loading.textContent = 'New products coming soon.'; return; }
     if (!container) return;
 
     const featured = products.find(p => p.featured) || null;
@@ -1593,20 +1081,23 @@
 
     let html = '';
     if (featured) {
+      const fPayload = JSON.stringify({ id: featured.id, name: featured.title, price: priceOf(featured), image: (featured.images && featured.images[0]) || '', type: featured.fileNote || 'Digital download' }).replace(/"/g, '&quot;');
       html += `
-      <div class="featured-product reveal" data-category="${featured.category || 'bundles'}">
+      <div class="featured-product reveal" data-category="${featured.category || 'bundle'}">
         <div class="featured-product__mock">
           ${featured.images && featured.images[0] ? `<img src="${featured.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : '<span class="featured-product__mock-icon">📖</span>'}
         </div>
         <div class="featured-product__info">
+          <div class="featured-product__mock-badge" style="position:static;display:inline-block;margin-bottom:0.75rem;">🏆 Bestseller</div>
           <h2>${featured.title}</h2>
           <p>${featured.blurb || ''}</p>
+          ${(featured.features && featured.features.length) ? `<ul class="featured-product__includes">${featured.features.slice(0, 6).map(f => `<li>${f}</li>`).join('')}</ul>` : ''}
           <div class="featured-product__price-row">
             <div>
-              <div class="featured-product__price">R${featured.priceZAR}</div>
-              ${featured.compareAtZAR && featured.compareAtZAR > featured.priceZAR ? `<div class="featured-product__price-orig">R${featured.compareAtZAR}</div>` : ''}
+              <div class="featured-product__price">${money(priceOf(featured))}</div>
+              ${featured.compareAtUSD && featured.compareAtUSD > priceOf(featured) ? `<div class="featured-product__price-orig">${money(featured.compareAtUSD)}</div>` : ''}
             </div>
-            <button class="btn btn--gold btn--lg" onclick='addToCart(${JSON.stringify({ id: featured.id, name: featured.title, price: featured.priceZAR, icon: '📖', color: '#66249A', type: featured.category || 'PDF' }).replace(/"/g, "&quot;")})'>🛒 Add to Cart</button>
+            <button class="btn btn--gold btn--lg" onclick='addToCart(${fPayload})'>🛒 Add to Cart</button>
           </div>
         </div>
       </div>`;
@@ -1633,12 +1124,23 @@
   }
 
   // ── INIT ──────────────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     renderCart();
     updateCartBadges();
-    renderShopProducts();
+    await renderShopProducts();
     if (new URLSearchParams(location.search).get('cancelled')) {
       showToast('Payment cancelled — your cart is still here.');
+    }
+    // Deep link from the Curriculum Packs page: shop.html?add=<productId>
+    const addId = new URLSearchParams(location.search).get('add');
+    if (addId && window.GK && GK.getProduct) {
+      try {
+        const p = await GK.getProduct(addId);
+        if (p && p.active) {
+          addToCart({ id: p.id, name: p.title, price: Number(p.priceUSD != null ? p.priceUSD : p.priceZAR || 0), image: (p.images && p.images[0]) || '', type: p.fileNote || 'Digital download' });
+          history.replaceState(null, '', 'shop.html');
+        }
+      } catch (e) {}
     }
   });
 </script>
