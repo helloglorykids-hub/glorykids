@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel | Children's Ministry Lessons</title>
+  <title>Admin Panel | Glory Kids Ministries</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -758,7 +758,7 @@
           <div class="admin-card__title">Organization (Google Knowledge Panel / schema.org)</div>
           <div class="gk-grid2">
             <div class="gk-field"><label>Legal / brand name</label><input type="text" id="s-org-name" /></div>
-            <div class="gk-field"><label>Website URL</label><input type="text" id="s-org-url" placeholder="https://www.childrensministrylessons.com" /></div>
+            <div class="gk-field"><label>Website URL</label><input type="text" id="s-org-url" placeholder="https://www.glorykidsministry.com" /></div>
           </div>
           <div class="gk-field"><label>Logo URL</label><input type="text" id="s-org-logoUrl" /></div>
           <div class="gk-grid2">
@@ -2386,7 +2386,7 @@ function togglePageSeo(id) {
     </div>
     <div class="gk-serp">
       <div class="gk-serp__title" id="pr-t-${id}"></div>
-      <div class="gk-serp__url">www.childrensministrylessons.com/${esc(p.path)}</div>
+      <div class="gk-serp__url">www.glorykidsministry.com/${esc(p.path)}</div>
       <div class="gk-serp__desc" id="pr-d-${id}"></div>
     </div>
     <div style="margin-top:0.75rem;"><button class="row-btn row-btn--primary" onclick="savePageSeo('${id}')">Save SEO</button>
@@ -2464,7 +2464,7 @@ async function saveSeoExtras() {
 async function previewSitemap() {
   const pages = await GK.listPages();
   const posts = await GK.listPosts();
-  const base = 'https://www.childrensministrylessons.com/';
+  const base = 'https://www.glorykidsministry.com/';
   const urls = pages.filter(p => p.visible !== false && !p.noindex && p.path.indexOf('template') === -1)
     .map(p => base + (p.path === 'index.html' ? '' : p.path));
   posts.filter(p => p.published).forEach(p => urls.push(base + 'blog-post.html?slug=' + p.slug));

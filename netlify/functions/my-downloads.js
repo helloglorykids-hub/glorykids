@@ -6,7 +6,7 @@ const { admin, db } = require('./_lib/firebase');
 const { sign } = require('./_lib/tokens');
 const { json } = require('./_lib/http');
 
-const SITE = process.env.SITE_ORIGIN || 'https://www.childrensministrylessons.com';
+const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 
 exports.handler = async (event) => {
   const authz = event.headers.authorization || event.headers.Authorization || '';

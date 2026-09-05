@@ -7,7 +7,7 @@ const { db, FieldValue } = require('./_lib/firebase');
 const { buildCheckout } = require('./_lib/payfast');
 const { json, parseBody } = require('./_lib/http');
 
-const SITE = process.env.SITE_ORIGIN || 'https://www.childrensministrylessons.com';
+const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });

@@ -13,7 +13,7 @@ const { sign } = require('./_lib/tokens');
 const { parseBody } = require('./_lib/http');
 
 const ok = { statusCode: 200, body: 'OK' };
-const SITE = process.env.SITE_ORIGIN || 'https://www.childrensministrylessons.com';
+const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 
 async function fail(orderId, reason, extra) {
   console.error('payfast-notify REJECTED:', reason, extra || '');

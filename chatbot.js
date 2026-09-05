@@ -8,7 +8,7 @@
    ============================================================ */
 
 (function () {
-  const SUPPORT_EMAIL = 'hello@childrensministrylessons.com';
+  const SUPPORT_EMAIL = 'hello.glorykids@gmail.com';
   const HISTORY_KEY = 'gk_chat_history';
 
   /* ── Knowledge base ───────────────────────────────────────── */
@@ -314,7 +314,7 @@
     badge.style.display = 'none';
     if (!greeted) {
       greeted = true;
-      addMessage('bot', "Hi! 👋 I'm the Children's Ministry Lessons assistant. Ask me about free lessons, curriculum, membership pricing, or anything else — and if I can't help, I'll connect you straight to our team.", {
+      addMessage('bot', "Hi! 👋 I'm the Glory Kids Ministries assistant. Ask me about free lessons, curriculum, membership pricing, or anything else — and if I can't help, I'll connect you straight to our team.", {
         chips: [
           { label: '💰 Membership pricing', onClick: () => respondTo('membership pricing') },
           { label: '📖 Free lessons', onClick: () => respondTo('free lessons') },
