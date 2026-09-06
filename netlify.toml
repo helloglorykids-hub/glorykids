@@ -45,6 +45,10 @@
   from = "/api/my-downloads"
   to = "/.netlify/functions/my-downloads"
   status = 200
+[[redirects]]
+  from = "/api/lesson-hit"
+  to = "/.netlify/functions/lesson-hit"
+  status = 200
 
 # ─────────────────────────────────────────────────────────────
 # Old domain → new domain (childrensministrylessons.com cutover).

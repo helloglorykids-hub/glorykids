@@ -80,6 +80,14 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Per-lesson interaction counters, written ONLY by the /api/lesson-hit
+    // Netlify function (Admin SDK, bypasses rules). Public read so the
+    // free-lessons sidebar / Top 10 rail can rank + live-update for everyone.
+    match /lessonStats/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // ── Shop ────────────────────────────────────────────────────────────
     // Storefront reads active products / discount codes; only the admin
     // writes. Orders are created/fulfilled by the Netlify functions via the

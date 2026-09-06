@@ -528,6 +528,30 @@
     const isLesson = post.category === 'free_lessons';
     const isLocked = isLesson && !post.isFreeLesson;
 
+    // Record one interaction per lesson (drives the free-lessons "Most
+    // Downloaded This Week" / Top 10 ranking). Once per tab-session per post.
+    if (isLesson && post.id) {
+      try {
+        const seenKey = 'gk_hit_' + post.id;
+        if (!sessionStorage.getItem(seenKey)) {
+          sessionStorage.setItem(seenKey, '1');
+          fetch('/api/lesson-hit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            keepalive: true,
+            body: JSON.stringify({
+              postId: post.id,
+              slug: post.slug,
+              title: post.title,
+              ageGroups: post.ageGroups || [],
+              category: post.category,
+              isFreeLesson: !!post.isFreeLesson
+            })
+          }).catch(function () {});
+        }
+      } catch (e) {}
+    }
+
     if (isLesson) {
       if (post.excerpt) {
         document.getElementById('postDescription').textContent = post.excerpt;

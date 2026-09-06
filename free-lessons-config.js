@@ -1,25 +1,25 @@
 /* ═══════════════════════════════════════════════════════════════
    GLORY KIDS — FREE LESSON ACCESS LIST
    ═══════════════════════════════════════════════════════════════
-   Slugs listed here get the "Get 10 Free Lessons" MailerLite
-   opt-in on their lesson page. Any lesson slug NOT in this list
-   is treated as membership-only: lesson-gate.js will swap its
-   opt-in form for a "Join Glory Kids Membership" prompt instead
-   of the free PDF signup.
+   The real source of truth is the "Include in the 10 Free Lessons"
+   checkbox on each post in the admin panel (post.isFreeLesson).
+   free-lessons.html and blog-post.html both read that flag directly
+   and update live — you do NOT need to touch this file when you
+   change the free 10.
 
-   To move a lesson in or out of the free 10, just add/remove its
-   slug below — no other file needs to change. Keep this list to
-   10 slugs to match the "10 free lessons" offer.
+   This list is only a fallback for the legacy static lesson pages
+   under free-bible-lessons/[slug]/ (via lesson-gate.js). Keep it in
+   rough sync if you still use those pages.
    ═══════════════════════════════════════════════════════════════ */
 window.GK_FREE_LESSON_SLUGS = [
-  "nativity-story-bible-lesson",
-  "david-and-goliath-bible-lesson",
-  "resurrection-jesus-is-alive-kids-bible-lesson",
-  "moses-and-the-red-sea-bible-lesson",
-  "jonah-and-the-whale-bible-lesson",
-  "good-samaritan-bible-lesson",
-  "teaching-kids-obedience-bible-lesson",
-  "jesus-calms-the-storm-bible-lesson",
-  "daniel-in-the-lions-den-bible-lesson",
-  "lords-prayer-explained-for-kids-bible-lesson"
+  "the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson",
+  "armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson",
+  "free-paul-and-silas-in-prison-bible-lesson-for-kids-acts",
+  "jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson",
+  "jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson",
+  "jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson",
+  "the-fruit-of-the-spirit-bible-lesson-for-kids",
+  "you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210",
+  "david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson",
+  "resurrection-jesus-is-alive-kids-bible-lesson"
 ];
