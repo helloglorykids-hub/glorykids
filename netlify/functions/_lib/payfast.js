@@ -14,15 +14,18 @@ const SANDBOX_MERCHANT_ID = '10000100';
 const SANDBOX_MERCHANT_KEY = '46f0cd694581a';
 
 function creds() {
-  let id = process.env.PAYFAST_MERCHANT_ID;
-  let key = process.env.PAYFAST_MERCHANT_KEY;
-  let passphrase = process.env.PAYFAST_PASSPHRASE || '';
-  if (MODE !== 'live' && (!id || !key)) {
-    id = SANDBOX_MERCHANT_ID;
-    key = SANDBOX_MERCHANT_KEY;
-    passphrase = ''; // default sandbox account has no passphrase
+  // Non-live mode ALWAYS uses PayFast's public sandbox test merchant, even if
+  // real credentials happen to be sitting in the env — otherwise live keys get
+  // posted to the sandbox endpoint and every test checkout fails. Flip
+  // PAYFAST_MODE=live to use the real account.
+  if (MODE !== 'live') {
+    return { id: SANDBOX_MERCHANT_ID, key: SANDBOX_MERCHANT_KEY, passphrase: '' };
   }
-  return { id, key, passphrase };
+  return {
+    id: process.env.PAYFAST_MERCHANT_ID,
+    key: process.env.PAYFAST_MERCHANT_KEY,
+    passphrase: process.env.PAYFAST_PASSPHRASE || ''
+  };
 }
 
 const PROCESS_URL = `https://${HOST}/eng/process`;

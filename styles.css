@@ -1729,18 +1729,21 @@ section { padding: 5rem 0; }
 .footer__newsletter p { font-size: 0.85rem; margin-bottom: 1rem; }
 
 /* Shared email opt-in (free-lessons / waitlist) — handled by gk-forms.js.
-   Sits inside dark boxes (.mailerlite-box, .cta-box, dark CTA sections). */
+   The input is a solid white field so it's clearly visible on BOTH dark
+   CTA sections and light cream/pink boxes (.mailerlite-box, .cta-box). */
 .gk-optin-form { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .gk-optin-form__email {
   flex: 1 1 220px; min-width: 0;
   padding: 0.85rem 1rem; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.18);
-  background: rgba(255,255,255,0.06); color: #fff; font-size: 0.95rem;
+  border: 1px solid rgba(0,0,0,0.2);
+  background: #fff; color: #1a1a1a; font-size: 0.95rem;
   font-family: inherit;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
-.gk-optin-form__email::placeholder { color: rgba(255,255,255,0.45); }
+.gk-optin-form__email::placeholder { color: rgba(0,0,0,0.42); }
 .gk-optin-form__email:focus {
-  outline: none; border-color: var(--primary, #FF4B32); background: rgba(255,255,255,0.1);
+  outline: none; border-color: var(--primary, #FF4B32);
+  box-shadow: 0 0 0 3px rgba(255,75,50,0.2);
 }
 .gk-optin-form__btn {
   flex: 0 0 auto;

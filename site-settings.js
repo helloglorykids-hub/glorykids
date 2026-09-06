@@ -277,19 +277,39 @@
     return false;
   }
 
-  /* ---------- feature: nav sync ---------- */
+  /* ---------- feature: nav sync ----------
+     Normalise every path to a bare slug so it matches whether the link is
+     "activities.html" (source), "/activities" (build.js pretty URL),
+     "./activities.html", "/faq/" or "faq/index.html". */
+  function navSlug(s) {
+    return String(s || '')
+      .replace(/^https?:\/\/[^/]+/i, '')      // strip origin
+      .replace(/[#?].*$/, '')                 // strip hash / query
+      .replace(/^\.?\//, '')                  // strip leading ./ or /
+      .replace(/(^|\/)index\.html$/i, '$1')   // faq/index.html -> faq/
+      .replace(/\/$/, '')                     // strip trailing slash
+      .replace(/\.html$/i, '')                // drop .html
+      .toLowerCase();
+  }
   function applyNavSync(pages) {
-    var hidden = {};
+    // A page hidden entirely (visible:false) disappears everywhere.
+    // "inHeaderNav:false" only pulls it out of the top nav, not the footer.
+    var offEverywhere = {}, offHeader = {};
     pages.forEach(function (p) {
-      if (p.visible === false || p.inHeaderNav === false) hidden[p.path] = true;
+      var slug = navSlug(p.path);
+      if (p.visible === false) offEverywhere[slug] = true;
+      if (p.visible === false || p.inHeaderNav === false) offHeader[slug] = true;
     });
-    function hideMatching(sel) {
+    function hideMatching(sel, map) {
       document.querySelectorAll(sel).forEach(function (a) {
-        var href = (a.getAttribute('href') || '').replace(/^\.?\//, '').split('#')[0].split('?')[0];
-        if (href && hidden[href]) a.style.display = 'none';
+        if (!map[navSlug(a.getAttribute('href') || '')]) return;
+        a.style.display = 'none';
+        var li = a.closest('li');
+        if (li) li.style.display = 'none';   // collapse the row so there's no gap
       });
     }
-    hideMatching('.nav__link, .nav__mobile-link, .footer a, .site-footer a');
+    hideMatching('.nav__link, .nav__mobile-link', offHeader);
+    hideMatching('.footer a, .site-footer a, .gk-footer a, .gk-footer__links a', offEverywhere);
   }
 
   /* ---------- feature: pageview counter ---------- */
