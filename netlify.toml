@@ -47,6 +47,36 @@
   status = 200
 
 # ─────────────────────────────────────────────────────────────
+# Old domain → new domain (childrensministrylessons.com cutover).
+# The old domain is a Netlify domain alias, which by default just
+# SERVES this site rather than redirecting. These rules force every
+# request on the old host to 301 to the matching path on the new
+# domain; the path-specific rules below then map old Squarespace
+# URLs to their new pages (one extra hop, both 301 — fine for SEO).
+# Must stay ABOVE the path rules so the host match wins first.
+# ─────────────────────────────────────────────────────────────
+[[redirects]]
+  from = "https://childrensministrylessons.com/*"
+  to = "https://www.glorykidsministry.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/*"
+  to = "https://www.glorykidsministry.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/*"
+  to = "https://www.glorykidsministry.com/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/*"
+  to = "https://www.glorykidsministry.com/:splat"
+  status = 301
+  force = true
+
+# ─────────────────────────────────────────────────────────────
 # Squarespace → new-site 301s (domain cutover). Keep these ABOVE
 # the catch-all 404. First match wins, so list exact paths before
 # the wildcard fallbacks. Mirror any change into the admin
