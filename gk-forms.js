@@ -92,21 +92,31 @@
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var hp = form.querySelector('input[name="_hp"]');
-      var payload = {
-        formId: formId,
-        data: serialize(form),
-        pageUrl: location.href,
-        _hp: hp ? hp.value : '',
-        newsletter: formId === 'newsletter' || !!form.querySelector('input[name="newsletter"]:checked')
-      };
+      var data = serialize(form);
+      if (hp && hp.value) { done(form, formId, {}); return; } // honeypot — pretend success
+
       var btn = form.querySelector('button[type="submit"], button:not([type])');
       var label = btn && btn.textContent;
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
 
-      fetch('/api/form-submit', {
+      // The opt-in flows go straight to MailerLite (no Firestore dependency);
+      // everything else goes through the generic form-submit endpoint.
+      var isOptin = formId === 'free-lessons' || formId === 'waitlist';
+      var url = isOptin ? '/api/mailerlite' : '/api/form-submit';
+      var body = isOptin
+        ? { action: formId, email: data.email || '', name: data.firstName || data.name || '', source: location.href }
+        : {
+            formId: formId,
+            data: data,
+            pageUrl: location.href,
+            _hp: hp ? hp.value : '',
+            newsletter: formId === 'newsletter' || !!form.querySelector('input[name="newsletter"]:checked')
+          };
+
+      fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(body)
       }).then(function (r) { return r.json().catch(function () { return {}; }); })
         .then(function (res) {
           if (res && res.ok) {
