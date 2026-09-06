@@ -44,6 +44,28 @@ exports.handler = async (event) => {
     }).catch(e => console.error('ticket create failed', e));
   }
 
+  // Free-lessons opt-in / membership waitlist → MailerLite group (fires automation).
+  // Returns `already` so the page can show "we already sent it" vs "check your inbox".
+  if ((formId === 'free-lessons' || formId === 'waitlist') && email) {
+    try {
+      const r = await fetch(`${SITE}/api/mailerlite`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: formId,
+          email,
+          name: data.firstName || data.name || '',
+          source: rec.pageUrl
+        })
+      });
+      const j = await r.json().catch(() => ({}));
+      return json(200, { ok: true, id: ref.id, already: !!j.already });
+    } catch (e) {
+      console.error('mailerlite opt-in failed', e);
+      return json(200, { ok: true, id: ref.id });
+    }
+  }
+
   // Newsletter opt-in
   if ((body.newsletter || formId === 'newsletter') && email) {
     try {

@@ -538,19 +538,71 @@
       }
     }
 
-    // Bottom signup (#2) exists for every category. Top signup (#1, below
-    // the carousel) only exists on Free Bible Lessons posts.
-    if (isLocked) {
-      document.getElementById('membershipLockWrap').style.display = 'block';
-      document.getElementById('membershipLockWrapTop').style.display = 'block';
-    } else if (post.mailerliteEmbed) {
-      document.getElementById('mailerliteWrap').style.display = 'block';
-      injectHtmlWithScripts(document.getElementById('mailerliteEmbedTarget'), post.mailerliteEmbed);
-      if (isLesson) {
-        document.getElementById('mailerliteWrapTop').style.display = 'block';
-        injectHtmlWithScripts(document.getElementById('mailerliteEmbedTargetTop'), post.mailerliteEmbed);
-      }
+    // ── Email opt-in ────────────────────────────────────────────────
+    //  • one of the 10 free lessons  → "get all 10 free lessons" opt-in
+    //    (MailerLite "Free 10 Lessons" group → 10-lesson automation),
+    //    shown both above (#1) and below (#2) the article.
+    //  • a free_lessons post NOT in the 10 → membership waitlist opt-in.
+    //  • any other blog post → membership waitlist opt-in (bottom only).
+    // gk-forms.js wires <form data-gk-form="…"> and handles the
+    // "check your inbox" vs "we already sent it" messaging.
+    function optinFormHtml(kind) {
+      var isFree = kind === 'free-lessons';
+      return (
+        '<form data-gk-form="' + kind + '" class="gk-optin-form">' +
+          '<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+            'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />' +
+          '<input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />' +
+          '<button type="submit" class="gk-optin-form__btn">' +
+            (isFree ? 'Send my 10 lessons' : 'Join the waitlist') +
+          '</button>' +
+        '</form>'
+      );
     }
+    function fillOptinBox(wrap, heading, blurb, kind) {
+      wrap.style.display = 'block';
+      var h = wrap.querySelector('h3');
+      if (h) h.textContent = heading;
+      var p = wrap.querySelector('p.gk-optin-blurb');
+      if (!p) {
+        p = document.createElement('p');
+        p.className = 'gk-optin-blurb text-slate-300 text-sm mb-4';
+        (h || wrap).insertAdjacentElement(h ? 'afterend' : 'afterbegin', p);
+      }
+      p.textContent = blurb;
+      var target = wrap.querySelector('[id^="mailerliteEmbedTarget"]');
+      if (target) injectHtmlWithScripts(target, optinFormHtml(kind));
+    }
+
+    if (post.isFreeLesson) {
+      fillOptinBox(
+        document.getElementById('mailerliteWrapTop'),
+        '📥 Get All 10 Free Lessons',
+        'Enter your email and we’ll send you all 10 free, ready-to-teach Bible lessons — including this one.',
+        'free-lessons'
+      );
+      fillOptinBox(
+        document.getElementById('mailerliteWrap'),
+        '📥 Get All 10 Free Lessons',
+        'One email, all 10 lessons. No credit card — just tell us where to send them.',
+        'free-lessons'
+      );
+    } else if (isLocked) {
+      ['membershipLockWrap', 'membershipLockWrapTop'].forEach(function (id) {
+        var wrap = document.getElementById(id);
+        wrap.style.display = 'block';
+        var link = wrap.querySelector('a');
+        if (link) link.outerHTML = optinFormHtml('waitlist');
+      });
+    } else {
+      fillOptinBox(
+        document.getElementById('mailerliteWrap'),
+        '🚀 Be First Into Glory Kids Membership',
+        'Launching September 15, 2026 — a full, growing lesson library with new lessons every week. Join the waitlist.',
+        'waitlist'
+      );
+    }
+    if (window.gkFormsRescan) window.gkFormsRescan();
 
     // Build TOC from rendered H2s
     const headings = contentEl.querySelectorAll('h2');

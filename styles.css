@@ -1727,6 +1727,33 @@ section { padding: 5rem 0; }
   margin-bottom: 1rem;
 }
 .footer__newsletter p { font-size: 0.85rem; margin-bottom: 1rem; }
+
+/* Shared email opt-in (free-lessons / waitlist) — handled by gk-forms.js.
+   Sits inside dark boxes (.mailerlite-box, .cta-box, dark CTA sections). */
+.gk-optin-form { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.gk-optin-form__email {
+  flex: 1 1 220px; min-width: 0;
+  padding: 0.85rem 1rem; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.06); color: #fff; font-size: 0.95rem;
+  font-family: inherit;
+}
+.gk-optin-form__email::placeholder { color: rgba(255,255,255,0.45); }
+.gk-optin-form__email:focus {
+  outline: none; border-color: var(--primary, #FF4B32); background: rgba(255,255,255,0.1);
+}
+.gk-optin-form__btn {
+  flex: 0 0 auto;
+  padding: 0.85rem 1.4rem; border-radius: 10px; border: none;
+  background: var(--primary, #FF4B32); color: #fff; font-weight: 700; font-size: 0.95rem;
+  cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.gk-optin-form__btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,75,50,0.4); }
+.gk-optin-form__btn:disabled { opacity: 0.6; cursor: default; transform: none; box-shadow: none; }
+@media (max-width: 520px) {
+  .gk-optin-form__email, .gk-optin-form__btn { flex: 1 1 100%; }
+}
+
 .newsletter-form {
   display: flex; gap: 0.5rem;
 }

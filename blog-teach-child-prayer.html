@@ -764,9 +764,11 @@
       <div class="sidebar-cta__icon">✨</div>
       <h4>Glory Kids Membership</h4>
       <p>Launching September 15, 2026: our full, growing library of Bible lessons, weekly devotionals for families, and full curriculum series — all for $29.99/mo. Join the waitlist now.</p>
-      <a href="glory-kids-membership.html" class="btn btn--gold" style="width:100%;display:block;text-align:center;">
-        Join the Waitlist →
-      </a>
+      <form data-gk-form="waitlist" class="gk-optin-form" style="flex-direction:column;">
+        <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+        <input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" style="flex:1 1 100%;" />
+        <button type="submit" class="gk-optin-form__btn" style="flex:1 1 100%;">Join the waitlist</button>
+      </form>
     </div>
 
     <!-- Related Posts -->
@@ -887,6 +889,7 @@
 <script src="firebase-config.js"></script>
 <script src="admin-data.js"></script>
 <script src="site-settings.js" defer></script>
+<script src="gk-forms.js" defer></script>
 <script src="auth.js"></script>
 <script src="chatbot.js"></script>
 </body>

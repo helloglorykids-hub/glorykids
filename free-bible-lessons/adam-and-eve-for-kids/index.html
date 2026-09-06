@@ -132,8 +132,9 @@
         <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (top) ═══
              Use the same MailerLite form for this lesson in all
              three .lesson-optin__embed containers on this page. -->
-        <form class="lesson-optin__fallback" onsubmit="return false;">
-          <input type="email" required placeholder="Enter your email address" />
+        <form class="lesson-optin__fallback" data-gk-form="free-lessons">
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+          <input type="email" name="email" required placeholder="Enter your email address" />
           <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
         </form>
         <!-- ═══ END MAILERLITE EMBED ═══ -->
@@ -345,8 +346,9 @@
       </div>
       <div class="lesson-optin__embed">
         <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (middle) ═══ -->
-        <form class="lesson-optin__fallback" onsubmit="return false;">
-          <input type="email" required placeholder="Enter your email address" />
+        <form class="lesson-optin__fallback" data-gk-form="free-lessons">
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+          <input type="email" name="email" required placeholder="Enter your email address" />
           <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
         </form>
         <!-- ═══ END MAILERLITE EMBED ═══ -->
@@ -391,8 +393,9 @@
       </div>
       <div class="lesson-optin__embed">
         <!-- ═══ PASTE MAILERLITE EMBED CODE HERE (bottom) ═══ -->
-        <form class="lesson-optin__fallback" onsubmit="return false;">
-          <input type="email" required placeholder="Enter your email address" />
+        <form class="lesson-optin__fallback" data-gk-form="free-lessons">
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+          <input type="email" name="email" required placeholder="Enter your email address" />
           <button type="submit" class="gk-btn gk-btn--cta">Send Me the Lesson →</button>
         </form>
         <!-- ═══ END MAILERLITE EMBED ═══ -->
@@ -569,6 +572,7 @@
 <script src="../../app.js"></script>
 <script src="../../firebase-config.js"></script>
 <script src="../../admin-data.js"></script>
+<script src="../../gk-forms.js" defer></script>
 <script src="../../auth.js"></script>
 <script src="../../chatbot.js"></script>
 </body>
