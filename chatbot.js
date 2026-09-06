@@ -15,7 +15,7 @@
   const KB = [
     {
       keywords: ['free', 'lesson', 'lessons', 'trial'],
-      answer: "We have 50+ free Bible lessons available right now — no credit card needed! Head to the <a href=\"free-lessons.html\">Free Lessons</a> page to browse them by age group and topic."
+      answer: "Enter your email on the <a href=\"free-lessons.html\">Free Lessons</a> page and we'll send you 10 complete, ready-to-teach Bible lessons — free, no credit card."
     },
     {
       keywords: ['curriculum', 'pack', 'packs', 'series'],
@@ -23,7 +23,7 @@
     },
     {
       keywords: ['price', 'pricing', 'cost', 'how much', 'membership', 'glory kids', 'subscription'],
-      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> and unlocks 500+ lessons, 10+ curriculum series, 300+ activity sheets, and new content every week. You can see everything included on the <a href=\"glory-kids-membership.html\">Membership page</a>."
+      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-membership.html\">Membership page</a>."
     },
     {
       keywords: ['cancel', 'pause', 'downgrade', 'unsubscribe'],
@@ -35,7 +35,7 @@
     },
     {
       keywords: ['activity', 'activities', 'craft', 'coloring', 'printable', 'worksheet'],
-      answer: "You'll find printable crafts, coloring pages, and games on our <a href=\"activities.html\">Activities & Resources</a> page — 30+ are free, with 300+ available to Glory Kids members."
+      answer: "You'll find printable crafts, coloring pages, and games on our <a href=\"activities.html\">Activities & Resources</a> page — many are free, with the full, growing library available to Glory Kids members."
     },
     {
       keywords: ['blog', 'article', 'articles', 'tips'],

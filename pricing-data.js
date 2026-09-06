@@ -32,7 +32,7 @@ var GK_MAIN_PLANS = [
     priceSub: '$249<span>/year</span>',
     save: 'Save $111',
     features: [
-      '500+ Bible lessons &amp; resources',
+      'Full, growing library of Bible lessons &amp; resources',
       'Full curriculum library',
       'New content added weekly',
       'Preschool + Elementary resources',
