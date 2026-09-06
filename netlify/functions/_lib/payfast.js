@@ -6,6 +6,25 @@ const crypto = require('crypto');
 const MODE = (process.env.PAYFAST_MODE || 'sandbox').toLowerCase();
 const HOST = MODE === 'live' ? 'www.payfast.co.za' : 'sandbox.payfast.co.za';
 
+// PayFast's public sandbox test merchant — documented at
+// https://developers.payfast.co.za/docs#step_1_form_fields — used ONLY when
+// running in sandbox mode with no real credentials configured. Live mode
+// never falls back to these.
+const SANDBOX_MERCHANT_ID = '10000100';
+const SANDBOX_MERCHANT_KEY = '46f0cd694581a';
+
+function creds() {
+  let id = process.env.PAYFAST_MERCHANT_ID;
+  let key = process.env.PAYFAST_MERCHANT_KEY;
+  let passphrase = process.env.PAYFAST_PASSPHRASE || '';
+  if (MODE !== 'live' && (!id || !key)) {
+    id = SANDBOX_MERCHANT_ID;
+    key = SANDBOX_MERCHANT_KEY;
+    passphrase = ''; // default sandbox account has no passphrase
+  }
+  return { id, key, passphrase };
+}
+
 const PROCESS_URL = `https://${HOST}/eng/process`;
 const VALIDATE_URL = `https://${HOST}/eng/query/validate`;
 
@@ -39,9 +58,7 @@ const PAYMENT_ORDER = [
 
 // Returns { fields, processUrl } — POST `fields` as a form to `processUrl`.
 function buildCheckout(data) {
-  const merchantId = process.env.PAYFAST_MERCHANT_ID;
-  const merchantKey = process.env.PAYFAST_MERCHANT_KEY;
-  const passphrase = process.env.PAYFAST_PASSPHRASE || '';
+  const { id: merchantId, key: merchantKey, passphrase } = creds();
 
   const fields = {
     merchant_id: merchantId,
@@ -70,7 +87,7 @@ function buildCheckout(data) {
 // PayFast signs ITN in the order the fields were received, so pass the raw
 // querystring-ordered keys.
 function verifyItnSignature(orderedPairs, suppliedSignature) {
-  const passphrase = process.env.PAYFAST_PASSPHRASE || '';
+  const { passphrase } = creds();
   const expected = signPairs(
     orderedPairs.filter(([k]) => k !== 'signature'),
     passphrase
