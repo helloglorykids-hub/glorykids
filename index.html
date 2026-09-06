@@ -56,8 +56,7 @@
   <div class="container">
     <div class="nav__inner">
       <a href="index.html" class="nav__logo">
-        <span class="nav__logo-star">⭐</span>
-        <div class="nav__logo-icon">✝</div>
+<img class="nav__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="42" height="42" />
         <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
       </a>
       <ul class="nav__links">
@@ -1129,33 +1128,10 @@
 <!-- ═══════════════════════════════════════════════
      7. TESTIMONIALS (hybrid: video + filterable text grid)
 ════════════════════════════════════════════════ -->
-<section class="gk-section gk-testimonials">
+<section class="gk-section gk-testimonials wave-seam wave-seam--cream">
   <div class="container">
     <h2 class="gk-h2 gk-h2--white reveal">Here's What Ministry Leaders Say</h2>
     <p class="gk-section-sub gk-section-sub--white reveal">Real stories from churches, schools, and families using Glory Kids.</p>
-
-    <!-- Featured video testimonial -->
-    <div class="reveal mb-16 max-w-4xl mx-auto">
-      <div id="videoTestimonial" class="relative rounded-2xl overflow-hidden aspect-video bg-slate-900 border border-white/10 shadow-2xl shadow-black/40 group cursor-pointer">
-        <img src="images/hero-kids.jpg" alt="Pastor David video testimonial" class="w-full h-full object-cover opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-slate-950/40"></div>
-
-        <button type="button" id="videoPlayBtn" aria-label="Play video testimonial"
-                class="absolute inset-0 flex items-center justify-center">
-          <span class="flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white/90 shadow-lg transition-transform duration-300 group-hover:scale-110">
-            <svg viewBox="0 0 24 24" class="w-8 h-8 sm:w-10 sm:h-10 text-slate-900 translate-x-0.5" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </span>
-        </button>
-
-        <div class="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
-          <div class="text-amber-400 text-lg mb-2 tracking-tight">★★★★★</div>
-          <p class="text-white text-lg sm:text-2xl font-semibold leading-snug max-w-2xl mb-4">"We went from zero structure to a thriving, organized ministry in 2 months. The quality speaks for itself."</p>
-          <div class="text-gray-200 text-sm sm:text-base font-medium">
-            <span class="text-white font-bold">Pastor David</span> &middot; Lead Pastor &middot; Harvest Life Church, Albuquerque &middot; <span class="text-gray-500">~350 congregants</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Filter tabs -->
     <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="testimonialFilters">
@@ -1304,20 +1280,6 @@
 
 <script>
   (function () {
-    // Video testimonial: swap thumbnail for YouTube embed on click
-    var videoBox = document.getElementById('videoTestimonial');
-    var playBtn = document.getElementById('videoPlayBtn');
-    if (playBtn && videoBox) {
-      playBtn.addEventListener('click', function () {
-        var youtubeId = 'M7lc1UVf-VE'; // TODO: replace with real testimonial video ID
-        videoBox.innerHTML =
-          '<iframe class="w-full h-full" src="https://www.youtube.com/embed/' + youtubeId + '?autoplay=1&rel=0" ' +
-          'title="Ministry leader video testimonial" frameborder="0" ' +
-          'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' +
-          'allowfullscreen></iframe>';
-      });
-    }
-
     // Filter tabs
     var filterButtons = document.querySelectorAll('.tst-filter-btn');
     var cards = document.querySelectorAll('.tst-card');
@@ -1357,7 +1319,7 @@
 <!-- ═══════════════════════════════════════════════
      8. PERSONAL TOUCH + SCHEDULE ZOOM CALL ⭐
 ════════════════════════════════════════════════ -->
-<section class="gk-section">
+<section class="gk-section wave-seam wave-seam--dark">
   <div class="container">
     <div class="gk-personal__grid">
       <img src="images/jandre-founder.jpeg" alt="Jandre, Founder of Glory Kids Ministries" loading="lazy" decoding="async" class="gk-personal__photo reveal reveal--left" />
@@ -1390,7 +1352,7 @@
 <!-- ═══════════════════════════════════════════════
      9. ROLE-SPECIFIC CTA CARDS
 ════════════════════════════════════════════════ -->
-<section class="gk-section gk-section--white">
+<section class="gk-section gk-section--white wave-seam wave-seam--cream">
   <div class="container">
     <h2 class="gk-h2 reveal">Spirit-Filled Resources for Your Role</h2>
     <div class="gk-cards3">
@@ -1420,7 +1382,7 @@
 <!-- ═══════════════════════════════════════════════
      10. FINAL CTA + FAQ
 ════════════════════════════════════════════════ -->
-<section class="gk-section gk-faq">
+<section class="gk-section gk-faq wave-seam wave-seam--darkest">
   <div class="container">
     <div class="gk-center" style="margin-bottom:3.5rem;">
       <h2 class="gk-h2 gk-h2--white">Ready to Transform Your Children's Ministry?</h2>
@@ -1458,7 +1420,7 @@
   <div class="container">
     <div class="gk-footer__grid">
       <div class="gk-footer__brand">
-        <div class="gk-footer__logo">✝ Glory Kids Ministries</div>
+        <div class="gk-footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div>
         <p class="gk-footer__desc">The #1 spirit-filled Bible curriculum designed for kids to encounter Jesus—used by 2,000+ churches, thousands of families, and Christian schools worldwide. Free printable Bible lessons, complete curriculum, and resources for creating real encounters with God at home, in church, and at school. Raising a generation that encounters Jesus.</p>
         <div class="gk-footer__social">
           <a href="#" aria-label="Facebook">📘</a>

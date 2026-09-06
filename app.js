@@ -24,15 +24,28 @@ if (progressBar) {
 const nav = document.getElementById('nav');
 if (nav) {
   let lastScroll = 0;
+  // Hide the nav on scroll-down once past this point, reveal it on any scroll-up.
+  const HIDE_AFTER = 600;
   window.addEventListener('scroll', () => {
-    const scroll = window.scrollY;
+    const scroll = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+
     if (scroll > 60) {
       nav.classList.add('scrolled');
     } else {
       nav.classList.remove('scrolled');
     }
+
+    const menuOpen = document.querySelector('.nav__mobile.open');
+    if (!menuOpen) {
+      if (scroll > lastScroll && scroll > HIDE_AFTER) {
+        nav.classList.add('nav--hidden');    // scrolling down, past the fold
+      } else if (scroll < lastScroll) {
+        nav.classList.remove('nav--hidden');  // scrolling up
+      }
+    }
+
     lastScroll = scroll;
-  });
+  }, { passive: true });
 
   // Active nav link
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';

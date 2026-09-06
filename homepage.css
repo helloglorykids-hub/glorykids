@@ -189,6 +189,8 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
   transition: var(--transition);
 }
 .nav.scrolled { background: rgba(6,36,90,0.96); box-shadow: var(--shadow-sm); }
+.nav { transition: var(--transition), transform 0.35s ease; }
+.nav--hidden { transform: translateY(-100%); }
 .nav__inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; flex-wrap: nowrap; gap: 16px; }
 .nav__logo { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-headline); font-weight: 700; color: var(--color-white); flex-shrink: 0; white-space: nowrap; }
 .nav__logo-star { font-size: 1.1rem; }
@@ -201,6 +203,12 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
   font-size: 1rem;
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(255,75,50,0.35);
+}
+.nav__logo-img {
+  width: 40px; height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
 }
 .nav__logo-text { letter-spacing: 0.01em; }
 .nav__logo-text span { color: var(--color-cta); }
@@ -347,6 +355,27 @@ html body .container { width: auto; max-width: 1600px; margin: 0 auto; padding: 
 .gk-section { background: var(--color-bg); padding: var(--section-padding) 0; }
 /* Thin teal divider between major sections — subtle, not a hard rule */
 section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
+
+/* ─── WAVE SEAM ──────────────────────────────────────────────────
+   The section directly above drapes down over this one in a soft
+   wave (mirrors the homepage .gkp::before seam). Put .wave-seam on
+   the lower section and a --wave-color modifier matching the colour
+   of the section above, so the top overlaps the bottom. */
+.wave-seam { position: relative; border-top: 0 !important; }
+.wave-seam::before {
+  content: "";
+  position: absolute;
+  left: -1px; right: -1px; top: -1px;
+  height: clamp(40px, 5.5vw, 72px);
+  background: var(--wave-color, #17191C);
+  z-index: 1;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%2072'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0%200H1440V33C1245%2059%201090%2014%20760%2031%20470%2046%20245%209%200%2030Z'%20fill='%23fff'/%3E%3C/svg%3E") no-repeat 50% 0 / 100% 100%;
+          mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%2072'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0%200H1440V33C1245%2059%201090%2014%20760%2031%20470%2046%20245%209%200%2030Z'%20fill='%23fff'/%3E%3C/svg%3E") no-repeat 50% 0 / 100% 100%;
+}
+.wave-seam--cream   { --wave-color: #FFF9ED; }
+.wave-seam--dark    { --wave-color: #17191C; }
+.wave-seam--darkest { --wave-color: #0E0F12; }
 .gk-h2 {
   font-size: 36px; font-weight: 700; text-align: center; color: var(--color-white);
   margin-bottom: 1rem; line-height: 1.25;
@@ -659,7 +688,8 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 /* ─── FOOTER (darkest) ───────────────────────────────────────── */
 .gk-footer { background: #17191C; color: var(--color-white); padding: var(--section-padding-sm) 0 32px; border-top: 1px solid var(--color-border); }
 .gk-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 40px; margin-bottom: 3rem; }
-.gk-footer__logo { font-family: var(--font-headline); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-white); }
+.gk-footer__logo { font-family: var(--font-headline); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-white); display: flex; align-items: center; gap: 0.5rem; }
+.footer__logo-img { width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; vertical-align: middle; }
 .gk-footer__desc { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; margin-bottom: 1.25rem; }
 .gk-footer__social { display: flex; gap: 0.75rem; }
 .gk-footer__social a {

@@ -25,6 +25,24 @@ const DIR = __dirname;
 const START = '<!-- gk:managed:start -->';
 const END = '<!-- gk:managed:end -->';
 
+/* Pages kept out of sitemap.xml — auth flows, account/utility pages, thank-you
+   and preview pages, and the 404. These have no SEO value and shouldn't be
+   surfaced in search. Matched against the bare filename. */
+const SITEMAP_EXCLUDE = new Set([
+  '404.html',
+  'login.html',
+  'signup.html',
+  'forgot-password.html',
+  'dashboard.html',
+  'shop-thankyou.html',
+  'glory-kids-membership-preview.html',
+  'admin.html',
+  'admin-login.html',
+  'admin-import.html',
+  'admin-data.html',
+  'lesson-gate.html',
+]);
+
 /* ---- Firestore REST value decoding ---- */
 function dec(v) {
   if (v == null) return null;
@@ -219,6 +237,7 @@ const CONTENT_PAGE_IDS = {
     const page = pageByPath[f];
     if (page && (page.visible === false || page.noindex)) return;
     if (/template/.test(f)) return;
+    if (SITEMAP_EXCLUDE.has(f)) return;
     urls.push(SITE_ORIGIN + '/' + (f === 'index.html' ? '' : f));
   });
   posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog-post.html?slug=${p.slug}`));
