@@ -6,20 +6,21 @@ const crypto = require('crypto');
 const MODE = (process.env.PAYFAST_MODE || 'sandbox').toLowerCase();
 const HOST = MODE === 'live' ? 'www.payfast.co.za' : 'sandbox.payfast.co.za';
 
-// PayFast's public sandbox test merchant — documented at
-// https://developers.payfast.co.za/docs#step_1_form_fields — used ONLY when
-// running in sandbox mode with no real credentials configured. Live mode
-// never falls back to these.
-const SANDBOX_MERCHANT_ID = '10000100';
-const SANDBOX_MERCHANT_KEY = '46f0cd694581a';
+// PayFast's public sandbox test merchant *with a known passphrase* — the
+// plain 10000100 account is shared and people leave stray passphrases on it,
+// which breaks signature validation. 10004002 / passphrase "payfast" is the
+// documented pair for passphrase-enabled testing. Live mode never uses these.
+const SANDBOX_MERCHANT_ID = '10004002';
+const SANDBOX_MERCHANT_KEY = 'q1cd2rdny4a53';
+const SANDBOX_PASSPHRASE = 'payfast';
 
 function creds() {
-  // Non-live mode ALWAYS uses PayFast's public sandbox test merchant, even if
-  // real credentials happen to be sitting in the env — otherwise live keys get
+  // Non-live mode ALWAYS uses PayFast's sandbox test merchant, even if real
+  // credentials happen to be sitting in the env — otherwise live keys get
   // posted to the sandbox endpoint and every test checkout fails. Flip
   // PAYFAST_MODE=live to use the real account.
   if (MODE !== 'live') {
-    return { id: SANDBOX_MERCHANT_ID, key: SANDBOX_MERCHANT_KEY, passphrase: '' };
+    return { id: SANDBOX_MERCHANT_ID, key: SANDBOX_MERCHANT_KEY, passphrase: SANDBOX_PASSPHRASE };
   }
   return {
     id: process.env.PAYFAST_MERCHANT_ID,
