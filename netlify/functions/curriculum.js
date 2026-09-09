@@ -24,6 +24,7 @@ exports.handler = async (event) => {
       slug: c.slug,
       description: c.description || '',
       coverImage: c.coverImage || '',
+      section: c.section === 'activities' ? 'activities' : 'curriculum',
       ageGroups: c.ageGroups || [],
       topics: c.topics || [],
       type: c.type === 'series' ? 'series' : 'pack',

@@ -9,7 +9,7 @@
 'use strict';
 const { admin, db, configured } = require('./_lib/firebase');
 const { cancelSubscription } = require('./_lib/payfast');
-const { json } = require('./_lib/http');
+const { json, parseBody } = require('./_lib/http');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });
@@ -26,16 +26,26 @@ exports.handler = async (event) => {
     return json(401, { error: 'Your session expired — please sign in again.' });
   }
 
-  // Newest active/pending subscription for this user
-  const snap = await db.collection('subscriptions')
-    .where('uid', '==', uid)
-    .get();
-  const subs = snap.docs.map(d => ({ id: d.id, ...d.data() }))
-    .filter(s => s.status === 'active' || s.status === 'pending')
-    .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  const { json: body } = parseBody(event);
+  const adminSubId = body && body.subscriptionId;
 
-  if (!subs.length) return json(404, { error: 'No active membership found on your account.' });
-  const sub = subs[0];
+  let sub;
+  if (adminSubId) {
+    // Admin cancelling someone else's subscription from the panel.
+    const callerRec = (await db.collection('users').doc(uid).get()).data();
+    if (!callerRec || callerRec.isAdmin !== true) return json(403, { error: 'Admins only.' });
+    const s = await db.collection('subscriptions').doc(String(adminSubId)).get();
+    if (!s.exists) return json(404, { error: 'Subscription not found.' });
+    sub = { id: s.id, ...s.data() };
+    uid = sub.uid;  // act on the member's account below
+  } else {
+    const snap = await db.collection('subscriptions').where('uid', '==', uid).get();
+    const subs = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .filter(s => s.status === 'active' || s.status === 'pending' || s.status === 'past_due')
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    if (!subs.length) return json(404, { error: 'No active membership found on your account.' });
+    sub = subs[0];
+  }
 
   if (!sub.pfToken) {
     // First payment hasn't cleared yet — just mark it so the ITN handler ignores it.
@@ -60,8 +70,9 @@ exports.handler = async (event) => {
     return json(502, { error: 'We couldn’t cancel automatically. Our team has been notified and will confirm your cancellation by email within one business day.' });
   }
 
+  const by = adminSubId ? 'admin' : 'member';
   await db.collection('subscriptions').doc(sub.id).set({
-    status: 'cancelled', cancelledAt: Date.now(), cancelledBy: 'member'
+    status: 'cancelled', cancelledAt: Date.now(), cancelledBy: by
   }, { merge: true });
 
   // Keep access flagged as cancelling — the member keeps content until the
@@ -70,8 +81,13 @@ exports.handler = async (event) => {
     planStatus: 'cancelled', membershipCancelledAt: Date.now()
   }, { merge: true });
 
+  // Church subscription → wind the org down so seated members lose access.
+  if (sub.plan === 'church') {
+    await db.collection('orgs').doc(String(uid)).set({ planStatus: 'cancelled', updatedAt: Date.now() }, { merge: true }).catch(() => {});
+  }
+
   await db.collection('payments').add({
-    uid, email: sub.email, amount: 0, note: 'Membership cancelled by member',
+    uid, email: sub.email, amount: 0, note: 'Membership cancelled by ' + by,
     status: 'info', source: 'payfast-membership', date: Date.now()
   }).catch(() => {});
 

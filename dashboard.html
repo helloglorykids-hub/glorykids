@@ -371,6 +371,18 @@
         <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Join the Waitlist →</a>
       </div>
 
+      <!-- Church team seats (church owners only) -->
+      <div id="team-panel" style="display:none;margin-top:1rem;border:1px solid var(--gray-200);border-radius:12px;padding:1.1rem 1.25rem;">
+        <div style="font:800 0.95rem Poppins,system-ui,sans-serif;margin-bottom:0.25rem;">👥 Your ministry team <span id="team-count" style="font-weight:500;color:var(--gray-400);"></span></div>
+        <p style="font-size:0.82rem;color:var(--gray-500);margin:0 0 0.75rem;">Add the leaders and volunteers who should have full access under your church licence. They sign up with the same email.</p>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.75rem;">
+          <input id="team-email" type="email" placeholder="leader@yourchurch.org" style="flex:1;min-width:180px;padding:0.55rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;">
+          <button id="team-add" style="font:600 0.82rem Poppins,system-ui,sans-serif;padding:0.55rem 1rem;border:0;border-radius:8px;background:var(--primary);color:#fff;cursor:pointer;">Add member</button>
+        </div>
+        <div id="team-msg" style="font-size:0.8rem;margin-bottom:0.5rem;"></div>
+        <ul id="team-list" style="list-style:none;padding:0;margin:0;"></ul>
+      </div>
+
       <!-- Stats -->
       <div class="dash-stats" style="margin-top:1.5rem;">
         <div class="dash-stat-card">
@@ -546,9 +558,16 @@
 
     <!-- ACTIVITIES TAB -->
     <div id="tab-activities" style="display:none;">
-      <h2 style="margin-bottom:1.5rem;">Activities & Resources</h2>
-      <p style="color:var(--gray-500);margin-bottom:2rem;">Browse free activities or <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">upgrade to unlock 300+</a></p>
-      <a href="activities.html" class="btn btn--primary btn--lg">Browse Free Activities →</a>
+      <h2 style="margin-bottom:0.5rem;">Activities &amp; Resources</h2>
+      <p id="activities-tab-sub" style="color:var(--gray-500);margin-bottom:1.5rem;">Loading…</p>
+      <div id="activities-lib"></div>
+      <div id="activities-lib-locked" style="display:none;">
+        <div class="upgrade-banner">
+          <div><h3>Activities &amp; Resources are a Members-Only Feature ✨</h3><p>Crafts, games, coloring pages, object lessons and more — included with Glory Kids Membership.</p></div>
+          <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;"><a href="activities.html" class="text-primary" style="font-weight:600;">Browse the free activities library →</a></p>
     </div>
 
     <!-- SAVED TAB -->
@@ -631,8 +650,63 @@ onFirebaseReady(() => {
     renderActivity();
     renderPlanState();
     maybeWelcomeNewMember();
+    renderTeamPanel();
   });
 });
+
+// ── Church team seats ────────────────────────────────────
+async function renderTeamPanel() {
+  const panel = document.getElementById('team-panel');
+  let data;
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/org', { headers: { Authorization: 'Bearer ' + idToken } });
+    data = await res.json();
+  } catch (e) { return; }
+  if (!data || !data.owner || !data.org) { panel.style.display = 'none'; return; }
+
+  panel.style.display = 'block';
+  const drawList = (emails) => {
+    document.getElementById('team-count').textContent = `— ${emails.length} of ${data.org.seatLimit} seats used`;
+    document.getElementById('team-list').innerHTML = emails.length ? emails.map(e => `
+      <li style="display:flex;justify-content:space-between;align-items:center;padding:0.45rem 0.1rem;border-bottom:1px solid var(--gray-100);font-size:0.85rem;">
+        <span>${e.replace(/[<>&]/g, '')}</span>
+        <button data-rm="${e.replace(/"/g, '')}" style="background:none;border:0;color:var(--rose,#c0392b);font-size:0.78rem;text-decoration:underline;cursor:pointer;">Remove</button>
+      </li>`).join('') : '<li style="font-size:0.82rem;color:var(--gray-400);padding:0.4rem 0;">No team members yet.</li>';
+    document.getElementById('team-list').querySelectorAll('button[data-rm]').forEach(b => {
+      b.addEventListener('click', () => teamAction('remove', b.getAttribute('data-rm')));
+    });
+  };
+  drawList(data.org.memberEmails || []);
+
+  document.getElementById('team-add').onclick = () => {
+    const v = (document.getElementById('team-email').value || '').trim();
+    if (v) teamAction('invite', v);
+  };
+
+  async function teamAction(action, email) {
+    const msg = document.getElementById('team-msg');
+    msg.textContent = action === 'invite' ? 'Adding…' : 'Removing…';
+    msg.style.color = 'var(--gray-500)';
+    try {
+      const idToken = await auth.currentUser.getIdToken();
+      const res = await fetch('/api/org', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+        body: JSON.stringify({ action, email })
+      });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.error || 'Something went wrong.');
+      drawList(d.memberEmails || []);
+      document.getElementById('team-email').value = '';
+      msg.textContent = action === 'invite' ? (d.already ? 'Already on your team.' : 'Added ✓') : 'Removed.';
+      msg.style.color = 'var(--green,#1b7a3d)';
+    } catch (e) {
+      msg.textContent = e.message;
+      msg.style.color = 'var(--rose,#c0392b)';
+    }
+  }
+}
 
 async function cancelMembership() {
   if (!confirm('Cancel your Glory Kids Membership?\n\nYou’ll keep access until the end of the period you’ve already paid for, and you won’t be billed again.')) return;
@@ -734,38 +808,49 @@ function showTab(name, linkEl) {
   document.querySelectorAll('.dash-nav-item').forEach(l => l.classList.remove('active'));
   if (linkEl) linkEl.classList.add('active');
   if (name === 'lessons') renderLessonsLibrary();
-  if (name === 'curriculum') renderCurriculumLibrary();
+  if (name === 'curriculum') renderLibrarySection('curriculum');
+  if (name === 'activities') renderLibrarySection('activities');
 }
 
-// ── Curriculum library ───────────────────────────────────
-let _curriculumLib = null;
-async function renderCurriculumLibrary() {
-  if (_curriculumLib) return;
-  const host = document.getElementById('curriculum-lib');
-  const sub = document.getElementById('curriculum-tab-sub');
-  const locked = document.getElementById('curriculum-lib-locked');
+// ── Curriculum / Activities library (shared) ─────────────
+let _libItems = null;
+async function fetchLibItems() {
+  if (_libItems) return _libItems;
+  try {
+    const res = await fetch('/api/curriculum');
+    _libItems = (await res.json()).curriculum || [];
+  } catch (e) { _libItems = []; }
+  return _libItems;
+}
+
+const _libDone = {};
+async function renderLibrarySection(section) {
+  if (_libDone[section]) return;
+  _libDone[section] = true;
+  const isActivities = section === 'activities';
+  const host = document.getElementById(isActivities ? 'activities-lib' : 'curriculum-lib');
+  const sub = document.getElementById(isActivities ? 'activities-tab-sub' : 'curriculum-tab-sub');
+  const locked = document.getElementById(isActivities ? 'activities-lib-locked' : 'curriculum-lib-locked');
 
   let rec = null;
   try { rec = await GK.getUserRecord(currentUid); } catch (e) {}
   const isMember = rec && (rec.plan === 'glory_kids' || rec.plan === 'church') &&
-    (rec.planStatus === 'active' || rec.planStatus === 'cancelled');
+    (rec.planStatus === 'active' || rec.planStatus === 'cancelled' || rec.planStatus === 'past_due');
 
-  let items = [];
-  try {
-    const res = await fetch('/api/curriculum');
-    items = (await res.json()).curriculum || [];
-  } catch (e) {}
-  _curriculumLib = items;
+  const all = await fetchLibItems();
+  const items = all.filter(c => (c.section === 'activities') === isActivities);
 
   if (!items.length) {
-    sub.textContent = 'New curriculum series are published every month. Nothing here yet — check back soon.';
+    sub.textContent = isActivities
+      ? 'New activity packs are added regularly. Nothing here yet — check back soon.'
+      : 'New curriculum series are published every month. Nothing here yet — check back soon.';
     locked.style.display = isMember ? 'none' : 'block';
     return;
   }
 
   sub.innerHTML = isMember
-    ? 'Everything below is included with your membership. New series drop on the 15th of each month.'
-    : 'Preview of what members get. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock all curriculum →</a>';
+    ? (isActivities ? 'Every activity pack below is included with your membership.' : 'Everything below is included with your membership. New series drop on the 15th of each month.')
+    : 'Preview of what members get. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock everything →</a>';
   locked.style.display = isMember ? 'none' : 'block';
 
   host.innerHTML = items.map(c => {

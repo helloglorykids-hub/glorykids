@@ -448,6 +448,7 @@
     rec.coverImage = c.coverImage || '';
     rec.ageGroups = Array.isArray(c.ageGroups) ? c.ageGroups.filter(Boolean) : [];
     rec.topics = Array.isArray(c.topics) ? c.topics.filter(Boolean) : [];
+    rec.section = c.section === 'activities' ? 'activities' : 'curriculum';
     rec.type = c.type === 'series' ? 'series' : 'pack';
     rec.files = Array.isArray(c.files) ? c.files.filter(f => f && f.path) : [];
     rec.weeks = Array.isArray(c.weeks) ? c.weeks.map(w => ({
@@ -468,6 +469,16 @@
     return { id: ref.id, ...rec };
   }
   async function deleteCurriculum(id) { await curriculumCol().doc(id).delete(); }
+
+  /* ── Membership: subscriptions & church orgs (admin view) ────────── */
+  async function listSubscriptions() {
+    const snap = await db.collection('subscriptions').get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
+  async function listOrgs() {
+    const snap = await db.collection('orgs').get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
 
   /* ── Shop: orders ─────────────────────────────────────────────────── */
   async function listOrders(limitN) {
@@ -570,6 +581,7 @@
     bumpAnalytics, getAnalyticsRange,
     listProducts, listActiveProducts, getProduct, saveProduct, deleteProduct,
     listCurriculum, getCurriculum, saveCurriculum, deleteCurriculum,
+    listSubscriptions, listOrgs,
     listOrders, getOrder, updateOrder, listMyOrders,
     listDiscountCodes, saveDiscountCode, deleteDiscountCode,
     listMedia, addMedia, deleteMedia,

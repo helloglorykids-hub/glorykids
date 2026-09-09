@@ -17,15 +17,11 @@
 'use strict';
 const { admin, db, bucket, configured } = require('./_lib/firebase');
 const { json, text } = require('./_lib/http');
+const { resolveMembership } = require('./_lib/membership');
 
 const TEN_MIN = 10 * 60 * 1000;
 const clean = s => String(s || 'download').replace(/[^\w.\- ]/g, '').trim() || 'download';
 
-function isActiveMember(rec) {
-  if (!rec) return false;
-  const paid = rec.plan === 'glory_kids' || rec.plan === 'church';
-  return paid && (rec.planStatus === 'active' || rec.planStatus === 'cancelled');
-}
 function guessExt(path) {
   const m = /\.([a-z0-9]{2,5})(?:\?|$)/i.exec(path || '');
   return m ? '.' + m[1].toLowerCase() : '';
@@ -39,15 +35,18 @@ exports.handler = async (event) => {
   const idToken = authz.replace(/^Bearer\s+/i, '');
   if (!idToken) return json(401, { error: 'Please sign in.' });
 
-  let uid;
+  let uid, email;
   try {
-    uid = (await admin.auth().verifyIdToken(idToken)).uid;
+    const decoded = await admin.auth().verifyIdToken(idToken);
+    uid = decoded.uid;
+    email = (decoded.email || '').toLowerCase();
   } catch (e) {
     return json(401, { error: 'Your session expired — please sign in again.' });
   }
 
   const userSnap = await db.collection('users').doc(uid).get();
   const userRec = userSnap.exists ? userSnap.data() : null;
+  const membership = await resolveMembership(db, uid, email, userRec);
 
   // ── Resolve the target: a lesson pack, or curriculum files ──────────
   let title, files, needsMembership = true;
@@ -84,7 +83,7 @@ exports.handler = async (event) => {
     return json(400, { error: 'Nothing requested.' });
   }
 
-  if (needsMembership && !isActiveMember(userRec)) {
+  if (needsMembership && !membership.active) {
     return json(403, { error: 'This download is included with Glory Kids Membership.', needsMembership: true });
   }
   if (!files || !files.length) return json(404, { error: 'No files attached.' });

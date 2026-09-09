@@ -138,15 +138,17 @@ async function handleMembership(form) {
       status: cancelled ? 'cancelled' : 'past_due',
       pfStatus: status, pfToken: token, lastItnAt: Date.now()
     }, { merge: true });
-    await db.collection('users').doc(String(uid)).set({
-      planStatus: cancelled ? 'cancelled' : 'past_due'
-    }, { merge: true }).catch(() => {});
+    const patch = { planStatus: cancelled ? 'cancelled' : 'past_due' };
+    // Start the grace clock on the first failed renewal only.
+    if (!cancelled && sub.status !== 'past_due') patch.pastDueSince = Date.now();
+    await db.collection('users').doc(String(uid)).set(patch, { merge: true }).catch(() => {});
     await db.collection('payments').add({
       uid, email: sub.email, amount: gross || 0,
       note: 'Membership ' + (cancelled ? 'cancelled' : 'payment ' + status.toLowerCase()),
       status: cancelled ? 'info' : 'failed', source: 'payfast-membership',
       subscriptionId: subId, date: Date.now()
     }).catch(() => {});
+    mlEvent(cancelled ? 'membership-cancelled' : 'membership-payment-failed', sub).catch(() => {});
     return ok;
   }
 
@@ -182,10 +184,28 @@ async function handleMembership(form) {
     planStatus: 'active',
     membershipSince: sub.activatedAt || Date.now(),
     membershipPlan: sub.planKey || 'monthly',
-    pfSubscriptionToken: token
+    pfSubscriptionToken: token,
+    pastDueSince: FieldValue.delete()   // clear any earlier past-due grace clock
   };
   if (sub.orgName) userPatch.orgName = sub.orgName;
   await db.collection('users').doc(String(uid)).set(userPatch, { merge: true });
+
+  // Church: provision (or refresh) the org + seats.
+  if (accountPlan === 'church') {
+    try {
+      const SEATS = { 'church-small': Number(process.env.CHURCH_SMALL_SEATS) || 5, 'church-growing': Number(process.env.CHURCH_GROWING_SEATS) || 20 };
+      const orgRef = db.collection('orgs').doc(String(uid));
+      const orgSnap = await orgRef.get();
+      const orgPatch = {
+        ownerUid: uid, ownerEmail: sub.email, orgName: sub.orgName || '',
+        plan: sub.planKey || 'church-small', planStatus: 'active',
+        seatLimit: SEATS[sub.planKey] || 5, updatedAt: Date.now()
+      };
+      if (!orgSnap.exists) { orgPatch.createdAt = Date.now(); orgPatch.memberEmails = []; }
+      await orgRef.set(orgPatch, { merge: true });
+      await db.collection('users').doc(String(uid)).set({ orgId: uid, isOrgOwner: true }, { merge: true });
+    } catch (e) { console.error('org provision failed', e); }
+  }
 
   await db.collection('payments').add({
     uid, email: sub.email, amount: gross,
@@ -194,19 +214,22 @@ async function handleMembership(form) {
     subscriptionId: subId, pfPaymentId, date: Date.now()
   }).catch(e => console.error('membership payment log failed', e));
 
-  // MailerLite — add to the customers/members group; move off the waitlist.
-  try {
-    await fetch(`${SITE}/api/mailerlite`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'purchase',
-        email: sub.email,
-        name: sub.name || '',
-        fields: { membership_plan: sub.planKey || 'monthly', membership_status: 'active' }
-      })
-    });
-  } catch (e) { console.error('mailerlite membership sync failed', e); }
+  // MailerLite — welcome on the first payment, otherwise just keep them synced.
+  mlEvent(firstPayment ? 'membership-welcome' : 'purchase', sub).catch(() => {});
 
   return ok;
+}
+
+// Fire a MailerLite lifecycle event for a subscription (best-effort).
+async function mlEvent(action, sub) {
+  await fetch(`${SITE}/api/mailerlite`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      action,
+      email: sub.email,
+      name: sub.name || '',
+      fields: { membership_plan: sub.planKey || 'monthly' }
+    })
+  });
 }

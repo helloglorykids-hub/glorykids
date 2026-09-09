@@ -19,6 +19,9 @@ const GROUP_CUSTOMERS = process.env.MAILERLITE_GROUP_CUSTOMERS || '';
 // Group IDs are not secret — safe to ship as defaults; override via env if needed.
 const GROUP_FREE_LESSONS = process.env.MAILERLITE_GROUP_FREE_LESSONS || '197057173518288504';
 const GROUP_WAITLIST = process.env.MAILERLITE_GROUP_WAITLIST || '190369688509744308';
+// Active paying members. Set MAILERLITE_GROUP_MEMBERS in the env and hook your
+// "welcome" + "payment failed" automations to this group / its fields.
+const GROUP_MEMBERS = process.env.MAILERLITE_GROUP_MEMBERS || GROUP_CUSTOMERS;
 
 async function ml(path, method, body) {
   const res = await fetch(API + path, {
@@ -57,6 +60,16 @@ exports.handler = async (event) => {
   if (action === 'purchase' && GROUP_CUSTOMERS) groups.add(GROUP_CUSTOMERS);
   if (action === 'free-lessons') groups.add(GROUP_FREE_LESSONS);
   if (action === 'waitlist') groups.add(GROUP_WAITLIST);
+  // Membership lifecycle — same group, distinguished by the `membership_status`
+  // field so you can branch automations (welcome vs payment-failed vs cancelled).
+  if (action === 'membership-welcome' || action === 'membership-payment-failed' || action === 'membership-cancelled') {
+    if (GROUP_MEMBERS) groups.add(GROUP_MEMBERS);
+    body.fields = Object.assign({}, body.fields, {
+      membership_status: action === 'membership-welcome' ? 'active'
+        : action === 'membership-payment-failed' ? 'payment_failed' : 'cancelled',
+      membership_event_at: new Date().toISOString()
+    });
+  }
 
   // "already sent it?" check — only for the opt-in flows that need it
   let already = false;

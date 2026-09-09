@@ -123,6 +123,14 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    // Church organisations / team seats. Provisioned + mutated only by the
+    // Netlify functions (Admin SDK). The owner may read their own org
+    // directly; seated members read it through /api/org. Admin sees all.
+    match /orgs/{id} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.ownerUid == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
     // ── Editable page content + media library ───────────────────────────
     // Public read (content.js / the storefront apply them); admin write.
     match /content/{id} {

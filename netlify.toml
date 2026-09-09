@@ -67,6 +67,10 @@
   to = "/.netlify/functions/curriculum"
   status = 200
 [[redirects]]
+  from = "/api/org"
+  to = "/.netlify/functions/org"
+  status = 200
+[[redirects]]
   from = "/api/download"
   to = "/.netlify/functions/download"
   status = 200

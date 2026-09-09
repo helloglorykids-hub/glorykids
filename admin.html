@@ -299,6 +299,7 @@
       <a href="#support" class="admin-nav-item" onclick="showAdminTab('support',this)">💬 Support</a>
       <a href="#shop" class="admin-nav-item" onclick="showAdminTab('shop',this)">🛍️ Shop</a>
       <a href="#curriculum" class="admin-nav-item" onclick="showAdminTab('curriculum',this)">📚 Curriculum</a>
+      <a href="#subscriptions" class="admin-nav-item" onclick="showAdminTab('subscriptions',this)">🔁 Subscriptions</a>
       <a href="#forms" class="admin-nav-item" onclick="showAdminTab('forms',this)">📬 Forms</a>
       <div style="height:1px;background:var(--gray-200);margin:0.6rem 0.3rem;"></div>
       <a href="#site" class="admin-nav-item" onclick="showAdminTab('site',this)">⚙️ Site Settings</a>
@@ -957,6 +958,25 @@
         </div>
       </div>
 
+      <!-- SUBSCRIPTIONS -->
+      <div id="admin-tab-subscriptions" style="display:none;">
+        <div class="admin-section-title">🔁 Subscriptions</div>
+        <div id="subs-summary" style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;"></div>
+        <div class="admin-card" style="padding:0.5rem;">
+          <table class="admin-table" id="subs-table">
+            <thead><tr><th>Member</th><th>Plan</th><th>Amount</th><th>Status</th><th>Last payment</th><th></th></tr></thead>
+            <tbody><tr><td colspan="6" class="empty-state">Loading…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="admin-section-title" style="margin-top:2rem;">⛪ Church teams</div>
+        <div class="admin-card" style="padding:0.5rem;">
+          <table class="admin-table" id="orgs-table">
+            <thead><tr><th>Church</th><th>Owner</th><th>Plan</th><th>Seats used</th><th>Status</th></tr></thead>
+            <tbody><tr><td colspan="5" class="empty-state">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
       <!-- CURRICULUM -->
       <div id="admin-tab-curriculum" style="display:none;">
         <div class="admin-section-title">📚 Curriculum <span style="font-size:0.8rem;color:var(--gray-400);font-weight:500;">— members-only series &amp; packs</span></div>
@@ -1179,6 +1199,7 @@ function showAdminTab(name, linkEl) {
   if (name === 'analytics') loadAnalytics(7);
   if (name === 'shop') renderShop();
   if (name === 'curriculum') renderCurriculum();
+  if (name === 'subscriptions') renderSubscriptions();
   if (name === 'forms') renderSubmissions();
   if (name === 'content') renderContentForm();
   if (name === 'media') renderMedia();
@@ -2851,7 +2872,7 @@ async function renderCurriculum() {
       <div class="post-card__thumb">${c.coverImage ? `<img src="${esc(c.coverImage)}" alt="">` : '📚'}</div>
       <div class="post-card__body">
         <div class="post-card__title">${esc(c.title || 'Untitled')}</div>
-        <div class="post-card__meta">${c.type === 'series' ? 'Series' : 'Pack'} · ${count} · ${status}</div>
+        <div class="post-card__meta">${c.section === 'activities' ? 'Activities' : 'Curriculum'} · ${c.type === 'series' ? 'Series' : 'Pack'} · ${count} · ${status}</div>
         <div style="margin-top:0.5rem;display:flex;gap:0.4rem;">
           <button class="row-btn" onclick="editCurriculum('${c.id}')">Edit</button>
           <button class="row-btn row-btn--danger" onclick="removeCurriculum('${c.id}')">Delete</button>
@@ -2890,6 +2911,16 @@ function editCurriculum(id) {
           <div class="featured-dropzone__text"><strong>Drag &amp; drop an image</strong> or click to browse</div>
         </div>
         <div class="gk-hint" id="c-img-status"></div>
+      </div>
+      <div class="gk-grid2">
+        <div class="gk-field">
+          <label>Shows under</label>
+          <select id="c-section">
+            <option value="curriculum" ${c.section !== 'activities' ? 'selected' : ''}>Curriculum tab</option>
+            <option value="activities" ${c.section === 'activities' ? 'selected' : ''}>Activities &amp; Resources tab</option>
+          </select>
+        </div>
+        <div class="gk-field"></div>
       </div>
       <div class="gk-field">
         <label>Type</label>
@@ -3034,6 +3065,7 @@ async function saveCurriculumForm(id) {
     title: g('c-title'),
     description: g('c-desc'),
     coverImage: cCover,
+    section: document.getElementById('c-section').value,
     ageGroups: g('c-ages').split(',').map(s => s.trim()).filter(Boolean),
     topics: g('c-topics').split(',').map(s => s.trim()).filter(Boolean),
     type,
@@ -3054,6 +3086,61 @@ async function removeCurriculum(id) {
   if (!confirm('Delete this curriculum? Members will lose access to it.')) return;
   await GK.deleteCurriculum(id);
   renderCurriculum();
+}
+
+/* ============================================================
+   SUBSCRIPTIONS  (membership + church)
+   ============================================================ */
+async function renderSubscriptions() {
+  const tbody = document.querySelector('#subs-table tbody');
+  const orgBody = document.querySelector('#orgs-table tbody');
+  let subs = [], orgs = [];
+  try { [subs, orgs] = await Promise.all([GK.listSubscriptions(), GK.listOrgs()]); }
+  catch (e) { tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Error: ${esc(e.message)}</td></tr>`; return; }
+
+  const active = subs.filter(s => s.status === 'active');
+  const mrr = active.reduce((sum, s) => {
+    const monthly = s.frequency === 'annual' ? Number(s.priceZAR || 0) / 12 : Number(s.priceZAR || 0);
+    return sum + monthly;
+  }, 0);
+  document.getElementById('subs-summary').innerHTML = `
+    <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${active.length}</div><div class="dash-stat-card__label">Active subscriptions</div></div>
+    <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">R${Math.round(mrr).toLocaleString()}</div><div class="dash-stat-card__label">Approx. MRR (ZAR)</div></div>
+    <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${subs.filter(s => s.status === 'past_due').length}</div><div class="dash-stat-card__label">Past due</div></div>`;
+
+  tbody.innerHTML = subs.length ? subs.map(s => `
+    <tr>
+      <td>${esc(s.name || '')}<div class="post-row__meta">${esc(s.email || '')}${s.orgName ? ' · ' + esc(s.orgName) : ''}</div></td>
+      <td>${esc(s.planKey || '—')}<div class="post-row__meta">${esc(s.frequency || '')}</div></td>
+      <td>R${Number(s.priceZAR || 0).toFixed(2)}</td>
+      <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span></td>
+      <td>${s.lastPaymentAt ? new Date(s.lastPaymentAt).toLocaleDateString() : '—'}</td>
+      <td style="text-align:right;">${(s.status === 'active' || s.status === 'past_due') && s.pfToken ? `<button class="row-btn row-btn--danger" onclick="adminCancelSub('${s.id}')">Cancel</button>` : ''}</td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty-state">No subscriptions yet.</td></tr>';
+
+  orgBody.innerHTML = orgs.length ? orgs.map(o => `
+    <tr>
+      <td>${esc(o.orgName || '—')}</td>
+      <td>${esc(o.ownerEmail || '')}</td>
+      <td>${esc(o.plan || '')}</td>
+      <td>${(o.memberEmails || []).length} / ${o.seatLimit || 0}</td>
+      <td><span class="badge badge--${o.planStatus === 'active' ? 'active' : 'cancelled'}">${esc(o.planStatus || '')}</span></td>
+    </tr>`).join('') : '<tr><td colspan="5" class="empty-state">No church teams yet.</td></tr>';
+}
+
+async function adminCancelSub(id) {
+  if (!confirm('Cancel this subscription at PayFast? The member keeps access until their paid period ends.')) return;
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/membership-cancel', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+      body: JSON.stringify({ subscriptionId: id })
+    });
+    const d = await res.json();
+    alert(res.ok ? 'Cancelled.' : (d.error || 'Could not cancel.'));
+    renderSubscriptions();
+  } catch (e) { alert(e.message); }
 }
 
 async function renderOrders() {
