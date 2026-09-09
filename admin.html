@@ -298,6 +298,7 @@
       <a href="#payments" class="admin-nav-item" onclick="showAdminTab('payments',this)">💳 Payments</a>
       <a href="#support" class="admin-nav-item" onclick="showAdminTab('support',this)">💬 Support</a>
       <a href="#shop" class="admin-nav-item" onclick="showAdminTab('shop',this)">🛍️ Shop</a>
+      <a href="#curriculum" class="admin-nav-item" onclick="showAdminTab('curriculum',this)">📚 Curriculum</a>
       <a href="#forms" class="admin-nav-item" onclick="showAdminTab('forms',this)">📬 Forms</a>
       <div style="height:1px;background:var(--gray-200);margin:0.6rem 0.3rem;"></div>
       <a href="#site" class="admin-nav-item" onclick="showAdminTab('site',this)">⚙️ Site Settings</a>
@@ -956,6 +957,14 @@
         </div>
       </div>
 
+      <!-- CURRICULUM -->
+      <div id="admin-tab-curriculum" style="display:none;">
+        <div class="admin-section-title">📚 Curriculum <span style="font-size:0.8rem;color:var(--gray-400);font-weight:500;">— members-only series &amp; packs</span></div>
+        <div style="margin-bottom:1rem;"><button class="row-btn row-btn--primary" onclick="editCurriculum(null)">+ New curriculum</button></div>
+        <div id="curriculum-editor" style="display:none;"></div>
+        <div class="post-grid" id="curriculum-grid"></div>
+      </div>
+
       <!-- FORMS -->
       <div id="admin-tab-forms" style="display:none;">
         <div class="admin-section-title">📬 Form submissions</div>
@@ -1169,6 +1178,7 @@ function showAdminTab(name, linkEl) {
   if (name === 'navigation') renderNavTab();
   if (name === 'analytics') loadAnalytics(7);
   if (name === 'shop') renderShop();
+  if (name === 'curriculum') renderCurriculum();
   if (name === 'forms') renderSubmissions();
   if (name === 'content') renderContentForm();
   if (name === 'media') renderMedia();
@@ -2812,6 +2822,238 @@ async function removeProduct(id) {
   if (!confirm('Delete this product? Existing orders keep working.')) return;
   await GK.deleteProduct(id);
   renderProducts();
+}
+
+/* ============================================================
+   CURRICULUM — members-only series & packs
+   ============================================================ */
+let gkCurriculum = [];
+let cPack = [];        // pack files [{path,name}]
+let cWeeks = [];       // [{title, description, files:[{path,name}]}]
+let cCover = '';
+
+async function renderCurriculum() {
+  const grid = document.getElementById('curriculum-grid');
+  grid.innerHTML = '<div class="empty-state">Loading…</div>';
+  gkCurriculum = await GK.listCurriculum();
+  if (!gkCurriculum.length) { grid.innerHTML = '<div class="empty-state">No curriculum yet. Click “New curriculum”.</div>'; return; }
+  const now = Date.now();
+  grid.innerHTML = gkCurriculum.map(c => {
+    const scheduled = c.published && c.publishAt && c.publishAt > now;
+    const status = !c.published ? '<span style="color:var(--gray-400)">draft</span>'
+      : scheduled ? `<span style="color:var(--gold-dark)">drops ${new Date(c.publishAt).toLocaleDateString()}</span>`
+      : '<span style="color:var(--green)">live</span>';
+    const count = c.type === 'series'
+      ? `${(c.weeks || []).length} week(s)`
+      : `${(c.files || []).length} file(s)`;
+    return `
+    <div class="post-card">
+      <div class="post-card__thumb">${c.coverImage ? `<img src="${esc(c.coverImage)}" alt="">` : '📚'}</div>
+      <div class="post-card__body">
+        <div class="post-card__title">${esc(c.title || 'Untitled')}</div>
+        <div class="post-card__meta">${c.type === 'series' ? 'Series' : 'Pack'} · ${count} · ${status}</div>
+        <div style="margin-top:0.5rem;display:flex;gap:0.4rem;">
+          <button class="row-btn" onclick="editCurriculum('${c.id}')">Edit</button>
+          <button class="row-btn row-btn--danger" onclick="removeCurriculum('${c.id}')">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function editCurriculum(id) {
+  const c = id ? gkCurriculum.find(x => x.id === id) : {
+    title: '', description: '', coverImage: '', ageGroups: [], topics: [],
+    type: 'pack', files: [], weeks: [], published: false, publishAt: null, sortOrder: gkCurriculum.length
+  };
+  cPack = (c.files || []).slice();
+  cWeeks = (c.weeks || []).map(w => ({ title: w.title || '', description: w.description || '', files: (w.files || []).slice() }));
+  cCover = c.coverImage || '';
+  const dt = c.publishAt ? new Date(c.publishAt) : null;
+  const dtLocal = dt ? new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
+
+  const box = document.getElementById('curriculum-editor');
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="admin-card">
+      <div class="admin-card__title">${id ? 'Edit curriculum' : 'New curriculum'}</div>
+      <div class="gk-field"><label>Title</label><input type="text" id="c-title" value="${esc(c.title || '')}" placeholder="God's Big Story — 12 Week Series"></div>
+      <div class="gk-field"><label>Description</label><textarea id="c-desc" style="min-height:90px;">${esc(c.description || '')}</textarea></div>
+      <div class="gk-grid2">
+        <div class="gk-field"><label>Age groups (comma-separated)</label><input type="text" id="c-ages" value="${esc((c.ageGroups || []).join(', '))}" placeholder="Preschool, K-2, 3-5"></div>
+        <div class="gk-field"><label>Topics (comma-separated)</label><input type="text" id="c-topics" value="${esc((c.topics || []).join(', '))}" placeholder="Old Testament, Faith"></div>
+      </div>
+      <div class="gk-field">
+        <label>Cover image — drag &amp; drop or click</label>
+        <div id="c-img-zone" class="featured-dropzone">
+          <img id="c-img-preview" class="featured-dropzone__preview" src="${esc(cCover)}" style="${cCover ? '' : 'display:none;'}max-width:140px;border-radius:8px;">
+          <div class="featured-dropzone__text"><strong>Drag &amp; drop an image</strong> or click to browse</div>
+        </div>
+        <div class="gk-hint" id="c-img-status"></div>
+      </div>
+      <div class="gk-field">
+        <label>Type</label>
+        <select id="c-type" onchange="onCurriculumTypeChange()">
+          <option value="pack" ${c.type !== 'series' ? 'selected' : ''}>Single downloadable pack</option>
+          <option value="series" ${c.type === 'series' ? 'selected' : ''}>Multi-week series</option>
+        </select>
+      </div>
+
+      <div id="c-pack-wrap" style="${c.type === 'series' ? 'display:none;' : ''}">
+        <div class="gk-field">
+          <label>Pack file(s) members download — drag &amp; drop or click</label>
+          <div id="c-pack-zone" class="featured-dropzone">
+            <div class="featured-dropzone__text"><strong>Drag &amp; drop files</strong> or click — PDF, ZIP, any type</div>
+          </div>
+          <div class="gk-hint" id="c-pack-status"></div>
+          <ul id="c-pack-list" style="list-style:none;padding:0;margin:0.5rem 0 0;"></ul>
+        </div>
+      </div>
+
+      <div id="c-weeks-wrap" style="${c.type === 'series' ? '' : 'display:none;'}">
+        <label>Weeks</label>
+        <div id="c-weeks-list"></div>
+        <button type="button" class="row-btn" onclick="addCurriculumWeek()">+ Add week</button>
+      </div>
+
+      <div class="gk-grid2" style="margin-top:1rem;">
+        <div class="gk-field" style="display:flex;gap:0.5rem;align-items:center;">
+          <label style="margin:0;"><input type="checkbox" id="c-published" ${c.published ? 'checked' : ''}> Published</label>
+        </div>
+        <div class="gk-field"><label>Go live at (leave blank = immediately)</label><input type="datetime-local" id="c-publishat" value="${dtLocal}"></div>
+      </div>
+      <p class="gk-hint" style="margin:0 0 1rem;">Tick <strong>Published</strong> and set a future date to schedule the monthly drop — it stays hidden from members until then.</p>
+
+      <div style="display:flex;gap:0.75rem;">
+        <button class="row-btn row-btn--primary" onclick="saveCurriculumForm('${id || ''}')">Save curriculum</button>
+        <button class="row-btn" onclick="document.getElementById('curriculum-editor').style.display='none'">Cancel</button>
+        <span class="gk-status" id="c-save-status"></span>
+      </div>
+    </div>`;
+
+  wireDropzone(document.getElementById('c-img-zone'), {
+    accept: 'image/*',
+    onFile: async (file) => {
+      const s = document.getElementById('c-img-status'); s.textContent = 'Uploading…';
+      try {
+        const url = await uploadSiteAsset(file, 'c-img-status');
+        cCover = url;
+        const img = document.getElementById('c-img-preview');
+        img.src = url; img.style.display = '';
+        s.textContent = 'Image set ✓';
+      } catch (e) { s.textContent = 'Upload failed: ' + (e.message || e); }
+    }
+  });
+  wireDropzone(document.getElementById('c-pack-zone'), {
+    accept: '', multiple: true,
+    onFile: async (file) => {
+      const s = document.getElementById('c-pack-status');
+      s.textContent = `Uploading ${file.name}…`;
+      try {
+        const rec = await uploadLessonFile(file, pct => { s.textContent = `Uploading ${file.name}… ${pct}%`; });
+        cPack.push(rec); s.textContent = `${file.name} ✓`; drawCurriculumPack();
+      } catch (e) { s.textContent = 'Upload failed: ' + (e.message || e); }
+    }
+  });
+  drawCurriculumPack();
+  drawCurriculumWeeks();
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function onCurriculumTypeChange() {
+  const t = document.getElementById('c-type').value;
+  document.getElementById('c-pack-wrap').style.display = t === 'series' ? 'none' : '';
+  document.getElementById('c-weeks-wrap').style.display = t === 'series' ? '' : 'none';
+}
+
+function drawCurriculumPack() {
+  const ul = document.getElementById('c-pack-list');
+  if (!ul) return;
+  ul.innerHTML = cPack.map((f, i) => `
+    <li style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.45rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;margin-bottom:0.35rem;font-size:0.85rem;">
+      <span>📄 ${esc(f.name || f.path)}</span>
+      <button type="button" class="row-btn row-btn--danger" onclick="cPack.splice(${i},1);drawCurriculumPack()">Remove</button>
+    </li>`).join('');
+}
+
+function addCurriculumWeek() {
+  cWeeks.push({ title: '', description: '', files: [] });
+  drawCurriculumWeeks();
+}
+function removeCurriculumWeek(i) {
+  cWeeks.splice(i, 1);
+  drawCurriculumWeeks();
+}
+function drawCurriculumWeeks() {
+  const host = document.getElementById('c-weeks-list');
+  if (!host) return;
+  host.innerHTML = cWeeks.map((w, i) => `
+    <div class="admin-card" style="padding:0.9rem;margin-bottom:0.75rem;background:var(--gray-50);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+        <strong style="font-size:0.85rem;">Week ${i + 1}</strong>
+        <button type="button" class="row-btn row-btn--danger" onclick="removeCurriculumWeek(${i})">Remove week</button>
+      </div>
+      <div class="gk-field"><label>Week title</label><input type="text" id="cw-title-${i}" value="${esc(w.title || '')}" oninput="cWeeks[${i}].title=this.value" placeholder="Week ${i + 1}: Creation"></div>
+      <div class="gk-field"><label>Week notes (optional)</label><textarea id="cw-desc-${i}" oninput="cWeeks[${i}].description=this.value" style="min-height:60px;">${esc(w.description || '')}</textarea></div>
+      <label>Files for this week</label>
+      <div id="cw-zone-${i}" class="featured-dropzone"><div class="featured-dropzone__text"><strong>Drag &amp; drop</strong> or click</div></div>
+      <div class="gk-hint" id="cw-status-${i}"></div>
+      <ul id="cw-list-${i}" style="list-style:none;padding:0;margin:0.4rem 0 0;">${(w.files || []).map((f, fi) => `
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.4rem 0.6rem;border:1px solid var(--gray-200);border-radius:8px;margin-bottom:0.3rem;font-size:0.82rem;">
+          <span>📄 ${esc(f.name || f.path)}</span>
+          <button type="button" class="row-btn row-btn--danger" onclick="cWeeks[${i}].files.splice(${fi},1);drawCurriculumWeeks()">Remove</button>
+        </li>`).join('')}</ul>
+    </div>`).join('') || '<p class="gk-hint">No weeks yet — click “Add week”.</p>';
+
+  cWeeks.forEach((w, i) => {
+    const zone = document.getElementById('cw-zone-' + i);
+    if (!zone || zone._wired) return;
+    zone._wired = true;
+    wireDropzone(zone, {
+      accept: '', multiple: true,
+      onFile: async (file) => {
+        const s = document.getElementById('cw-status-' + i);
+        s.textContent = `Uploading ${file.name}…`;
+        try {
+          const rec = await uploadLessonFile(file, pct => { s.textContent = `Uploading ${file.name}… ${pct}%`; });
+          cWeeks[i].files.push(rec); s.textContent = `${file.name} ✓`; drawCurriculumWeeks();
+        } catch (e) { s.textContent = 'Upload failed: ' + (e.message || e); }
+      }
+    });
+  });
+}
+
+async function saveCurriculumForm(id) {
+  const g = i => (document.getElementById(i).value || '').trim();
+  const status = document.getElementById('c-save-status');
+  if (!g('c-title')) { status.textContent = 'Title required'; return; }
+  status.textContent = 'Saving…';
+  const type = document.getElementById('c-type').value;
+  const publishAtStr = g('c-publishat');
+  const rec = {
+    title: g('c-title'),
+    description: g('c-desc'),
+    coverImage: cCover,
+    ageGroups: g('c-ages').split(',').map(s => s.trim()).filter(Boolean),
+    topics: g('c-topics').split(',').map(s => s.trim()).filter(Boolean),
+    type,
+    files: type === 'pack' ? cPack.slice() : [],
+    weeks: type === 'series' ? cWeeks.map(w => ({ title: w.title, description: w.description, files: (w.files || []).slice() })) : [],
+    published: document.getElementById('c-published').checked,
+    publishAt: publishAtStr ? new Date(publishAtStr).getTime() : null
+  };
+  if (id) rec.id = id;
+  try {
+    await GK.saveCurriculum(rec);
+    document.getElementById('curriculum-editor').style.display = 'none';
+    renderCurriculum();
+  } catch (e) { status.textContent = 'Error: ' + e.message; }
+}
+
+async function removeCurriculum(id) {
+  if (!confirm('Delete this curriculum? Members will lose access to it.')) return;
+  await GK.deleteCurriculum(id);
+  renderCurriculum();
 }
 
 async function renderOrders() {

@@ -25,7 +25,11 @@
   var forceCheckout = /[?&]checkout=1\b/.test(location.search);
   var LIVE = MEMBERSHIP_LIVE || forceCheckout;
 
-  var PLAN_LABEL = { monthly: 'Monthly', annual: 'Annual' };
+  var PLAN_LABEL = {
+    monthly: 'Monthly', annual: 'Annual',
+    'church-small': 'Small Church', 'church-growing': 'Growing Church'
+  };
+  var isChurchPlan = function (p) { return p === 'church-small' || p === 'church-growing'; };
 
   /* ---------- tiny modal ---------------------------------------------- */
   function injectStyles() {
@@ -133,23 +137,44 @@
     return (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser : null;
   }
 
-  function startCheckout(plan) {
+  function startCheckout(plan, orgName) {
     plan = PLAN_LABEL[plan] ? plan : 'monthly';
     var user = currentUser();
     if (!user) {
       // Send them to sign up, then straight back into checkout for this plan.
-      var back = 'glory-kids-membership.html?checkout=1&plan=' + plan + '#pricing';
+      var backPage = isChurchPlan(plan) ? 'church-pricing.html' : 'glory-kids-membership.html';
+      var back = backPage + '?checkout=1&plan=' + plan + '#pricing';
       location.href = 'signup.html?redirect=' + encodeURIComponent(back);
       return;
     }
     open();
+
+    // Church plans need the church/ministry name first.
+    if (isChurchPlan(plan) && !orgName) {
+      body().innerHTML =
+        '<h3>' + PLAN_LABEL[plan] + ' plan</h3>' +
+        '<p>What’s the name of your church or ministry? This licenses the curriculum to your whole team.</p>' +
+        '<div class="gk-mem-err" id="gk-mem-err"></div>' +
+        '<label for="gk-org">Church / ministry name</label>' +
+        '<input id="gk-org" type="text" placeholder="Grace Community Church">' +
+        '<button class="gk-mem-btn" id="gk-org-go">Continue to payment →</button>';
+      body().querySelector('#gk-org-go').addEventListener('click', function () {
+        var v = (body().querySelector('#gk-org').value || '').trim();
+        var err = body().querySelector('#gk-mem-err');
+        if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
+        startCheckout(plan, v);
+      });
+      body().querySelector('#gk-org').focus();
+      return;
+    }
+
     body().innerHTML = '<h3>Starting your membership…</h3><p>One moment — taking you to our secure payment page.</p>';
 
     user.getIdToken().then(function (idToken) {
       return fetch('/api/membership-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
-        body: JSON.stringify({ plan: plan })
+        body: JSON.stringify({ plan: plan, orgName: orgName || '' })
       });
     }).then(function (r) {
       return r.json().then(function (d) { return { ok: r.ok, d: d }; });
@@ -182,20 +207,19 @@
   }
 
   function init() {
-    // Plan buttons: <... data-plan="monthly|annual"> anywhere on the page.
-    document.querySelectorAll('[data-plan]').forEach(function (el) {
-      el.addEventListener('click', function (e) { handleCta(e, el.getAttribute('data-plan')); });
-    });
-    // Generic "join / waitlist" buttons opted in with data-membership-cta.
-    document.querySelectorAll('[data-membership-cta]').forEach(function (el) {
-      el.addEventListener('click', function (e) { handleCta(e, el.getAttribute('data-membership-cta') || null); });
+    // Delegated so it also catches pricing cards injected later by
+    // pricing-data.js / content.js.
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest && e.target.closest('[data-checkout-plan],[data-membership-cta]');
+      if (!el) return;
+      if (el.hasAttribute('data-checkout-plan')) handleCta(e, el.getAttribute('data-checkout-plan'));
+      else handleCta(e, el.getAttribute('data-membership-cta') || null);
     });
 
     // Arriving back from signup with ?checkout=1&plan=… → resume automatically.
     if (LIVE) {
-      var m = /[?&]plan=(monthly|annual)/.exec(location.search);
-      if (m && forceCheckout && currentUser() !== undefined) {
-        // wait a tick for firebase auth to resolve
+      var m = /[?&]plan=([a-z-]+)/.exec(location.search);
+      if (m && PLAN_LABEL[m[1]] && forceCheckout) {
         var tries = 0;
         var t = setInterval(function () {
           tries++;
@@ -205,13 +229,19 @@
       }
     }
 
-    // Reflect live/waitlist state in button copy where it helps.
+    // Reflect live state in button copy. Runs a few times because some
+    // pricing cards are injected after load by pricing-data.js / content.js.
     if (LIVE) {
-      document.querySelectorAll('[data-plan]').forEach(function (el) {
-        if (/waitlist/i.test(el.textContent)) {
-          el.textContent = el.getAttribute('data-plan') === 'annual' ? 'Subscribe — Annual →' : 'Subscribe — Monthly →';
-        }
-      });
+      var relabel = function () {
+        document.querySelectorAll('[data-checkout-plan]').forEach(function (el) {
+          if (/waitlist/i.test(el.textContent)) {
+            var lbl = PLAN_LABEL[el.getAttribute('data-checkout-plan')] || 'Now';
+            el.textContent = 'Subscribe — ' + lbl + ' →';
+          }
+        });
+      };
+      relabel();
+      var n = 0, ri = setInterval(function () { relabel(); if (++n > 8) clearInterval(ri); }, 500);
     }
   }
 

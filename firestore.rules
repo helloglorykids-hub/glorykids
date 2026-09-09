@@ -116,6 +116,13 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Membership curriculum — admin manages it directly here; members read
+    // it through the /api/curriculum Netlify function (Admin SDK), which
+    // enforces published + publishAt so scheduled drops stay hidden.
+    match /curriculum/{id} {
+      allow read, write: if isAdmin();
+    }
+
     // ── Editable page content + media library ───────────────────────────
     // Public read (content.js / the storefront apply them); admin write.
     match /content/{id} {

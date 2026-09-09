@@ -63,6 +63,10 @@
   to = "/.netlify/functions/member-file"
   status = 200
 [[redirects]]
+  from = "/api/curriculum"
+  to = "/.netlify/functions/curriculum"
+  status = 200
+[[redirects]]
   from = "/api/download"
   to = "/.netlify/functions/download"
   status = 200

@@ -176,13 +176,16 @@ async function handleMembership(form) {
   }, { merge: true });
 
   // Flip the user record — this is what unlocks the dashboard + gated lessons.
-  await db.collection('users').doc(String(uid)).set({
-    plan: 'glory_kids',
+  var accountPlan = (sub.plan === 'church') ? 'church' : 'glory_kids';
+  var userPatch = {
+    plan: accountPlan,
     planStatus: 'active',
     membershipSince: sub.activatedAt || Date.now(),
     membershipPlan: sub.planKey || 'monthly',
     pfSubscriptionToken: token
-  }, { merge: true });
+  };
+  if (sub.orgName) userPatch.orgName = sub.orgName;
+  await db.collection('users').doc(String(uid)).set(userPatch, { merge: true });
 
   await db.collection('payments').add({
     uid, email: sub.email, amount: gross,

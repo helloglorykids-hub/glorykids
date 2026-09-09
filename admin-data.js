@@ -423,6 +423,52 @@
   }
   async function deleteProduct(id) { await productsCol().doc(id).delete(); }
 
+  /* ── Membership: curriculum ──────────────────────────────────────────
+     A curriculum is either a single downloadable `pack` (files[]) or a
+     multi-week `series` (weeks[] each with its own files[]). Members-only.
+     `publishAt` lets you schedule the monthly drop. */
+  function curriculumCol() { return db.collection('curriculum'); }
+
+  async function listCurriculum() {   // admin — everything
+    const snap = await curriculumCol().get();
+    return snap.docs.map(docToObj)
+      .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999) || (b.createdAt || 0) - (a.createdAt || 0));
+  }
+  async function getCurriculum(id) {
+    const doc = await curriculumCol().doc(id).get();
+    return doc.exists ? docToObj(doc) : null;
+  }
+  async function saveCurriculum(c) {
+    const now = Date.now();
+    const rec = { ...c };
+    delete rec.id;
+    rec.title = String(c.title || '').trim();
+    rec.slug = slugify(c.slug || c.title);
+    rec.description = String(c.description || '');
+    rec.coverImage = c.coverImage || '';
+    rec.ageGroups = Array.isArray(c.ageGroups) ? c.ageGroups.filter(Boolean) : [];
+    rec.topics = Array.isArray(c.topics) ? c.topics.filter(Boolean) : [];
+    rec.type = c.type === 'series' ? 'series' : 'pack';
+    rec.files = Array.isArray(c.files) ? c.files.filter(f => f && f.path) : [];
+    rec.weeks = Array.isArray(c.weeks) ? c.weeks.map(w => ({
+      title: String(w.title || '').trim(),
+      description: String(w.description || ''),
+      files: Array.isArray(w.files) ? w.files.filter(f => f && f.path) : []
+    })) : [];
+    rec.published = c.published === true;
+    rec.publishAt = c.publishAt ? Number(c.publishAt) : null;
+    rec.sortOrder = Number(c.sortOrder) || 0;
+    if (c.id) {
+      rec.updatedAt = now;
+      await curriculumCol().doc(c.id).set(rec, { merge: true });
+      return getCurriculum(c.id);
+    }
+    rec.createdAt = now; rec.updatedAt = now;
+    const ref = await curriculumCol().add(rec);
+    return { id: ref.id, ...rec };
+  }
+  async function deleteCurriculum(id) { await curriculumCol().doc(id).delete(); }
+
   /* ── Shop: orders ─────────────────────────────────────────────────── */
   async function listOrders(limitN) {
     let q = ordersCol();
@@ -523,6 +569,7 @@
     getNavMenu, saveNavMenu,
     bumpAnalytics, getAnalyticsRange,
     listProducts, listActiveProducts, getProduct, saveProduct, deleteProduct,
+    listCurriculum, getCurriculum, saveCurriculum, deleteCurriculum,
     listOrders, getOrder, updateOrder, listMyOrders,
     listDiscountCodes, saveDiscountCode, deleteDiscountCode,
     listMedia, addMedia, deleteMedia,

@@ -87,8 +87,8 @@ var GK_CHURCH_PLANS = [
       'New resources added regularly'
     ],
     ctaText: 'Join the Waitlist',
-    /* TODO: replace with real Stripe checkout link/route once created */
-    ctaHref: 'contact.html?plan=small-church'
+    ctaHref: '#',
+    checkoutPlan: 'church-small'
   },
   {
     id: 'growing-church',
@@ -108,8 +108,8 @@ var GK_CHURCH_PLANS = [
       'Seasonal and special-event resources'
     ],
     ctaText: 'Join the Waitlist',
-    /* TODO: replace with real Stripe checkout link/route once created */
-    ctaHref: 'contact.html?plan=growing-church'
+    ctaHref: '#',
+    checkoutPlan: 'church-growing'
   },
   {
     id: 'multi-site',
@@ -146,7 +146,8 @@ function renderPricingCards(containerId, plans) {
       return '<li><span class="gk-pricing3__check">✓</span> ' + f + '</li>';
     }).join('') + '</ul>';
     var ctaClass = plan.featured ? 'gk-btn gk-btn--cta gk-btn--block gk-btn--lg' : 'gk-btn gk-btn--outline-ink gk-btn--block gk-btn--lg';
-    var cta = '<a href="' + plan.ctaHref + '" class="' + ctaClass + '">' + plan.ctaText + '</a>';
+    var ctaAttr = plan.checkoutPlan ? ' data-checkout-plan="' + plan.checkoutPlan + '"' : '';
+    var cta = '<a href="' + plan.ctaHref + '"' + ctaAttr + ' class="' + ctaClass + '">' + plan.ctaText + '</a>';
     var note = plan.note ? '<p class="gk-pricing3__note">' + plan.note + '</p>' : '';
 
     /* No .reveal scroll-fade class here on purpose: these cards are injected

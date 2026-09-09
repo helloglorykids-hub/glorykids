@@ -533,10 +533,14 @@
 
     <!-- CURRICULUM TAB -->
     <div id="tab-curriculum" style="display:none;">
-      <h2 style="margin-bottom:1.5rem;">Curriculum</h2>
-      <div class="upgrade-banner">
-        <div><h3>Glory Kids Curriculum is a Members-Only Feature ✨</h3><p>Glory Kids Membership launches September 15, 2026. Join the waitlist to access 10+ multi-week curriculum series.</p></div>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">Join the Waitlist →</a>
+      <h2 style="margin-bottom:0.5rem;">Curriculum</h2>
+      <p id="curriculum-tab-sub" style="color:var(--gray-500);margin-bottom:1.5rem;">Loading…</p>
+      <div id="curriculum-lib"></div>
+      <div id="curriculum-lib-locked" style="display:none;">
+        <div class="upgrade-banner">
+          <div><h3>Glory Kids Curriculum is a Members-Only Feature ✨</h3><p>Full multi-week series and downloadable curriculum packs — included with Glory Kids Membership.</p></div>
+          <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
+        </div>
       </div>
     </div>
 
@@ -730,6 +734,88 @@ function showTab(name, linkEl) {
   document.querySelectorAll('.dash-nav-item').forEach(l => l.classList.remove('active'));
   if (linkEl) linkEl.classList.add('active');
   if (name === 'lessons') renderLessonsLibrary();
+  if (name === 'curriculum') renderCurriculumLibrary();
+}
+
+// ── Curriculum library ───────────────────────────────────
+let _curriculumLib = null;
+async function renderCurriculumLibrary() {
+  if (_curriculumLib) return;
+  const host = document.getElementById('curriculum-lib');
+  const sub = document.getElementById('curriculum-tab-sub');
+  const locked = document.getElementById('curriculum-lib-locked');
+
+  let rec = null;
+  try { rec = await GK.getUserRecord(currentUid); } catch (e) {}
+  const isMember = rec && (rec.plan === 'glory_kids' || rec.plan === 'church') &&
+    (rec.planStatus === 'active' || rec.planStatus === 'cancelled');
+
+  let items = [];
+  try {
+    const res = await fetch('/api/curriculum');
+    items = (await res.json()).curriculum || [];
+  } catch (e) {}
+  _curriculumLib = items;
+
+  if (!items.length) {
+    sub.textContent = 'New curriculum series are published every month. Nothing here yet — check back soon.';
+    locked.style.display = isMember ? 'none' : 'block';
+    return;
+  }
+
+  sub.innerHTML = isMember
+    ? 'Everything below is included with your membership. New series drop on the 15th of each month.'
+    : 'Preview of what members get. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock all curriculum →</a>';
+  locked.style.display = isMember ? 'none' : 'block';
+
+  host.innerHTML = items.map(c => {
+    const cover = c.coverImage ? `<img src="${c.coverImage}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:12px 12px 0 0;">` : `<div style="height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#EDE7F6,#FEF0D3);border-radius:12px 12px 0 0;">📚</div>`;
+    let body;
+    if (!isMember) {
+      body = `<a href="glory-kids-membership.html" style="display:inline-block;margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;background:var(--gray-100);color:var(--gray-500);text-decoration:none;">🔒 Members only</a>`;
+    } else if (c.type === 'series') {
+      body = `<div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">` +
+        c.weeks.map(w => `<button data-cur="${c.id}" data-week="${w.index}" style="text-align:left;font:500 0.82rem Poppins,system-ui,sans-serif;padding:0.5rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;background:#fff;cursor:pointer;">⬇ ${(w.title || 'Week').replace(/[<>&]/g,'')} <span style="color:var(--gray-400)">· ${w.fileCount} file(s)</span></button>`).join('') +
+        `</div>`;
+    } else {
+      body = `<button data-cur="${c.id}" style="margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;border:0;background:#059669;color:#fff;cursor:pointer;">⬇ Download pack (${c.fileCount} file${c.fileCount === 1 ? '' : 's'})</button>`;
+    }
+    return `
+      <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;background:#fff;">
+        ${cover}
+        <div style="padding:1rem 1.1rem;">
+          <div style="font:800 1rem Poppins,system-ui,sans-serif;">${(c.title || 'Curriculum').replace(/[<>&]/g,'')}</div>
+          <div style="font-size:0.82rem;color:var(--gray-500);margin:0.3rem 0;">${(c.type === 'series' ? c.weeks.length + '-week series' : 'Downloadable pack')}${c.ageGroups && c.ageGroups.length ? ' · ' + c.ageGroups.join(', ') : ''}</div>
+          <p style="font-size:0.85rem;color:var(--gray-600);line-height:1.5;margin:0.4rem 0 0;">${(c.description || '').replace(/[<>&]/g,'').slice(0,180)}</p>
+          ${body}
+        </div>
+      </div>`;
+  }).join('');
+
+  host.querySelectorAll('button[data-cur]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const params = 'curriculum=' + encodeURIComponent(btn.getAttribute('data-cur')) +
+        (btn.hasAttribute('data-week') ? '&week=' + btn.getAttribute('data-week') : '');
+      downloadMemberFiles(params, btn);
+    });
+  });
+}
+
+async function downloadMemberFiles(params, btn) {
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Preparing…';
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/member-file?' + params, { headers: { Authorization: 'Bearer ' + idToken } });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
+    (data.files || []).forEach((f, i) => setTimeout(() => window.open(f.url, '_blank'), i * 400));
+    btn.textContent = '✓ Links opened';
+    setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 4000);
+  } catch (e) {
+    alert(e.message);
+    btn.disabled = false; btn.textContent = orig;
+  }
 }
 
 // ── My Lessons library ───────────────────────────────────
@@ -782,21 +868,8 @@ async function renderLessonsLibrary() {
   });
 }
 
-async function downloadLessonPack(postId, btn) {
-  const orig = btn.textContent;
-  btn.disabled = true; btn.textContent = 'Preparing…';
-  try {
-    const idToken = await auth.currentUser.getIdToken();
-    const res = await fetch('/api/member-file?post=' + encodeURIComponent(postId), { headers: { Authorization: 'Bearer ' + idToken } });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
-    (data.files || []).forEach((f, i) => setTimeout(() => window.open(f.url, '_blank'), i * 400));
-    btn.textContent = '✓ Links opened';
-    setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 4000);
-  } catch (e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = orig;
-  }
+function downloadLessonPack(postId, btn) {
+  return downloadMemberFiles('post=' + encodeURIComponent(postId), btn);
 }
 
 // ── My Purchases ─────────────────────────────────────────
