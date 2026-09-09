@@ -23,6 +23,14 @@ service firebase.storage {
       allow read: if false;
       allow write: if request.auth != null;
     }
+    // Member lesson packs (PDFs uploaded on each lesson in the admin panel).
+    // Never publicly readable — the `member-file` Netlify function serves
+    // them via short-lived signed URLs after verifying an active membership
+    // (or a signed-in user for the 10 free lessons).
+    match /lesson-files/{allPaths=**} {
+      allow read: if false;
+      allow write: if request.auth != null;
+    }
     match /{allPaths=**} {
       allow read, write: if false;
     }

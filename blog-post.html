@@ -196,6 +196,13 @@
 
           <div id="postContent" class="prose prose-invert prose-lg max-w-none post-prose"></div>
 
+          <!-- Member download pack — shown when the lesson has downloadable files -->
+          <div id="memberDownloadWrap" class="mailerlite-box" style="display:none;">
+            <h3 class="text-white font-bold text-lg mb-2">📦 Download the Lesson Pack</h3>
+            <p id="memberDownloadBlurb" class="text-slate-300 text-sm mb-4"></p>
+            <div id="memberDownloadBody"></div>
+          </div>
+
           <!-- Signup #2 (bottom) — Free PDF signup (MailerLite embed, if this post has one and is one of the 10 free lessons) -->
           <div id="mailerliteWrap" class="mailerlite-box" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-3">📥 Get This as a Free PDF</h3>
@@ -595,6 +602,8 @@
       if (target) injectHtmlWithScripts(target, optinFormHtml(kind));
     }
 
+    var lessonFiles = Array.isArray(post.files) ? post.files.filter(function (f) { return f && f.path; }) : [];
+
     if (post.isFreeLesson) {
       fillOptinBox(
         document.getElementById('mailerliteWrapTop'),
@@ -624,6 +633,8 @@
       );
     }
     if (window.gkFormsRescan) window.gkFormsRescan();
+
+    setupMemberDownload(post, lessonFiles, isLocked);
 
     // Build TOC from rendered H2s
     const headings = contentEl.querySelectorAll('h2');
@@ -690,6 +701,78 @@
         <span class="related-post-card__title">${p.title}</span>
       </a>
     `).join('');
+  }
+
+  /* ── Member download pack ─────────────────────────────────────────
+     Shows the download box for any lesson that has files attached.
+     • active member  → working download links (signed, 10-min)
+     • free lesson, not a member → hidden (the email opt-in covers it)
+     • paid lesson, not a member → "included with membership" + Subscribe */
+  function isActiveMember(rec) {
+    if (!rec) return false;
+    var paid = rec.plan === 'glory_kids' || rec.plan === 'church';
+    return paid && (rec.planStatus === 'active' || rec.planStatus === 'cancelled');
+  }
+
+  function setupMemberDownload(post, files, isLocked) {
+    var wrap = document.getElementById('memberDownloadWrap');
+    var blurb = document.getElementById('memberDownloadBlurb');
+    var bodyEl = document.getElementById('memberDownloadBody');
+    if (!wrap || !files || !files.length) return;
+
+    function showLocked() {
+      // Non-members: the existing membership / free-PDF boxes already carry
+      // the pitch + email capture, so keep our download box hidden for them.
+      wrap.style.display = 'none';
+    }
+
+    function showMember() {
+      wrap.style.display = 'block';
+      wrap.classList.remove('mailerlite-box--locked');
+      // Old lock boxes are redundant once we show a real download.
+      ['membershipLockWrap', 'membershipLockWrapTop'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) el.style.display = 'none';
+      });
+      blurb.textContent = 'Everything you need to teach this lesson, ready to print.';
+      bodyEl.innerHTML = '<button id="memberDlBtn" class="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-base px-7 py-3.5 rounded-xl transition-colors">⬇ Get download links</button><div id="memberDlLinks" class="mt-4 space-y-2"></div>';
+      document.getElementById('memberDlBtn').addEventListener('click', fetchLinks);
+    }
+
+    async function fetchLinks() {
+      var btn = document.getElementById('memberDlBtn');
+      var links = document.getElementById('memberDlLinks');
+      btn.disabled = true; btn.textContent = 'Preparing…';
+      try {
+        var idToken = await auth.currentUser.getIdToken();
+        var res = await fetch('/api/member-file?post=' + encodeURIComponent(post.id), { headers: { Authorization: 'Bearer ' + idToken } });
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
+        links.innerHTML = (data.files || []).map(function (f) {
+          return '<a href="' + f.url + '" class="block bg-[var(--color-card)] border border-white/10 rounded-lg px-4 py-3 text-white hover:border-emerald-500 transition-colors">📄 ' + (f.name || 'Download').replace(/[<>&]/g, '') + '</a>';
+        }).join('');
+        btn.style.display = 'none';
+      } catch (e) {
+        btn.disabled = false; btn.textContent = '⬇ Get download links';
+        links.innerHTML = '<p class="text-sm text-orange-400">' + e.message + '</p>';
+      }
+    }
+
+    // Resolve membership once auth settles.
+    var handled = false;
+    function decide(user) {
+      if (handled) return; handled = true;
+      if (!user) { showLocked(); return; }
+      // Signed-in users can always download the 10 free lessons.
+      if (post.isFreeLesson) { showMember(); return; }
+      GK.getUserRecord(user.uid).then(function (rec) {
+        if (isActiveMember(rec)) showMember(); else showLocked();
+      }).catch(showLocked);
+    }
+    if (auth.currentUser !== null && auth.currentUser !== undefined) decide(auth.currentUser);
+    else {
+      var t = setTimeout(function () { decide(auth.currentUser || null); }, 2500);
+      auth.onAuthStateChanged(function (u) { clearTimeout(t); decide(u); });
+    }
   }
 
   onFirebaseReady(loadPost);

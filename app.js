@@ -218,9 +218,14 @@ document.querySelectorAll('.faq-question').forEach(question => {
 /* ─── SMOOTH ANCHOR LINKS ─────────────────────────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(anchor.getAttribute('href'));
+    const href = anchor.getAttribute('href');
+    // Bare "#" (and JS-driven buttons that use it as a placeholder) — let
+    // other handlers deal with the click; don't try to scroll.
+    if (!href || href === '#') return;
+    let target = null;
+    try { target = document.querySelector(href); } catch (err) { return; }
     if (target) {
+      e.preventDefault();
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });

@@ -107,6 +107,15 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Membership subscriptions — created/updated only by the Netlify
+    // functions (Admin SDK, bypasses rules) and payfast-notify. A signed-in
+    // member may read their own; the admin sees all.
+    match /subscriptions/{id} {
+      allow read: if isAdmin() ||
+        (isSignedIn() && resource.data.uid == request.auth.uid);
+      allow write: if isAdmin();
+    }
+
     // ── Editable page content + media library ───────────────────────────
     // Public read (content.js / the storefront apply them); admin write.
     match /content/{id} {

@@ -87,6 +87,103 @@ function buildCheckout(data) {
   return { fields, processUrl: PROCESS_URL };
 }
 
+// PayFast recurring-billing frequencies.
+const FREQUENCY = { daily: 1, weekly: 2, monthly: 3, quarterly: 4, biannual: 5, annual: 6 };
+
+// Build a PayFast SUBSCRIPTION checkout (recurring billing). `data`:
+//   m_payment_id, amount (first charge), recurring_amount, frequency
+//   ('monthly'|'annual'|number), email_address, name_first, item_name,
+//   return_url, cancel_url, notify_url, custom_str1 (uid), custom_str2 ('membership')
+function buildSubscription(data) {
+  const { id: merchantId, key: merchantKey, passphrase } = creds();
+  const amount = Number(data.amount).toFixed(2);
+  const recurring = Number(data.recurring_amount || data.amount).toFixed(2);
+  const freq = typeof data.frequency === 'number'
+    ? data.frequency
+    : (FREQUENCY[String(data.frequency || 'monthly').toLowerCase()] || 3);
+
+  const fields = {
+    merchant_id: merchantId,
+    merchant_key: merchantKey,
+    return_url: data.return_url,
+    cancel_url: data.cancel_url,
+    notify_url: data.notify_url,
+    name_first: data.name_first || '',
+    email_address: data.email_address || '',
+    m_payment_id: data.m_payment_id,
+    amount,
+    item_name: (data.item_name || 'Glory Kids Membership').slice(0, 100),
+    item_description: (data.item_description || 'Glory Kids Membership subscription').slice(0, 255),
+    custom_str1: data.custom_str1 || '',        // uid
+    custom_str2: data.custom_str2 || 'membership',
+    subscription_type: '1',
+    recurring_amount: recurring,
+    frequency: String(freq),
+    cycles: '0'                                  // until cancelled
+  };
+  if (data.billing_date) fields.billing_date = data.billing_date;
+
+  const ordered = PAYMENT_ORDER
+    .filter(k => Object.prototype.hasOwnProperty.call(fields, k))
+    .map(k => [k, fields[k]]);
+  fields.signature = signPairs(ordered, passphrase);
+
+  return { fields, processUrl: PROCESS_URL };
+}
+
+/* ─── PayFast Subscription API (manage existing subscriptions) ───────────
+   Docs: https://developers.payfast.co.za/api#authentication
+   Auth: MD5 over every request param INCLUDING the passphrase, all sorted
+   alphabetically by key name, values urlencoded (spaces as '+'). */
+const PF_API_BASE = 'https://api.payfast.co.za';
+
+function apiSignature(params, passphrase) {
+  const all = { ...params };
+  if (passphrase) all.passphrase = passphrase.trim();
+  const str = Object.keys(all)
+    .filter(k => all[k] !== undefined && all[k] !== null && all[k] !== '')
+    .sort()
+    .map(k => `${k}=${pfEncode(String(all[k]).trim())}`)
+    .join('&');
+  return crypto.createHash('md5').update(str).digest('hex');
+}
+
+async function pfApi(method, path, bodyParams) {
+  const { id: merchantId, passphrase } = creds();
+  const timestamp = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
+  const headerParams = { 'merchant-id': merchantId, version: 'v1', timestamp };
+  const allParams = { ...headerParams, ...(bodyParams || {}) };
+  const signature = apiSignature(allParams, passphrase);
+
+  const url = `${PF_API_BASE}${path}${MODE !== 'live' ? (path.includes('?') ? '&' : '?') + 'testing=true' : ''}`;
+  const res = await fetch(url, {
+    method,
+    headers: {
+      'merchant-id': merchantId,
+      version: 'v1',
+      timestamp,
+      signature,
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    body: bodyParams && Object.keys(bodyParams).length
+      ? Object.entries(bodyParams).map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&')
+      : undefined
+  });
+  const text = await res.text();
+  let data; try { data = JSON.parse(text); } catch (e) { data = { raw: text }; }
+  return { ok: res.ok && (data.code === 200 || data.status === 'success'), status: res.status, data };
+}
+
+// Cancel a subscription by its PayFast token. Returns { ok, data }.
+function cancelSubscription(token) {
+  return pfApi('PUT', `/subscriptions/${encodeURIComponent(token)}/cancel`);
+}
+
+// Fetch a subscription's current state (status, next run date, amount).
+function fetchSubscription(token) {
+  return pfApi('GET', `/subscriptions/${encodeURIComponent(token)}/fetch`);
+}
+
 // Verify an ITN payload's signature. `body` is the parsed form object.
 // PayFast signs ITN in the order the fields were received, so pass the raw
 // querystring-ordered keys.
@@ -116,6 +213,8 @@ const PF_HOSTS = [
 ];
 
 module.exports = {
-  MODE, PROCESS_URL, VALIDATE_URL, PF_HOSTS,
-  pfEncode, signPairs, buildCheckout, verifyItnSignature, serverValidate
+  MODE, PROCESS_URL, VALIDATE_URL, PF_HOSTS, FREQUENCY,
+  pfEncode, signPairs, buildCheckout, buildSubscription,
+  verifyItnSignature, serverValidate,
+  cancelSubscription, fetchSubscription
 };

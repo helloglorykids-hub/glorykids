@@ -51,6 +51,18 @@
   to = "/.netlify/functions/payfast-notify"
   status = 200
 [[redirects]]
+  from = "/api/membership-subscribe"
+  to = "/.netlify/functions/membership-subscribe"
+  status = 200
+[[redirects]]
+  from = "/api/membership-cancel"
+  to = "/.netlify/functions/membership-cancel"
+  status = 200
+[[redirects]]
+  from = "/api/member-file"
+  to = "/.netlify/functions/member-file"
+  status = 200
+[[redirects]]
   from = "/api/download"
   to = "/.netlify/functions/download"
   status = 200

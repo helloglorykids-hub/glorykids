@@ -477,6 +477,18 @@
                 <input type="file" id="gallery-image-file" accept="image/*" multiple style="display:none;" onchange="handleGalleryFilesChosen(this.files)" />
                 <div id="gallery-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
               </div>
+
+              <div style="margin-top:1rem;">
+                <label>Downloadable Files <span style="font-weight:400;color:var(--gray-400);">— the PDF pack members download (lesson plan, crafts, colouring, etc.)</span></label>
+                <div id="lesson-files-zone" class="featured-dropzone">
+                  <div class="featured-dropzone__text"><strong>Drag &amp; drop files</strong> or click to browse — PDF, ZIP, any type. Add as many as you like.</div>
+                </div>
+                <div class="gk-hint" id="lesson-files-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
+                <ul id="lesson-files-list" style="list-style:none; padding:0; margin:0.5rem 0 0;"></ul>
+                <p style="font-size:0.78rem; color:var(--gray-500); margin:0.5rem 0 0; line-height:1.5;">
+                  For the 10 free lessons these download for free (also delivered by the MailerLite email). For every other lesson, only active Glory Kids / Church members can download them.
+                </p>
+              </div>
             </div>
 
             <div>
@@ -1197,6 +1209,7 @@ async function renderOverview() {
 /* ── Blog Posts ───────────────────────────────────────────── */
 let postTags = [];
 let galleryImages = [];
+let lessonFiles = [];   // [{ path, name }] — downloadable member files for this lesson
 let slugTouched = false;
 const SEED_TAGS = ['Family Devotions', 'Volunteer Tips', 'Curriculum', 'Prayer', 'Object Lessons', 'Budget', 'Parenting', 'Worship'];
 let tagSuggestions = [...SEED_TAGS];
@@ -1687,6 +1700,49 @@ async function handleGalleryFilesChosen(fileList) {
   }
 }
 
+/* ── Lesson downloadable files (member content) ────────────── */
+function renderLessonFiles() {
+  const ul = document.getElementById('lesson-files-list');
+  if (!ul) return;
+  ul.innerHTML = lessonFiles.map((f, i) => `
+    <li style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.45rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;margin-bottom:0.35rem;font-size:0.85rem;">
+      <span>📄 ${esc(f.name || f.path)}</span>
+      <button type="button" class="row-btn row-btn--danger" onclick="lessonFiles.splice(${i},1);renderLessonFiles()">Remove</button>
+    </li>`).join('');
+}
+
+async function uploadLessonFile(file, onProgress) {
+  const safe = (file.name || 'file').replace(/[^\w.\-]/g, '_');
+  const path = 'lesson-files/' + Date.now() + '_' + Math.random().toString(36).slice(2, 7) + '_' + safe;
+  const task = storage.ref(path).put(file);
+  if (onProgress) task.on('state_changed', s => onProgress(Math.round((s.bytesTransferred / s.totalBytes) * 100)));
+  await task;
+  return { path, name: file.name || safe };
+}
+
+let _lessonFilesZoneWired = false;
+function wireLessonFilesZone() {
+  if (_lessonFilesZoneWired) return;
+  const zone = document.getElementById('lesson-files-zone');
+  if (!zone || typeof wireDropzone !== 'function') return;
+  _lessonFilesZoneWired = true;
+  wireDropzone(zone, {
+    accept: '', multiple: true,
+    onFile: async (file) => {
+      const s = document.getElementById('lesson-files-status');
+      s.textContent = `Uploading ${file.name}…`;
+      try {
+        const rec = await uploadLessonFile(file, pct => { s.textContent = `Uploading ${file.name}… ${pct}%`; });
+        lessonFiles.push(rec);
+        s.textContent = `${file.name} uploaded ✓`;
+        renderLessonFiles();
+      } catch (e) {
+        s.textContent = 'Upload failed: ' + (e && e.message || e);
+      }
+    }
+  });
+}
+
 async function doImageUpload(fileOrBlob, onDone, statusElId, filename) {
   const statusEl = statusElId && document.getElementById(statusElId);
   if (statusEl) statusEl.textContent = 'Uploading...';
@@ -1753,6 +1809,10 @@ function showPostForm(post, presetCategory) {
   galleryImages = post && post.galleryImages ? [...post.galleryImages] : [];
   renderGalleryThumbs();
   document.getElementById('gallery-status').textContent = '';
+  lessonFiles = post && Array.isArray(post.files) ? post.files.filter(f => f && f.path).map(f => ({ path: f.path, name: f.name || '' })) : [];
+  renderLessonFiles();
+  document.getElementById('lesson-files-status').textContent = '';
+  wireLessonFilesZone();
   onCategoryChange();
   document.getElementById('post-excerpt').value = post ? post.excerpt : '';
   document.getElementById('post-body').innerHTML = post ? (post.bodyHtml || '') : '';
@@ -1807,6 +1867,7 @@ async function savePostForm() {
     season: document.getElementById('post-season').value,
     isFreeLesson: document.getElementById('post-free-lesson').checked,
     galleryImages: [...galleryImages],
+    files: lessonFiles.map(f => ({ path: f.path, name: f.name || '' })),
     tags: postTags,
     excerpt,
     bodyHtml,

@@ -362,6 +362,7 @@
           </div>
         </div>
         <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta">✨ Join the Waitlist — Launching Sept 15</a>
+        <button id="plan-cancel" onclick="cancelMembership()" style="display:none;background:none;border:0;color:var(--gray-500);font-size:0.8rem;text-decoration:underline;cursor:pointer;">Cancel membership</button>
       </div>
 
       <!-- Free plan nudge -->
@@ -522,9 +523,12 @@
 
     <!-- LESSONS TAB -->
     <div id="tab-lessons" style="display:none;">
-      <h2 style="margin-bottom:1.5rem;">My Lessons</h2>
-      <p style="color:var(--gray-500);margin-bottom:2rem;">Your free lesson library. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Upgrade to unlock 500+</a></p>
-      <a href="free-lessons.html" class="btn btn--primary btn--lg">Browse All Free Lessons →</a>
+      <h2 style="margin-bottom:0.5rem;">My Lessons</h2>
+      <p id="lessons-tab-sub" style="color:var(--gray-500);margin-bottom:1.5rem;">Loading your lesson library…</p>
+      <div id="lessons-library" class="dash-content-grid"></div>
+      <div id="lessons-library-empty" style="display:none;color:var(--gray-500);">
+        No lessons published yet. <a href="free-lessons.html" class="text-primary" style="font-weight:600;">Browse free lessons →</a>
+      </div>
     </div>
 
     <!-- CURRICULUM TAB -->
@@ -622,8 +626,55 @@ onFirebaseReady(() => {
     renderSavedState();
     renderActivity();
     renderPlanState();
+    maybeWelcomeNewMember();
   });
 });
+
+async function cancelMembership() {
+  if (!confirm('Cancel your Glory Kids Membership?\n\nYou’ll keep access until the end of the period you’ve already paid for, and you won’t be billed again.')) return;
+  const btn = document.getElementById('plan-cancel');
+  btn.disabled = true; btn.textContent = 'Cancelling…';
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/membership-cancel', { method: 'POST', headers: { Authorization: 'Bearer ' + idToken } });
+    const d = await res.json().catch(() => ({}));
+    if (res.ok) {
+      alert(d.note || 'Your membership has been cancelled. You won’t be billed again.');
+      renderPlanState();
+    } else {
+      alert(d.error || 'We couldn’t cancel just now. Please contact us and we’ll take care of it.');
+    }
+  } catch (e) {
+    alert('Something went wrong. Please contact us and we’ll cancel it for you.');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Cancel membership';
+  }
+}
+
+// Returning from PayFast after subscribing — the membership ITN may land a
+// few seconds after the browser redirect, so re-check the plan for a short
+// while and celebrate once it flips to active.
+function maybeWelcomeNewMember() {
+  if (!/[?&]welcome=member\b/.test(location.search)) return;
+  const banner = document.getElementById('free-plan-note');
+  if (banner) {
+    banner.style.display = 'flex';
+    banner.innerHTML = '<p>🎉 Thanks for subscribing! We’re activating your Glory Kids Membership — this can take a minute. This page will update automatically.</p>';
+  }
+  let tries = 0;
+  const t = setInterval(async () => {
+    tries++;
+    const rec = await GK.getUserRecord(currentUid).catch(() => null);
+    if (rec && rec.plan === 'glory_kids' && rec.planStatus === 'active') {
+      clearInterval(t);
+      renderPlanState();
+      history.replaceState(null, '', location.pathname);
+    } else if (tries > 20) {
+      clearInterval(t);
+      if (banner) banner.innerHTML = '<p>Your payment went through. If your membership doesn’t show as active in a few minutes, refresh the page or contact us and we’ll sort it out right away.</p>';
+    }
+  }, 3000);
+}
 
 // ── Plan / membership state ──────────────────────────────
 async function renderPlanState() {
@@ -639,9 +690,12 @@ async function renderPlanState() {
 
   const statusRow = document.getElementById('plan-status-row');
   const cta = document.getElementById('plan-cta');
+  const cancelBtn = document.getElementById('plan-cancel');
   const freeNote = document.getElementById('free-plan-note');
   const curriculumTag = document.getElementById('curriculum-tag');
   const curriculumGrid = document.getElementById('curriculum-grid');
+
+  if (cancelBtn) cancelBtn.style.display = isActiveMember ? 'inline' : 'none';
 
   if (isActiveMember) {
     statusRow.innerHTML = '<span class="active-dot"></span> Active';
@@ -675,6 +729,74 @@ function showTab(name, linkEl) {
   document.getElementById('tab-' + name).style.display = 'block';
   document.querySelectorAll('.dash-nav-item').forEach(l => l.classList.remove('active'));
   if (linkEl) linkEl.classList.add('active');
+  if (name === 'lessons') renderLessonsLibrary();
+}
+
+// ── My Lessons library ───────────────────────────────────
+let _lessonsLib = null;
+async function renderLessonsLibrary() {
+  const grid = document.getElementById('lessons-library');
+  const sub = document.getElementById('lessons-tab-sub');
+  const empty = document.getElementById('lessons-library-empty');
+  if (_lessonsLib) return; // render once per page load
+
+  let rec = null;
+  try { rec = await GK.getUserRecord(currentUid); } catch (e) {}
+  const isMember = rec && (rec.plan === 'glory_kids' || rec.plan === 'church') &&
+    (rec.planStatus === 'active' || rec.planStatus === 'cancelled');
+
+  let posts = [];
+  try { posts = await GK.listPublishedPosts('free_lessons'); } catch (e) {}
+  _lessonsLib = posts;
+
+  if (!posts.length) { grid.style.display = 'none'; empty.style.display = 'block'; sub.style.display = 'none'; return; }
+
+  sub.innerHTML = isMember
+    ? 'Every lesson below is yours to download. New lessons are added regularly.'
+    : 'The 10 free lessons are yours to download now. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock the full library →</a>';
+
+  grid.innerHTML = posts.map(p => {
+    const hasFiles = Array.isArray(p.files) && p.files.filter(f => f && f.path).length;
+    const open = p.isFreeLesson || isMember;
+    const meta = [p.scripture, (p.ageGroups || []).length ? (p.ageGroups.length + ' age groups') : ''].filter(Boolean).join(' · ');
+    const btnCss = 'display:inline-block;font:600 0.8rem/1 Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;border:0;cursor:pointer;text-decoration:none;';
+    let action;
+    if (!hasFiles) action = `<a href="blog-post.html?slug=${encodeURIComponent(p.slug)}" style="${btnCss}background:var(--primary);color:#fff;">Open lesson →</a>`;
+    else if (open) action = `<button data-lesson="${p.id}" style="${btnCss}background:#059669;color:#fff;">⬇ Download pack</button>`;
+    else action = `<a href="glory-kids-membership.html" style="${btnCss}background:var(--gray-100);color:var(--gray-500);">🔒 Members only</a>`;
+    return `
+      <div class="dash-content-card">
+        <div class="dash-content-card__img" style="background:linear-gradient(135deg,#EDE7F6,#FEF0D3);">
+          ${p.featuredImage ? `<img src="${p.featuredImage}" alt="" style="width:100%;height:100%;object-fit:cover;">` : (p.icon || '📖')}
+        </div>
+        <div class="dash-content-card__body">
+          <div class="dash-content-card__title">${(p.title || 'Lesson').replace(/[<>&]/g, '')}</div>
+          <div class="dash-content-card__meta">${meta || 'Bible lesson'}</div>
+          <div style="margin-top:0.6rem;">${action}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  grid.querySelectorAll('button[data-lesson]').forEach(btn => {
+    btn.addEventListener('click', () => downloadLessonPack(btn.getAttribute('data-lesson'), btn));
+  });
+}
+
+async function downloadLessonPack(postId, btn) {
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = 'Preparing…';
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/member-file?post=' + encodeURIComponent(postId), { headers: { Authorization: 'Bearer ' + idToken } });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
+    (data.files || []).forEach((f, i) => setTimeout(() => window.open(f.url, '_blank'), i * 400));
+    btn.textContent = '✓ Links opened';
+    setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 4000);
+  } catch (e) {
+    alert(e.message);
+    btn.disabled = false; btn.textContent = orig;
+  }
 }
 
 // ── My Purchases ─────────────────────────────────────────
