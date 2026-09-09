@@ -1,0 +1,3 @@
+/* preflight is disabled in main.config.js, so no @tailwind base here. */
+@tailwind components;
+@tailwind utilities;

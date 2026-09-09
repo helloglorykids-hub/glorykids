@@ -4,10 +4,13 @@
   "private": true,
   "description": "Glory Kids Ministries marketing site — static HTML + Firebase backend",
   "scripts": {
-    "build": "node build.js",
+    "build:css": "tailwindcss -c tailwind/main.config.js -i tailwind/main.css -o assets/tailwind.css --minify && tailwindcss -c tailwind/membership.config.js -i tailwind/membership.css -o assets/tailwind-membership.css --minify",
+    "build": "npm run build:css && node build.js",
     "serve": "node serve.js"
   },
   "dependencies": {
-    "firebase-admin": "^12.7.0"
+    "@tailwindcss/typography": "^0.5.15",
+    "firebase-admin": "^12.7.0",
+    "tailwindcss": "^3.4.17"
   }
 }

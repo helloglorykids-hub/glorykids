@@ -2,7 +2,8 @@
    CHILDREN'S MINISTRY LESSONS — GLOBAL DESIGN SYSTEM
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap');
+/* Poppins is loaded via <link> in each page's <head> (faster than an @import,
+   which the browser can't discover until styles.css itself has downloaded). */
 
 /* ─── GLORY KIDS BRAND DESIGN SYSTEM ────────────────────────────
    Official palette + Poppins-only typography.

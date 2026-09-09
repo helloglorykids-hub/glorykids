@@ -8,14 +8,13 @@
   <meta name="keywords" content="Bible lessons for kids, encounter Jesus, spirit-filled curriculum, free Bible lessons printable, Sunday school lessons, Bible curriculum, Christian school lessons, Bible activities for kids, family Bible time, kids ministry curriculum, teaching kids about Jesus, spirit-filled Bible lessons, encounter God" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
   <link rel="stylesheet" href="homepage.css" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { corePlugins: { preflight: false, container: false } };
-  </script>
+  <link rel="stylesheet" href="assets/tailwind.css" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -45,6 +44,17 @@
     <div class="loader-bar"></div>
   </div>
 </div>
+<script>
+  /* Independent failsafe so the overlay clears even if app.js is slow/fails. */
+  (function () {
+    var go = function () {
+      var l = document.getElementById('page-loader');
+      if (l) l.classList.add('hidden');
+    };
+    document.addEventListener('DOMContentLoaded', go);
+    setTimeout(go, 2500);
+  })();
+</script>
 
 <!-- Scroll Progress -->
 <div id="progress-bar"></div>
@@ -1475,18 +1485,18 @@
   </div>
 </footer>
 
-<script src="pricing-data.js"></script>
-<script src="app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="admin-data.js"></script>
+<script src="pricing-data.js" defer></script>
+<script src="app.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js" defer></script>
+<script src="firebase-config.js" defer></script>
+<script src="admin-data.js" defer></script>
 <script src="site-settings.js" defer></script>
 <script src="gk-forms.js" defer></script>
 <script src="content.js" defer></script>
-<script src="auth.js"></script>
-<script src="chatbot.js"></script>
+<script src="auth.js" defer></script>
+<script src="chatbot.js" defer></script>
 </body>
 </html>

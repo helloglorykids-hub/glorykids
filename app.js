@@ -3,12 +3,21 @@
    ============================================================ */
 
 /* ─── PAGE LOADER ─────────────────────────────────────────────── */
-window.addEventListener('load', () => {
-  const loader = document.getElementById('page-loader');
-  if (loader) {
-    setTimeout(() => loader.classList.add('hidden'), 600);
+/* Hide as soon as the DOM is parsed — don't wait for the full `load`
+   event, which blocks on every image, font and third-party script. */
+(function () {
+  const hideLoader = () => {
+    const loader = document.getElementById('page-loader');
+    if (loader) loader.classList.add('hidden');
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hideLoader);
+  } else {
+    hideLoader();
   }
-});
+  // Failsafe: never let the overlay get stuck.
+  setTimeout(hideLoader, 2500);
+})();
 
 /* ─── SCROLL PROGRESS BAR ─────────────────────────────────────── */
 const progressBar = document.getElementById('progress-bar');
