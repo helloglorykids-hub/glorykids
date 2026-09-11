@@ -11,7 +11,12 @@
   <meta id="metaOgTitle" property="og:title" content="" />
   <meta id="metaOgDescription" property="og:description" content="" />
   <meta id="metaOgImage" property="og:image" content="" />
+  <meta id="metaOgUrl" property="og:url" content="" />
   <meta property="og:type" content="article" />
+  <meta id="metaTwitterCard" name="twitter:card" content="summary" />
+  <meta id="metaTwitterTitle" name="twitter:title" content="" />
+  <meta id="metaTwitterDescription" name="twitter:description" content="" />
+  <meta id="metaTwitterImage" name="twitter:image" content="" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,14 +32,7 @@
   <script id="ldBreadcrumb" type="application/ld+json"></script>
   <!-- gk:managed:start -->
   <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
-  <link rel="canonical" href="https://www.glorykidsministry.com/blog-post.html">
-  <meta property="og:title" content="Glory Kids Ministries">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.glorykidsministry.com/blog-post.html">
-  <meta property="og:description" content="Free, Spirit-filled Bible lessons and children’s ministry curriculum for kids ages 3–12 — printable, ready to teach, and designed to help children encounter Jesus.">
   <meta property="og:site_name" content="Glory Kids Ministries">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:description" content="Free, Spirit-filled Bible lessons and children’s ministry curriculum for kids ages 3–12 — printable, ready to teach, and designed to help children encounter Jesus.">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
   <!-- gk:managed:end -->
 </head>
@@ -504,6 +502,11 @@
     document.getElementById('metaOgTitle').setAttribute('content', post.title);
     document.getElementById('metaOgDescription').setAttribute('content', seoDesc);
     document.getElementById('metaOgImage').setAttribute('content', post.featuredImage || '');
+    document.getElementById('metaOgUrl').setAttribute('content', baseUrl);
+    document.getElementById('metaTwitterCard').setAttribute('content', post.featuredImage ? 'summary_large_image' : 'summary');
+    document.getElementById('metaTwitterTitle').setAttribute('content', post.title);
+    document.getElementById('metaTwitterDescription').setAttribute('content', seoDesc);
+    document.getElementById('metaTwitterImage').setAttribute('content', post.featuredImage || '');
 
     document.getElementById('postBreadcrumbTitle').textContent = post.title;
     const sectionLink = document.getElementById('postSectionLink');

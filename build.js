@@ -41,7 +41,40 @@ const SITEMAP_EXCLUDE = new Set([
   'admin-import.html',
   'admin-data.html',
   'lesson-gate.html',
+  // template, not a real page — individual posts are added from `posts` below
+  'blog-post.html',
 ]);
+
+/* Directories never walked for HTML files (build tooling, VCS, dependencies). */
+const SKIP_DIRS = new Set(['.git', 'node_modules', '.netlify', 'functions', '.claude']);
+
+/* Recursively collect every *.html file under `dir`, returning paths relative
+   to the project root with forward slashes (e.g. "faq/index.html"). Runs at
+   any depth so pages that live in subfolders (free-bible-lessons/<slug>/,
+   faq/) get the same baked-in SEO as the top-level pages. */
+function listHtmlFiles(dir, base) {
+  base = base || '';
+  let out = [];
+  for (const entry of fs.readdirSync(path.join(dir, base), { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+    const rel = base ? `${base}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) {
+      if (SKIP_DIRS.has(entry.name)) continue;
+      out = out.concat(listHtmlFiles(dir, rel));
+    } else if (entry.name.endsWith('.html') && !entry.name.startsWith('admin')) {
+      out.push(rel);
+    }
+  }
+  return out;
+}
+
+/* Clean, extensionless URL path for a page file: "index.html" -> "",
+   "faq/index.html" -> "faq/", "blog.html" -> "blog.html". */
+function urlPathFor(f) {
+  if (f === 'index.html') return '';
+  if (f.endsWith('/index.html')) return f.slice(0, -'index.html'.length);
+  return f;
+}
 
 /* ---- Firestore REST value decoding ---- */
 function dec(v) {
@@ -75,28 +108,45 @@ async function getCol(name) {
 }
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const unesc = s => String(s == null ? '' : s).replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 
-function managedBlock(cfg, page, canonical) {
+// Pages that manage their own per-record title/description/canonical/OG/Twitter
+// tags via JS (e.g. blog-post.html renders per-post values via #metaOgTitle etc).
+// For those, injecting the generic site-wide versions of the same tags would
+// create duplicate <meta property="og:title"> / <link rel="canonical"> tags —
+// invalid HTML, and an ambiguous signal for crawlers and social scrapers.
+function isSelfManagedSeo(html) {
+  return /id=["']metaOgTitle["']/.test(html);
+}
+
+function managedBlock(cfg, page, canonical, selfManaged, pageTitleFallback, pageDescFallback) {
   const title = (page && page.seoTitle) || '';
-  const desc = (page && page.seoDescription) || cfg.defaultMetaDescription || '';
+  // Prefer this page's own hand-written <title>/description over the
+  // generic site-wide defaults, so every page's social card is actually
+  // about that page instead of all pages showing the same homepage blurb.
+  const desc = (page && page.seoDescription) || pageDescFallback || cfg.defaultMetaDescription || '';
   const og = (page && page.ogImageUrl) || cfg.defaultOgImageUrl || '';
   const L = [START];
   if (cfg.faviconUrl) L.push(`<link rel="icon" href="${esc(cfg.faviconUrl)}">`);
   if (cfg.appleTouchIconUrl) L.push(`<link rel="apple-touch-icon" href="${esc(cfg.appleTouchIconUrl)}">`);
-  L.push(`<link rel="canonical" href="${esc(canonical)}">`);
+  if (!selfManaged) L.push(`<link rel="canonical" href="${esc(canonical)}">`);
   if (page && page.noindex) L.push(`<meta name="robots" content="noindex, nofollow">`);
   if (cfg.gscVerification) L.push(`<meta name="google-site-verification" content="${esc(cfg.gscVerification)}">`);
-  const ogTitle = title || cfg.siteName || '';
-  if (ogTitle) L.push(`<meta property="og:title" content="${esc(ogTitle)}">`);
-  L.push(`<meta property="og:type" content="website">`);
-  L.push(`<meta property="og:url" content="${esc(canonical)}">`);
-  if (desc) L.push(`<meta property="og:description" content="${esc(desc)}">`);
-  if (og) L.push(`<meta property="og:image" content="${esc(og)}">`);
+  if (!selfManaged) {
+    const ogTitle = title || pageTitleFallback || cfg.siteName || '';
+    if (ogTitle) L.push(`<meta property="og:title" content="${esc(ogTitle)}">`);
+    L.push(`<meta property="og:type" content="website">`);
+    L.push(`<meta property="og:url" content="${esc(canonical)}">`);
+    if (desc) L.push(`<meta property="og:description" content="${esc(desc)}">`);
+    if (og) L.push(`<meta property="og:image" content="${esc(og)}">`);
+  }
   if (cfg.siteName) L.push(`<meta property="og:site_name" content="${esc(cfg.siteName)}">`);
-  L.push(`<meta name="twitter:card" content="${og ? 'summary_large_image' : 'summary'}">`);
+  if (!selfManaged) {
+    L.push(`<meta name="twitter:card" content="${og ? 'summary_large_image' : 'summary'}">`);
+    if (desc) L.push(`<meta name="twitter:description" content="${esc(desc)}">`);
+    if (og) L.push(`<meta name="twitter:image" content="${esc(og)}">`);
+  }
   if (cfg.twitterHandle) L.push(`<meta name="twitter:site" content="${esc(cfg.twitterHandle)}">`);
-  if (desc) L.push(`<meta name="twitter:description" content="${esc(desc)}">`);
-  if (og) L.push(`<meta name="twitter:image" content="${esc(og)}">`);
   if (cfg.ga4MeasurementId) {
     const id = cfg.ga4MeasurementId;
     L.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}"></script>`);
@@ -161,18 +211,27 @@ function applyCodeInjection(html, cfg) {
 }
 
 function applyToHtml(html, cfg, page, canonical) {
-  // per-page title / description overrides, in place
-  if (page && page.seoTitle) {
+  const selfManaged = isSelfManagedSeo(html);
+  // per-page title / description overrides, in place — skipped for pages that
+  // render their own <title>/description per-record via JS (see isSelfManagedSeo).
+  if (!selfManaged && page && page.seoTitle) {
     html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(page.seoTitle)}</title>`);
   }
-  if (page && page.seoDescription) {
+  if (!selfManaged && page && page.seoDescription) {
     if (/<meta\s+name=["']description["'][^>]*>/i.test(html)) {
       html = html.replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${esc(page.seoDescription)}">`);
     } else {
       html = html.replace(/<\/title>/i, `</title>\n  <meta name="description" content="${esc(page.seoDescription)}">`);
     }
   }
-  const block = managedBlock(cfg, page, canonical);
+  // Fall back to this page's own hand-written <title>/description (read after
+  // any admin override above) rather than the generic site-wide defaults.
+  const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
+  const pageTitleFallback = titleMatch ? unesc(titleMatch[1]).trim() : '';
+  const descMatch = html.match(/<meta\s+name=["']description["'][^>]*\scontent=(["'])([\s\S]*?)\1[^>]*>/i);
+  const pageDescFallback = descMatch ? unesc(descMatch[2]).trim() : '';
+
+  const block = managedBlock(cfg, page, canonical, selfManaged, pageTitleFallback, pageDescFallback);
   const re = new RegExp(START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[\\s\\S]*?' + END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   if (re.test(html)) html = html.replace(re, block);
   else html = html.replace(/<\/head>/i, `  ${block}\n</head>`);
@@ -213,13 +272,13 @@ const CONTENT_PAGE_IDS = {
   const pageByPath = {};
   pages.forEach(p => { pageByPath[p.path] = p; });
 
-  const htmlFiles = fs.readdirSync(DIR).filter(f => f.endsWith('.html') && !f.startsWith('admin'));
+  const htmlFiles = listHtmlFiles(DIR);
   let changed = 0;
   for (const f of htmlFiles) {
     const full = path.join(DIR, f);
     const before = fs.readFileSync(full, 'utf8');
     const page = pageByPath[f];
-    const canonical = (page && page.canonicalUrl) || SITE_ORIGIN + '/' + (f === 'index.html' ? '' : f);
+    const canonical = (page && page.canonicalUrl) || SITE_ORIGIN + '/' + urlPathFor(f);
     let after = applyToHtml(before, cfg, page, canonical);
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
@@ -238,7 +297,7 @@ const CONTENT_PAGE_IDS = {
     if (page && (page.visible === false || page.noindex)) return;
     if (/template/.test(f)) return;
     if (SITEMAP_EXCLUDE.has(f)) return;
-    urls.push(SITE_ORIGIN + '/' + (f === 'index.html' ? '' : f));
+    urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
   posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog-post.html?slug=${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),

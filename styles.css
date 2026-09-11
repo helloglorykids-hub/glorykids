@@ -1632,9 +1632,10 @@ section { padding: 5rem 0; }
 .ph-card { position: relative; width: 122px; height: 164px; border-radius: 18px;
   margin-left: -26px; display: flex; flex-direction: column; align-items: center;
   justify-content: center; gap: .5rem; border: 3px solid rgba(255,255,255,0.16);
-  box-shadow: 0 22px 44px rgba(0,0,0,0.4);
+  box-shadow: 0 22px 44px rgba(0,0,0,0.4); overflow: hidden;
   transition: transform .3s ease, box-shadow .3s ease;
   animation: phBob 5s ease-in-out infinite; }
+.ph-card__img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
 .ph-card:first-child { margin-left: 0; }
 .ph-card:hover { transform: translateY(-18px) scale(1.08) rotate(0deg) !important;
   box-shadow: 0 30px 60px rgba(0,0,0,0.5); z-index: 20; }

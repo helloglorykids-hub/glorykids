@@ -159,6 +159,19 @@
       border: 1px solid var(--gray-200); background: var(--color-card); color: var(--gray-500); cursor: pointer;
     }
     .tag-suggestion:hover { background: var(--gray-100); }
+    .tag-suggestions-wrap { position: relative; overflow: hidden; max-height: 5.5rem; transition: max-height 0.25s ease; }
+    .tag-suggestions-wrap.expanded { max-height: 1000px; }
+    .tag-suggestions-wrap::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1.75rem;
+      background: linear-gradient(to bottom, transparent, var(--color-card));
+      pointer-events: none; opacity: 1; transition: opacity 0.2s ease;
+    }
+    .tag-suggestions-wrap.expanded::after { opacity: 0; }
+    .tag-suggestions-toggle {
+      display: inline-flex; align-items: center; gap: 0.3rem; margin-top: 0.5rem;
+      font-size: 0.76rem; font-weight: 700; color: var(--primary); background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .tag-suggestions-toggle:hover { text-decoration: underline; }
 
     .rte-toolbar {
       display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem;
@@ -499,7 +512,10 @@
                 <span id="tag-chips"></span>
                 <input type="text" id="tag-input-field" placeholder="Add a tag..." onkeydown="onTagKeydown(event)" />
               </div>
-              <div id="tag-suggestions" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;"></div>
+              <div id="tag-suggestions-wrap" class="tag-suggestions-wrap">
+                <div id="tag-suggestions" style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-top:0.6rem;"></div>
+              </div>
+              <button type="button" id="tag-suggestions-toggle" class="tag-suggestions-toggle" onclick="toggleTagSuggestions()">Show all tags ▾</button>
             </div>
 
             <div>
@@ -1270,6 +1286,11 @@ function renderTagSuggestions() {
   document.getElementById('tag-suggestions').innerHTML = remaining.map(t => `
     <button type="button" class="tag-suggestion" onclick="addSuggestedTag('${t.replace(/'/g, "\\'")}')">+ ${t}</button>
   `).join('');
+  const wrap = document.getElementById('tag-suggestions-wrap');
+  const btn = document.getElementById('tag-suggestions-toggle');
+  wrap.classList.remove('expanded');
+  btn.textContent = 'Show all tags ▾';
+  btn.style.display = wrap.scrollHeight > wrap.clientHeight + 4 ? '' : 'none';
 }
 function addSuggestedTag(t) {
   if (!postTags.includes(t)) { postTags.push(t); renderTagChips(); }
@@ -1286,6 +1307,12 @@ function onTagKeydown(e) {
   }
 }
 function removeTag(i) { postTags.splice(i, 1); renderTagChips(); }
+function toggleTagSuggestions() {
+  const wrap = document.getElementById('tag-suggestions-wrap');
+  const btn = document.getElementById('tag-suggestions-toggle');
+  const expanded = wrap.classList.toggle('expanded');
+  btn.textContent = expanded ? 'Show fewer tags ▴' : 'Show all tags ▾';
+}
 
 /* ── Rich text body editor ───────────────────────────────── */
 function rteExec(cmd, val) {
