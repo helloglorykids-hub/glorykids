@@ -430,7 +430,7 @@
           <div class="blog-card__meta"><span>${new Date(post.publishAt || post.createdAt).toLocaleDateString()}</span><span>•</span><span>${readMin} min</span></div>
           <h4 class="blog-card__title">${post.title}</h4>
           <p class="blog-card__excerpt">${post.excerpt || ''}</p>
-          <a href="/blog/${post.slug}" class="blog-card__link">Read Article →</a>
+          <a href="/blog/${post.category}/${post.slug}" class="blog-card__link">Read Article →</a>
         </div>
       </div>
     `;

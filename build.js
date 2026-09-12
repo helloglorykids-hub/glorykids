@@ -302,7 +302,15 @@ const CONTENT_PAGE_IDS = {
     if (SITEMAP_EXCLUDE.has(f)) return;
     urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
-  posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog/${p.slug}`));
+  // Matches blog-post.html's canonicalPathFor(): free lessons get their own
+  // section, everything else is grouped under /blog/<category>/.
+  const BLOG_CATEGORIES = ['parents', 'pastors', 'kidmin'];
+  function postPath(p) {
+    if (p.category === 'free_lessons') return `/free-bible-lessons/${p.slug}`;
+    const cat = BLOG_CATEGORIES.includes(p.category) ? p.category : 'parents';
+    return `/blog/${cat}/${p.slug}`;
+  }
+  posts.filter(p => p.published).forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
   products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/pack/${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
