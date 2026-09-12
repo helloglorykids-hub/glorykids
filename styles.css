@@ -1666,6 +1666,33 @@ section { padding: 5rem 0; }
   .page-hero::before, .ph-orb, .ph-spark, .ph-card { animation: none; }
 }
 
+/* flanking-card hero variant — two overlapping cards on either side of
+   centered heading text (markup: .hero-flank-row inside .page-hero--flanked) */
+.page-hero--flanked > .container { max-width: 1440px; }
+.page-hero--flanked { padding-bottom: 80px; }
+.hero-flank-row { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+.hero-flank-text { max-width: 620px; }
+.hero-flank-side { position: relative; width: 360px; height: 380px; flex-shrink: 0; }
+.hero-flank-img {
+  position: absolute; width: 250px; height: 330px; object-fit: cover; border-radius: 22px;
+  border: 3px solid rgba(255,255,255,0.16);
+  box-shadow: 0 22px 44px rgba(0,0,0,0.4);
+  animation: phBob 5s ease-in-out infinite;
+}
+.hero-flank-side--left .hero-flank-img--back { left: -70px; top: 50px; transform: rotate(-18deg); z-index: 1; animation-delay: .3s; }
+.hero-flank-side--left .hero-flank-img--front { left: 90px; top: -10px; transform: rotate(-5deg); z-index: 2; }
+.hero-flank-side--right .hero-flank-img--front { right: 90px; top: -10px; transform: rotate(5deg); z-index: 2; }
+.hero-flank-side--right .hero-flank-img--back { right: -70px; top: 50px; transform: rotate(18deg); z-index: 1; animation-delay: .3s; }
+@media (max-width: 1250px) {
+  .hero-flank-side { display: none; }
+}
+@media (max-width: 760px) {
+  .page-hero--flanked { padding-bottom: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-flank-img { animation: none; }
+}
+
 /* ─── FOOTER ─────────────────────────────────────────────────── */
 .footer {
   background: #17191C;
