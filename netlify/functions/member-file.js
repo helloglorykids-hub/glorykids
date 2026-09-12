@@ -8,7 +8,7 @@
    Lessons:
      ?post=<postId>            → { files: [{ name, url }] }   (whole pack)
      ?post=<postId>&f=<i>      → { url, name }                 (one file)
-     (the 10 free lessons: any signed-in user; others: active member)
+     (isFreeLesson or freeWithAccount: any signed-in user; others: active member)
    Curriculum (always members-only):
      ?curriculum=<id>                    → pack files, or all week files
      ?curriculum=<id>&week=<n>           → that week's files
@@ -78,7 +78,7 @@ exports.handler = async (event) => {
     if (!post.published) return json(403, { error: 'This lesson isn’t published.' });
     title = post.title || 'lesson';
     files = Array.isArray(post.files) ? post.files.filter(f => f && f.path) : [];
-    needsMembership = !post.isFreeLesson; // free 10 → any signed-in user
+    needsMembership = !(post.isFreeLesson || post.freeWithAccount); // free 10 + free-with-signup 25 → any signed-in user
   } else {
     return json(400, { error: 'Nothing requested.' });
   }

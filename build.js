@@ -43,6 +43,8 @@ const SITEMAP_EXCLUDE = new Set([
   'lesson-gate.html',
   // template, not a real page — individual posts are added from `posts` below
   'blog-post.html',
+  // template, not a real page — individual packs are added from `products` below
+  'curriculum-pack.html',
 ]);
 
 /* Directories never walked for HTML files (build tooling, VCS, dependencies). */
@@ -248,9 +250,10 @@ const CONTENT_PAGE_IDS = {
 };
 
 (async function main() {
-  let [cfg, pages, redirects, posts] = await Promise.all([
+  let [cfg, pages, redirects, posts, products] = await Promise.all([
     getDoc('site/config'), getCol('pages'), getCol('redirects'),
-    getCol('posts').catch(() => [])
+    getCol('posts').catch(() => []),
+    getCol('products').catch(() => [])
   ]);
   if (!cfg) {
     // Firestore unreachable (rules not deployed, outage, etc.). Don't fail the
@@ -300,6 +303,7 @@ const CONTENT_PAGE_IDS = {
     urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
   posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog-post.html?slug=${p.slug}`));
+  products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/curriculum-pack.html?slug=${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map(u => `  <url><loc>${esc(u)}</loc></url>`).join('\n') + `\n</urlset>\n`);

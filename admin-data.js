@@ -400,6 +400,21 @@
     const doc = await productsCol().doc(id).get();
     return doc.exists ? docToObj(doc) : null;
   }
+  // Public lookup by slug for individual product/curriculum pages — mirrors
+  // getPostBySlug (the active filter is required for the same reason: rules
+  // only allow a where() query that's provably limited to readable docs).
+  async function getProductBySlug(slug) {
+    const snap = await productsCol().where('slug', '==', slug).where('active', '==', true).limit(1).get();
+    if (snap.empty) return null;
+    return docToObj(snap.docs[0]);
+  }
+  async function relatedProducts(category, excludeId, count) {
+    const snap = await productsCol().where('active', '==', true).where('category', '==', category).get();
+    return snap.docs.map(docToObj)
+      .filter(p => p.id !== excludeId)
+      .sort((a, b) => (a.sortOrder ?? 999) - (b.sortOrder ?? 999))
+      .slice(0, count || 3);
+  }
   async function saveProduct(p) {
     const now = Date.now();
     const rec = { ...p };
@@ -579,7 +594,7 @@
     listRedirects, saveRedirect, deleteRedirect,
     getNavMenu, saveNavMenu,
     bumpAnalytics, getAnalyticsRange,
-    listProducts, listActiveProducts, getProduct, saveProduct, deleteProduct,
+    listProducts, listActiveProducts, getProduct, getProductBySlug, relatedProducts, saveProduct, deleteProduct,
     listCurriculum, getCurriculum, saveCurriculum, deleteCurriculum,
     listSubscriptions, listOrgs,
     listOrders, getOrder, updateOrder, listMyOrders,

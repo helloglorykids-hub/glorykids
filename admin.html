@@ -428,8 +428,17 @@
                   <input type="checkbox" id="post-free-lesson" style="width:auto;" /> Include in the 10 Free Lessons
                 </label>
                 <p style="font-size:0.78rem; color:var(--gray-500); margin:0.4rem 0 0; line-height:1.5;">
-                  Checked: this lesson shows the MailerLite signup below and is downloadable for free.
-                  Unchecked (default): the signup box is replaced with a "Join Glory Kids Membership" prompt instead — only check this for the 10 lessons you're giving away free.
+                  Checked: this lesson shows the MailerLite signup below and is downloadable by email alone, no account needed.
+                  Unchecked (default): falls through to the rules below — only check this for the 10 lessons you're giving away by email.
+                </p>
+              </div>
+              <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:var(--gray-700);">
+                  <input type="checkbox" id="post-free-with-account" style="width:auto;" /> Free With Account Signup (part of the 35)
+                </label>
+                <p style="font-size:0.78rem; color:var(--gray-500); margin:0.4rem 0 0; line-height:1.5;">
+                  Checked: any signed-in user can download this for free — no paid membership needed, just a free account. Use this for the remaining ~25 lessons that make up the "35 free lessons" promise (10 by email + 25 more with signup).
+                  Unchecked, and not one of the 10 above: the "Join Glory Kids Membership" prompt shows instead.
                 </p>
               </div>
               <div>
@@ -501,7 +510,7 @@
                 <div class="gk-hint" id="lesson-files-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
                 <ul id="lesson-files-list" style="list-style:none; padding:0; margin:0.5rem 0 0;"></ul>
                 <p style="font-size:0.78rem; color:var(--gray-500); margin:0.5rem 0 0; line-height:1.5;">
-                  For the 10 free lessons these download for free (also delivered by the MailerLite email). For every other lesson, only active Glory Kids / Church members can download them.
+                  For the 10 free lessons these download for free (also delivered by the MailerLite email). Lessons marked "Free With Account Signup" download for free to any signed-in user. For every other lesson, only active Glory Kids / Church members can download them.
                 </p>
               </div>
             </div>
@@ -1864,6 +1873,7 @@ function showPostForm(post, presetCategory) {
   document.getElementById('post-lesson-type').value = post ? (post.lessonType || 'lesson') : 'lesson';
   document.getElementById('post-season').value = post ? (post.season || 'general') : 'general';
   document.getElementById('post-free-lesson').checked = !!(post && post.isFreeLesson);
+  document.getElementById('post-free-with-account').checked = !!(post && post.freeWithAccount);
   galleryImages = post && post.galleryImages ? [...post.galleryImages] : [];
   renderGalleryThumbs();
   document.getElementById('gallery-status').textContent = '';
@@ -1924,6 +1934,7 @@ async function savePostForm() {
     lessonType: document.getElementById('post-lesson-type').value,
     season: document.getElementById('post-season').value,
     isFreeLesson: document.getElementById('post-free-lesson').checked,
+    freeWithAccount: document.getElementById('post-free-with-account').checked,
     galleryImages: [...galleryImages],
     files: lessonFiles.map(f => ({ path: f.path, name: f.name || '' })),
     tags: postTags,
@@ -2191,6 +2202,7 @@ function renderAccessDrawer() {
   const rows = [];
   rows.push(`<li>${isMember ? yes : (isPaused ? pause : no)} Full curriculum library &amp; member downloads ${isMember ? '' : (isPaused ? '<span style="color:var(--gray-400);">— paused</span>' : '<span style="color:var(--gray-400);">— members only</span>')}</li>`);
   rows.push(`<li>${yes} The 10 free Bible lessons <span style="color:var(--gray-400);">— everyone</span></li>`);
+  rows.push(`<li>${yes} The 35 free lessons (10 by email + 25 with signup) <span style="color:var(--gray-400);">— any signed-in account</span></li>`);
   rows.push(`<li>${yes} Blog &amp; free resources <span style="color:var(--gray-400);">— everyone</span></li>`);
   rows.push(`<li>${u.isAdmin ? yes : no} Admin panel (this page) ${u.isAdmin ? '' : '<span style="color:var(--gray-400);">— admins only</span>'}</li>`);
   rows.push(`<li style="color:var(--gray-400); padding-top:0.4rem;">Dashboard shows: <strong style="color:var(--gray-600);">${isMember ? 'Glory Kids Member — Active' : (isPaused ? 'Membership Paused' : 'Free Account')}</strong></li>`);

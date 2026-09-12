@@ -3,35 +3,177 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Glory Kids Curriculum | Glory Kids Ministries</title>
-  <meta name="description" content="Our flagship children's ministry curriculum — beautifully designed, theologically rich multi-week series that kids love and leaders find easy to teach." />
+  <title>The Glory Kids 12-Month Curriculum | Glory Kids Ministries</title>
+  <meta name="description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence. Twelve standalone monthly series, join any time of year." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="auth.css" />
   <link rel="stylesheet" href="homepage.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/tailwind.css" />
   <style>
-    .series-card {
-      background: var(--color-card); border-radius: var(--radius-xl);
-      box-shadow: var(--shadow-md); overflow: hidden; transition: var(--transition);
-      border: 1px solid var(--gray-100);
+    /* ── Three Pillars ───────────────────────────────────────────── */
+    .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+    @media(max-width:900px) { .pillars-grid { grid-template-columns: 1fr; } }
+    .pillar-card {
+      background: var(--color-card); border-radius: var(--radius-xl); padding: 2.25rem;
+      border-top: 4px solid var(--pillar-accent, var(--color-teal-primary));
+      box-shadow: var(--shadow-md); text-align: center;
     }
-    .series-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .series-card__header { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; position: relative; }
-    .series-card__weeks { position: absolute; top: 1rem; left: 1rem; background: rgba(0,0,0,0.4); color: white; padding: 0.3rem 0.85rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.75rem; font-weight: 700; backdrop-filter: blur(4px); }
-    .series-card__new { position: absolute; top: 1rem; right: 1rem; background: var(--gold); color: var(--white); padding: 0.3rem 0.85rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700; }
-    .series-card__body { padding: 1.75rem; }
-    .series-card__title { font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
-    .series-card__desc { font-size: 0.875rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 1rem; }
-    .series-card__ages { display: flex; gap: 0.4rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-    .age-chip { padding: 0.2rem 0.65rem; border-radius: var(--radius-full); font-family: var(--font-heading); font-size: 0.68rem; font-weight: 700; background: var(--primary-light); color: var(--primary); }
-    .series-card__footer { border-top: 1px solid var(--gray-100); padding-top: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-    .series-card__lessons { font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600; color: var(--gray-500); }
-    .series-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
-    @media(max-width:1024px) { .series-grid { grid-template-columns: repeat(2,1fr); } }
-    @media(max-width:640px) { .series-grid { grid-template-columns: 1fr; } }
-    .what-inside { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.25rem; }
-    @media(max-width:640px) { .what-inside { grid-template-columns: 1fr; } }
+    .pillar-card--voice    { --pillar-accent: #00BFC4; }
+    .pillar-card--power    { --pillar-accent: #FFB000; }
+    .pillar-card--presence { --pillar-accent: #66249A; }
+    .pillar-card__icon {
+      width: 68px; height: 68px; border-radius: 50%; margin: 0 auto 1.25rem;
+      display: flex; align-items: center; justify-content: center; font-size: 2.1rem;
+      background: color-mix(in srgb, var(--pillar-accent) 18%, transparent);
+      border: 2px solid var(--pillar-accent);
+    }
+    .pillar-card__name { font-family: var(--font-heading); font-weight: 900; font-size: 1.1rem; letter-spacing: 0.08em; color: var(--pillar-accent); margin-bottom: 0.5rem; }
+    .pillar-card__line { font-family: var(--font-heading); font-weight: 700; color: var(--white); font-size: 1.05rem; margin-bottom: 0.85rem; line-height: 1.4; }
+    .pillar-card__desc { font-size: 0.9rem; color: var(--gray-500); line-height: 1.75; }
+
+    /* ── Lesson flow chain ───────────────────────────────────────── */
+    .flow-chain { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; align-items: center; }
+    .flow-chip {
+      background: var(--color-card); border: 1px solid var(--gray-100); border-radius: var(--radius-full);
+      padding: 0.6rem 1.1rem; font-family: var(--font-heading); font-weight: 700; font-size: 0.82rem;
+      color: var(--white); white-space: nowrap;
+    }
+    .flow-arrow { color: var(--gray-400); font-size: 1rem; }
+    .modular-note {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-top: 2rem;
+    }
+    @media(max-width:900px) { .modular-note { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:520px) { .modular-note { grid-template-columns: 1fr; } }
+    .modular-note__item {
+      background: var(--primary-light); border-radius: var(--radius-lg); padding: 1rem 1.1rem;
+      font-size: 0.85rem; color: var(--gray-600); text-align: center; font-weight: 600;
+    }
+
+    /* ── Year at a glance table ──────────────────────────────────── */
+    .yag-table { width: 100%; border-collapse: collapse; background: var(--color-card); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-md); }
+    .yag-table th, .yag-table td { padding: 0.85rem 1.1rem; text-align: left; border-bottom: 1px solid var(--gray-100); font-size: 0.88rem; }
+    .yag-table th { font-family: var(--font-heading); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-500); background: var(--gray-50); }
+    .yag-table td:first-child { font-family: var(--font-heading); font-weight: 700; color: var(--white); white-space: nowrap; }
+    .yag-table td:nth-child(2) { color: var(--primary); font-weight: 700; }
+    .yag-table tr:last-child td { border-bottom: none; }
+    .yag-table tr:hover td { background: var(--primary-lighter); cursor: pointer; }
+    .yag-wrap { overflow-x: auto; margin-bottom: 3.5rem; }
+
+    /* ── Year Journey circular flow chart ────────────────────────── */
+    .journey-outer { background: var(--color-darkest); position: relative; overflow: hidden; }
+    .journey-orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .journey-orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.3; }
+    .journey-orb--a { width: 420px; height: 420px; top: -140px; left: -100px; background: radial-gradient(circle,#66249A,transparent 70%); }
+    .journey-orb--b { width: 460px; height: 460px; bottom: -160px; right: -120px; background: radial-gradient(circle,#00BFC4,transparent 70%); }
+
+    .journey-wrap {
+      position: relative; width: 100%; max-width: 1000px; margin: 0 auto;
+      aspect-ratio: 16/10.5; z-index: 1;
+    }
+    .journey-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .journey-svg ellipse { fill: none; stroke: rgba(255,255,255,0.16); stroke-width: 0.45; stroke-dasharray: 2.2 2.4; }
+    .journey-arrow { fill: var(--gold); }
+
+    .journey-center {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+      text-align: center; width: 46%; z-index: 1; pointer-events: none;
+    }
+    .journey-center__eyebrow { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .journey-center__title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: clamp(1.05rem, 2vw, 1.5rem); line-height: 1.3; margin-bottom: 0.6rem; }
+    .journey-center__sub { font-size: 0.78rem; color: var(--gray-500); line-height: 1.6; }
+
+    .journey-node {
+      position: absolute; transform: translate(-50%,-50%); z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      cursor: pointer; width: 118px; text-align: center;
+    }
+    .journey-node__badge {
+      width: 62px; height: 62px; border-radius: 50%; position: relative;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+      border: 3px solid rgba(255,255,255,0.9); box-shadow: 0 10px 24px rgba(0,0,0,0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      overflow: hidden;
+    }
+    .journey-node__badge img { width: 100%; height: 100%; object-fit: cover; }
+    .journey-node:hover .journey-node__badge, .journey-node.is-active .journey-node__badge {
+      transform: scale(1.12); box-shadow: 0 14px 30px rgba(0,0,0,0.55), 0 0 0 4px var(--journey-accent, var(--gold));
+    }
+    .journey-node__num {
+      position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--journey-accent, var(--gold)); color: #17191C;
+      font-family: var(--font-heading); font-size: 0.62rem; font-weight: 900;
+      display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-darkest);
+    }
+    .journey-node__month { font-family: var(--font-heading); font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--journey-accent, var(--gold)); }
+    .journey-node__series { font-size: 0.72rem; font-weight: 700; color: var(--white); line-height: 1.25; }
+
+    .journey-start {
+      position: absolute; z-index: 2; font-family: var(--font-heading); font-weight: 800; font-size: 0.72rem;
+      color: var(--gold); background: rgba(255,176,0,0.12); border: 1px solid rgba(255,176,0,0.4);
+      padding: 0.3rem 0.75rem; border-radius: var(--radius-full); white-space: nowrap;
+    }
+    .journey-caption { text-align: center; font-size: 0.8rem; color: var(--gray-500); margin-top: 1.5rem; }
+
+    @media (max-width: 900px) {
+      .journey-wrap { aspect-ratio: 1/1.55; max-width: 480px; }
+      .journey-node { width: 92px; }
+      .journey-node__badge { width: 50px; height: 50px; font-size: 1.3rem; }
+      .journey-center { width: 60%; }
+    }
+
+    /* ── Month cards (Browse the Series) ─────────────────────────── */
+    .month-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    @media(max-width:1100px) { .month-grid { grid-template-columns: repeat(3,1fr); } }
+    @media(max-width:760px)  { .month-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:460px)  { .month-grid { grid-template-columns: 1fr; } }
+    .month-card {
+      background: var(--color-card); border-radius: var(--radius-lg); overflow: hidden; cursor: pointer;
+      border: 2px solid var(--gray-100); text-align: left; transition: var(--transition);
+    }
+    .month-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .month-card.is-active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-lighter); }
+    .month-card__head {
+      height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; position: relative;
+    }
+    .month-card__num { position: absolute; top: 0.6rem; left: 0.7rem; background: rgba(0,0,0,0.4); color: #fff; font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); backdrop-filter: blur(4px); }
+    .month-card__body { padding: 1.1rem 1.2rem 1.3rem; }
+    .month-card__month { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 0.3rem; }
+    .month-card__series { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: 1.05rem; margin-bottom: 0.4rem; line-height: 1.25; }
+    .month-card__focus { font-size: 0.8rem; color: var(--gray-500); }
+
+    /* ── Month detail panel ──────────────────────────────────────── */
+    .month-detail { background: var(--color-card); border-radius: var(--radius-xl); padding: 2.5rem; margin-top: 2.5rem; box-shadow: var(--shadow-lg); scroll-margin-top: 100px; }
+    .month-detail__head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 1.5rem; margin-bottom: 1.75rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--gray-100); }
+    .month-detail__eyebrow { font-family: var(--font-heading); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); margin-bottom: 0.4rem; }
+    .month-detail__title { font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 0.5rem; }
+    .month-detail__tagline { font-style: italic; color: var(--gray-400); font-size: 0.95rem; margin-bottom: 0.85rem; }
+    .month-detail__bigidea { font-size: 0.92rem; color: var(--gray-500); line-height: 1.75; max-width: 640px; }
+    .month-detail__scripture { display: inline-block; margin-top: 0.85rem; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; color: var(--gold); background: var(--gold-light); padding: 0.35rem 0.9rem; border-radius: var(--radius-full); }
+    .month-detail__note { font-size: 0.82rem; color: var(--gray-500); background: var(--primary-lighter); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem; margin-top: 1rem; max-width: 640px; }
+
+    .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    @media(max-width:760px) { .week-grid { grid-template-columns: 1fr; } }
+    .week-card { background: var(--gray-50); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-100); }
+    .week-card__img { width: 100%; aspect-ratio: 16/8; object-fit: cover; display: block; background: linear-gradient(135deg,#66249A,#00BFC4); }
+    .week-card__ph { width: 100%; aspect-ratio: 16/8; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; background: linear-gradient(135deg,#66249A,#00BFC4); }
+    .week-card__body { padding: 1.25rem 1.4rem; }
+    .week-card__num { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 0.35rem; }
+    .week-card__title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: 1.02rem; margin-bottom: 0.5rem; line-height: 1.3; }
+    .week-card__pillars { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.65rem; }
+    .pillar-chip { font-family: var(--font-heading); font-size: 0.65rem; font-weight: 800; letter-spacing: 0.04em; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); color: #fff; }
+    .pillar-chip--voice    { background: #00BFC4; }
+    .pillar-chip--power    { background: #E09E00; }
+    .pillar-chip--presence { background: #66249A; }
+    .week-card__scripture { font-size: 0.75rem; color: var(--gray-400); font-weight: 600; margin-bottom: 0.6rem; }
+    .week-card__theme { font-family: var(--font-heading); font-weight: 700; font-size: 0.88rem; color: var(--primary); margin-bottom: 0.5rem; }
+    .week-card__bigidea { font-size: 0.82rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 0.65rem; }
+    .week-card__activation { font-size: 0.78rem; color: var(--gray-600); background: var(--white); border-left: 3px solid var(--gold); padding: 0.55rem 0.8rem; border-radius: 0 8px 8px 0; line-height: 1.6; }
+    .week-card__activation strong { color: var(--primary); }
+
+    .what-inside { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
+    @media(max-width:900px) { .what-inside { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:560px) { .what-inside { grid-template-columns: 1fr; } }
     .inside-item { background: var(--color-card); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--gray-100); display: flex; gap: 1rem; align-items: flex-start; }
     .inside-item__icon { font-size: 2rem; flex-shrink: 0; }
     .inside-item__title { font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; color: var(--white); margin-bottom: 0.3rem; }
@@ -47,13 +189,13 @@
   <!-- gk:managed:start -->
   <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
   <link rel="canonical" href="https://www.glorykidsministry.com/glory-kids-curriculum.html">
-  <meta property="og:title" content="Glory Kids Curriculum | Glory Kids Ministries">
+  <meta property="og:title" content="The Glory Kids 12-Month Curriculum | Glory Kids Ministries">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.glorykidsministry.com/glory-kids-curriculum.html">
-  <meta property="og:description" content="Our flagship children's ministry curriculum — beautifully designed, theologically rich multi-week series that kids love and leaders find easy to teach.">
+  <meta property="og:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence.">
   <meta property="og:site_name" content="Glory Kids Ministries">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:description" content="Our flagship children's ministry curriculum — beautifully designed, theologically rich multi-week series that kids love and leaders find easy to teach.">
+  <meta name="twitter:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence.">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
   <!-- gk:managed:end -->
 </head>
@@ -134,24 +276,109 @@
   </div>
   <div class="container" style="position:relative;z-index:3;">
     <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Glory Kids Curriculum</span></div>
-    <h1 data-gk-edit="hero.title">The Glory Kids<br><span style="color:var(--gold);">Curriculum Series</span></h1>
-    <p data-gk-edit="hero.subtitle">Beautifully designed, theologically rich multi-week series that kids love and leaders find a joy to teach. Included free with Glory Kids Membership — launching September 15, 2026.</p>
+    <h1>The Glory Kids<br><span style="color:var(--gold);">12-Month Curriculum</span></h1>
+    <p style="font-weight:700;color:#fff;margin-bottom:0.5rem;">Encounter Jesus. Carry His Presence.</p>
+    <p>Glory Kids exists to raise a generation that encounters Jesus, hears His voice, experiences His power, and carries His presence. Twelve complete monthly series — Voice, Power, Presence — woven into one intentional discipleship journey. Included free with Glory Kids Membership, launching September 15, 2026.</p>
     <div class="page-hero__deck" aria-hidden="true">
-      <div class="ph-card ph-card--1" style="background:linear-gradient(135deg,#66249A,#00BFC4)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786637416732_featured.jpg?alt=media&token=877e030b-86dc-47fe-ab7d-530202991dfa" alt="The Lord's Prayer, Explained for Kids" loading="lazy" decoding="async" /></div>
+      <div class="ph-card ph-card--1" style="background:linear-gradient(135deg,#66249A,#00BFC4)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="Jesus Calms the Storm" loading="lazy" decoding="async" /></div>
       <div class="ph-card ph-card--2" style="background:linear-gradient(135deg,#FF4B32,#FFB000)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894478782_featured.jpg?alt=media&token=31f23597-4ab4-484c-ab00-16f55b3df25a" alt="The Nativity Story" loading="lazy" decoding="async" /></div>
-      <div class="ph-card ph-card--3" style="background:linear-gradient(135deg,#FFB000,#66249A)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="Noah's Ark" loading="lazy" decoding="async" /></div>
+      <div class="ph-card ph-card--3" style="background:linear-gradient(135deg,#FFB000,#66249A)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="Pentecost" loading="lazy" decoding="async" /></div>
       <div class="ph-card ph-card--4" style="background:linear-gradient(135deg,#00BFC4,#0B2E67)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="David &amp; Goliath" loading="lazy" decoding="async" /></div>
-      <div class="ph-card ph-card--5" style="background:linear-gradient(135deg,#E13C24,#009BA0)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786464027863_featured.jpg?alt=media&token=3b2031c4-029f-478c-b375-8af6e9ac0636" alt="The Good Samaritan" loading="lazy" decoding="async" /></div>
+      <div class="ph-card ph-card--5" style="background:linear-gradient(135deg,#E13C24,#009BA0)"><img class="ph-card__img" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786637416732_featured.jpg?alt=media&token=877e030b-86dc-47fe-ab7d-530202991dfa" alt="The Lord's Prayer, Explained for Kids" loading="lazy" decoding="async" /></div>
     </div>
   </div>
 </section>
 
-<!-- WHAT MAKES IT DIFFERENT -->
+<!-- THREE PILLARS -->
+<section>
+  <div class="container">
+    <div class="section-label reveal">The Curriculum DNA</div>
+    <h2 class="section-heading reveal">Built on Three <span class="highlight">Pillars</span></h2>
+    <p class="section-subheading reveal">This curriculum isn't a collection of Bible stories. Every lesson helps children know God personally, understand Scripture, encounter Jesus, respond to the Holy Spirit, and live out their faith.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card pillar-card--voice reveal reveal-delay-1">
+        <div class="pillar-card__icon">🗣️</div>
+        <div class="pillar-card__name">VOICE</div>
+        <div class="pillar-card__line">Hear God. Know His Word. Follow His leading.</div>
+        <div class="pillar-card__desc">Children discover that God speaks through Scripture and that the Holy Spirit leads God's people. They learn to listen, discern what agrees with God's Word, and respond to Him.</div>
+      </div>
+      <div class="pillar-card pillar-card--power reveal reveal-delay-2">
+        <div class="pillar-card__icon">⚡</div>
+        <div class="pillar-card__name">POWER</div>
+        <div class="pillar-card__line">Trust God. Live courageously. Participate in what He is doing.</div>
+        <div class="pillar-card__desc">Children discover God's supernatural power and learn that the Holy Spirit empowers ordinary people to pray, serve, obey, demonstrate God's love and live courageously.</div>
+      </div>
+      <div class="pillar-card pillar-card--presence reveal reveal-delay-3">
+        <div class="pillar-card__icon">🕊️</div>
+        <div class="pillar-card__name">PRESENCE</div>
+        <div class="pillar-card__line">Know Jesus. Be with Him. Become like Him. Carry Him everywhere.</div>
+        <div class="pillar-card__desc">Children develop a personal relationship with God through prayer, worship, encounter and awareness of His presence, with the goal of becoming more like Jesus.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW THE CURRICULUM WORKS -->
 <section style="background:var(--primary-lighter);">
+  <div class="container">
+    <div class="section-label reveal">Flexible by Design</div>
+    <h2 class="section-heading reveal">Join <span class="highlight">Any Month</span> of the Year</h2>
+    <p class="section-subheading reveal">Every month is a complete, standalone 4-week series. A church doesn't need to complete October before November, or January before February — but when all 12 series are followed together, they form one intentional discipleship journey.</p>
+    <div class="modular-note reveal">
+      <div class="modular-note__item">Structured, but not dependent</div>
+      <div class="modular-note__item">Progressive, but modular</div>
+      <div class="modular-note__item">Deep, but simple enough for children</div>
+      <div class="modular-note__item">Supernatural, but biblically grounded</div>
+      <div class="modular-note__item">Fun, but never shallow</div>
+    </div>
+
+    <h3 style="text-align:center;font-family:var(--font-heading);font-weight:800;color:var(--white);margin:3rem 0 1.5rem;font-size:1.15rem;">What Every Lesson Walks Through</h3>
+    <div class="flow-chain reveal">
+      <span class="flow-chip">Bible Story</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Big Idea</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Scripture</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Teaching</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Discussion</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Game</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Activity / Craft</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Prayer</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Holy Spirit / Encounter Activation</span><span class="flow-arrow">→</span>
+      <span class="flow-chip">Take-Home / Parent Resource</span>
+    </div>
+  </div>
+</section>
+
+<!-- YEAR JOURNEY — circular flow chart, 12 months -->
+<section class="journey-outer">
+  <div class="journey-orbs" aria-hidden="true">
+    <span class="journey-orb journey-orb--a"></span>
+    <span class="journey-orb journey-orb--b"></span>
+  </div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-label reveal">One Journey, Twelve Months</div>
+    <h2 class="section-heading reveal">Your Year at a <span class="highlight">Glance</span></h2>
+    <p class="section-subheading reveal">Tap any month to jump straight to its four-week breakdown below.</p>
+
+    <div class="journey-wrap reveal" id="journeyWrap">
+      <svg class="journey-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <ellipse cx="50" cy="50" rx="44" ry="38"></ellipse>
+      </svg>
+      <div class="journey-center">
+        <div class="journey-center__eyebrow">Encounter Jesus</div>
+        <div class="journey-center__title">Carry His Presence</div>
+        <div class="journey-center__sub">Each circle is one month's themed series — start wherever your ministry calendar is right now.</div>
+      </div>
+      <!-- nodes injected by JS -->
+    </div>
+    <p class="journey-caption reveal">🎨 Placeholder art shown — final themed illustrations coming soon for every month.</p>
+  </div>
+</section>
+
+<!-- WHAT MAKES IT DIFFERENT -->
+<section>
   <div class="container">
     <div class="section-label reveal">Why Glory Kids?</div>
     <h2 class="section-heading reveal">Curriculum That <span class="highlight">Actually Works</span></h2>
-    <p class="section-subheading reveal">Every series in the Glory Kids Curriculum is built on four non-negotiables.</p>
     <div class="what-inside">
       <div class="inside-item reveal reveal-delay-1">
         <div class="inside-item__icon">📖</div>
@@ -166,6 +393,14 @@
         <div><div class="inside-item__title">Beautifully Designed</div><div class="inside-item__desc">Stunning visuals, printable materials, and engaging layouts that make your ministry look world-class — even with a tiny team.</div></div>
       </div>
       <div class="inside-item reveal reveal-delay-1">
+        <div class="inside-item__icon">✨</div>
+        <div><div class="inside-item__title">Encounter, Not Just Info</div><div class="inside-item__desc">Every single lesson includes a Holy Spirit / Encounter Activation — a real moment for kids to respond to God, not just learn about Him.</div></div>
+      </div>
+      <div class="inside-item reveal reveal-delay-2">
+        <div class="inside-item__icon">🏠</div>
+        <div><div class="inside-item__title">Family-Reinforced</div><div class="inside-item__desc">Take-home parent resources carry each week's Big Idea out of the classroom and into everyday family life.</div></div>
+      </div>
+      <div class="inside-item reveal reveal-delay-3">
         <div class="inside-item__icon">⚡</div>
         <div><div class="inside-item__title">Ready in 15 Minutes</div><div class="inside-item__desc">Detailed lesson scripts, teacher prep notes, and step-by-step guides mean even a first-time volunteer can deliver an outstanding lesson.</div></div>
       </div>
@@ -173,272 +408,23 @@
   </div>
 </section>
 
-<!-- WHAT'S IN EVERY SERIES -->
-<section>
-  <div class="container">
-    <div class="section-label reveal">What You Get</div>
-    <h2 class="section-heading reveal">Inside Every <span class="highlight">Series</span></h2>
-    <p class="section-subheading reveal">Each Glory Kids series comes complete — nothing to add, nothing to buy separately.</p>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;" class="reveal">
-      <div style="background:var(--primary-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">📝</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Complete Lesson Scripts</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">Word-for-word scripts with teaching notes, discussion questions, and timing guides.</div>
-      </div>
-      <div style="background:var(--gold-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🖨️</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Printable Activity Sheets</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">Beautifully designed activity and coloring sheets for every lesson in the series.</div>
-      </div>
-      <div style="background:var(--green-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🏠</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Take-Home Devotionals</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">Weekly family devotionals that help parents reinforce the lesson throughout the week.</div>
-      </div>
-      <div style="background:var(--teal-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🧠</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Memory Verse Resources</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">Cards, games, and creative tools to help kids memorize the key Scripture for each lesson.</div>
-      </div>
-      <div style="background:var(--rose-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">🎮</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Games & Object Lessons</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">Ready-to-run game and object lesson ideas that reinforce the Big Idea in a memorable way.</div>
-      </div>
-      <div style="background:var(--coral-light);border-radius:var(--radius-lg);padding:1.5rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem;">👩‍🏫</div>
-        <div style="font-family:var(--font-heading);font-weight:700;color:var(--white);margin-bottom:0.35rem;">Volunteer Training Guide</div>
-        <div style="font-size:0.85rem;color:var(--gray-500);">A simple one-page guide for each lesson so volunteers know exactly what to do and when.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SERIES LIBRARY -->
+<!-- YEAR AT A GLANCE / BROWSE THE SERIES -->
 <section class="section--gray" id="series">
   <div class="container">
-    <div class="section-label reveal">Series Library</div>
+    <div class="section-label reveal">October 2026 – September 2027</div>
     <h2 class="section-heading reveal">Browse the <span class="highlight">Series</span></h2>
-    <p class="section-subheading reveal">All series are included with Glory Kids Membership, launching September 15, 2026. New series added regularly.</p>
+    <p class="section-subheading reveal">All 12 series are included with Glory Kids Membership, launching September 15, 2026. Tap a month below to see the full four-week breakdown.</p>
 
-    <!-- Filter tabs -->
-    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="curriculumFilters">
-      <button data-filter="all" class="curr-filter-btn is-active px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">All Series</button>
-      <button data-filter="popular" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Most Popular</button>
-      <button data-filter="new" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">New Releases</button>
-      <button data-filter="seasonal" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Seasonal</button>
-      <button data-filter="age" class="curr-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">By Age Group</button>
+    <div class="yag-wrap reveal">
+      <table class="yag-table">
+        <thead><tr><th>Month</th><th>Series</th><th>Focus</th></tr></thead>
+        <tbody id="yagTableBody"></tbody>
+      </table>
     </div>
 
-    <!-- Grid -->
-    <div id="curriculumGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="month-grid reveal" id="monthGrid"></div>
 
-      <!-- Rooted -->
-      <div class="curr-card group" data-category="all popular">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#66249A,#FFB000);">
-            🌳
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 12 Weeks</span>
-            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
-            <span class="curr-preview-badge">✨ Free Preview</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Rooted: A Series on Faith</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 12 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Twelve weeks digging into what it really means to have faith that holds — through doubt, growth, and everyday life.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Brave Heart -->
-      <div class="curr-card group" data-category="all popular">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#FF4B32,#FFB000);">
-            🦁
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
-            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
-            <span class="curr-preview-badge">✨ Free Preview</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Brave Heart</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bible heroes who faced their fears with God at their side — helping kids find courage for their own battles.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Have a Nice Day -->
-      <div class="curr-card group" data-category="all age">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#00BFC4,#7ED6A5);">
-            😊
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
-            <span class="curr-preview-badge">✨ Free Preview</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Have a Nice Day</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-8 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A kindness-first series that turns "be nice" into real habits — sharing, patience, and gentle words.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bullies in My Brain -->
-      <div class="curr-card group" data-category="all new">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#0B2E67,#8E7CC3);">
-            🧠
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
-            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Bullies in My Brain</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A gentle, biblical look at anxious thoughts and negative self-talk — arming kids with truth that quiets the noise.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- In My Feelings -->
-      <div class="curr-card group" data-category="all new">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#D45D9C,#FFB000);">
-            💗
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
-            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">In My Feelings</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 6-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Naming big emotions through Scripture — helping kids process sadness, anger, and worry in healthy ways.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Welcome Home -->
-      <div class="curr-card group" data-category="all">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#009BA0,#00BFC4);">
-            🏠
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 10 Weeks</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Welcome Home</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 10 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">What church is, why it matters, and how kids belong — building excitement for community and the family of God.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Summer Soundtrack -->
-      <div class="curr-card group" data-category="all seasonal">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#F2C94C,#00BFC4);">
-            🎧
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 6 Weeks</span>
-            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">☀️ Seasonal</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Summer Soundtrack</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 6 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A high-energy summer series with worship, water games, and Scripture kids will be singing all season.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Christmas Playlist -->
-      <div class="curr-card group" data-category="all seasonal">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#E13C24,#009BA0);">
-            🎄
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
-            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">❄️ Seasonal</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Christmas Playlist</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Four weeks of Advent wonder — the songs, the star, the shepherds — pointing straight to the newborn King.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- The Youth Will Win -->
-      <div class="curr-card group" data-category="all new age">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#66249A,#D45D9C);">
-            🏆
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
-            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">The Youth Will Win</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Bold, preteen-focused lessons on standing firm in faith and leading well — for kids stepping into their calling.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- It's Giving Thanks -->
-      <div class="curr-card group" data-category="all seasonal">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#E09E00,#FFB000);">
-            🍂
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 4 Weeks</span>
-            <span class="absolute top-3 right-3 bg-sky-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🍁 Seasonal</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">It's Giving Thanks</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 4 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.7/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">A short, joyful series building real gratitude habits — perfect for the weeks leading into Thanksgiving.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- What Was I Made For -->
-      <div class="curr-card group" data-category="all popular age">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#00BFC4,#66249A);">
-            🌟
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
-            <span class="absolute top-3 right-3 bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">⭐ Most Popular</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">What Was I Made For</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 9-12 &nbsp;|&nbsp; ⭐️ 4.9/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Helping preteens explore identity and purpose in Christ — who God made them to be, on purpose, for a purpose.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Move of God -->
-      <div class="curr-card group" data-category="all new">
-        <div class="curr-card__inner relative bg-[var(--color-card)] rounded-2xl overflow-hidden border border-white/10 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-[1.03] group-hover:shadow-2xl group-hover:shadow-black/40">
-          <div class="relative w-full h-[180px] flex items-center justify-center text-6xl" style="background:linear-gradient(135deg,#0B2E67,#00BFC4);">
-            🔥
-            <span class="absolute top-3 left-3 bg-black/40 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">🎯 8 Weeks</span>
-            <span class="absolute top-3 right-3 bg-orange-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full">🆕 New</span>
-          </div>
-          <div class="p-5">
-            <h3 class="font-extrabold text-white text-lg mb-1.5">Move of God</h3>
-            <p class="text-xs text-slate-400 font-semibold mb-2">🎯 8 Weeks &nbsp;|&nbsp; 👨‍👩‍👧 Ages 3-12 &nbsp;|&nbsp; ⭐️ 4.8/5</p>
-            <p class="text-sm text-slate-400 leading-relaxed line-clamp-2 mb-4">Stories of revival and the Holy Spirit's power at work — stirring kids to expect God to move today.</p>
-            <a href="glory-kids-membership.html" class="curr-card__cta">Explore Series →</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="month-detail" id="monthDetail"></div>
 
     <div class="text-center mt-12 reveal">
       <a href="free-lessons.html" class="btn btn--outline btn--lg">Browse the Lesson Library →</a>
@@ -446,52 +432,295 @@
   </div>
 </section>
 
-<style>
-  .curr-filter-btn { background: transparent; color: var(--gray-500); }
-  .curr-filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
-  .curr-filter-btn.is-active { background: var(--primary); border-color: var(--primary); color: #fff; }
-  .curr-card { transition: opacity 0.35s ease, transform 0.35s ease; }
-  .curr-card.is-hidden { opacity: 0; transform: scale(0.94); pointer-events: none; position: absolute; visibility: hidden; height: 0; overflow: hidden; margin: 0; }
-  .curr-card__cta {
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    font-family: var(--font-heading); font-weight: 700; font-size: 0.9rem;
-    color: var(--primary); opacity: 0; transform: translateY(4px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-  }
-  .group:hover .curr-card__cta { opacity: 1; transform: translateY(0); }
-  .curr-preview-badge {
-    position: absolute; bottom: 0.75rem; left: 0.75rem;
-    background: rgba(255,255,255,0.9); color: #1a1f3a;
-    font-size: 0.7rem; font-weight: 800; padding: 0.25rem 0.65rem; border-radius: 999px;
-  }
-</style>
-
 <script>
-  (function () {
-    var buttons = document.querySelectorAll('.curr-filter-btn');
-    var cards = document.querySelectorAll('.curr-card');
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        buttons.forEach(function (b) { b.classList.remove('is-active'); });
-        btn.classList.add('is-active');
-        var filter = btn.dataset.filter;
-        cards.forEach(function (card) {
-          var cats = card.dataset.category.split(' ');
-          if (cats.indexOf(filter) !== -1) {
-            card.classList.remove('is-hidden');
-          } else {
-            card.classList.add('is-hidden');
-          }
-        });
-      });
+(function () {
+  function img(id, token) {
+    return 'https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F' + id + '_featured.jpg?alt=media&token=' + token;
+  }
+  var IMG = {
+    calmsStorm: img('1786636719452', '431566e4-aee6-4deb-a819-dac615207049'),
+    feeds5000:  img('1786894930046', '7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b'),
+    davidGoliath: img('1786526067191', 'ea023f3c-dbb6-4402-a835-2151e2c99d58'),
+    danielLions:  img('1786636017417', '50b2b70a-a7a6-4f62-b6cd-079e93166e9b'),
+    pentecost:    img('1787342040948', '5fe401a8-383e-4638-b769-6d272a6ef895'),
+    lordsPrayer:  img('1786637416732', '877e030b-86dc-47fe-ab7d-530202991dfa'),
+    nativity:     img('1786894478782', '31f23597-4ab4-484c-ab00-16f55b3df25a'),
+    goodSamaritan: img('1786464027863', '3b2031c4-029f-478c-b375-8af6e9ac0636'),
+    noahsArk:     img('1786524910495', '814095e5-63ba-49ba-928d-e74e3364b90b'),
+    jonahWhale:   img('1786636434263', 'a09a0d89-0cf8-4057-9845-1063bd82478f'),
+    mosesRedSea:  img('1786894735986', 'c2ac3e9a-5118-45dc-be48-6608b0157896')
+  };
+
+  var YEAR = [
+    {
+      month: 'October', emoji: '✨', grad: ['#66249A', '#00BFC4'],
+      series: 'Miracles of Jesus', tagline: 'Jesus Changes Everything',
+      focus: 'Encounter Jesus', scripture: 'Acts 10:38',
+      bigIdea: 'Jesus is powerful, compassionate and present. When people encounter Jesus, things change.',
+      note: 'This is the first Glory Kids series — it introduces the DNA of Voice, Power and Presence.',
+      weeks: [
+        { title: 'Jesus Calms the Storm', scripture: 'Mark 4:35–41', pillars: ['voice'], theme: "When Jesus Speaks, Everything Changes", bigIdea: "Jesus' voice carries authority. Even when life feels scary or chaotic, we can listen to and trust Jesus.", activation: '"Jesus, what do You want to say to me today?" Allow children to become quiet and listen.', image: IMG.calmsStorm },
+        { title: 'Jesus Feeds the 5,000', scripture: 'John 6:1–14', pillars: ['power'], theme: 'Little Becomes Much With Jesus', bigIdea: 'Jesus can take the little we have and do more than we could imagine. Children are never too young or insignificant for God to use.', activation: '"Jesus, what have You put in my hands that I can give to You?"', image: IMG.feeds5000 },
+        { title: 'Jesus Heals the Blind Man', scripture: 'John 9:1–12, 35–38', pillars: ['presence'], theme: 'Jesus Helps Me See', bigIdea: 'Encountering Jesus changes how we see God, ourselves and other people.', activation: '"Jesus, help me see what You see."', emoji: '👁️' },
+        { title: "Jairus' Daughter", scripture: 'Mark 5:21–24, 35–43', pillars: ['power','presence'], theme: 'Nothing Is Impossible for Jesus', bigIdea: 'Jesus brings hope into situations that look impossible. His presence changes everything.', activation: 'Children bring an "impossible" situation to Jesus in prayer.', emoji: '🙏' }
+      ]
+    },
+    {
+      month: 'November', emoji: '🍂', grad: ['#E09E00', '#FFB000'],
+      series: 'Generous Hearts', tagline: 'Living Thankful',
+      focus: 'Gratitude & Generosity', scripture: '1 Thessalonians 5:16–18',
+      bigIdea: "Experiencing God's goodness produces gratitude, generosity and compassion.",
+      note: 'Works internationally, while naturally incorporating Thanksgiving for churches that celebrate it.',
+      weeks: [
+        { title: 'The Ten Lepers', scripture: 'Luke 17:11–19', pillars: ['presence'], theme: 'Remember What God Has Done', bigIdea: "Gratitude grows when we notice and remember God's goodness.", emoji: '🙌' },
+        { title: "The Widow's Offering", scripture: 'Mark 12:41–44', pillars: ['presence'], theme: 'God Looks at My Heart', bigIdea: "Generosity isn't determined by how much we have. God sees the heart behind what we give.", emoji: '💛' },
+        { title: 'Zacchaeus', scripture: 'Luke 19:1–10', pillars: ['presence'], theme: 'Meeting Jesus Changes Me', bigIdea: 'Zacchaeus encountered Jesus, and that encounter changed how he lived and what he valued.', emoji: '🌳' },
+        { title: 'Thanksgiving / The Good Samaritan', scripture: 'Luke 10:25–37', pillars: ['power'], theme: "Give God's Love Away", bigIdea: "God's goodness isn't something we keep to ourselves. We can become an answer to someone else's need.", activation: 'For US churches: include an optional Thanksgiving emphasis this week.', image: IMG.goodSamaritan }
+      ]
+    },
+    {
+      month: 'December', emoji: '🎄', grad: ['#E13C24', '#009BA0'],
+      series: 'God With Us', tagline: 'A Glory Kids Christmas Journey',
+      focus: 'Christmas', scripture: 'Matthew 1:23',
+      bigIdea: "Christmas is the story of God's presence coming near. Jesus is Immanuel — God with us.",
+      weeks: [
+        { title: 'The Promise', scripture: 'Isaiah 9:2, 6–7', pillars: ['voice'], theme: 'God Keeps His Promises', bigIdea: 'Long before Jesus was born, God spoke about the Saviour who was coming.', emoji: '📜' },
+        { title: 'Mary Says Yes', scripture: 'Luke 1:26–38', pillars: ['voice'], theme: 'When God Speaks, I Can Say Yes', bigIdea: "Mary trusted God's voice even when she didn't understand everything.", emoji: '💫' },
+        { title: 'Jesus Is Born', scripture: 'Luke 2:1–20', pillars: ['presence'], theme: 'God Came Near', bigIdea: "Jesus is Immanuel. God didn't stay far away. He came to be with us.", image: IMG.nativity },
+        { title: 'The Wise Men', scripture: 'Matthew 2:1–12', pillars: ['presence'], theme: 'Jesus Is Worthy of My Worship', bigIdea: 'When we encounter Jesus, our response is worship.', emoji: '👑' }
+      ]
+    },
+    {
+      month: 'January', emoji: '🌟', grad: ['#00BFC4', '#66249A'],
+      series: 'Who God Says I Am', tagline: 'Identity',
+      focus: 'Identity', scripture: 'Ephesians 2:10',
+      bigIdea: "My identity isn't determined by popularity, appearance, ability or what other people say. I discover who I am by discovering who God says I am.",
+      weeks: [
+        { title: "Created in God's Image", scripture: 'Genesis 1:26–31', pillars: ['presence'], theme: 'I Was Made on Purpose', bigIdea: "I am God's creation, made in His image and deeply valued by Him.", emoji: '🌟' },
+        { title: 'David Is Chosen', scripture: '1 Samuel 16:1–13', pillars: ['voice'], theme: "God Sees What Others Don't", bigIdea: 'People often focus on what they can see. God sees the heart.', image: IMG.davidGoliath },
+        { title: 'Jesus Welcomes the Children', scripture: 'Mark 10:13–16', pillars: ['presence'], theme: 'Jesus Wants Me Close', bigIdea: "Children aren't an inconvenience to Jesus. He welcomes them into His presence.", emoji: '🤗' },
+        { title: 'Saul Encounters Jesus', scripture: 'Acts 9:1–19; 2 Corinthians 5:17', pillars: ['power'], theme: 'Jesus Can Change My Story', bigIdea: "My past doesn't have to define my future. Jesus makes us new.", emoji: '🔆' }
+      ]
+    },
+    {
+      month: 'February', emoji: '👂', grad: ['#0B2E67', '#00BFC4'],
+      series: 'God Speaks', tagline: "Learning to Hear God's Voice",
+      focus: "Hearing God's Voice", scripture: 'John 10:27',
+      bigIdea: 'God is relational. He speaks through Scripture and leads His people by His Spirit. Children can learn to recognize His voice and respond biblically.',
+      weeks: [
+        { title: 'Samuel Hears God', scripture: '1 Samuel 3:1–10', pillars: ['voice'], theme: "Speak, Lord. I'm Listening.", bigIdea: 'God speaks, and we can learn to listen.', emoji: '👂' },
+        { title: 'Elijah and the Whisper', scripture: '1 Kings 19:9–13', pillars: ['voice','presence'], theme: 'Make Space to Listen', bigIdea: "God doesn't always speak through the loudest thing. We can become quiet and attentive to Him.", emoji: '🍃' },
+        { title: 'The Good Shepherd', scripture: 'John 10:1–16, 27–28', pillars: ['voice'], theme: "Know the Shepherd's Voice", bigIdea: 'Hearing God grows out of knowing Jesus.', emoji: '🐑' },
+        { title: 'Philip Listens to the Spirit', scripture: 'Acts 8:26–40', pillars: ['voice','power'], theme: 'Listen and Obey', bigIdea: "God doesn't speak simply so that we know things. He leads us so we can follow Him and love people.", emoji: '🛤️' }
+      ]
+    },
+    {
+      month: 'March', emoji: '✝️', grad: ['#FF4B32', '#66249A'],
+      series: 'Jesus Gave Everything', tagline: 'The Easter Journey',
+      focus: 'Gospel / Easter', scripture: 'John 3:16',
+      bigIdea: 'Jesus came to rescue us. Through His death and resurrection, sin and death have been defeated and we can know God.',
+      note: 'For 2027, Easter Sunday is March 28 — making March an ideal four-week Easter journey.',
+      weeks: [
+        { title: 'The Lost Son', scripture: 'Luke 15:11–32', pillars: ['presence'], theme: 'The Father Wants Me Home', bigIdea: "God's heart is to bring His sons and daughters home.", emoji: '🏡' },
+        { title: 'The Last Supper', scripture: 'Luke 22:14–20', pillars: ['presence'], theme: 'Jesus Made a Way', bigIdea: 'Jesus came to bring us into relationship with God.', emoji: '🍞' },
+        { title: 'Palm Sunday', scripture: 'Matthew 21:1–11', pillars: ['presence'], theme: 'Jesus Is King', bigIdea: "Jesus isn't merely a teacher or Bible character. He is our King.", emoji: '🌴' },
+        { title: 'The Cross & Resurrection', scripture: 'Luke 23:32–49; 24:1–12', pillars: ['power'], theme: 'Jesus Is Alive!', bigIdea: 'Jesus defeated sin and death. The resurrection changes everything.', emoji: '☀️' }
+      ]
+    },
+    {
+      month: 'April', emoji: '🦁', grad: ['#FF4B32', '#FFB000'],
+      series: 'Courageous Faith', tagline: 'Trust God. Take Courage.',
+      focus: 'Faith & Obedience', scripture: 'Joshua 1:9',
+      bigIdea: "Faith doesn't mean we're never afraid. Faith means trusting God enough to follow Him even when we're afraid.",
+      weeks: [
+        { title: 'David & Goliath', scripture: '1 Samuel 17', pillars: ['power'], theme: 'My God Is Bigger Than My Giant', image: IMG.davidGoliath },
+        { title: 'Daniel & the Lions', scripture: 'Daniel 6', pillars: ['presence'], theme: 'God Is With Me When I Stand for Him', image: IMG.danielLions },
+        { title: 'Esther', scripture: 'Esther 4–7', pillars: ['voice','power'], theme: "Courage Can Change Someone's World", emoji: '👸' },
+        { title: 'Joshua & Jericho', scripture: 'Joshua 6:1–20', pillars: ['voice','power'], theme: 'Faith Obeys God', emoji: '📯' }
+      ]
+    },
+    {
+      month: 'May', emoji: '🔥', grad: ['#66249A', '#FFB000'],
+      series: 'Holy Spirit', tagline: 'God’s Presence With Me',
+      focus: 'Pentecost / Presence & Power', scripture: 'Acts 1:8',
+      bigIdea: "The Holy Spirit isn't simply a force or feeling. He is God with us and in us, helping us know Jesus, transforming us and empowering us to live His way.",
+      note: 'Pentecost is intentionally incorporated into this series.',
+      weeks: [
+        { title: 'Jesus Promises the Helper', scripture: 'John 14:15–27', pillars: ['presence'], theme: 'I Am Never Alone', bigIdea: 'Jesus promised that the Holy Spirit would be with His followers.', emoji: '🕊️' },
+        { title: 'Pentecost', scripture: 'Acts 2:1–21', pillars: ['power','presence'], theme: "Filled With God's Power", bigIdea: 'The Holy Spirit fills and empowers God’s people.', image: IMG.pentecost },
+        { title: 'The Beautiful Gate', scripture: 'Acts 3:1–10', pillars: ['power'], theme: 'God Can Work Through Ordinary People', bigIdea: 'The same Peter who once failed Jesus was now being used powerfully by God through the Holy Spirit.', emoji: '🚶' },
+        { title: 'Fruit of the Spirit', scripture: 'Galatians 5:16–25', pillars: ['presence'], theme: 'The Holy Spirit Makes Me More Like Jesus', bigIdea: "God's power isn't only demonstrated through miracles. The Holy Spirit transforms our character.", emoji: '🍇' }
+      ]
+    },
+    {
+      month: 'June', emoji: '🙏', grad: ['#00BFC4', '#0B2E67'],
+      series: 'Talk With God', tagline: 'Prayer',
+      focus: 'Prayer', scripture: 'Jeremiah 33:3',
+      bigIdea: 'Prayer isn’t performing for God. Prayer is relationship — talking, listening, worshipping, asking and simply being with Him.',
+      weeks: [
+        { title: 'Jesus Teaches Us to Pray', scripture: 'Matthew 6:5–13', pillars: ['presence'], theme: 'Prayer Is Being With God', image: IMG.lordsPrayer },
+        { title: 'Hannah Prays', scripture: '1 Samuel 1:9–20', pillars: ['presence'], theme: 'I Can Tell God Everything', bigIdea: "We don't have to hide our feelings from God.", emoji: '💬' },
+        { title: 'Paul & Silas Worship', scripture: 'Acts 16:16–34', pillars: ['power','presence'], theme: 'I Can Worship in Every Situation', emoji: '🎶' },
+        { title: 'The Church Prays for Peter', scripture: 'Acts 12:1–17', pillars: ['power'], theme: 'God Hears Our Prayers', emoji: '🚪' }
+      ]
+    },
+    {
+      month: 'July', emoji: '❤️', grad: ['#D45D9C', '#FFB000'],
+      series: 'Live Like Jesus', tagline: 'Kingdom Life',
+      focus: 'Kingdom Character', scripture: 'John 13:34–35',
+      bigIdea: 'Encountering Jesus changes how we live and how we treat people.',
+      weeks: [
+        { title: 'The Good Samaritan', scripture: 'Luke 10:25–37', pillars: ['presence'], theme: 'Love Looks Like Something', image: IMG.goodSamaritan },
+        { title: "Jesus Washes the Disciples' Feet", scripture: 'John 13:1–17', pillars: ['presence'], theme: 'Greatness Serves', emoji: '🪣' },
+        { title: 'Jesus Teaches About Forgiveness', scripture: 'Matthew 18:21–35', pillars: ['power'], theme: 'Choose Forgiveness', bigIdea: 'Because we have received God’s grace, He empowers us to extend forgiveness to others.', emoji: '🤝' },
+        { title: 'Zacchaeus', scripture: 'Luke 19:1–10', pillars: ['power','presence'], theme: 'Changed Hearts Change Actions', emoji: '🌳' }
+      ]
+    },
+    {
+      month: 'August', emoji: '⭐', grad: ['#FFB000', '#E13C24'],
+      series: 'God Can Use Me', tagline: "You're Never Too Young",
+      focus: 'Calling & Purpose', scripture: '1 Timothy 4:12',
+      bigIdea: "Children don't have to wait until they're adults to participate in God's Kingdom.",
+      weeks: [
+        { title: 'Young David', scripture: '1 Samuel 16:1–13', pillars: ['presence'], theme: "God Sees What's Inside Me", emoji: '🐑' },
+        { title: "Naaman's Servant Girl", scripture: '2 Kings 5:1–14', pillars: ['voice'], theme: 'My Voice Can Point Someone to God', bigIdea: "One unnamed young girl spoke up, and her words helped lead Naaman toward an encounter with God.", emoji: '🗣️' },
+        { title: 'The Boy With the Lunch', scripture: 'John 6:1–14', pillars: ['power'], theme: 'God Can Use What I Have', image: IMG.feeds5000 },
+        { title: 'Young Timothy', scripture: '1 Timothy 4:12–16; 2 Timothy 1:5–7', pillars: ['power'], theme: "I Don't Have to Wait to Make a Difference", emoji: '📘' }
+      ]
+    },
+    {
+      month: 'September', emoji: '🌍', grad: ['#009BA0', '#66249A'],
+      series: 'Carry the Light', tagline: 'Living on Mission',
+      focus: 'Mission', scripture: 'Matthew 5:14–16',
+      bigIdea: "God's presence isn't something we experience only at church. Jesus sends us to carry His love and light everywhere we go.",
+      weeks: [
+        { title: 'The Great Commission', scripture: 'Matthew 28:16–20', pillars: ['power'], theme: 'Jesus Sends Me', emoji: '🌍' },
+        { title: 'Philip & the Ethiopian', scripture: 'Acts 8:26–40', pillars: ['voice'], theme: 'Listen for Who God Is Leading You To', emoji: '🛤️' },
+        { title: 'Tabitha', scripture: 'Acts 9:36–42', pillars: ['presence'], theme: 'Show Jesus Through What You Do', emoji: '🧵' },
+        { title: 'Paul & Silas', scripture: 'Acts 16:16–34', pillars: ['power','presence'], theme: 'Carry His Presence Everywhere', bigIdea: "Wherever God's people go, they can bring His hope, love and presence.", emoji: '✨' }
+      ]
+    }
+  ];
+
+  var PILLAR_LABEL = { voice: 'VOICE', power: 'POWER', presence: 'PRESENCE' };
+
+  function pillarChips(pillars) {
+    return (pillars || []).map(function (p) {
+      return '<span class="pillar-chip pillar-chip--' + p + '">' + PILLAR_LABEL[p] + '</span>';
+    }).join('');
+  }
+
+  function weekCard(w, i) {
+    var media = w.image
+      ? '<img class="week-card__img" src="' + w.image + '" alt="' + w.title + '" loading="lazy" decoding="async" />'
+      : '<div class="week-card__ph">' + (w.emoji || '📖') + '</div>';
+    return '' +
+      '<div class="week-card">' +
+        media +
+        '<div class="week-card__body">' +
+          '<div class="week-card__num">Week ' + (i + 1) + '</div>' +
+          '<div class="week-card__title">' + w.title + '</div>' +
+          '<div class="week-card__pillars">' + pillarChips(w.pillars) + '</div>' +
+          '<div class="week-card__scripture">📜 ' + w.scripture + '</div>' +
+          '<div class="week-card__theme">' + w.theme + '</div>' +
+          (w.bigIdea ? '<div class="week-card__bigidea">' + w.bigIdea + '</div>' : '') +
+          (w.activation ? '<div class="week-card__activation"><strong>Encounter Activation:</strong> ' + w.activation + '</div>' : '') +
+        '</div>' +
+      '</div>';
+  }
+
+  function renderDetail(idx) {
+    var m = YEAR[idx];
+    var panel = document.getElementById('monthDetail');
+    panel.innerHTML = '' +
+      '<div class="month-detail__head">' +
+        '<div>' +
+          '<div class="month-detail__eyebrow">' + m.month + ' · Month ' + (idx + 1) + ' of 12</div>' +
+          '<div class="month-detail__title">' + m.series + '</div>' +
+          '<div class="month-detail__tagline">' + m.tagline + '</div>' +
+          '<p class="month-detail__bigidea">' + m.bigIdea + '</p>' +
+          (m.note ? '<div class="month-detail__note">' + m.note + '</div>' : '') +
+        '</div>' +
+        '<div class="month-detail__scripture">📖 ' + m.scripture + '</div>' +
+      '</div>' +
+      '<div class="week-grid">' + m.weeks.map(weekCard).join('') + '</div>';
+
+    document.querySelectorAll('.month-card').forEach(function (c, i) {
+      c.classList.toggle('is-active', i === idx);
     });
-  })();
+  }
+
+  function selectMonth(idx, scroll) {
+    renderDetail(idx);
+    document.querySelectorAll('.journey-node').forEach(function (n, i) {
+      n.classList.toggle('is-active', i === idx);
+    });
+    if (scroll) document.getElementById('monthDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  /* Circular "Year Journey" flow chart — 12 nodes evenly spaced around an
+     ellipse (percent-based, so it reflows with any container aspect ratio).
+     Reuses the same YEAR data and selectMonth() as the grid/table below. */
+  function renderJourney() {
+    var wrap = document.getElementById('journeyWrap');
+    if (!wrap) return;
+    var rx = 44, ry = 38;
+    var html = YEAR.map(function (m, i) {
+      var angle = (-90 + i * (360 / YEAR.length)) * Math.PI / 180;
+      var x = 50 + rx * Math.cos(angle);
+      var y = 50 + ry * Math.sin(angle);
+      var media = m.image
+        ? '<img src="' + m.image + '" alt="' + m.series + '" loading="lazy" decoding="async" />'
+        : m.emoji;
+      return '' +
+        '<div class="journey-node" data-idx="' + i + '" style="left:' + x.toFixed(2) + '%;top:' + y.toFixed(2) + '%;--journey-accent:' + m.grad[0] + ';">' +
+          '<div class="journey-node__badge" style="background:linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ');">' +
+            '<span class="journey-node__num">' + (i + 1) + '</span>' +
+            media +
+          '</div>' +
+          '<div class="journey-node__month">' + m.month + '</div>' +
+          '<div class="journey-node__series">' + m.series + '</div>' +
+        '</div>';
+    }).join('');
+    wrap.insertAdjacentHTML('beforeend', html);
+    wrap.insertAdjacentHTML('beforeend', '<div class="journey-start" style="left:50%;top:4%;transform:translate(-105%,0);">Start Here 👉</div>');
+    wrap.querySelectorAll('.journey-node').forEach(function (n) {
+      n.addEventListener('click', function () { selectMonth(Number(n.dataset.idx), true); });
+    });
+  }
+
+  document.getElementById('yagTableBody').innerHTML = YEAR.map(function (m) {
+    return '<tr data-idx="' + YEAR.indexOf(m) + '"><td>' + m.month + '</td><td>' + m.series + '</td><td>' + m.focus + '</td></tr>';
+  }).join('');
+
+  document.getElementById('monthGrid').innerHTML = YEAR.map(function (m, i) {
+    return '' +
+      '<div class="month-card" data-idx="' + i + '">' +
+        '<div class="month-card__head" style="background:linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ');">' +
+          '<span class="month-card__num">' + (i + 1) + ' / 12</span>' +
+          m.emoji +
+        '</div>' +
+        '<div class="month-card__body">' +
+          '<div class="month-card__month">' + m.month + '</div>' +
+          '<div class="month-card__series">' + m.series + '</div>' +
+          '<div class="month-card__focus">' + m.focus + '</div>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  document.querySelectorAll('.month-card, #yagTableBody tr').forEach(function (el) {
+    el.addEventListener('click', function () { selectMonth(Number(el.dataset.idx), true); });
+  });
+
+  renderJourney();
+  selectMonth(0, false);
+})();
 </script>
 
-<!-- HOW IT WORKS -->
+<!-- HOW IT WORKS (getting started) -->
 <section>
   <div class="container">
-    <div class="section-label reveal">Simple Process</div>
+    <div class="section-label reveal">Getting Started</div>
     <h2 class="section-heading reveal">Ready to Teach in <span class="highlight">15 Minutes</span></h2>
     <p class="section-subheading reveal">We've done all the heavy lifting so you can focus on what matters most — the kids.</p>
     <div class="process-steps">
@@ -502,8 +731,8 @@
       </div>
       <div class="step reveal reveal-delay-2">
         <div class="step__num">2</div>
-        <div class="step__title">Choose a Series</div>
-        <div class="step__desc">Browse the library and pick the series that fits your ministry season and age group.</div>
+        <div class="step__title">Pick Your Starting Month</div>
+        <div class="step__desc">Start wherever your ministry calendar is right now — every month stands alone. No catching up required.</div>
       </div>
       <div class="step reveal reveal-delay-3">
         <div class="step__num">3</div>
@@ -540,7 +769,7 @@
       <div class="testimonial-card reveal reveal-delay-3">
         <div class="testimonial-card__quote">"</div>
         <div class="testimonial-card__stars">★★★★★</div>
-        <p class="testimonial-card__text">My volunteers used to dread preparing lessons. Now they love it. The scripts make it so easy — even brand new volunteers teach like pros. The "Heroes of Faith" series is our all-time favourite.</p>
+        <p class="testimonial-card__text">My volunteers used to dread preparing lessons. Now they love it. The scripts make it so easy — even brand new volunteers teach like pros. The Holy Spirit activations are our favourite part every week.</p>
         <div class="testimonial-card__author"><div class="testimonial-card__avatar">👩‍🦱</div><div><div class="testimonial-card__name">Kelly Mwangi</div><div class="testimonial-card__role">Kidmin Director, Nairobi Community Church</div></div></div>
       </div>
     </div>
@@ -551,7 +780,7 @@
 <section style="padding:4rem 0;">
   <div class="container">
     <div class="cta-banner reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary),#66249A);">
-      <h2 style="color:white;">Get Every Series with Glory Kids Membership</h2>
+      <h2 style="color:white;">Get the Full 12-Month Journey</h2>
       <p>Join today and get instant access to every series, lesson, activity, and resource we've ever created — plus new content added every week.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
         <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join the Waitlist →</a>
@@ -562,15 +791,63 @@
   </div>
 </section>
 
-<footer class="footer"><div class="container">
-  <div class="footer__top">
-    <div class="footer__brand"><div class="footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div><p class="footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith.</p><div class="footer__social"><a href="#" class="footer__social-link">📘</a><a href="#" class="footer__social-link">📷</a><a href="#" class="footer__social-link">▶️</a></div></div>
-    <div><div class="footer__col-title">Resources</div><ul class="footer__links"><li><a href="free-lessons.html" class="footer__link">Free Lessons</a></li><li><a href="curriculum-packs.html" class="footer__link">Curriculum Packs</a></li><li><a href="activities.html" class="footer__link">Activities</a></li></ul></div>
-    <div><div class="footer__col-title">Company</div><ul class="footer__links"><li><a href="blog.html" class="footer__link">Blog</a></li><li><a href="faq/index.html" class="footer__link">FAQ</a></li><li><a href="contact.html" class="footer__link">Contact</a></li></ul></div>
-    <div><div class="footer__newsletter-title">Newsletter</div><form class="newsletter-form" data-gk-form="newsletter"><input type="email" name="email" required placeholder="Your email" ><button>Subscribe</button></form></div>
+<footer class="gk-footer">
+  <div class="container">
+    <div class="gk-footer__grid">
+      <div class="gk-footer__brand">
+        <div class="gk-footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div>
+        <p class="gk-footer__desc">The #1 spirit-filled Bible curriculum designed for kids to encounter Jesus—used by 2,000+ churches, thousands of families, and Christian schools worldwide. Free printable Bible lessons, complete curriculum, and resources for creating real encounters with God at home, in church, and at school. Raising a generation that encounters Jesus.</p>
+        <div class="gk-footer__social">
+          <a href="https://www.instagram.com/glorykidsministry/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@Glorykidsministry" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.391.524A2.994 2.994 0 0 0 .502 6.186 31.26 31.26 0 0 0 0 12a31.26 31.26 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117c1.886.524 9.391.524 9.391.524s7.505 0 9.391-.524a2.994 2.994 0 0 0 2.107-2.117A31.26 31.26 0 0 0 24 12a31.26 31.26 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.pinterest.com/glorykidsbiblelessons/" aria-label="Pinterest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.768 1.518 1.688 0 1.029-.653 2.567-.992 3.995-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.4.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.365 18.592 0 12.017 0z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.62h-3.45v13.3a3.3 3.3 0 1 1-2.33-3.15V8.9a6.75 6.75 0 1 0 5.78 6.68V9.4a8.16 8.16 0 0 0 4.9 1.63V7.57a4.85 4.85 0 0 1-3.5-1.75z"/></svg></a>
+          <a href="https://www.etsy.com/shop/GloryKidsMinistries" aria-label="Etsy Shop" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Resources</div>
+        <ul class="gk-footer__links">
+          <li><a href="free-lessons.html">Free Bible Lessons</a></li>
+          <li><a href="curriculum-packs.html">Curriculum Packs</a></li>
+          <li><a href="glory-kids-curriculum.html">Glory Kids Curriculum</a></li>
+          <li><a href="activities.html">Activities & Resources</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Company</div>
+        <ul class="gk-footer__links">
+          <li><a href="contact.html">About Us</a></li>
+          <li><a href="faq/index.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="contact.html">Careers</a></li>
+          <li><a href="contact.html">Partner With Us</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Stay Inspired</div>
+        <p class="gk-footer__desc">Get free lessons, tips, and ministry inspiration.</p>
+        <form class="newsletter-form gk-newsletter" data-gk-form="newsletter">
+          <input type="email" name="email" required placeholder="Enter your email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="gk-footer__bottom">
+      <span>© 2026 Glory Kids Ministries. All rights reserved.</span>
+      <div class="gk-footer__legal">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Service</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
   </div>
-  <div class="footer__bottom"><span>© 2026 Glory Kids Ministries</span><div style="display:flex;gap:1.5rem;"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
-</div></footer>
+</footer>
 <script src="app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>

@@ -1613,7 +1613,12 @@ section { padding: 5rem 0; }
 @keyframes phTwinkle { 0%,100% { opacity: 0; transform: scale(.5) rotate(0deg); } 50% { opacity: .9; transform: scale(1.1) rotate(18deg); } }
 
 .page-hero > .container { position: relative; z-index: 3; max-width: 900px; margin: 0 auto; }
-.page-hero > * { position: relative; z-index: 3; }
+/* Excludes .page-hero__fx — it needs position:absolute (set above) to stretch
+   full-bleed and host the floating orbs; this rule was clobbering that down
+   to position:relative (same specificity, later in source), collapsing the
+   fx layer to 0×0 and silently killing the colorful background on every
+   page that uses this shared hero (everything except the homepage). */
+.page-hero > :not(.page-hero__fx) { position: relative; z-index: 3; }
 .page-hero .page-hero__fx { z-index: 0; }
 
 .page-hero .breadcrumb { justify-content: center; margin-bottom: 1.75rem;
@@ -2223,12 +2228,14 @@ section { padding: 5rem 0; }
   .hero-proof { justify-content: center; }
 }
 
-/* ─── SOCIAL PROOF NOTIFICATION (bottom-right, desktop only) ────── */
+/* ─── SOCIAL PROOF NOTIFICATION (bottom-left toast, rolls through
+   testimonials, fixed to the viewport so it stays put while scrolling
+   instead of being pinned inside the hero section) ────── */
 .hero-notification {
-  position: absolute;
-  bottom: 30px;
-  right: 24px;
-  left: auto;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  right: auto;
   background: rgba(20, 15, 36, 0.94);
   border: 1px solid rgba(0,155,160, 0.35);
   border-radius: 14px;
@@ -2237,7 +2244,8 @@ section { padding: 5rem 0; }
   backdrop-filter: blur(10px);
   box-shadow: 0 18px 48px -12px rgba(0, 0, 0, 0.6), 0 0 40px -12px rgba(0,155,160, 0.35);
   z-index: 100;
-  animation: slideInLeft 0.8s ease-out 1.5s both;
+  opacity: 0;
+  pointer-events: none;
   display: none;
 }
 
@@ -2245,10 +2253,16 @@ section { padding: 5rem 0; }
   .hero-notification { display: block; }
 }
 
-/* Auto-dismiss after a few seconds so it doesn't stay pinned over the
-   rest of the page while visitors scroll (toggled via JS). */
+/* JS toggles these to fade the toast in/out between testimonials. */
+.hero-notification.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  animation: slideInLeft 0.6s ease-out both;
+}
+
 .hero-notification.is-hidden {
-  animation: fadeOutLeft 0.6s ease-in forwards;
+  opacity: 0;
+  animation: fadeOutLeft 0.5s ease-in forwards;
 }
 
 .notification-content { text-align: left; }
@@ -2847,31 +2861,36 @@ section { padding: 5rem 0; }
   position: relative;
   background: #FFF9ED;
   padding: 100px 20px;
-  /* overflow stays visible so the wave ::before can bleed 1px up over the
+  /* overflow stays visible so the wave ::before can bleed up over the
      section above with no sub-pixel seam; the orbs are clipped by .pricing-orbs
-     instead (see below). */
+     instead (see below). Overlap is a few px (not 1px) because the two
+     sections' fractional layout positions don't always land on the same
+     device pixel — a 1px overlap could round away to a visible hairline. */
   overflow: visible;
-  margin-top: -1px;
+  margin-top: -4px;
 }
 
 /* Wave seam — the dark ".gkc" journey section above spills down into this
-   cream pricing section in a soft wave. ::before is just the dark wave shape
-   (flat #101114, the colour ".gkc"'s charcoal gradient lands on at its bottom
-   edge), masked to the wave. The teal glow that appears to pass *through* the
-   wave is the real orb .orb-teal-sm below, positioned as the exact bottom half
-   of ".gkc"'s bottom-right orb (.gkc-orb-2). Wave path matches the .gkp divider. */
-.pricing-premium::before {
-  content: "";
+   cream pricing section in a soft wave. This is a real filled <svg> shape
+   (see markup), not a CSS mask — a mask's rasterized edge can leave a faint
+   hairline seam at the flat top of the shape; a solid vector fill can't.
+   The teal glow that appears to pass *through* the wave is the real orb
+   .orb-teal-sm below, positioned as the exact bottom half of ".gkc"'s
+   bottom-right orb (.gkc-orb-2). Wave path matches the .gkp divider. */
+.pricing-wave-seam {
+  /* viewBox is taller than the visible wave (-60 to 72 = 132 units, vs the
+     72 that's actually shown) so the path's flat top edge — and any
+     antialiasing on it — sits well above the visible area, fully inside
+     .gkc's own solid-dark background instead of right at the seam. */
   position: absolute;
   left: -1px;
   right: -1px;
-  top: -1px;
-  height: clamp(40px, 5.5vw, 72px);
-  background: #101114;
+  top: calc(-4px - clamp(33.33px, 4.58vw, 60px));
+  width: 100%;
+  height: clamp(73.33px, 10.08vw, 132px);
   z-index: 0;
   pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%2072'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0%20-14H1440V33C1245%2059%201090%2014%20760%2031%20470%2046%20245%209%200%2030Z'%20fill='%23fff'/%3E%3C/svg%3E") no-repeat 50% 0 / 100% 100%;
-          mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%201440%2072'%20preserveAspectRatio='none'%3E%3Cpath%20d='M0%20-14H1440V33C1245%2059%201090%2014%20760%2031%20470%2046%20245%209%200%2030Z'%20fill='%23fff'/%3E%3C/svg%3E") no-repeat 50% 0 / 100% 100%;
+  display: block;
 }
 
 .pricing-orbs {

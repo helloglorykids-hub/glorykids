@@ -191,6 +191,13 @@
               Join the Waitlist →
             </a>
           </div>
+          <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
+            <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <a href="signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
+              Sign Up Free →
+            </a>
+          </div>
 
           <div id="postContent" class="prose prose-invert prose-lg max-w-none post-prose"></div>
 
@@ -216,8 +223,20 @@
             </a>
           </div>
 
-          <!-- CTA box -->
-          <div class="cta-box">
+          <!-- Free-with-account box (shown instead of both boxes above for
+               lessons flagged freeWithAccount — free to any signed-in user) -->
+          <div id="signupLockWrap" class="mailerlite-box mailerlite-box--signup" style="display:none;">
+            <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <a href="signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
+              Sign Up Free →
+            </a>
+          </div>
+
+          <!-- CTA box — hidden for locked lessons; the membership lock box above
+               already makes the ask, and pairing it with "get free lessons" reads
+               as contradictory right after being told this lesson isn't free. -->
+          <div class="cta-box" id="postCtaBox">
             <h3 class="text-white font-bold text-xl mb-2">Ready to put this into practice?</h3>
             <p class="text-slate-300 text-sm mb-5">Get 10 free, ready-to-teach Bible lessons — no credit card required.</p>
             <a href="free-lessons.html" class="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition-colors">
@@ -258,14 +277,16 @@
     <div class="gk-footer__grid">
       <div class="gk-footer__brand">
         <div class="gk-footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div>
-        <p class="gk-footer__desc">Equipping churches, parents, and ministry leaders to raise the next generation in faith. Founded 2015.</p>
+        <p class="gk-footer__desc">The #1 spirit-filled Bible curriculum designed for kids to encounter Jesus—used by 2,000+ churches, thousands of families, and Christian schools worldwide. Free printable Bible lessons, complete curriculum, and resources for creating real encounters with God at home, in church, and at school. Raising a generation that encounters Jesus.</p>
         <div class="gk-footer__social">
-          <a href="#" aria-label="Facebook">📘</a>
-          <a href="#" aria-label="Instagram">📷</a>
-          <a href="#" aria-label="YouTube">▶️</a>
-          <a href="#" aria-label="TikTok">🎵</a>
+          <a href="https://www.instagram.com/glorykidsministry/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@Glorykidsministry" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.391.524A2.994 2.994 0 0 0 .502 6.186 31.26 31.26 0 0 0 0 12a31.26 31.26 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117c1.886.524 9.391.524 9.391.524s7.505 0 9.391-.524a2.994 2.994 0 0 0 2.107-2.117A31.26 31.26 0 0 0 24 12a31.26 31.26 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.pinterest.com/glorykidsbiblelessons/" aria-label="Pinterest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.768 1.518 1.688 0 1.029-.653 2.567-.992 3.995-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.4.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.365 18.592 0 12.017 0z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.62h-3.45v13.3a3.3 3.3 0 1 1-2.33-3.15V8.9a6.75 6.75 0 1 0 5.78 6.68V9.4a8.16 8.16 0 0 0 4.9 1.63V7.57a4.85 4.85 0 0 1-3.5-1.75z"/></svg></a>
+          <a href="https://www.etsy.com/shop/GloryKidsMinistries" aria-label="Etsy Shop" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg></a>
         </div>
       </div>
+
       <div>
         <div class="gk-footer__title">Resources</div>
         <ul class="gk-footer__links">
@@ -346,6 +367,9 @@
   }
   .mailerlite-box--locked {
     background: rgba(109,91,208,0.12); border: 1px solid rgba(109,91,208,0.35);
+  }
+  .mailerlite-box--signup {
+    background: rgba(0,191,196,0.1); border: 1px solid rgba(0,191,196,0.35);
   }
 
   .lesson-carousel {
@@ -533,7 +557,10 @@
     contentEl.innerHTML = post.bodyHtml || '';
 
     const isLesson = post.category === 'free_lessons';
-    const isLocked = isLesson && !post.isFreeLesson;
+    // Three tiers: isFreeLesson (email only, no account) → isFreeWithAccount
+    // (free, but needs a signed-in account) → isLocked (paid membership only).
+    const isFreeWithAccount = isLesson && !post.isFreeLesson && !!post.freeWithAccount;
+    const isLocked = isLesson && !post.isFreeLesson && !post.freeWithAccount;
 
     // Record one interaction per lesson (drives the free-lessons "Most
     // Downloaded This Week" / Top 10 ranking). Once per tab-session per post.
@@ -603,9 +630,31 @@
       p.textContent = blurb;
       var target = wrap.querySelector('[id^="mailerliteEmbedTarget"]');
       if (target) injectHtmlWithScripts(target, optinFormHtml(kind));
+
+      // Point free-lesson opt-ins toward the bigger free-account library too.
+      var note = wrap.querySelector('p.gk-optin-note');
+      if (kind === 'free-lessons') {
+        if (!note) {
+          note = document.createElement('p');
+          note.className = 'gk-optin-note text-slate-400 text-xs mt-3';
+          wrap.appendChild(note);
+        }
+        note.innerHTML = 'Want more? <a href="signup.html" class="text-orange-400 font-semibold">Sign up free</a> to unlock all 35 free lessons.';
+        note.style.display = '';
+      } else if (note) {
+        note.style.display = 'none';
+      }
     }
 
     var lessonFiles = Array.isArray(post.files) ? post.files.filter(function (f) { return f && f.path; }) : [];
+
+    // Reset to a known state each render — the branches below only turn
+    // things on, so a stale value could otherwise leak across renders.
+    ['membershipLockWrap', 'membershipLockWrapTop', 'signupLockWrap', 'signupLockWrapTop', 'mailerliteWrap', 'mailerliteWrapTop'].forEach(function (id) {
+      var el = document.getElementById(id); if (el) el.style.display = 'none';
+    });
+    var ctaBoxEl = document.getElementById('postCtaBox');
+    if (ctaBoxEl) ctaBoxEl.style.display = '';
 
     if (post.isFreeLesson) {
       fillOptinBox(
@@ -620,6 +669,15 @@
         'One email, all 10 lessons. No credit card — just tell us where to send them.',
         'free-lessons'
       );
+    } else if (isFreeWithAccount) {
+      // Shown by default (we don't know auth state synchronously yet);
+      // setupMemberDownload() hides these once we confirm the user is
+      // actually signed in and shows the real download box instead.
+      ['signupLockWrap', 'signupLockWrapTop'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) el.style.display = 'block';
+      });
+      var ctaBoxFwa = document.getElementById('postCtaBox');
+      if (ctaBoxFwa) ctaBoxFwa.style.display = 'none';
     } else if (isLocked) {
       ['membershipLockWrap', 'membershipLockWrapTop'].forEach(function (id) {
         var wrap = document.getElementById(id);
@@ -627,6 +685,10 @@
         var link = wrap.querySelector('a');
         if (link) link.outerHTML = optinFormHtml('waitlist');
       });
+      // Redundant with the membership lock box above — don't also pitch
+      // "get free lessons" right after telling them this one isn't free.
+      var ctaBox = document.getElementById('postCtaBox');
+      if (ctaBox) ctaBox.style.display = 'none';
     } else {
       fillOptinBox(
         document.getElementById('mailerliteWrap'),
@@ -732,8 +794,8 @@
     function showMember() {
       wrap.style.display = 'block';
       wrap.classList.remove('mailerlite-box--locked');
-      // Old lock boxes are redundant once we show a real download.
-      ['membershipLockWrap', 'membershipLockWrapTop'].forEach(function (id) {
+      // Old lock/signup boxes are redundant once we show a real download.
+      ['membershipLockWrap', 'membershipLockWrapTop', 'signupLockWrap', 'signupLockWrapTop'].forEach(function (id) {
         var el = document.getElementById(id); if (el) el.style.display = 'none';
       });
       blurb.textContent = 'Everything you need to teach this lesson, ready to print.';
@@ -765,8 +827,9 @@
     function decide(user) {
       if (handled) return; handled = true;
       if (!user) { showLocked(); return; }
-      // Signed-in users can always download the 10 free lessons.
-      if (post.isFreeLesson) { showMember(); return; }
+      // Signed-in users can always download the 10 free lessons, and any
+      // lesson marked free-with-account (the other 25 of the 35 total).
+      if (post.isFreeLesson || post.freeWithAccount) { showMember(); return; }
       GK.getUserRecord(user.uid).then(function (rec) {
         if (isActiveMember(rec)) showMember(); else showLocked();
       }).catch(showLocked);

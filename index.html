@@ -165,28 +165,55 @@
       </div>
   </div>
 
-  <!-- Social proof notification (bottom-left, desktop only) -->
+  <!-- Social proof notification (bottom-left toast, rotates through testimonials) -->
   <div class="hero-notification" id="heroNotification">
     <div class="notification-content">
       <div class="notification-stars">⭐⭐⭐⭐⭐</div>
-      <p class="notification-quote">
-        "My kids actually asked about Jesus all week long"
-      </p>
-      <p class="notification-author">— Sarah M., Cape Town</p>
+      <p class="notification-quote" id="heroNotificationQuote"></p>
+      <p class="notification-author" id="heroNotificationAuthor"></p>
     </div>
   </div>
 
 </section>
 
 <script>
-  // Auto-dismiss the hero social-proof notification after a few seconds so it
-  // doesn't stay pinned over the rest of the page while visitors scroll.
+  // Rolling social-proof toast: cycles through testimonials, bottom-left,
+  // fixed to the viewport (not pinned to the hero section).
   (function () {
     var note = document.getElementById('heroNotification');
-    if (!note) return;
-    setTimeout(function () {
+    var quoteEl = document.getElementById('heroNotificationQuote');
+    var authorEl = document.getElementById('heroNotificationAuthor');
+    if (!note || !quoteEl || !authorEl) return;
+
+    var testimonials = [
+      { quote: 'My kids actually asked about Jesus all week long', author: 'Sarah M., Cape Town' },
+      { quote: 'The easiest Sunday school prep I’ve ever had', author: 'Pastor Mike, Johannesburg' },
+      { quote: 'My son quotes the memory verse at dinner every night', author: 'Lindiwe K., Durban' },
+      { quote: 'Finally, lessons that hold a 6-year-old’s attention', author: 'Rachel T., Pretoria' },
+      { quote: 'Our whole KidMin team switched over in a week', author: 'Grace Community Church' }
+    ];
+
+    var index = -1;
+    var SHOW_MS = 7000;
+    var GAP_MS = 5000;
+
+    function showNext() {
+      index = (index + 1) % testimonials.length;
+      var t = testimonials[index];
+      quoteEl.textContent = '“' + t.quote + '”';
+      authorEl.textContent = '— ' + t.author;
+      note.classList.remove('is-hidden');
+      note.classList.add('is-visible');
+      setTimeout(hideThenNext, SHOW_MS);
+    }
+
+    function hideThenNext() {
+      note.classList.remove('is-visible');
       note.classList.add('is-hidden');
-    }, 9000);
+      setTimeout(showNext, GAP_MS);
+    }
+
+    setTimeout(showNext, 1500);
   })();
 </script>
 
@@ -247,17 +274,17 @@
 
     <div class="gk-cards3">
       <div class="gk-problem-card reveal reveal-delay-1">
-        <div class="gk-problem-card__icon">📉</div>
+        <div class="gk-problem-card__icon">😔</div>
         <h3 class="gk-problem-card__title">Kids Learn About Jesus, But Don't Encounter Him</h3>
         <p class="gk-problem-card__body">You prep all week. You deliver with passion. But by point two, half the room is checked out. Traditional lessons teach facts, but don't create space for real encounter. Kids tune out because they're not meeting Jesus—they're just memorizing information.</p>
       </div>
       <div class="gk-problem-card reveal reveal-delay-2">
-        <div class="gk-problem-card__icon">🕛</div>
+        <div class="gk-problem-card__icon">😵‍💫</div>
         <h3 class="gk-problem-card__title">You're Scrambling Sunday Morning</h3>
         <p class="gk-problem-card__body">Curriculum hunting, activity planning, parent communication... your whole week disappears. You show up Sunday still prepping — and you're using curriculum that doesn't prioritize kids actually encountering God's presence.</p>
       </div>
       <div class="gk-problem-card reveal reveal-delay-3">
-        <div class="gk-problem-card__icon">🔥</div>
+        <div class="gk-problem-card__icon">🆘</div>
         <h3 class="gk-problem-card__title">Teachers & Leaders Lack Spirit-Filled, Encounter-Centered Resources</h3>
         <p class="gk-problem-card__body">Your team wants to serve, but without the right curriculum, they can't confidently lead kids into meaningful encounters with Jesus. They're just going through motions — and good people walk away.</p>
       </div>
@@ -325,35 +352,35 @@
     <div class="gkp-strip">
       <div class="gkp-strip-track">
 
-        <a href="blog-post.html?slug=noahs-ark-trusting-gods-plan-kids-bible-lesson" class="gkp-photo gkp-photo-1">
+        <div class="gkp-photo gkp-photo-1">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="Noah's Ark lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">Noah's Ark</span>
-        </a>
+        </div>
 
-        <a href="blog-post.html?slug=david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson" class="gkp-photo gkp-photo-2">
+        <div class="gkp-photo gkp-photo-2">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="David & Goliath lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">David &amp; Goliath</span>
-        </a>
+        </div>
 
-        <a href="blog-post.html?slug=jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson" class="gkp-photo gkp-photo-3">
+        <div class="gkp-photo gkp-photo-3">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894930046_featured.jpg?alt=media&token=7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b" alt="Jesus Feeds the 5,000 lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">Jesus Feeds 5,000</span>
-        </a>
+        </div>
 
-        <a href="blog-post.html?slug=pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts" class="gkp-photo gkp-photo-4">
+        <div class="gkp-photo gkp-photo-4">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="Pentecost lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">Pentecost</span>
-        </a>
+        </div>
 
-        <a href="blog-post.html?slug=jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson" class="gkp-photo gkp-photo-5">
+        <div class="gkp-photo gkp-photo-5">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="Jesus Calms the Storm lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">Jesus Calms the Storm</span>
-        </a>
+        </div>
 
-        <a href="blog-post.html?slug=daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson" class="gkp-photo gkp-photo-6">
+        <div class="gkp-photo gkp-photo-6">
           <img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="Daniel in the Lion's Den lesson" loading="lazy" decoding="async" />
           <span class="gkp-photo-cap">Daniel &amp; the Lions</span>
-        </a>
+        </div>
 
       </div>
     </div>
@@ -419,7 +446,7 @@
   .gkp-pillar { display: flex; gap: 14px; align-items: flex-start; }
   .gkp-pillar-icon {
     flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px;
-    background: #f3f0ff;
+    background: #17191C;
     display: flex; align-items: center; justify-content: center; font-size: 1.15rem;
   }
   .gkp-pillar h3 { font-size: 1rem; font-weight: 700; color: #16181d; margin: 0 0 4px; }
@@ -506,7 +533,6 @@
           <div class="gkc-item-body">
             <h3>Bible Lessons</h3>
             <p>Scripture-rooted teaching with games, crafts &amp; object lessons kids actually remember.</p>
-            <a href="free-lessons.html" class="gkc-link">Teaching Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -515,7 +541,6 @@
           <div class="gkc-item-body">
             <h3>Holy Spirit Activations</h3>
             <p>Guided moments that move kids from head knowledge to a real, felt encounter with God.</p>
-            <a href="#" class="gkc-link">Activation Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -524,7 +549,6 @@
           <div class="gkc-item-body">
             <h3>Worship &amp; Prayer</h3>
             <p>Praise sets, prayer prompts &amp; memory verses that make God's presence tangible.</p>
-            <a href="#" class="gkc-link">Worship Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -533,7 +557,6 @@
           <div class="gkc-item-body">
             <h3>Family Devotionals</h3>
             <p>Weekly take-home devotions that carry Sunday's encounter into everyday family life.</p>
-            <a href="#" class="gkc-link">Family Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -542,7 +565,6 @@
           <div class="gkc-item-body">
             <h3>Volunteer Training</h3>
             <p>Scripts, backup plans &amp; teaching guides that equip your team to lead with confidence.</p>
-            <a href="#" class="gkc-link">Volunteer Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -551,7 +573,6 @@
           <div class="gkc-item-body">
             <h3>Community &amp; Live Q&amp;A</h3>
             <p>Monthly live access to Jandre, plus 2,000+ leaders to learn from and grow alongside.</p>
-            <a href="#" class="gkc-link">Community Strategy Overview <span>›</span></a>
           </div>
         </div>
 
@@ -570,7 +591,7 @@
             <div class="gkc-device-hero">
               <span class="gkc-device-hero-emoji">🔥</span>
               <div>
-                <div class="gkc-device-hero-title">August Pack — Live Now</div>
+                <div class="gkc-device-hero-title">October Pack — Miracles of Jesus</div>
                 <div class="gkc-device-hero-sub">4 lessons · 48 activities · ready to teach</div>
               </div>
               <div class="gkc-device-play">▶</div>
@@ -578,23 +599,23 @@
 
             <div class="gkc-device-rows">
               <div class="gkc-device-row" style="--accent:#FF4B32;">
-                <span class="gkc-row-emoji">📖</span>
-                <span class="gkc-row-text">Week 1 · Bible Lesson</span>
+                <span class="gkc-row-emoji">⛵</span>
+                <span class="gkc-row-text">Week 1 · Jesus Calms the Storm</span>
                 <span class="gkc-row-check">✓ Ready</span>
               </div>
               <div class="gkc-device-row" style="--accent:#FFB000;">
-                <span class="gkc-row-emoji">🔥</span>
-                <span class="gkc-row-text">Week 2 · Holy Spirit Activation</span>
+                <span class="gkc-row-emoji">🍞</span>
+                <span class="gkc-row-text">Week 2 · Jesus Feeds the 5,000</span>
                 <span class="gkc-row-check">✓ Ready</span>
               </div>
               <div class="gkc-device-row" style="--accent:#FF4B32;">
-                <span class="gkc-row-emoji">🎨</span>
-                <span class="gkc-row-text">Week 3 · Craft &amp; Object Lesson</span>
+                <span class="gkc-row-emoji">👁️</span>
+                <span class="gkc-row-text">Week 3 · Jesus Heals the Blind Man</span>
                 <span class="gkc-row-check">✓ Ready</span>
               </div>
               <div class="gkc-device-row" style="--accent:#00BFC4;">
                 <span class="gkc-row-emoji">🙏</span>
-                <span class="gkc-row-text">Week 4 · Worship &amp; Prayer Night</span>
+                <span class="gkc-row-text">Week 4 · Jesus Raises Jairus' Daughter</span>
                 <span class="gkc-row-check">✓ Ready</span>
               </div>
             </div>
@@ -843,6 +864,12 @@
 ════════════════════════════════════════════════ -->
 <section class="pricing-premium" id="pricing-premium">
 
+  <!-- Wave seam — real filled SVG shape (not a CSS mask) so the fill is a
+       solid, pixel-exact match with no antialiasing hairline at the seam. -->
+  <svg class="pricing-wave-seam" viewBox="0 -60 1440 132" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 -60H1440V33C1245 59 1090 14 760 31 470 46 245 9 0 30Z" fill="#101114"/>
+  </svg>
+
   <!-- SUBTLE ORBS -->
   <div class="pricing-orbs">
     <div class="orb orb-teal-sm"></div>
@@ -890,13 +917,13 @@
           <p class="card-desc-premium">Perfect for trying it out</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Most Popular Lessons for Free (no email required)</li>
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
             <li><span class="check">✓</span>Sample activities &amp; resources</li>
-            <li><span class="check">✓</span>Basic spirit-filled content</li>
             <li><span class="check">✓</span>No credit card required</li>
           </ul>
 
-          <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse 10 Most Popular Lessons for Free</a>
+          <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
           <p class="card-footer-premium">Try first, no commitment.</p>
         </div>
 
@@ -912,14 +939,12 @@
           <p class="card-desc-premium">For individual parents &amp; teachers</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>All 10 Most Popular Lessons for Free included</li>
-            <li><span class="check">✓</span>4 NEW complete packs every month</li>
+            <li><span class="check">✓</span>All 35 Free Lessons included</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs</li>
             <li><span class="check">✓</span>48 lessons + activities per year</li>
-            <li><span class="check">✓</span>Weekly family devotionals</li>
-            <li><span class="check">✓</span>Exclusive worship videos</li>
-            <li><span class="check">✓</span>Volunteer training guides</li>
-            <li><span class="check">✓</span>Monthly Live Q&amp;A with Jandre</li>
-            <li><span class="check">✓</span>Private community access</li>
+            <li><span class="check">✓</span>Family Devotionals and Resources</li>
+            <li><span class="check">✓</span>Exclusive themed Worship Songs</li>
+            <li><span class="check">✓</span>Multiple crafts, games, and activities</li>
             <li><span class="check">✓</span>Unlimited resource library</li>
           </ul>
 
@@ -955,12 +980,14 @@
           <p class="card-desc-premium">Try first, no credit card</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Most Popular Lessons for Free</li>
-            <li><span class="check">✓</span>Sample activities</li>
-            <li><span class="check">✓</span>Basic resources</li>
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
+            <li><span class="check">✓</span>Sample activities &amp; resources</li>
+            <li><span class="check">✓</span>No credit card required</li>
           </ul>
 
           <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
+          <p class="card-footer-premium">Try first, no commitment.</p>
         </div>
 
         <!-- FAMILY TIER (Optional) -->
@@ -995,12 +1022,11 @@
 
           <ul class="card-features-premium">
             <li><span class="check">✓</span>Everything in Family plan</li>
-            <li><span class="check">✓</span>Unlimited team member access</li>
             <li><span class="check">✓</span>Volunteer training resources</li>
             <li><span class="check">✓</span>Ministry planning tools</li>
             <li><span class="check">✓</span>Church implementation guide</li>
             <li><span class="check">✓</span>Priority email support</li>
-            <li><span class="check">✓</span>4 new packs every month (15th)</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs (15th)</li>
             <li><span class="check">✓</span>Monthly Live Q&amp;A with Jandre</li>
             <li><span class="check">✓</span>Private community access</li>
             <li><span class="check">✓</span>Original music album with every pack (crafted specifically for each lesson theme)</li>
@@ -1026,12 +1052,14 @@
           <p class="card-desc-premium">Explore our curriculum</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Most Popular Lessons for Free</li>
-            <li><span class="check">✓</span>Sample curriculum</li>
-            <li><span class="check">✓</span>Teaching guides</li>
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
+            <li><span class="check">✓</span>Sample curriculum &amp; teaching guides</li>
+            <li><span class="check">✓</span>No credit card required</li>
           </ul>
 
           <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
+          <p class="card-footer-premium">Try first, no commitment.</p>
         </div>
 
         <!-- SCHOOL TIER (Highlighted) -->
@@ -1048,13 +1076,13 @@
           <ul class="card-features-premium">
             <li><span class="check">✓</span>Everything in Church plan</li>
             <li><span class="check">✓</span>Site-wide curriculum license</li>
-            <li><span class="check">✓</span>Teacher training for all staff</li>
+            <li><span class="check">✓</span>Volunteer &amp; teacher training for all staff</li>
             <li><span class="check">✓</span>Classroom implementation resources</li>
             <li><span class="check">✓</span>Admin dashboard</li>
             <li><span class="check">✓</span>Multi-teacher access</li>
             <li><span class="check">✓</span>Dedicated account manager</li>
             <li><span class="check">✓</span>Priority support</li>
-            <li><span class="check">✓</span>4 packs delivered monthly (15th)</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs delivered monthly (15th)</li>
           </ul>
 
           <a href="contact.html" class="card-cta-premium card-cta-primary">Request School Pricing</a>
@@ -1139,126 +1167,191 @@
 <!-- ═══════════════════════════════════════════════
      7. TESTIMONIALS (hybrid: video + filterable text grid)
 ════════════════════════════════════════════════ -->
-<section class="gk-section gk-testimonials wave-seam wave-seam--cream">
+<section class="gk-section gk-testimonials gk-testimonials--compact wave-seam wave-seam--cream">
   <div class="container">
     <h2 class="gk-h2 gk-h2--white reveal">Here's What Ministry Leaders Say</h2>
     <p class="gk-section-sub gk-section-sub--white reveal">Real stories from churches, schools, and families using Glory Kids.</p>
 
-    <!-- Filter tabs -->
-    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" id="testimonialFilters">
-      <button data-filter="all" class="tst-filter-btn is-active px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">All Reviews</button>
-      <button data-filter="engagement" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Engagement</button>
-      <button data-filter="volunteer" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Volunteer Empowerment</button>
-      <button data-filter="growth" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Spiritual Growth</button>
-      <button data-filter="time" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Time Savings</button>
-      <button data-filter="budget" class="tst-filter-btn px-5 py-2.5 rounded-full font-semibold text-sm border border-white/15 transition-all duration-300">Budget Impact</button>
-    </div>
+    <!-- Text testimonials — horizontally scrollable, 4 visible at a time -->
+    <div class="tst-carousel reveal">
+      <button type="button" class="tst-arrow tst-arrow--prev" id="tstPrev" aria-label="Previous reviews">‹</button>
 
-    <!-- Text testimonials grid (2x2 visible, rest revealed via Load More) -->
-    <div id="testimonialGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div class="tst-track" id="tstTrack">
 
-      <div class="tst-card" data-category="engagement">
-        <div class="tst-card__inner">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="tst-avatar" style="background:linear-gradient(135deg,#66249A,#FFB000);">👩</span>
-            <div>
-              <div class="text-white font-bold text-sm">Sarah M.</div>
-              <div class="text-gray-500 text-xs">Children's Director, Cape Town</div>
+        <div class="tst-card" style="--tst-accent:#FF4B32;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=47" alt="Sarah M." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Sarah M.</div>
+                <div class="tst-card__role">Children's Director, Cape Town</div>
+              </div>
             </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"Our kids actually ask for Bible time now. Before Glory Kids, we were competing with screens. Now they CHOOSE us."</p>
           </div>
-          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4">"Our kids actually ask for Bible time now. Before Glory Kids, we were competing with screens. Now they CHOOSE us."</p>
-          <span class="tst-badge">Engagement</span>
         </div>
+
+        <div class="tst-card" style="--tst-accent:#66249A;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=12" alt="Tom R." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Tom R.</div>
+                <div class="tst-card__role">Kids Ministry Leader, Ohio</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"Our volunteers went from anxious to confident. They're not scrambling anymore. They're actually enjoying serving."</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#00BFC4;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=13" alt="Jay S." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Jay S.</div>
+                <div class="tst-card__role">Kingdom Church, Jupiter, FL</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"We saw spiritual growth like we've never seen. Plus, 10 salvations last month alone. This content is 🔥"</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#FFB000;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=14" alt="Marcus J." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Marcus J.</div>
+                <div class="tst-card__role">Multi-Campus Pastor</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"I went from 6 hours of prep to 30 minutes. I have my life back. My wife thanks you."</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#FF4B32;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=45" alt="Emily K." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Emily K.</div>
+                <div class="tst-card__role">Homeschool Co-op Leader</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"Best resource we've invested in. Costs less than a coffee subscription but delivers enterprise-level quality."</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#66249A;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=25" alt="Grace N." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Grace N.</div>
+                <div class="tst-card__role">Preschool Director, Nairobi</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"Even our 3-year-olds sit still now. The crafts make the Bible stories stick in a way nothing else has."</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#00BFC4;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=51" alt="David O." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">David O.</div>
+                <div class="tst-card__role">Youth Pastor, Texas</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"Prep time dropped to almost nothing. My volunteers actually look forward to Sunday mornings now."</p>
+          </div>
+        </div>
+
+        <div class="tst-card" style="--tst-accent:#FFB000;">
+          <div class="tst-card__inner">
+            <div class="tst-card__head">
+              <img class="tst-avatar" src="https://i.pravatar.cc/96?img=39" alt="Linda P." loading="lazy" decoding="async" />
+              <div>
+                <div class="tst-card__name">Linda P.</div>
+                <div class="tst-card__role">Homeschool Mom, Australia</div>
+              </div>
+            </div>
+            <div class="tst-card__stars">★★★★★</div>
+            <p class="tst-card__quote">"My kids beg to do Bible time before breakfast. That never happened with any other curriculum."</p>
+          </div>
+        </div>
+
       </div>
 
-      <div class="tst-card" data-category="volunteer">
-        <div class="tst-card__inner">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="tst-avatar" style="background:linear-gradient(135deg,#FF4B32,#FFB000);">🧔</span>
-            <div>
-              <div class="text-white font-bold text-sm">Tom R.</div>
-              <div class="text-gray-500 text-xs">Kids Ministry Leader, Ohio</div>
-            </div>
-          </div>
-          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4">"Our volunteers went from anxious to confident. They're not scrambling anymore. They're actually enjoying serving."</p>
-          <span class="tst-badge">Volunteer Empowerment</span>
-        </div>
-      </div>
-
-      <div class="tst-card" data-category="growth">
-        <div class="tst-card__inner">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="tst-avatar" style="background:linear-gradient(135deg,#00BFC4,#33CDD1);">👨</span>
-            <div>
-              <div class="text-white font-bold text-sm">Jay S.</div>
-              <div class="text-gray-500 text-xs">Kingdom Church, Jupiter, FL</div>
-            </div>
-          </div>
-          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4">"We saw spiritual growth like we've never seen. Plus, 10 salvations last month alone. This content is 🔥"</p>
-          <span class="tst-badge">Spiritual Growth</span>
-        </div>
-      </div>
-
-      <div class="tst-card" data-category="time">
-        <div class="tst-card__inner">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="tst-avatar" style="background:linear-gradient(135deg,#0B2E67,#B98FD6);">👨‍🦱</span>
-            <div>
-              <div class="text-white font-bold text-sm">Marcus J.</div>
-              <div class="text-gray-500 text-xs">Multi-Campus Pastor</div>
-            </div>
-          </div>
-          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4">"I went from 6 hours of prep to 30 minutes. I have my life back. My wife thanks you."</p>
-          <span class="tst-badge">Time Savings</span>
-        </div>
-      </div>
-
-      <div class="tst-card is-extra hidden" data-category="budget">
-        <div class="tst-card__inner">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="tst-avatar" style="background:linear-gradient(135deg,#D45D9C,#FFB000);">👩‍🦱</span>
-            <div>
-              <div class="text-white font-bold text-sm">Emily K.</div>
-              <div class="text-gray-500 text-xs">Homeschool Co-op Leader</div>
-            </div>
-          </div>
-          <div class="text-amber-400 text-sm mb-2 tracking-tight">★★★★★</div>
-          <p class="text-gray-300 text-sm leading-relaxed mb-4">"Best resource we've invested in. Costs less than a coffee subscription but delivers enterprise-level quality."</p>
-          <span class="tst-badge">Budget Impact</span>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="text-center mt-10 reveal">
-      <button type="button" id="loadMoreTestimonials" class="gk-btn gk-btn--outline-white gk-btn--lg">Load More Reviews</button>
+      <button type="button" class="tst-arrow tst-arrow--next" id="tstNext" aria-label="Next reviews">›</button>
     </div>
   </div>
 </section>
 
 <style>
-  .tst-filter-btn { background: transparent; color: var(--gray-500); }
-  .tst-filter-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.35); }
-  .tst-filter-btn.is-active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(255,75,50,0.35); }
+  /* Shrink the section and tighten spacing — was a much taller filter+grid+load-more block. */
+  .gk-testimonials--compact { padding: 56px 0; }
+  .gk-testimonials--compact .gk-section-sub { margin-bottom: 2rem; }
 
-  .tst-card { transition: opacity 0.35s ease, transform 0.35s ease; }
-  .tst-card.is-filtered-out { opacity: 0; transform: scale(0.94); pointer-events: none; position: absolute; visibility: hidden; height: 0; overflow: hidden; margin: 0; }
+  .tst-carousel { position: relative; max-width: 1200px; margin: 0 auto; }
+  .tst-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 4px 2px;
+  }
+  .tst-track::-webkit-scrollbar { display: none; }
+  .tst-track .tst-card {
+    flex: 0 0 calc((100% - 3 * 1rem) / 4);
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  @media (max-width: 1023px) { .tst-track .tst-card { flex-basis: calc((100% - 1rem) / 2); } }
+  @media (max-width: 599px)  { .tst-track .tst-card { flex-basis: 88%; } }
+
+  .tst-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: 50%; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--color-card); border: 1px solid var(--color-border); color: #fff;
+    font-size: 1.3rem; line-height: 1; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .tst-arrow:hover { background: var(--color-card-hover); border-color: rgba(255,255,255,0.3); }
+  .tst-arrow--prev { left: -20px; }
+  .tst-arrow--next { right: -20px; }
+  @media (max-width: 680px) {
+    .tst-arrow--prev { left: -8px; }
+    .tst-arrow--next { right: -8px; }
+    .tst-arrow { width: 34px; height: 34px; font-size: 1.1rem; }
+  }
+
   .tst-card__inner {
     position: relative;
     height: 100%; background: var(--color-card); border: 1px solid var(--color-border);
-    border-left: 4px solid var(--color-teal-primary);
-    border-radius: var(--radius-lg); padding: 1.75rem;
+    border-top: 3px solid var(--tst-accent, var(--color-teal-primary));
+    border-radius: var(--radius-lg); padding: 1.25rem;
     transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
   }
   .tst-card__inner::before {
     content: '"';
-    position: absolute; top: -18px; right: 18px;
-    font-family: Georgia, serif; font-size: 96px; font-weight: 700;
+    position: absolute; top: -14px; right: 14px;
+    font-family: Georgia, serif; font-size: 72px; font-weight: 700;
     color: rgba(255,255,255,0.05);
     line-height: 1; pointer-events: none;
   }
@@ -1266,64 +1359,51 @@
     background: var(--color-card-hover); border-color: var(--tst-accent, rgba(255,255,255,0.25));
     transform: translateY(-4px); box-shadow: var(--shadow-lg);
   }
+  .tst-card__inner > * { position: relative; z-index: 1; }
+
+  .tst-card__head { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.65rem; }
   .tst-avatar {
-    width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    object-fit: cover;
     box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     border: 2px solid rgba(255,255,255,0.1);
   }
-  .tst-badge {
-    position: relative; z-index: 1;
-    display: inline-block; font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.03em; color: var(--tst-accent, var(--color-cta));
-    background: var(--tst-accent-bg, rgba(255,75,50,0.15));
-    border: 1px solid var(--tst-accent-border, rgba(255,75,50,0.4));
-    border-radius: var(--radius-full); padding: 0.3rem 0.75rem;
-  }
-  .tst-card__inner > * { position: relative; z-index: 1; }
-
-  .tst-card[data-category="engagement"] { --tst-accent: #FF4B32; --tst-accent-bg: rgba(255,75,50,0.15); --tst-accent-border: rgba(255,75,50,0.4); }
-  .tst-card[data-category="volunteer"]  { --tst-accent: #66249A; --tst-accent-bg: rgba(102,36,154,0.15); --tst-accent-border: rgba(102,36,154,0.4); }
-  .tst-card[data-category="growth"]     { --tst-accent: #FF4B32; --tst-accent-bg: rgba(255,75,50,0.15); --tst-accent-border: rgba(255,75,50,0.4); }
-  .tst-card[data-category="time"]       { --tst-accent: #00BFC4; --tst-accent-bg: rgba(0,191,196,0.15); --tst-accent-border: rgba(0,191,196,0.4); }
-  .tst-card[data-category="budget"]     { --tst-accent: #FFB000; --tst-accent-bg: rgba(255,176,0,0.15); --tst-accent-border: rgba(255,176,0,0.4); }
+  .tst-card__name { color: #fff; font-weight: 700; font-size: 0.85rem; line-height: 1.3; }
+  .tst-card__role { color: var(--gray-500); font-size: 0.72rem; line-height: 1.3; }
+  .tst-card__stars { color: #fbbf24; font-size: 0.8rem; margin-bottom: 0.4rem; letter-spacing: -0.05em; }
+  .tst-card__quote { color: var(--gray-300); font-size: 0.83rem; line-height: 1.55; margin: 0; }
 </style>
 
 <script>
   (function () {
-    // Filter tabs
-    var filterButtons = document.querySelectorAll('.tst-filter-btn');
-    var cards = document.querySelectorAll('.tst-card');
-    var loadMoreBtn = document.getElementById('loadMoreTestimonials');
-    var extraRevealed = false;
+    var track = document.getElementById('tstTrack');
+    var prevBtn = document.getElementById('tstPrev');
+    var nextBtn = document.getElementById('tstNext');
+    if (!track || !prevBtn || !nextBtn) return;
 
-    function applyFilter(filter) {
-      cards.forEach(function (card) {
-        var matches = filter === 'all' || card.dataset.category === filter;
-        var isExtraStillCollapsed = card.classList.contains('is-extra') && !extraRevealed;
-        card.classList.toggle('is-filtered-out', !matches || isExtraStillCollapsed);
-      });
+    function step() {
+      var card = track.querySelector('.tst-card');
+      if (!card) return track.clientWidth * 0.8;
+      var style = getComputedStyle(track);
+      var gap = parseFloat(style.columnGap || style.gap || '16');
+      return card.getBoundingClientRect().width + gap;
     }
 
-    filterButtons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        filterButtons.forEach(function (b) { b.classList.remove('is-active'); });
-        btn.classList.add('is-active');
-        applyFilter(btn.dataset.filter);
-      });
+    prevBtn.addEventListener('click', function () {
+      track.scrollBy({ left: -step(), behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', function () {
+      track.scrollBy({ left: step(), behavior: 'smooth' });
     });
 
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', function () {
-        extraRevealed = true;
-        document.querySelectorAll('.tst-card.is-extra').forEach(function (card) {
-          card.classList.remove('hidden');
-        });
-        var activeFilter = document.querySelector('.tst-filter-btn.is-active').dataset.filter;
-        applyFilter(activeFilter);
-        loadMoreBtn.style.display = 'none';
-      });
+    function updateArrows() {
+      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      prevBtn.style.visibility = track.scrollLeft <= 2 ? 'hidden' : 'visible';
+      nextBtn.style.visibility = track.scrollLeft >= maxScroll ? 'hidden' : 'visible';
     }
+    track.addEventListener('scroll', updateArrows);
+    window.addEventListener('resize', updateArrows);
+    updateArrows();
   })();
 </script>
 
@@ -1337,6 +1417,7 @@
       <div class="reveal reveal--right">
         <h2 class="gk-h2 gk-h2--left">A Note From Jandré</h2>
         <p class="gk-personal__sub">Hi, I'm Jandré — a pastor, children's ministry leader, and the heart behind Glory Kids. More than anything, I love Jesus. And everything you'll find here flows from that place.</p>
+        <p class="gk-personal__quote">With more than 12 years leading children's and family ministry, I've seen firsthand what happens when kids don't just learn about Jesus, but actually encounter Him.</p>
         <p class="gk-personal__quote">I believe the next generation isn't just the future of the Church — they are the Church right now. And they deserve more than surface-level teaching. They deserve to truly encounter Jesus… to know His voice, to love His Word, and to walk daily with the Holy Spirit.</p>
         <p class="gk-personal__quote">That's why Glory Kids exists.</p>
         <p class="gk-personal__quote">I create Bible lessons, resources, and curriculums that are not just informative, but transformational — helping kids, families, churches, and schools experience the presence of God in a real and lasting way.</p>
@@ -1370,25 +1451,37 @@
     <h2 class="gk-h2 reveal">Spirit-Filled Resources for Your Role</h2>
     <div class="gk-cards3">
       <a href="blog.html#pastors" class="gk-role-card gk-role-card--green reveal reveal-delay-1">
-        <div class="gk-role-card__label">For Pastors & Church Leaders</div>
-        <h3>Lead a Kids Ministry Where Children Encounter Jesus</h3>
-        <p class="gk-role-card__body">Spirit-filled curriculum that creates real encounter, not just information. Build a ministry where kids actually know Jesus, not just about Him.</p>
-        <span class="gk-role-card__link">Learn More →</span>
+        <div class="gk-role-card__media" style="background-image:url('images/jandre-founder.jpeg');">
+          <span class="gk-role-card__badge">For Pastors & Church Leaders</span>
+        </div>
+        <div class="gk-role-card__content">
+          <h3>Lead a Kids Ministry Where Children Encounter Jesus</h3>
+          <p class="gk-role-card__body">Spirit-filled curriculum that creates real encounter, not just information. Build a ministry where kids actually know Jesus, not just about Him.</p>
+          <span class="gk-role-card__link">Learn More →</span>
+        </div>
       </a>
       <a href="blog.html#kidmin" class="gk-role-card gk-role-card--blue reveal reveal-delay-2">
-        <div class="gk-role-card__label">For Kidmin Leaders</div>
-        <h3>Equip Your Team to Lead Kids Into Encounters With Jesus</h3>
-        <p class="gk-role-card__body">Your volunteers have curriculum, discussion guides, and training to confidently lead kids into real encounters with God.</p>
-        <span class="gk-role-card__link">Learn More →</span>
+        <div class="gk-role-card__media" style="background-image:url('images/hero-kids.jpg');">
+          <span class="gk-role-card__badge">For Kidmin Leaders</span>
+        </div>
+        <div class="gk-role-card__content">
+          <h3>Equip Your Team to Lead Kids Into Encounters With Jesus</h3>
+          <p class="gk-role-card__body">Your volunteers have curriculum, discussion guides, and training to confidently lead kids into real encounters with God.</p>
+          <span class="gk-role-card__link">Learn More →</span>
+        </div>
       </a>
-      <a href="blog.html" class="gk-role-card gk-role-card--purple reveal reveal-delay-3">
-        <div class="gk-role-card__label">For Parents</div>
-        <h3>Teach Your Kids to Encounter Jesus at Home</h3>
-        <p class="gk-role-card__body">Easy-to-use Bible activities and prayer guides designed for families to experience God's presence together. Make faith real, not just rule-based.</p>
-        <span class="gk-role-card__link">Learn More →</span>
+      <a href="blog.html#parents" class="gk-role-card gk-role-card--purple reveal reveal-delay-3">
+        <div class="gk-role-card__media" style="background-image:url('images/hero-kids.jpg');">
+          <span class="gk-role-card__badge">For Parents</span>
+        </div>
+        <div class="gk-role-card__content">
+          <h3>Teach Your Kids to Encounter Jesus at Home</h3>
+          <p class="gk-role-card__body">Easy-to-use Bible activities and prayer guides designed for families to experience God's presence together. Make faith real, not just rule-based.</p>
+          <span class="gk-role-card__link">Learn More →</span>
+        </div>
       </a>
     </div>
-    <p class="gk-section-sub reveal" style="margin-top:2rem;">Each section has resources built specifically for your role.</p>
+    <p class="gk-section-sub reveal" style="margin-top:2rem;margin-bottom:0;">Each section has resources built specifically for your role.</p>
   </div>
 </section>
 
@@ -1436,10 +1529,11 @@
         <div class="gk-footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div>
         <p class="gk-footer__desc">The #1 spirit-filled Bible curriculum designed for kids to encounter Jesus—used by 2,000+ churches, thousands of families, and Christian schools worldwide. Free printable Bible lessons, complete curriculum, and resources for creating real encounters with God at home, in church, and at school. Raising a generation that encounters Jesus.</p>
         <div class="gk-footer__social">
-          <a href="#" aria-label="Facebook">📘</a>
-          <a href="#" aria-label="Instagram">📷</a>
-          <a href="#" aria-label="YouTube">▶️</a>
-          <a href="#" aria-label="TikTok">🎵</a>
+          <a href="https://www.instagram.com/glorykidsministry/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@Glorykidsministry" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.391.524A2.994 2.994 0 0 0 .502 6.186 31.26 31.26 0 0 0 0 12a31.26 31.26 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117c1.886.524 9.391.524 9.391.524s7.505 0 9.391-.524a2.994 2.994 0 0 0 2.107-2.117A31.26 31.26 0 0 0 24 12a31.26 31.26 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.pinterest.com/glorykidsbiblelessons/" aria-label="Pinterest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.768 1.518 1.688 0 1.029-.653 2.567-.992 3.995-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.4.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.365 18.592 0 12.017 0z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.62h-3.45v13.3a3.3 3.3 0 1 1-2.33-3.15V8.9a6.75 6.75 0 1 0 5.78 6.68V9.4a8.16 8.16 0 0 0 4.9 1.63V7.57a4.85 4.85 0 0 1-3.5-1.75z"/></svg></a>
+          <a href="https://www.etsy.com/shop/GloryKidsMinistries" aria-label="Etsy Shop" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg></a>
         </div>
       </div>
 

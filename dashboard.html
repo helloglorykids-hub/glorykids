@@ -349,7 +349,7 @@
         <div class="dash-welcome__emoji">📖</div>
         <div class="dash-welcome__greeting">Welcome back 👋</div>
         <h2 class="dash-welcome__name" id="welcome-name">Loading...</h2>
-        <p class="dash-welcome__sub">You have 10 free lessons ready to explore.</p>
+        <p class="dash-welcome__sub">You have 35 free lessons ready to explore.</p>
       </div>
 
       <!-- Plan Card -->
@@ -367,7 +367,7 @@
 
       <!-- Free plan nudge -->
       <div class="plan-free-note" id="free-plan-note">
-        <p>🔓 You have access to <strong>10 free lessons</strong>. Glory Kids Membership launches September 15, 2026 — join the waitlist to unlock the full, growing lesson library, curriculum, and new lessons every week.</p>
+        <p>🔓 You have access to <strong>35 free lessons</strong>. Glory Kids Membership launches September 15, 2026 — join the waitlist to unlock the full, growing lesson library, curriculum, and new lessons every week.</p>
         <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Join the Waitlist →</a>
       </div>
 
@@ -924,11 +924,11 @@ async function renderLessonsLibrary() {
 
   sub.innerHTML = isMember
     ? 'Every lesson below is yours to download. New lessons are added regularly.'
-    : 'The 10 free lessons are yours to download now. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock the full library →</a>';
+    : 'The 35 free lessons are yours to download now. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock the full library →</a>';
 
   grid.innerHTML = posts.map(p => {
     const hasFiles = Array.isArray(p.files) && p.files.filter(f => f && f.path).length;
-    const open = p.isFreeLesson || isMember;
+    const open = p.isFreeLesson || p.freeWithAccount || isMember;
     const meta = [p.scripture, (p.ageGroups || []).length ? (p.ageGroups.length + ' age groups') : ''].filter(Boolean).join(' · ');
     const btnCss = 'display:inline-block;font:600 0.8rem/1 Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;border:0;cursor:pointer;text-decoration:none;';
     let action;
