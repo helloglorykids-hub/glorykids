@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Checkout | Glory Kids Ministries</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body { background: var(--gray-50); }
+    .co-wrap { max-width: 620px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+    .co-back { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--gray-500); font-size: 0.85rem; font-weight: 600; text-decoration: none; margin-bottom: 1.5rem; }
+    .co-back:hover { color: var(--primary); }
+    .co-title { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: 1.5rem; }
+
+    .co-card { background: var(--color-card); border-radius: var(--radius-xl); box-shadow: var(--shadow); border: 1px solid var(--gray-100); padding: 1.75rem; margin-bottom: 1.25rem; }
+
+    /* Order summary */
+    .co-summary-item { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.9rem; color: var(--gray-600); padding: 0.6rem 0; border-bottom: 1px solid var(--gray-100); }
+    .co-summary-item:last-of-type { border-bottom: none; }
+    .co-summary-total { display: flex; justify-content: space-between; font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: 1.1rem; padding-top: 0.9rem; margin-top: 0.4rem; border-top: 1px solid var(--gray-200); }
+    .co-summary-total span:last-child { color: var(--primary); }
+
+    /* Login gate */
+    .co-login-gate { text-align: center; padding: 1.1rem 1.5rem; }
+    .co-login-gate p { color: var(--gray-500); font-size: 0.88rem; margin: 0; }
+    #co-login-btn { color: var(--primary); font-weight: 700; text-decoration: none; }
+    #co-login-btn:hover { text-decoration: underline; }
+    .co-divider { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.9rem; color: var(--gray-400); font-size: 0.78rem; }
+    .co-divider::before, .co-divider::after { content: ''; flex: 1; height: 1px; background: var(--gray-200); }
+
+    /* Signed-in strip */
+    .co-account { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--primary-lighter); border-radius: var(--radius-lg); padding: 0.85rem 1.1rem; margin-bottom: 1.25rem; font-size: 0.85rem; }
+    .co-account span { color: var(--white); font-weight: 600; }
+    .co-account a { color: var(--primary); font-weight: 700; text-decoration: none; }
+
+    /* Form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    .form-row.single { grid-template-columns: 1fr; }
+    @media(max-width:480px) { .form-row { grid-template-columns: 1fr; } }
+    .checkout-field label { display: block; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; color: var(--gray-700); margin-bottom: 0.4rem; }
+    .checkout-field input { width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg); font-family: var(--font-body); font-size: 0.875rem; outline: none; background: var(--gray-50); transition: var(--transition); box-sizing: border-box; }
+    .checkout-field input:focus { border-color: var(--primary); background: var(--color-card); box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
+    .checkout-field input:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .payfast-info { background: linear-gradient(135deg, #EFF6FF, #F0FDF4); border: 1px solid #BFDBFE; border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin: 0.5rem 0 1.5rem; display: flex; gap: 0.75rem; align-items: flex-start; }
+    .payfast-info__icon { font-size: 1.5rem; flex-shrink: 0; }
+    .payfast-info h4 { font-size: 0.875rem; color: var(--white); margin-bottom: 0.25rem; }
+    .payfast-info p { font-size: 0.78rem; color: var(--gray-500); margin: 0; line-height: 1.55; }
+    .payfast-methods { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .payfast-method-chip { background: var(--color-card); border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 0.25rem 0.6rem; font-size: 0.68rem; font-weight: 700; color: var(--gray-600); }
+
+    .checkout-pay-btn { width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: var(--radius-lg); padding: 1.1rem; font-family: var(--font-heading); font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); box-shadow: 0 4px 14px rgba(255,75,50,0.35); display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .checkout-pay-btn:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 26px rgba(255,75,50,0.5); filter: brightness(1.06); }
+    .checkout-pay-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .checkout-secure { text-align: center; margin-top: 0.85rem; font-size: 0.72rem; color: var(--gray-400); display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+
+    .co-empty { text-align: center; padding: 3rem 1.5rem; }
+    .co-empty h2 { color: var(--white); margin-bottom: 0.5rem; }
+    .co-empty p { color: var(--gray-500); margin-bottom: 1.5rem; }
+  </style>
+  <!-- gk:managed:start -->
+  <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
+  <meta property="og:site_name" content="Glory Kids Ministries">
+  <!-- gk:managed:end -->
+</head>
+<body>
+<nav class="nav" id="nav" style="position:static;background:var(--color-card);box-shadow:0 2px 20px rgba(0,0,0,0.06);">
+  <div class="container"><div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <img class="nav__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="42" height="42" />
+      <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
+    </a>
+  </div></div>
+</nav>
+
+<div class="co-wrap">
+  <a href="shop.html" class="co-back">← Back to shop</a>
+  <h1 class="co-title">🔒 Secure Checkout</h1>
+
+  <!-- Order summary — always visible -->
+  <div class="co-card">
+    <div id="co-summary-items"></div>
+    <div class="co-summary-total"><span>Total</span><span id="co-summary-total">$0</span></div>
+  </div>
+
+  <!-- Empty cart state -->
+  <div class="co-card co-empty" id="co-empty" style="display:none;">
+    <h2>Your cart is empty</h2>
+    <p>Add something from the shop before checking out.</p>
+    <a href="shop.html" class="btn btn--primary">Browse the Shop →</a>
+  </div>
+
+  <!-- Signed in: account strip -->
+  <div class="co-account" id="co-account-strip" style="display:none;">
+    <span>Signed in as <span id="co-account-email"></span></span>
+    <a href="#" id="co-signout-link">Not you? Sign out</a>
+  </div>
+
+  <!-- Not signed in: optional login prompt (guest checkout is still allowed below) -->
+  <div class="co-card co-login-gate" id="co-login-gate-card" style="display:none;">
+    <p>Have an account? <a href="#" id="co-login-btn">Login to Checkout →</a> — it links this purchase to your account so it's always available in <strong>My Purchases</strong>.</p>
+    <div class="co-divider"><span>or continue as a guest below</span></div>
+  </div>
+
+  <!-- Checkout form — always shown. When not signed in, name + email are
+       required so the order can still be delivered and looked up later. -->
+  <div id="co-form-wrap">
+    <div class="co-card">
+      <div class="form-row">
+        <div class="checkout-field">
+          <label>First Name *</label>
+          <input type="text" id="co-first" placeholder="Sarah" required />
+        </div>
+        <div class="checkout-field">
+          <label>Last Name *</label>
+          <input type="text" id="co-last" placeholder="Mitchell" required />
+        </div>
+      </div>
+      <div class="form-row single" id="co-email-row">
+        <div class="checkout-field">
+          <label>Email Address * <small style="font-weight:500;color:var(--gray-400)">(your receipt &amp; downloads are sent here)</small></label>
+          <input type="email" id="co-email" placeholder="you@example.com" required />
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="checkout-field">
+          <label>Church / Organisation <small style="font-weight:500;color:var(--gray-400)">(optional)</small></label>
+          <input type="text" id="co-church" placeholder="Grace Community Church" />
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="checkout-field">
+          <label>Discount code <small style="font-weight:500;color:var(--gray-400)">(optional)</small></label>
+          <input type="text" id="co-discount" placeholder="LAUNCH20" style="text-transform:uppercase;" />
+        </div>
+      </div>
+
+      <div class="payfast-info">
+        <div class="payfast-info__icon">🔒</div>
+        <div>
+          <h4>Secure checkout with PayFast</h4>
+          <p>You'll be taken to PayFast's secure payment page to pay by card, Apple Pay, or your preferred method. We never see or store your card details.</p>
+          <div class="payfast-methods">
+            <span class="payfast-method-chip">💳 Visa</span>
+            <span class="payfast-method-chip">💳 Mastercard</span>
+            <span class="payfast-method-chip"> Apple Pay</span>
+            <span class="payfast-method-chip">🌍 Multi-currency</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="checkout-pay-btn" id="co-pay-btn" onclick="submitToPayFast()">🔒 Pay Now</button>
+      <div class="checkout-secure">🔐 Your payment is encrypted and secure</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="auth.js"></script>
+<script>
+  var cart = JSON.parse(localStorage.getItem('shop_cart') || '[]');
+
+  function getTotal() { return cart.reduce(function (s, i) { return s + i.price; }, 0); }
+  function money(n) { return '$' + Number(n).toFixed(2).replace(/\.00$/, ''); }
+
+  function renderSummary() {
+    document.getElementById('co-summary-items').innerHTML = cart.map(function (i) {
+      return '<div class="co-summary-item"><span>' + (i.name || '').split('—')[0].trim() + '</span><strong>' + money(i.price) + '</strong></div>';
+    }).join('');
+    document.getElementById('co-summary-total').textContent = money(getTotal());
+  }
+
+  if (!cart.length) {
+    document.getElementById('co-empty').style.display = 'block';
+  } else {
+    renderSummary();
+  }
+
+  // Guest checkout is allowed, but personal details (name + email) are always
+  // compulsory — collected via the same form either way. Logging in just
+  // links the order to an account (My Purchases) and skips re-typing email.
+  onFirebaseReady(function () {
+    auth.onAuthStateChanged(function (user) {
+      if (!cart.length) return; // empty-cart state already shown, nothing else to do
+      var loginGate = document.getElementById('co-login-gate-card');
+      var accountStrip = document.getElementById('co-account-strip');
+      var emailRow = document.getElementById('co-email-row');
+      var emailInput = document.getElementById('co-email');
+
+      if (!user) {
+        loginGate.style.display = 'block';
+        accountStrip.style.display = 'none';
+        emailRow.style.display = 'block';
+        emailInput.required = true;
+        document.getElementById('co-login-btn').href = 'login.html?redirect=' + encodeURIComponent('checkout.html');
+        return;
+      }
+      loginGate.style.display = 'none';
+      accountStrip.style.display = 'flex';
+      emailRow.style.display = 'none';
+      emailInput.required = false;
+      document.getElementById('co-account-email').textContent = user.email || '';
+      if (user.displayName) {
+        var parts = user.displayName.split(' ');
+        document.getElementById('co-first').value = parts[0] || '';
+        document.getElementById('co-last').value = parts.slice(1).join(' ') || '';
+      }
+      document.getElementById('co-signout-link').onclick = function (e) {
+        e.preventDefault();
+        auth.signOut().then(function () { location.reload(); });
+      };
+    });
+  });
+
+  // ── SUBMIT TO PAYFAST — real full-page redirect (form POST) to PayFast's
+  //    hosted payment page. No popup/overlay; this page IS the checkout page.
+  //    Works signed-in (order linked to account) or as a guest (name + email
+  //    still required so the order can be delivered and looked up). ──
+  async function submitToPayFast() {
+    var first = document.getElementById('co-first').value.trim();
+    var last = document.getElementById('co-last').value.trim();
+    var email = document.getElementById('co-email').value.trim();
+    var btn = document.getElementById('co-pay-btn');
+    var isGuest = !auth.currentUser;
+
+    if (!first || !last) { alert('Please fill in your first and last name.'); return; }
+    if (isGuest && (!email || !/\S+@\S+\.\S+/.test(email))) {
+      alert('Please enter a valid email address — that\'s where your receipt and downloads are sent.');
+      return;
+    }
+    if (!cart.length) { alert('Your cart is empty.'); return; }
+
+    var discountCode = document.getElementById('co-discount').value.trim();
+    var headers = { 'Content-Type': 'application/json' };
+    var buyer = { name: (first + ' ' + last).trim() };
+    if (isGuest) {
+      buyer.email = email;
+    } else {
+      headers.Authorization = 'Bearer ' + (await auth.currentUser.getIdToken());
+    }
+
+    btn.disabled = true; btn.textContent = 'Connecting…';
+    try {
+      var res = await fetch('/api/payfast-checkout', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          items: cart.map(function (i) { return { id: i.id }; }),
+          buyer: buyer,
+          discountCode: discountCode
+        })
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Checkout failed');
+
+      localStorage.setItem('shop_last_order', data.orderId);
+
+      // Build and submit a real form — the browser navigates to PayFast's page.
+      var f = document.createElement('form');
+      f.method = 'POST';
+      f.action = data.processUrl;
+      Object.entries(data.fields).forEach(function ([k, v]) {
+        var inp = document.createElement('input');
+        inp.type = 'hidden'; inp.name = k; inp.value = v;
+        f.appendChild(inp);
+      });
+      document.body.appendChild(f);
+      f.submit();
+    } catch (err) {
+      alert('Sorry — ' + err.message);
+      btn.disabled = false; btn.textContent = '🔒 Pay Now';
+    }
+  }
+</script>
+</body>
+</html>

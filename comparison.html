@@ -160,9 +160,9 @@
             <tr>
               <th class="cmp-th cmp-th--sticky">Compare</th>
               <th class="cmp-th cmp-th--glory">
-                <div class="flex flex-col items-center gap-1">
+                <div class="flex flex-col items-center gap-1.5">
+                  <span class="cmp-badge">⭐ Recommended</span>
                   <span class="text-base">✨ Glory Kids</span>
-                  <span class="text-[11px] font-normal text-orange-200">Recommended</span>
                 </div>
               </th>
               <th class="cmp-th">Orange Curriculum</th>
@@ -434,8 +434,23 @@
     border-bottom: 1px solid var(--color-border);
   }
   .cmp-th--sticky { left: 0; z-index: 3; text-align: left; background: var(--color-darkest); min-width: 220px; }
-  .cmp-th--glory { background: rgba(255,75,50,0.22); color: #ffd9b3; }
-  .cmp-th--glory .text-base { color: #ffb266; }
+  .cmp-th--glory {
+    background: linear-gradient(180deg, rgba(255,176,0,0.28), rgba(255,75,50,0.24));
+    color: #FFE7C2; position: relative; padding-top: 1.15rem;
+    box-shadow: inset 2px 0 0 rgba(255,176,0,0.55), inset -2px 0 0 rgba(255,176,0,0.55);
+  }
+  .cmp-th--glory::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--gold, #FFB000), var(--primary, #FF4B32));
+  }
+  .cmp-th--glory .text-base { color: #fff; font-size: 1.05rem; font-weight: 800; }
+  .cmp-badge {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    background: linear-gradient(135deg, var(--gold, #FFB000), var(--primary, #FF4B32));
+    color: #1a1006; font-weight: 800; font-size: 0.62rem; letter-spacing: 0.04em;
+    text-transform: uppercase; padding: 0.28rem 0.65rem; border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(255,140,0,0.4);
+  }
 
   .cmp-td {
     padding: 0.9rem 1.25rem; text-align: center; color: var(--gray-300);
@@ -448,10 +463,17 @@
     position: sticky; left: 0; z-index: 1;
     background: var(--color-card); min-width: 220px;
   }
-  .cmp-td--glory { background: rgba(255,75,50,0.1); color: var(--white); }
+  .cmp-td--glory {
+    background: linear-gradient(180deg, rgba(255,176,0,0.1), rgba(255,75,50,0.13));
+    color: #fff; font-weight: 600;
+    box-shadow: inset 2px 0 0 rgba(255,176,0,0.35), inset -2px 0 0 rgba(255,176,0,0.35);
+  }
+  tr:last-child .cmp-td--glory { box-shadow: inset 2px 0 0 rgba(255,176,0,0.35), inset -2px 0 0 rgba(255,176,0,0.35), inset 0 -3px 0 rgba(255,176,0,0.55); }
 
   .cmp-icon--yes { color: #33CDD1; }
   .cmp-icon--no { opacity: 0.6; }
+  .cmp-td--glory .cmp-icon--yes { color: #FFD24C; text-shadow: 0 0 10px rgba(255,210,76,0.5); font-size: 1.05em; }
+  .cmp-td--glory .cmp-note { color: #ffd9b3; }
   .cmp-note { display: block; font-size: 0.72rem; color: var(--gray-500); margin-top: 0.15rem; white-space: normal; }
 
   tr.is-hidden-row { display: none; }

@@ -1,9 +1,14 @@
-/* POST /api/payfast-checkout
-   Body (JSON): { items:[{id}], buyer:{email,name,uid?}, discountCode? }
-   Prices come from Firestore (never trust the client). Creates a pending
-   order and returns the signed PayFast field set for the browser to POST. */
+/* POST /api/payfast-checkout   Header (optional): Authorization: Bearer <Firebase ID token>
+   Body (JSON): { items:[{id}], buyer:{name, email?}, discountCode? }
+   Guest checkout is allowed, but personal details are always compulsory:
+     - Signed in: uid/email come from the verified ID token (never the body),
+       and the order is linked to the account (shows up in My Purchases).
+     - Guest: no token — buyer.email is required and validated instead.
+   Prices always come from Firestore (never trust the client). Creates a
+   pending order and returns the signed PayFast field set for the browser to
+   POST (full-page redirect to PayFast's hosted payment page — no popup). */
 'use strict';
-const { db, FieldValue } = require('./_lib/firebase');
+const { db, admin, FieldValue } = require('./_lib/firebase');
 const { buildCheckout } = require('./_lib/payfast');
 const { json, parseBody } = require('./_lib/http');
 
@@ -17,12 +22,32 @@ const usdToZar = usd => Math.round(usd * USD_ZAR_RATE * 100) / 100;
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });
+
   const { json: body } = parseBody(event);
   const items = Array.isArray(body.items) ? body.items : [];
   const buyer = body.buyer || {};
   if (!items.length) return json(400, { error: 'Cart is empty' });
-  if (!buyer.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(buyer.email)) {
-    return json(400, { error: 'A valid email is required' });
+  if (!buyer.name || !buyer.name.trim()) return json(400, { error: 'Your name is required.' });
+
+  const authz = event.headers.authorization || event.headers.Authorization || '';
+  const idToken = authz.replace(/^Bearer\s+/i, '');
+  let buyerUid = null, buyerEmail;
+  if (idToken) {
+    let decoded;
+    try {
+      decoded = await admin.auth().verifyIdToken(idToken);
+    } catch (e) {
+      return json(401, { error: 'Your session has expired — please log in again.' });
+    }
+    buyerUid = decoded.uid;
+    buyerEmail = (decoded.email || '').toLowerCase();
+    if (!buyerEmail) return json(400, { error: 'Your account has no email on file — please contact us.' });
+  } else {
+    // Guest checkout — personal details are compulsory in place of a login.
+    buyerEmail = (buyer.email || '').toLowerCase().trim();
+    if (!buyerEmail || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(buyerEmail)) {
+      return json(400, { error: 'A valid email address is required.' });
+    }
   }
 
   // Resolve products server-side (prices in USD → converted to ZAR for PayFast)
@@ -81,9 +106,9 @@ exports.handler = async (event) => {
     totalUSD,
     totalZAR: total,
     fxRateUsdZar: USD_ZAR_RATE,
-    buyerEmail: buyer.email.toLowerCase(),
+    buyerEmail,
     buyerName: buyer.name || '',
-    uid: buyer.uid || null,
+    uid: buyerUid,
     status: 'pending',
     createdAt: Date.now()
   });
@@ -97,7 +122,7 @@ exports.handler = async (event) => {
     cancel_url: `${SITE}/shop.html?cancelled=1`,
     notify_url: `${SITE}/api/payfast-notify`,
     name_first: buyer.name || '',
-    email_address: buyer.email,
+    email_address: buyerEmail,
     m_payment_id: orderRef.id,
     amount: total,
     item_name: itemName,

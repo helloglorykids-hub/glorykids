@@ -420,107 +420,6 @@
     }
 
     /* CHECKOUT MODAL */
-    .checkout-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      z-index: 600; display: flex; align-items: center; justify-content: center;
-      padding: 1.5rem; opacity: 0; visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s;
-    }
-    .checkout-overlay.open { opacity: 1; visibility: visible; }
-    .checkout-modal {
-      background: var(--color-card); border-radius: var(--radius-xl);
-      width: 100%; max-width: 560px;
-      max-height: 90vh; overflow-y: auto;
-      box-shadow: var(--shadow-xl);
-      transform: scale(0.95); transition: transform 0.3s ease;
-    }
-    .checkout-overlay.open .checkout-modal { transform: scale(1); }
-    .checkout-modal__header {
-      padding: 1.75rem 2rem 1.25rem;
-      border-bottom: 1px solid var(--gray-100);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .checkout-modal__header h3 { font-size: 1.25rem; color: var(--white); margin: 0; }
-    .checkout-modal__body { padding: 1.5rem 2rem; }
-    .checkout-modal__footer { padding: 1.25rem 2rem 1.75rem; }
-    .checkout-order-summary {
-      background: var(--gray-50); border-radius: var(--radius-lg);
-      padding: 1.1rem 1.25rem; margin-bottom: 1.5rem;
-    }
-    .checkout-order-summary h4 { font-size: 0.8rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.85rem; }
-    .checkout-order-item { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--gray-700); margin-bottom: 0.5rem; }
-    .checkout-order-item:last-child { margin-bottom: 0; }
-    .checkout-order-total {
-      display: flex; justify-content: space-between;
-      font-family: var(--font-heading); font-weight: 800; color: var(--white);
-      font-size: 1rem; padding-top: 0.85rem; margin-top: 0.85rem;
-      border-top: 1px solid var(--gray-200);
-    }
-    .checkout-order-total span:last-child { color: var(--primary); }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    .form-row.single { grid-template-columns: 1fr; }
-    @media(max-width:480px) { .form-row { grid-template-columns: 1fr; } }
-    .checkout-field label { display: block; font-family: var(--font-heading); font-size: 0.8rem; font-weight: 700; color: var(--gray-700); margin-bottom: 0.4rem; }
-    .checkout-field input, .checkout-field select {
-      width: 100%; padding: 0.75rem 1rem;
-      border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg);
-      font-family: var(--font-body); font-size: 0.875rem; outline: none;
-      background: var(--gray-50); transition: var(--transition); box-sizing: border-box;
-    }
-    .checkout-field input:focus, .checkout-field select:focus { border-color: var(--primary); background: var(--color-card); box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
-    .payfast-info {
-      background: linear-gradient(135deg, #EFF6FF, #F0FDF4);
-      border: 1px solid #BFDBFE; border-radius: var(--radius-lg);
-      padding: 1rem 1.25rem; margin-bottom: 1.5rem;
-      display: flex; gap: 0.75rem; align-items: flex-start;
-    }
-    .payfast-info__icon { font-size: 1.5rem; flex-shrink: 0; }
-    .payfast-info h4 { font-size: 0.875rem; color: var(--white); margin-bottom: 0.25rem; }
-    .payfast-info p  { font-size: 0.78rem; color: var(--gray-500); margin: 0; line-height: 1.55; }
-    .payfast-methods { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
-    .payfast-method-chip {
-      background: var(--color-card); border: 1px solid var(--gray-200);
-      border-radius: var(--radius); padding: 0.25rem 0.6rem;
-      font-size: 0.68rem; font-weight: 700; color: var(--gray-600);
-    }
-    .checkout-pay-btn {
-      width: 100%;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white; border: none; border-radius: var(--radius-lg);
-      padding: 1.1rem; font-family: var(--font-heading);
-      font-size: 1rem; font-weight: 700; cursor: pointer;
-      transition: var(--transition); box-shadow: 0 4px 14px rgba(255,75,50,0.35);
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    }
-    .checkout-pay-btn:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 10px 26px rgba(255,75,50,0.5); filter: brightness(1.06); }
-    .checkout-secure {
-      text-align: center; margin-top: 0.85rem;
-      font-size: 0.72rem; color: var(--gray-400);
-      display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-    }
-
-    /* SUCCESS MODAL */
-    .success-modal {
-      background: var(--color-card); border-radius: var(--radius-xl);
-      width: 100%; max-width: 480px;
-      padding: 3rem 2.5rem; text-align: center;
-      box-shadow: var(--shadow-xl);
-    }
-    .success-modal__icon { font-size: 4rem; margin-bottom: 1rem; }
-    .success-modal h3 { font-size: 1.5rem; color: var(--white); margin-bottom: 0.5rem; }
-    .success-modal p { color: var(--gray-500); margin-bottom: 2rem; line-height: 1.65; }
-    .success-modal__downloads { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
-    .download-btn {
-      display: flex; align-items: center; gap: 0.75rem;
-      background: var(--primary-light); border: 1.5px solid var(--primary-lighter);
-      color: var(--primary); border-radius: var(--radius-lg);
-      padding: 0.85rem 1.25rem; font-family: var(--font-heading);
-      font-size: 0.875rem; font-weight: 700; cursor: pointer;
-      transition: var(--transition); text-decoration: none; text-align: left;
-    }
-    .download-btn:hover { background: var(--primary); color: white; border-color: var(--primary); }
-    .download-btn__icon { font-size: 1.5rem; flex-shrink: 0; }
-
     /* TESTIMONIALS STRIP */
     .shop-testimonials {
       background: var(--primary-dark);
@@ -787,7 +686,7 @@
       <span id="cart-total">$0</span>
     </div>
     <div class="cart-note">💡 Instant digital downloads — no shipping</div>
-    <button class="cart-checkout-btn" onclick="openCheckout()">
+    <button class="cart-checkout-btn" onclick="goToCheckout()">
       🔒 Proceed to Checkout
     </button>
     <div class="cart-payfast-note">
@@ -797,91 +696,7 @@
   </div>
 </div>
 
-<!-- ══════════════════ CHECKOUT MODAL ══════════════════════ -->
-<div class="checkout-overlay" id="checkout-overlay">
-  <!-- Checkout Form -->
-  <div class="checkout-modal" id="checkout-modal">
-    <div class="checkout-modal__header">
-      <h3>🔒 Secure Checkout</h3>
-      <button class="cart-drawer__close" onclick="closeCheckout()">✕</button>
-    </div>
-    <div class="checkout-modal__body">
-      <!-- Order Summary -->
-      <div class="checkout-order-summary">
-        <h4>Order Summary</h4>
-        <div id="checkout-order-items"></div>
-        <div class="checkout-order-total">
-          <span>Total</span>
-          <span id="checkout-total">$0</span>
-        </div>
-      </div>
-
-      <!-- Contact Details -->
-      <div class="form-row">
-        <div class="checkout-field">
-          <label>First Name *</label>
-          <input type="text" id="co-first" placeholder="Sarah" required />
-        </div>
-        <div class="checkout-field">
-          <label>Last Name *</label>
-          <input type="text" id="co-last" placeholder="Mitchell" required />
-        </div>
-      </div>
-      <div class="form-row single">
-        <div class="checkout-field">
-          <label>Email Address * <small style="font-weight:500;color:var(--gray-400)">(PDFs sent here)</small></label>
-          <input type="email" id="co-email" placeholder="you@example.com" required />
-        </div>
-      </div>
-      <div class="form-row single">
-        <div class="checkout-field">
-          <label>Church / Organisation <small style="font-weight:500;color:var(--gray-400)">(optional)</small></label>
-          <input type="text" id="co-church" placeholder="Grace Community Church" />
-        </div>
-      </div>
-      <div class="form-row single">
-        <div class="checkout-field">
-          <label>Discount code <small style="font-weight:500;color:var(--gray-400)">(optional)</small></label>
-          <input type="text" id="co-discount" placeholder="LAUNCH20" style="text-transform:uppercase;" />
-        </div>
-      </div>
-
-      <!-- PayFast Info -->
-      <div class="payfast-info">
-        <div class="payfast-info__icon">🔒</div>
-        <div>
-          <h4>Secure checkout</h4>
-          <p>You'll be redirected to our secure payment page. Prices are in USD; you can choose your local currency at checkout. We never see or store your card details.</p>
-          <div class="payfast-methods">
-            <span class="payfast-method-chip">💳 Visa</span>
-            <span class="payfast-method-chip">💳 Mastercard</span>
-            <span class="payfast-method-chip"> Apple Pay</span>
-            <span class="payfast-method-chip">🌍 Multi-currency</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="checkout-modal__footer">
-      <button class="checkout-pay-btn" onclick="submitToPayFast()">
-        🔒 Pay Now
-      </button>
-      <div class="checkout-secure">
-        🔐 Your payment is encrypted and secure
-      </div>
-    </div>
-  </div>
-
-  <!-- Success State (hidden) -->
-  <div class="success-modal" id="success-modal" style="display:none;">
-    <div class="success-modal__icon">🎉</div>
-    <h3>Payment Successful!</h3>
-    <p>Thank you for your purchase! Your PDF downloads are ready. We've also sent download links to your email address.</p>
-    <div class="success-modal__downloads" id="download-links"></div>
-    <button class="btn btn--outline" onclick="closeCheckout(); resetCart();" style="margin-top:0.5rem;width:100%;">
-      Continue Shopping
-    </button>
-  </div>
-</div>
+<!-- Checkout now happens on its own page: checkout.html (see goToCheckout()) -->
 
 <!-- FLOATING CART FAB -->
 <div class="cart-fab" id="cart-fab" onclick="openCart()">
@@ -892,8 +707,7 @@
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- Checkout posts to /api/payfast-checkout, which returns a signed field set
-     that submitToPayFast() builds into a form and POSTs to PayFast. -->
+<!-- Checkout happens on checkout.html — see goToCheckout() below. -->
 
 
 <!-- SCRIPTS -->
@@ -1001,95 +815,12 @@
   }
 
   // ── CHECKOUT ─────────────────────────────────────────────────────
-  function openCheckout() {
-    closeCart();
-    // Render order summary
-    const itemsEl = document.getElementById('checkout-order-items');
-    itemsEl.innerHTML = cart.map(i => `
-      <div class="checkout-order-item">
-        <span>${i.name.split('—')[0].trim()}</span>
-        <strong>${'$' + Number(i.price).toFixed(2).replace(/\.00$/, '')}</strong>
-      </div>
-    `).join('');
-    document.getElementById('checkout-total').textContent = '$' + getTotal().toFixed(2).replace(/\.00$/, '');
-
-    // Pre-fill email if logged in
-    if (typeof auth !== 'undefined') {
-      const user = auth.currentUser;
-      if (user) {
-        document.getElementById('co-email').value = user.email || '';
-        if (user.displayName) {
-          const parts = user.displayName.split(' ');
-          document.getElementById('co-first').value = parts[0] || '';
-          document.getElementById('co-last').value  = parts.slice(1).join(' ') || '';
-        }
-      }
-    }
-
-    document.getElementById('checkout-modal').style.display = 'block';
-    document.getElementById('success-modal').style.display  = 'none';
-    document.getElementById('checkout-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeCheckout() {
-    document.getElementById('checkout-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  // ── SUBMIT TO PAYFAST (via the /api/payfast-checkout function) ───
-  async function submitToPayFast() {
-    const first  = document.getElementById('co-first').value.trim();
-    const last   = document.getElementById('co-last').value.trim();
-    const email  = document.getElementById('co-email').value.trim();
-    const btn    = document.querySelector('.checkout-pay-btn');
-
-    if (!first || !last || !email) {
-      alert('Please fill in your first name, last name, and email address.');
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      alert('Please enter a valid email address.');
-      return;
-    }
+  // Checkout is its own page (checkout.html), not a popup — it reads the
+  // same 'shop_cart' localStorage key this page writes to, and requires
+  // login before payment.
+  function goToCheckout() {
     if (cart.length === 0) { alert('Your cart is empty.'); return; }
-
-    const uid = (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser.uid : null;
-    const discountCode = (document.getElementById('co-discount') || {}).value
-      ? document.getElementById('co-discount').value.trim() : '';
-
-    if (btn) { btn.disabled = true; btn.textContent = "Connecting…"; }
-    try {
-      const res = await fetch('/api/payfast-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          items: cart.map(i => ({ id: i.id })),
-          buyer: { email, name: (first + ' ' + last).trim(), uid },
-          discountCode
-        })
-      });
-      const data = await res.json();
-      if (!res.ok) { throw new Error(data.error || 'Checkout failed'); }
-
-      // Remember the cart so shop-thankyou can clear it after payment
-      localStorage.setItem('shop_last_order', data.orderId);
-
-      // Build and submit a form to PayFast with the signed fields
-      const f = document.createElement('form');
-      f.method = 'POST';
-      f.action = data.processUrl;
-      Object.entries(data.fields).forEach(([k, v]) => {
-        const inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = k; inp.value = v;
-        f.appendChild(inp);
-      });
-      document.body.appendChild(f);
-      f.submit();
-    } catch (err) {
-      alert('Sorry — ' + err.message);
-      if (btn) { btn.disabled = false; btn.textContent = '🔒 Pay Now'; }
-    }
+    window.location.href = 'checkout.html';
   }
 
   // ── FILTER & SEARCH ──────────────────────────────────────────────
