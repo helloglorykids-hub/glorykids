@@ -887,7 +887,7 @@
     // Title/image link to the SEO detail page (curriculum-pack.html); the
     // "Add to cart" button stays a separate sibling so it isn't nested
     // inside the <a> (and so quick-add from the grid still works as before).
-    const detailHref = p.slug ? `curriculum-pack.html?slug=${encodeURIComponent(p.slug)}` : null;
+    const detailHref = p.slug ? `/pack/${encodeURIComponent(p.slug)}` : null;
     const coverInner = `${tag}${note}${coverHtml(p)}`;
     return `
       <div class="gk-pc reveal" data-category="${p.category || 'resource'}" data-name="${(p.title || '').toLowerCase()}">
@@ -923,7 +923,7 @@
       const fCover = featured.images && featured.images[0]
         ? `<img src="${featured.images[0]}" alt="">`
         : `<div class="gk-pc__ph" style="--g1:${gradFor(featured.title)[0]};--g2:${gradFor(featured.title)[1]}"><span class="gk-pc__ph-name" style="font-size:1.2rem;">${featured.title}</span></div>`;
-      const fDetailHref = featured.slug ? `curriculum-pack.html?slug=${encodeURIComponent(featured.slug)}` : null;
+      const fDetailHref = featured.slug ? `/pack/${encodeURIComponent(featured.slug)}` : null;
       html += `
       <div class="featured-product reveal" data-category="${featured.category || 'bundle'}">
         ${fDetailHref ? `<a href="${fDetailHref}" class="featured-product__cover" style="text-decoration:none;">${fCover}</a>` : `<div class="featured-product__cover">${fCover}</div>`}

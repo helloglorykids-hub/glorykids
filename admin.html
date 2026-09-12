@@ -400,7 +400,7 @@
             <div>
               <label>URL Slug <span style="font-weight:400;color:var(--gray-400);">— editable, auto-fills from title</span></label>
               <div style="display:flex; align-items:center; gap:0.4rem;">
-                <span style="font-size:0.78rem; color:var(--gray-400); white-space:nowrap;">blog-post.html?slug=</span>
+                <span style="font-size:0.78rem; color:var(--gray-400); white-space:nowrap;">/blog/</span>
                 <input type="text" id="post-slug" placeholder="my-post-title" oninput="slugTouched = true;" />
               </div>
             </div>
@@ -1997,7 +1997,7 @@ function postRowHtml(p) {
         </div>
       </div>
       <div class="row-actions">
-        ${isLive ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
+        ${isLive ? `<a class="row-btn" href="/blog/${p.slug}" target="_blank">View</a>` : ''}
         <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
         <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
       </div>
@@ -2020,7 +2020,7 @@ function postCardHtml(p) {
         <div class="post-card__title">${p.title}</div>
         <div class="post-card__meta">${statusBadge}&nbsp;/${p.slug}</div>
         <div class="row-actions" style="margin-top:0.6rem;">
-          ${isLive ? `<a class="row-btn" href="blog-post.html?slug=${p.slug}" target="_blank">View</a>` : ''}
+          ${isLive ? `<a class="row-btn" href="/blog/${p.slug}" target="_blank">View</a>` : ''}
           <button class="row-btn" onclick="editPost('${p.id}')">Edit</button>
           <button class="row-btn row-btn--danger" onclick="deletePostRow('${p.id}')">Delete</button>
         </div>
@@ -2598,7 +2598,7 @@ async function previewSitemap() {
   const base = 'https://www.glorykidsministry.com/';
   const urls = pages.filter(p => p.visible !== false && !p.noindex && p.path.indexOf('template') === -1)
     .map(p => base + (p.path === 'index.html' ? '' : p.path));
-  posts.filter(p => p.published).forEach(p => urls.push(base + 'blog-post.html?slug=' + p.slug));
+  posts.filter(p => p.published).forEach(p => urls.push(base + 'blog/' + p.slug));
   document.getElementById('seo-sitemap-preview').textContent = urls.join('\n');
 }
 

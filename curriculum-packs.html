@@ -297,7 +297,7 @@
       return '<div class="pack-what-item">' + f + '</div>';
     }).join('');
     if (flist.length > 4) feats += '<div class="pack-what-item" style="color:var(--gray-400);">+ ' + (flist.length - 4) + ' more</div>';
-    var detailHref = 'curriculum-pack.html?slug=' + encodeURIComponent(p.slug || p.id);
+    var detailHref = '/pack/' + encodeURIComponent(p.slug || p.id);
     return '' +
       '<a href="' + detailHref + '" class="pack-card-full reveal" style="text-decoration:none;">' +
         '<div class="pack-header-img" style="background:linear-gradient(140deg,' + g[0] + ',' + g[1] + ');">' + cover + badges + '</div>' +

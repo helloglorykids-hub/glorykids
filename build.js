@@ -302,8 +302,8 @@ const CONTENT_PAGE_IDS = {
     if (SITEMAP_EXCLUDE.has(f)) return;
     urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
-  posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog-post.html?slug=${p.slug}`));
-  products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/curriculum-pack.html?slug=${p.slug}`));
+  posts.filter(p => p.published).forEach(p => urls.push(`${SITE_ORIGIN}/blog/${p.slug}`));
+  products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/pack/${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map(u => `  <url><loc>${esc(u)}</loc></url>`).join('\n') + `\n</urlset>\n`);

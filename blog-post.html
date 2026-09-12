@@ -487,7 +487,12 @@
   }
 
   async function loadPost() {
-    const slug = new URLSearchParams(window.location.search).get('slug');
+    // Clean URL: /blog/<slug> (rewritten to this file server-side, so the
+    // address bar keeps the clean path). Falls back to the old ?slug= query
+    // for any link that hasn't been updated yet — Netlify 301s those anyway,
+    // but this keeps things working even if that hop is ever skipped.
+    const pathMatch = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
+    const slug = (pathMatch && decodeURIComponent(pathMatch[1])) || new URLSearchParams(window.location.search).get('slug');
     if (!slug) return showNotFound();
 
     let post;
@@ -512,7 +517,7 @@
   }
 
   function renderPost(post) {
-    const baseUrl = 'https://www.glorykidsministry.com/blog-post.html?slug=' + post.slug;
+    const baseUrl = 'https://www.glorykidsministry.com/blog/' + post.slug;
     const seoTitle = (post.seoTitle || post.title) + " | Glory Kids Ministries";
     const seoDesc = post.seoDescription || post.excerpt || '';
     const dateStr = new Date(post.publishAt || post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -759,7 +764,7 @@
     if (!posts.length) return;
     document.getElementById('relatedPostsWrap').style.display = 'block';
     document.getElementById('relatedPostsGrid').innerHTML = posts.map(p => `
-      <a href="blog-post.html?slug=${p.slug}" class="related-post-card">
+      <a href="/blog/${p.slug}" class="related-post-card">
         <div class="related-post-card__thumb">
           ${p.featuredImage ? `<img src="${p.featuredImage}" alt="${p.title}" loading="lazy" decoding="async" />` : `<span class="text-2xl">${p.icon || '📖'}</span>`}
         </div>

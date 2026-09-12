@@ -955,7 +955,7 @@ function lessonCardHtml(p, isMember) {
   let action;
   if (!open) action = `<a href="glory-kids-membership.html" style="${btnCss}background:var(--gray-100);color:var(--gray-500);">🔒 Members only</a>`;
   else if (hasFiles) action = `<button data-lesson="${p.id}" style="${btnCss}background:#059669;color:#fff;">⬇ Download pack</button>`;
-  else action = `<a href="blog-post.html?slug=${encodeURIComponent(p.slug)}" style="${btnCss}background:var(--primary);color:#fff;">Read lesson →</a>`;
+  else action = `<a href="/blog/${encodeURIComponent(p.slug)}" style="${btnCss}background:var(--primary);color:#fff;">Read lesson →</a>`;
   const icon = p.icon || '📖';
   const bg = 'linear-gradient(135deg,#EDE7F6,#FEF0D3)';
   return `

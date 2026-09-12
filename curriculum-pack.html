@@ -263,6 +263,11 @@
   var money = function (n) { return '$' + Number(n || 0).toFixed(2).replace(/\.00$/, ''); };
 
   function getSlug() {
+    // Clean URL: /pack/<slug> (rewritten to this file server-side, so the
+    // address bar keeps the clean path). Falls back to the old ?slug= query
+    // for any link that hasn't been updated yet — Netlify 301s those anyway.
+    var pathMatch = location.pathname.match(/^\/pack\/([^/]+)\/?$/);
+    if (pathMatch) return decodeURIComponent(pathMatch[1]);
     return new URLSearchParams(location.search).get('slug');
   }
 
@@ -282,7 +287,7 @@
   function setMeta(p) {
     var title = p.title + ' | Glory Kids Ministries';
     var desc = (p.blurb || '').slice(0, 160) || ('Complete children\'s ministry resource — ' + p.title + '. Instant download, ready to teach.');
-    var url = SITE_ORIGIN + '/curriculum-pack.html?slug=' + encodeURIComponent(p.slug);
+    var url = SITE_ORIGIN + '/pack/' + encodeURIComponent(p.slug);
     var image = (p.images && p.images[0]) || (SITE_ORIGIN + '/images/glory-kids-logo.png');
     var parent = parentPage(p.category);
 
@@ -400,7 +405,7 @@
         grid.innerHTML = related.map(function (r) {
           var rPrice = Number(r.priceUSD != null ? r.priceUSD : r.priceZAR || 0);
           var cover = (r.images && r.images[0]) ? '<img src="' + r.images[0] + '" alt="" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">' : '<div style="aspect-ratio:16/9;background:linear-gradient(140deg,#66249A,#00BFC4);"></div>';
-          return '<a href="curriculum-pack.html?slug=' + encodeURIComponent(r.slug) + '" class="pack-card-full" style="text-decoration:none;">' +
+          return '<a href="/pack/' + encodeURIComponent(r.slug) + '" class="pack-card-full" style="text-decoration:none;">' +
             cover +
             '<div style="padding:1rem 1.1rem;">' +
               '<h3 style="font-size:0.95rem;margin-bottom:0.4rem;color:var(--white);">' + (r.title || '') + '</h3>' +
