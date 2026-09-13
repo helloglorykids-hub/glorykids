@@ -554,10 +554,13 @@
 </section>
 
 <!-- ══════════ POST LAYOUT ══════════════════════════════════ -->
-<div class="post-layout">
+<div class="post-layout" style="position:relative;overflow:hidden;">
+  <svg style="position:absolute;left:0;right:0;top:-1px;width:100%;height:56px;z-index:1;pointer-events:none;" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V33C1245 59 1090 14 760 31 470 46 245 9 0 30Z" fill="#FF4B32"/>
+  </svg>
 
   <!-- MAIN ARTICLE -->
-  <article>
+  <article style="position:relative;z-index:2;">
     <div class="post-body">
       <div class="post-body__content">
 
@@ -737,7 +740,7 @@
   </article><!-- /article -->
 
   <!-- SIDEBAR -->
-  <aside class="post-sidebar">
+  <aside class="post-sidebar" style="position:relative;z-index:2;">
 
     <!-- Table of Contents -->
     <div class="sidebar-card">
