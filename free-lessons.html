@@ -138,7 +138,7 @@
      automatically, so #1 is always the current crowd
      favorite among the free 10.
 ════════════════════════════════════════════════ -->
-<section class="top10 gk-section--force-dark" id="top10Lessons">
+<section class="top10 gk-section--force-dark wave-seam wave-seam--dark" id="top10Lessons">
   <div class="container">
     <div class="top10__head">
       <span class="top10__eyebrow">🔥 Trending Now</span>
@@ -157,7 +157,7 @@
 
 <style>
   .top10 {
-    background: var(--color-bg, #17191C);
+    background: var(--glory-cream, #FFF9ED);
     padding: 3.5rem 0 4rem; position: relative; overflow: hidden;
   }
   .top10__head { margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.4rem; }
@@ -167,8 +167,8 @@
     padding: 0.35rem 0.9rem; border-radius: 999px; font-weight: 700; font-size: 0.72rem;
     letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.3rem;
   }
-  .top10__title { font-family: var(--font-heading, inherit); font-weight: 800; color: #fff; font-size: clamp(1.6rem, 3.2vw, 2.3rem); }
-  .top10__sub { color: var(--gray-400, #9a9a9a); font-size: 1rem; }
+  .top10__title { font-family: var(--font-heading, inherit); font-weight: 800; color: var(--glory-charcoal, #17191C); font-size: clamp(1.6rem, 3.2vw, 2.3rem); }
+  .top10__sub { color: #5b5c60; font-size: 1rem; }
   .top10__hint {
     display: inline-flex; align-self: flex-start; align-items: center; gap: 0.5rem;
     color: #FFB000; font-size: 0.8rem; font-weight: 700; margin-top: 0.3rem;
@@ -189,7 +189,7 @@
      independent of the arrow buttons (which hide on mobile). */
   .top10__edge-fade {
     position: absolute; top: 1.5rem; bottom: 2rem; right: 0; width: 48px; z-index: 2;
-    background: linear-gradient(270deg, var(--color-bg, #17191C) 0%, transparent 100%);
+    background: linear-gradient(270deg, var(--glory-cream, #FFF9ED) 0%, transparent 100%);
     pointer-events: none;
   }
 
@@ -206,11 +206,11 @@
 
   .top10__rank {
     font-family: var(--font-heading, inherit); font-weight: 800; font-size: 9.5rem; line-height: 0.8;
-    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.08));
+    background: linear-gradient(180deg, rgba(23,25,28,0.85), rgba(23,25,28,0.08));
     -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    -webkit-text-stroke: 1px rgba(23,25,28,0.2);
     margin-right: -1.7rem; margin-bottom: -0.3rem; position: relative; z-index: 1; user-select: none; pointer-events: none;
-    align-self: flex-end; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5)); flex-shrink: 0;
+    align-self: flex-end; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12)); flex-shrink: 0;
   }
 
   .top10__card {
