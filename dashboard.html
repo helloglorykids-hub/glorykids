@@ -832,6 +832,7 @@ async function renderPlanState() {
     curriculumGrid.querySelectorAll('.dash-content-card__meta--locked').forEach(m => m.textContent = lockedMetaText);
   }
   if (benefitsList) benefitsList.innerHTML = benefits.map(b => `<li>${b}</li>`).join('');
+  document.querySelectorAll('.upgrade-banner').forEach(b => b.style.display = isActiveMember ? 'none' : 'flex');
 
   refreshFreePlanNoteText();
 }
