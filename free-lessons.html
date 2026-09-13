@@ -179,7 +179,7 @@
   .top10__rail {
     display: flex; align-items: flex-end; gap: 2.5rem;
     overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
-    padding: 3.5rem 1.5rem 4rem 2.5rem; scroll-padding-left: 2.5rem; scrollbar-width: none;
+    padding: 3.5rem 2rem 4rem 2.5rem; scroll-padding-left: 2.5rem; scrollbar-width: none;
   }
   .top10__rail::-webkit-scrollbar { display: none; }
 
@@ -196,10 +196,10 @@
   /* Colored glow behind the rank number + card, tinted per-item to match
      that lesson's own thumbnail palette (set inline as --glow-a/--glow-b). */
   .top10__glow {
-    position: absolute; z-index: 0; left: -1.5rem; right: -1.5rem; top: -1.5rem; bottom: -1rem;
-    background: radial-gradient(ellipse at 40% 55%, var(--glow-a, #FF4B32) 0%, transparent 62%),
-                radial-gradient(ellipse at 75% 45%, var(--glow-b, #FFB000) 0%, transparent 65%);
-    filter: blur(28px); opacity: 0.4; pointer-events: none;
+    position: absolute; z-index: 0; left: -0.5rem; right: -0.5rem; top: -1.5rem; bottom: -1rem;
+    background: radial-gradient(ellipse at 40% 55%, var(--glow-a, #FF4B32) 0%, transparent 45%),
+                radial-gradient(ellipse at 75% 45%, var(--glow-b, #FFB000) 0%, transparent 48%);
+    filter: blur(14px); opacity: 0.45; pointer-events: none;
   }
 
   .top10__rank {
