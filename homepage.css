@@ -414,7 +414,8 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .gk-light-section .gk-pricing3__card, .gk-light-section .gk-pricing2,
 .gk-light-section .pack-card, .gk-light-section .product-card,
 .gk-light-section .included-card, .gk-light-section .lesson-card,
-.gk-light-section .blog-card, .gk-light-section .top10__card {
+.gk-light-section .blog-card, .gk-light-section .top10__card,
+.gk-light-section .pillar-card {
   --color-white: #FFF9ED;
   --color-text-primary: #FFF9ED;
   --color-text-secondary: #B7C0D4;
