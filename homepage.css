@@ -405,6 +405,10 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .gk-light-section :is(.text-white, strong) { color: #17191C !important; }
 .gk-light-section :is(.text-slate-100, .text-slate-200, .text-slate-300, .text-gray-100, .text-gray-200, .text-gray-300) { color: #333333 !important; }
 .gk-light-section :is(.text-slate-400, .text-slate-500, .text-gray-400, .text-gray-500) { color: #5a5a5a !important; }
+/* Ghost/ ghost-pill buttons built with a transparent bg + white/NN border
+   utility (not a self-contained chip) need their own border+text fix. */
+.gk-light-section :is(.faq-tab, .cmp-tab) { color: #5b5c60 !important; border-color: rgba(0,0,0,0.16) !important; }
+.gk-light-section :is(.faq-tab.is-active, .cmp-tab.is-active) { color: #fff !important; }
 
 /* Self-contained dark "chip" cards (pricing cards, product cards, etc.)
    keep their own dark background and were already built with light
@@ -417,7 +421,8 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .gk-light-section .blog-card, .gk-light-section .top10__card,
 .gk-light-section .pillar-card, .gk-light-section .activity-card,
 .gk-light-section .contact-info-card, .gk-light-section .form-card,
-.gk-light-section .faq-mini-card, .gk-light-section .inquiry-btn {
+.gk-light-section .faq-mini-card, .gk-light-section .inquiry-btn,
+.gk-light-section .faq-item {
   --color-white: #FFF9ED;
   --color-text-primary: #FFF9ED;
   --color-text-secondary: #B7C0D4;
