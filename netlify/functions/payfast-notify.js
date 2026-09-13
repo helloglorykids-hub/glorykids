@@ -16,10 +16,10 @@ const { parseBody } = require('./_lib/http');
 const ok = { statusCode: 200, body: 'OK' };
 const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 
-async function fail(orderId, reason, extra) {
+async function fail(orderId, reason, extra, collection) {
   console.error('payfast-notify REJECTED:', reason, extra || '');
   if (orderId) {
-    await db.collection('orders').doc(orderId).set({
+    await db.collection(collection || 'orders').doc(orderId).set({
       lastItnError: reason, lastItnAt: Date.now()
     }, { merge: true }).catch(() => {});
   }
@@ -32,10 +32,11 @@ exports.handler = async (event) => {
   if (!form) return fail(null, 'no form body');
 
   const isMembership = form.custom_str2 === 'membership' || form.subscription_type === '1';
-  const failId = isMembership ? null : (form.custom_str1 || form.m_payment_id);
+  const failId = isMembership ? (form.m_payment_id || null) : (form.custom_str1 || form.m_payment_id);
+  const failCollection = isMembership ? 'subscriptions' : 'orders';
 
-  if (!verifyItnSignature(pairs, form.signature)) return fail(failId, 'bad signature');
-  if (!(await serverValidate(raw))) return fail(failId, 'server validate != VALID');
+  if (!verifyItnSignature(pairs, form.signature)) return fail(failId, 'bad signature', null, failCollection);
+  if (!(await serverValidate(raw))) return fail(failId, 'server validate != VALID', null, failCollection);
 
   if (isMembership) return handleMembership(form);
 

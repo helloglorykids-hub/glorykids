@@ -36,7 +36,7 @@ const VALIDATE_URL = `https://${HOST}/eng/query/validate`;
 function pfEncode(v) {
   return encodeURIComponent(String(v))
     .replace(/%20/g, '+')
-    .replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
+    .replace(/[!'()*~]/g, c => '%' + c.charCodeAt(0).toString(16).toUpperCase());
 }
 
 // Build the signature over an ORDERED list of [key, value] pairs (blank values skipped).
