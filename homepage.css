@@ -376,6 +376,52 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .wave-seam--cream   { --wave-color: #FFF9ED; }
 .wave-seam--dark    { --wave-color: #17191C; }
 .wave-seam--darkest { --wave-color: #0E0F12; }
+
+/* ─── LIGHT SECTION (reusable) ───────────────────────────────────
+   Put .gk-light-section on any section to flip it to a cream
+   background with everything inside reading correctly — components
+   built on the --color-* vars, the older --white/--gray-* namespace,
+   or raw Tailwind utility classes (.text-white, .text-slate-*) all
+   invert consistently. Extracted from the homepage's per-page
+   even-section override so it can be applied to any page directly. */
+.gk-light-section {
+  background: #FFF9ED !important;
+  --color-white: #17191C;
+  --color-text-primary: #17191C;
+  --color-text-secondary: #4a4a4a;
+  --color-border: rgba(0,0,0,0.12);
+  --white: #17191C;
+  --gray-900: #17191C;
+  --gray-700: #333333;
+  --gray-600: #3d3d3d;
+  --gray-500: #5a5a5a;
+  --gray-400: #6b6b6b;
+  --gray-300: #7a7a7a;
+  --gray-200: rgba(0,0,0,0.12);
+  --gray-100: rgba(0,0,0,0.06);
+  --gray-50: #FFF9ED;
+}
+.gk-light-section .gk-section-sub, .gk-light-section p, .gk-light-section li { color: #4a4a4a; }
+.gk-light-section :is(.text-white, strong) { color: #17191C !important; }
+.gk-light-section :is(.text-slate-100, .text-slate-200, .text-slate-300, .text-gray-100, .text-gray-200, .text-gray-300) { color: #333333 !important; }
+.gk-light-section :is(.text-slate-400, .text-slate-500, .text-gray-400, .text-gray-500) { color: #5a5a5a !important; }
+
+/* Self-contained dark "chip" cards (pricing cards, product cards, etc.)
+   keep their own dark background and were already built with light
+   text for it — restore the original dark-theme variable values just
+   for their subtree so .gk-light-section's inversion above doesn't
+   also flip their text to dark-on-dark. */
+.gk-light-section .gk-pricing3__card, .gk-light-section .gk-pricing2 {
+  --color-white: #FFF9ED;
+  --color-text-primary: #FFF9ED;
+  --color-text-secondary: #B7C0D4;
+  --white: #FFF9ED;
+  --gray-900: #FFF9ED;
+  --gray-700: #E6E9F1;
+  --gray-600: #C7CFDF;
+  --gray-500: #A6B1C7;
+  --gray-400: #8B97AF;
+}
 .gk-h2 {
   font-size: 36px; font-weight: 700; text-align: center; color: var(--color-white);
   margin-bottom: 1rem; line-height: 1.25;
