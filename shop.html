@@ -35,22 +35,23 @@
 
     /* FILTER BAR */
     .shop-filter-bar {
-      background: var(--color-card); border-bottom: 1px solid var(--gray-200);
+      background: var(--glory-cream, #FFF9ED); border-bottom: 1px solid rgba(0,0,0,0.08);
       padding: 1rem 0; position: sticky; top: 72px; z-index: 50;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     .shop-filter-bar .container {
       display: flex; align-items: center; justify-content: space-between;
       gap: 1rem; flex-wrap: wrap;
+      position: relative; z-index: 2;
     }
     .shop-filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     .shop-filter-btn {
       padding: 0.5rem 1.1rem;
-      border: 1.5px solid var(--gray-200);
-      background: var(--color-card);
+      border: 1.5px solid rgba(0,0,0,0.14);
+      background: transparent;
       border-radius: var(--radius-full);
       font-family: var(--font-heading); font-size: 0.8rem; font-weight: 600;
-      color: var(--gray-600); cursor: pointer; transition: var(--transition);
+      color: #5b5c60; cursor: pointer; transition: var(--transition);
     }
     .shop-filter-btn:hover { border-color: var(--primary); color: var(--primary); }
     .shop-filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
@@ -59,11 +60,11 @@
     }
     .shop-search input {
       padding: 0.55rem 1rem 0.55rem 2.5rem;
-      border: 1.5px solid var(--gray-200); border-radius: var(--radius-full);
+      border: 1.5px solid rgba(0,0,0,0.14); border-radius: var(--radius-full);
       font-family: var(--font-body); font-size: 0.875rem; outline: none;
-      width: 220px; transition: var(--transition); background: var(--gray-50);
+      width: 220px; transition: var(--transition); background: rgba(0,0,0,0.03); color: var(--glory-charcoal, #17191C);
     }
-    .shop-search input:focus { border-color: var(--primary); background: var(--color-card); width: 280px; box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
+    .shop-search input:focus { border-color: var(--primary); background: white; width: 280px; box-shadow: 0 0 0 3px rgba(123,94,167,0.1); }
     .shop-search__icon { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; pointer-events: none; }
 
     /* FEATURED PRODUCT */
@@ -582,6 +583,9 @@
 
 <!-- ══════════════════════ FILTER BAR ════════════════════════ -->
 <div class="shop-filter-bar">
+  <svg style="position:absolute;left:0;right:0;top:-1px;width:100%;height:56px;z-index:1;pointer-events:none;" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V33C1245 59 1090 14 760 31 470 46 245 9 0 30Z" fill="#17191C"/>
+  </svg>
   <div class="container">
     <div class="shop-filters">
       <button class="shop-filter-btn active" onclick="filterProducts('all', this)">All Products</button>
@@ -597,10 +601,10 @@
 </div>
 
 <!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
-<main id="products" style="padding: 3rem 0;">
+<main id="products" style="padding: 3rem 0;background:var(--glory-cream, #FFF9ED);">
   <div class="container">
-    <div class="shop-filter-note" style="text-align:center;color:var(--gray-400);font-size:0.85rem;margin-bottom:1.5rem;">Prices in USD · Instant digital download · Secure checkout with card or Apple Pay</div>
-    <div id="shop-loading" style="text-align:center;color:var(--gray-400);padding:4rem 0;">Loading products…</div>
+    <div class="shop-filter-note" style="text-align:center;color:#5b5c60;font-size:0.85rem;margin-bottom:1.5rem;">Prices in USD · Instant digital download · Secure checkout with card or Apple Pay</div>
+    <div id="shop-loading" style="text-align:center;color:#5b5c60;padding:4rem 0;">Loading products…</div>
   </div>
 </main>
 
