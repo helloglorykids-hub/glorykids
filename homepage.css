@@ -423,7 +423,7 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .gk-light-section .contact-info-card, .gk-light-section .form-card,
 .gk-light-section .faq-mini-card, .gk-light-section .inquiry-btn,
 .gk-light-section .faq-item, .gk-light-section .featured-post,
-.gk-light-section .legal__card {
+.gk-light-section .legal__card, .gk-light-section #cmpScrollArea {
   --color-white: #FFF9ED;
   --color-text-primary: #FFF9ED;
   --color-text-secondary: #B7C0D4;
@@ -433,6 +433,7 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
   --gray-600: #C7CFDF;
   --gray-500: #A6B1C7;
   --gray-400: #8B97AF;
+  --gray-300: #6C7A96;
   --gray-200: rgba(255,255,255,0.15);
   --gray-100: rgba(255,255,255,0.08);
   --color-border: rgba(255,255,255,0.14);
