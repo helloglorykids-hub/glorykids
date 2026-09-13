@@ -185,19 +185,20 @@ function fetchSubscription(token) {
 }
 
 // Verify an ITN payload's signature. `body` is the parsed form object.
-// PayFast signs ITN in the order the fields were received, so pass the raw
-// querystring-ordered keys.
+// PayFast signs ITN in the order the fields were received AND includes every
+// field it sent — even ones with blank values (custom_str3, custom_int1,
+// etc.) — unlike the outbound checkout signature, which omits unused
+// optional fields. Reusing signPairs() (which drops blanks) here caused
+// every ITN to fail verification, so blanks are kept for this one.
 function verifyItnSignature(orderedPairs, suppliedSignature) {
   const { passphrase } = creds();
-  const expected = signPairs(
-    orderedPairs.filter(([k]) => k !== 'signature'),
-    passphrase
-  );
-  const supplied = String(suppliedSignature || '').toLowerCase();
-  if (expected !== supplied && MODE !== 'live') {
-    console.error('ITN_SIG_DEBUG pairs=' + JSON.stringify(orderedPairs) + ' expected=' + expected + ' supplied=' + supplied);
-  }
-  return expected === supplied;
+  const parts = orderedPairs
+    .filter(([k]) => k !== 'signature')
+    .filter(([, v]) => v !== undefined && v !== null)
+    .map(([k, v]) => `${k}=${pfEncode(String(v).trim())}`);
+  if (passphrase) parts.push(`passphrase=${pfEncode(passphrase.trim())}`);
+  const expected = crypto.createHash('md5').update(parts.join('&')).digest('hex');
+  return expected === String(suppliedSignature || '').toLowerCase();
 }
 
 // Server-to-server confirmation: POST the ITN data back to PayFast.
