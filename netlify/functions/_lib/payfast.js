@@ -193,7 +193,11 @@ function verifyItnSignature(orderedPairs, suppliedSignature) {
     orderedPairs.filter(([k]) => k !== 'signature'),
     passphrase
   );
-  return expected === String(suppliedSignature || '').toLowerCase();
+  const supplied = String(suppliedSignature || '').toLowerCase();
+  if (expected !== supplied && MODE !== 'live') {
+    console.error('ITN_SIG_DEBUG pairs=' + JSON.stringify(orderedPairs) + ' expected=' + expected + ' supplied=' + supplied);
+  }
+  return expected === supplied;
 }
 
 // Server-to-server confirmation: POST the ITN data back to PayFast.
