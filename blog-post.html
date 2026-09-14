@@ -33,6 +33,8 @@
   <!-- gk:managed:start -->
   <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
   <meta property="og:site_name" content="Glory Kids Ministries">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSCHTP0MWY"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FSCHTP0MWY');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
   <!-- gk:managed:end -->
 </head>
@@ -78,7 +80,7 @@
       <div class="nav__actions">
         <a href="/shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
         <a href="/login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-        <a href="/glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join the Waitlist</a>
+        <a href="/glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
       </div>
       <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
@@ -95,7 +97,7 @@
   <a href="/faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="/contact.html" class="nav__mobile-link">✉️ Contact</a>
   <div class="nav__mobile-cta">
-    <a href="/glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join the Waitlist · $29.99/mo</a>
+    <a href="/glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
   </div>
 </div>
 <div class="blog-light">
@@ -184,9 +186,9 @@
           </div>
           <div id="membershipLockWrapTop" class="mailerlite-box mailerlite-box--locked" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔒 This Lesson Is Part of Glory Kids Membership</h3>
-            <p class="text-slate-300 text-sm mb-4">Glory Kids Membership launches <strong>September 15, 2026</strong>. This lesson isn't in our 10 free downloads, but it'll be ready inside the membership at launch — along with hundreds more lessons, crafts, and activities. Join the waitlist to be first in.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of Glory Kids Membership. It isn't in our 10 free downloads, but you can unlock it — along with hundreds more lessons, crafts, and activities — with a membership.</p>
             <a href="/glory-kids-membership.html" class="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition-colors">
-              Join the Waitlist →
+              Join Membership →
             </a>
           </div>
           <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
@@ -215,9 +217,9 @@
           <!-- Membership-required box (shown instead of the MailerLite signup for lessons not in the free 10) -->
           <div id="membershipLockWrap" class="mailerlite-box mailerlite-box--locked" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔒 This Lesson Is Part of Glory Kids Membership</h3>
-            <p class="text-slate-300 text-sm mb-4">Glory Kids Membership launches <strong>September 15, 2026</strong>. This lesson isn't in our 10 free downloads, but it'll be ready inside the membership at launch — along with hundreds more lessons, crafts, and activities. Join the waitlist to be first in.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of Glory Kids Membership. It isn't in our 10 free downloads, but you can unlock it — along with hundreds more lessons, crafts, and activities — with a membership.</p>
             <a href="/glory-kids-membership.html" class="inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition-colors">
-              Join the Waitlist →
+              Join Membership →
             </a>
           </div>
 
@@ -315,8 +317,10 @@
     <div class="gk-footer__bottom">
       <span>© 2026 Glory Kids Ministries. All rights reserved.</span>
       <div class="gk-footer__legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
+        <a href="delivery-policy.html">Delivery Policy</a>
         <a href="/contact.html">Contact</a>
       </div>
     </div>
@@ -643,15 +647,15 @@
     // gk-forms.js wires <form data-gk-form="…"> and handles the
     // "check your inbox" vs "we already sent it" messaging.
     function optinFormHtml(kind) {
-      var isFree = kind === 'free-lessons';
+      if (kind !== 'free-lessons') {
+        return '<a href="/glory-kids-membership.html" class="gk-optin-form__btn" style="display:inline-block;text-decoration:none;">✨ Join Membership →</a>';
+      }
       return (
         '<form data-gk-form="' + kind + '" class="gk-optin-form">' +
           '<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
             'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />' +
           '<input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />' +
-          '<button type="submit" class="gk-optin-form__btn">' +
-            (isFree ? 'Send my 10 lessons' : 'Join the waitlist') +
-          '</button>' +
+          '<button type="submit" class="gk-optin-form__btn">Send my 10 lessons</button>' +
         '</form>'
       );
     }
@@ -720,8 +724,6 @@
       ['membershipLockWrap', 'membershipLockWrapTop'].forEach(function (id) {
         var wrap = document.getElementById(id);
         wrap.style.display = 'block';
-        var link = wrap.querySelector('a');
-        if (link) link.outerHTML = optinFormHtml('waitlist');
       });
       // Redundant with the membership lock box above — don't also pitch
       // "get free lessons" right after telling them this one isn't free.
@@ -730,8 +732,8 @@
     } else {
       fillOptinBox(
         document.getElementById('mailerliteWrap'),
-        '🚀 Be First Into Glory Kids Membership',
-        'Launching September 15, 2026 — a full, growing lesson library with new lessons every week. Join the waitlist.',
+        '🚀 Unlock Glory Kids Membership',
+        'A full, growing lesson library with new lessons every week.',
         'waitlist'
       );
     }

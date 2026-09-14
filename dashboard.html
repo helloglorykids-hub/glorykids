@@ -263,6 +263,8 @@
   <meta property="og:site_name" content="Glory Kids Ministries">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:description" content="Free, Spirit-filled Bible lessons and children’s ministry curriculum for kids ages 3–12 — printable, ready to teach, and designed to help children encounter Jesus.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSCHTP0MWY"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FSCHTP0MWY');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
   <!-- gk:managed:end -->
 </head>
@@ -361,7 +363,7 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:1rem;">
-          <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta">✨ Join the Waitlist — Launching Sept 15</a>
+          <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta">✨ Upgrade to Membership</a>
           <a href="#membership" id="plan-manage-link" onclick="showTab('membership', document.querySelector('.dash-nav-item[href=\'#membership\']'))" style="display:none;font-size:0.85rem;font-weight:700;color:var(--primary);white-space:nowrap;">Manage membership →</a>
         </div>
       </div>
@@ -369,7 +371,7 @@
       <!-- Free plan nudge -->
       <div class="plan-free-note" id="free-plan-note">
         <p id="free-plan-note-text">🔓 Loading your free lesson access…</p>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Join the Waitlist →</a>
+        <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Join Membership →</a>
       </div>
 
       <!-- Church team seats (church owners only) -->
@@ -539,7 +541,6 @@
           <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
         </div>
       </div>
-      <p style="margin-top:1.5rem;"><a href="activities.html" class="text-primary" style="font-weight:600;">Browse the free activities library →</a></p>
     </div>
 
     <!-- SAVED TAB -->
@@ -579,7 +580,7 @@
             <div class="plan-card__status" id="plan-status-row-full"><span class="active-dot"></span> Active</div>
           </div>
         </div>
-        <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta-full">✨ Join the Waitlist — Launching Sept 15</a>
+        <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta-full">✨ Upgrade to Membership</a>
         <button id="plan-cancel-full" onclick="cancelMembership()" style="display:none;background:none;border:1px solid var(--gray-200);border-radius:var(--radius-full);padding:0.5rem 1rem;color:var(--rose,#c0392b);font-size:0.8rem;font-weight:700;cursor:pointer;">Cancel membership</button>
       </div>
 
@@ -810,7 +811,7 @@ async function renderPlanState() {
     benefits = ['⏸️ Your membership is paused — resume anytime to pick up right where you left off.'];
   } else {
     statusHtml = '<span class="active-dot"></span> Active';
-    ctaText = '✨ Join the Waitlist — Launching Sept 15'; ctaShow = true; freeNoteShow = true;
+    ctaText = '✨ Upgrade to Membership'; ctaShow = true; freeNoteShow = true;
     curriculumTagText = 'Members Only';
     lockDisplay = 'flex';
     lockedMetaText = 'Members Only · Upgrade to Access';
@@ -1051,7 +1052,7 @@ function refreshFreePlanNoteText() {
   const el = document.getElementById('free-plan-note-text');
   if (!el) return;
   if (_overviewOpenCount === null) { el.innerHTML = '🔓 Loading your free lesson access…'; return; }
-  el.innerHTML = `🔓 You have access to <strong>${_overviewOpenCount} free lesson${_overviewOpenCount === 1 ? '' : 's'}</strong>. Glory Kids Membership launches September 15, 2026 — join the waitlist to unlock the full, growing lesson library, curriculum, and new lessons every week.`;
+  el.innerHTML = `🔓 You have access to <strong>${_overviewOpenCount} free lesson${_overviewOpenCount === 1 ? '' : 's'}</strong>. Upgrade to Glory Kids Membership to unlock the full, growing lesson library, curriculum, and new lessons every week.`;
 }
 
 function downloadLessonPack(postId, btn) {

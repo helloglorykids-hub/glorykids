@@ -30,6 +30,7 @@ const END = '<!-- gk:managed:end -->';
    surfaced in search. Matched against the bare filename. */
 const SITEMAP_EXCLUDE = new Set([
   '404.html',
+  'activities.html',
   'login.html',
   'signup.html',
   'forgot-password.html',
@@ -41,6 +42,7 @@ const SITEMAP_EXCLUDE = new Set([
   'admin-import.html',
   'admin-data.html',
   'lesson-gate.html',
+  'checkout.html',
   // template, not a real page — individual posts are added from `posts` below
   'blog-post.html',
   // template, not a real page — individual packs are added from `products` below
@@ -107,6 +109,38 @@ async function getCol(name) {
     o.id = d.name.split('/').pop();
     return o;
   });
+}
+
+/* A plain list request (getCol) on `posts`/`products` is denied outright —
+   their Firestore rules gate reads on resource.data (published/active), and
+   Firestore refuses to filter a list query server-side unless the query
+   itself already constrains that same field. Without this, this function
+   silently returned [] on every build (via the .catch(() => []) call sites),
+   so no free lesson, blog post, or curriculum pack ever made it into
+   sitemap.xml. Run a structured query with an explicit `where` matching the
+   rule instead, so Firestore can prove every result is allowed. */
+async function getColWhere(name, field, value) {
+  const body = {
+    structuredQuery: {
+      from: [{ collectionId: name }],
+      where: { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value: { booleanValue: value } } },
+      limit: 300
+    }
+  };
+  const r = await fetch(`${REST}:runQuery?key=${API_KEY}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) return [];
+  const rows = await r.json();
+  return (Array.isArray(rows) ? rows : [])
+    .filter(row => row.document)
+    .map(row => {
+      const o = decFields(row.document.fields || {});
+      o.id = row.document.name.split('/').pop();
+      return o;
+    });
 }
 
 const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -233,6 +267,19 @@ function applyToHtml(html, cfg, page, canonical) {
   const descMatch = html.match(/<meta\s+name=["']description["'][^>]*\scontent=(["'])([\s\S]*?)\1[^>]*>/i);
   const pageDescFallback = descMatch ? unesc(descMatch[2]).trim() : '';
 
+  // managedBlock() below adds its own canonical tag for pages that aren't
+  // self-managed. A hand-written <link rel="canonical"> left elsewhere in
+  // <head> (e.g. added by hand before this page had a managed block) would
+  // then duplicate it — invalid HTML and an ambiguous signal for crawlers —
+  // so strip any such tag outside the managed block first.
+  if (!selfManaged) {
+    const blockStart = html.indexOf(START);
+    const headEnd = blockStart === -1 ? html.search(/<\/head>/i) : blockStart;
+    if (headEnd !== -1) {
+      html = html.slice(0, headEnd).replace(/[ \t]*<link rel="canonical"[^>]*>\n?/gi, '') + html.slice(headEnd);
+    }
+  }
+
   const block = managedBlock(cfg, page, canonical, selfManaged, pageTitleFallback, pageDescFallback);
   const re = new RegExp(START.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '[\\s\\S]*?' + END.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   if (re.test(html)) html = html.replace(re, block);
@@ -252,8 +299,8 @@ const CONTENT_PAGE_IDS = {
 (async function main() {
   let [cfg, pages, redirects, posts, products] = await Promise.all([
     getDoc('site/config'), getCol('pages'), getCol('redirects'),
-    getCol('posts').catch(() => []),
-    getCol('products').catch(() => [])
+    getColWhere('posts', 'published', true).catch(() => []),
+    getColWhere('products', 'active', true).catch(() => [])
   ]);
   if (!cfg) {
     // Firestore unreachable (rules not deployed, outage, etc.). Don't fail the
@@ -310,7 +357,10 @@ const CONTENT_PAGE_IDS = {
     const cat = BLOG_CATEGORIES.includes(p.category) ? p.category : 'parents';
     return `/blog/${cat}/${p.slug}`;
   }
-  posts.filter(p => p.published).forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
+  // published==true is already guaranteed by the query; publishAt (scheduled
+  // future posts, e.g. the monthly curriculum drop) still needs a client-side
+  // check since Firestore can't express that OR-condition in the query filter.
+  posts.filter(p => !p.publishAt || p.publishAt <= Date.now()).forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
   products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/pack/${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

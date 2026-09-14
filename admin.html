@@ -59,6 +59,9 @@
     .chart-bars { display: flex; align-items: flex-end; gap: 0.75rem; height: 140px; }
     .chart-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 0.5rem; height: 100%; }
     .chart-bar__fill { width: 100%; background: linear-gradient(180deg, var(--primary), var(--primary-dark)); border-radius: 6px 6px 0 0; min-height: 4px; }
+    .an-dualbar-row { display: flex; gap: 3px; align-items: flex-end; justify-content: center; width: 100%; height: 100%; }
+    .an-dualbar-row .chart-bar__fill { width: 100%; }
+    .an-dualbar-row .chart-bar__fill--visitors { background: linear-gradient(180deg, var(--gold), #C97F00); }
     .chart-bar__label { font-size: 0.72rem; color: var(--gray-400); }
 
     table.admin-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
@@ -918,13 +921,19 @@
           <button class="post-tab" data-range="90" onclick="loadAnalytics(90,this)">90 days</button>
           <a id="ga4-link" href="#" target="_blank" rel="noopener" class="post-tab" style="display:none;margin-left:auto;">↗ Open Google Analytics</a>
         </div>
-        <div class="admin-stats" style="grid-template-columns:repeat(3,1fr);">
+        <div class="admin-stats" style="grid-template-columns:repeat(4,1fr);">
           <div class="admin-stat-card"><div class="admin-stat-card__label">Page views</div><div class="admin-stat-card__num" id="an-views">0</div></div>
+          <div class="admin-stat-card"><div class="admin-stat-card__label">Visitors</div><div class="admin-stat-card__num" id="an-visitors" style="color:var(--gold);">0</div></div>
           <div class="admin-stat-card"><div class="admin-stat-card__label">Busiest day</div><div class="admin-stat-card__num accent" id="an-peak" style="font-size:1.1rem;">—</div></div>
           <div class="admin-stat-card"><div class="admin-stat-card__label">Top page</div><div class="admin-stat-card__num gold" id="an-toppage" style="font-size:1.1rem;">—</div></div>
         </div>
         <div class="admin-card">
-          <div class="admin-card__title">Views over time</div>
+          <div class="admin-card__title">Views &amp; visitors over time
+            <span style="font-weight:400;font-size:0.78rem;color:var(--gray-400);margin-left:0.5rem;">
+              <span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--primary);margin-right:0.25rem;"></span>Views
+              <span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--gold);margin:0 0.25rem 0 0.75rem;"></span>Visitors
+            </span>
+          </div>
           <div class="chart-bars" id="an-chart"></div>
         </div>
         <div class="gk-grid2">
@@ -2667,6 +2676,7 @@ async function loadAnalytics(days, btn) {
 
   const a = await GK.getAnalyticsRange(days);
   document.getElementById('an-views').textContent = a.totals.views.toLocaleString();
+  document.getElementById('an-visitors').textContent = a.totals.visitors.toLocaleString();
   const peak = a.daily.reduce((m, d) => d.views > m.views ? d : m, { views: 0, date: '—' });
   document.getElementById('an-peak').textContent = peak.views ? peak.date.slice(5) + ' (' + peak.views + ')' : '—';
   document.getElementById('an-toppage').textContent = a.topPages[0] ? a.topPages[0][0].replace(/_html$/, '.html') : '—';
@@ -2674,7 +2684,10 @@ async function loadAnalytics(days, btn) {
   const max = Math.max(1, ...a.daily.map(d => d.views));
   document.getElementById('an-chart').innerHTML = a.daily.map(d => `
     <div class="chart-bar">
-      <div class="chart-bar__fill" style="height:${Math.max(4, d.views / max * 100)}%;" title="${d.date}: ${d.views} views"></div>
+      <div class="an-dualbar-row">
+        <div class="chart-bar__fill" style="height:${Math.max(4, d.views / max * 100)}%;" title="${d.date}: ${d.views} views"></div>
+        <div class="chart-bar__fill chart-bar__fill--visitors" style="height:${Math.max(4, d.visitors / max * 100)}%;" title="${d.date}: ${d.visitors} visitors"></div>
+      </div>
       <div class="chart-bar__label">${d.date.slice(8)}</div>
     </div>`).join('');
 

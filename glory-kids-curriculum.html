@@ -134,8 +134,10 @@
     .month-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
     .month-card.is-active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-lighter); }
     .month-card__head {
-      height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; position: relative;
+      height: 170px; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; position: relative;
     }
+    @media(max-width:460px) { .month-card__head { height: 190px; } }
+    .month-card__head img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .month-card__num { position: absolute; top: 0.6rem; left: 0.7rem; background: rgba(0,0,0,0.4); color: #fff; font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800; padding: 0.2rem 0.6rem; border-radius: var(--radius-full); backdrop-filter: blur(4px); }
     .month-card__body { padding: 1.1rem 1.2rem 1.3rem; }
     .month-card__month { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 0.3rem; }
@@ -155,8 +157,8 @@
     .week-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     @media(max-width:760px) { .week-grid { grid-template-columns: 1fr; } }
     .week-card { background: var(--gray-50); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--gray-100); }
-    .week-card__img { width: 100%; aspect-ratio: 16/8; object-fit: cover; display: block; background: linear-gradient(135deg,#66249A,#00BFC4); }
-    .week-card__ph { width: 100%; aspect-ratio: 16/8; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; background: linear-gradient(135deg,#66249A,#00BFC4); }
+    .week-card__img { width: 100%; aspect-ratio: 16/8; object-fit: cover; display: block; background: linear-gradient(135deg,var(--primary),var(--gold)); }
+    .week-card__ph { width: 100%; aspect-ratio: 16/8; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; background: linear-gradient(135deg,var(--primary),var(--gold)); }
     .week-card__body { padding: 1.25rem 1.4rem; }
     .week-card__num { font-family: var(--font-heading); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 0.35rem; }
     .week-card__title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: 1.02rem; margin-bottom: 0.5rem; line-height: 1.3; }
@@ -168,7 +170,7 @@
     .week-card__scripture { font-size: 0.75rem; color: var(--gray-400); font-weight: 600; margin-bottom: 0.6rem; }
     .week-card__theme { font-family: var(--font-heading); font-weight: 700; font-size: 0.88rem; color: var(--primary); margin-bottom: 0.5rem; }
     .week-card__bigidea { font-size: 0.82rem; color: var(--gray-500); line-height: 1.65; margin-bottom: 0.65rem; }
-    .week-card__activation { font-size: 0.78rem; color: var(--gray-600); background: var(--white); border-left: 3px solid var(--gold); padding: 0.55rem 0.8rem; border-radius: 0 8px 8px 0; line-height: 1.6; }
+    .week-card__activation { font-size: 0.78rem; color: var(--gray-50); background: var(--white); border-left: 3px solid var(--gold); padding: 0.55rem 0.8rem; border-radius: 0 8px 8px 0; line-height: 1.6; }
     .week-card__activation strong { color: var(--primary); }
 
     .what-inside { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.25rem; }
@@ -192,10 +194,12 @@
   <meta property="og:title" content="The Glory Kids 12-Month Curriculum | Glory Kids Ministries">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.glorykidsministry.com/glory-kids-curriculum.html">
-  <meta property="og:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence.">
+  <meta property="og:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence. Twelve standalone monthly series, join any time of year.">
   <meta property="og:site_name" content="Glory Kids Ministries">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence.">
+  <meta name="twitter:description" content="Encounter Jesus. Carry His Presence. A complete 12-month children's ministry curriculum built on three pillars — Voice, Power, Presence. Twelve standalone monthly series, join any time of year.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSCHTP0MWY"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FSCHTP0MWY');</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
   <!-- gk:managed:end -->
 </head>
@@ -234,7 +238,7 @@
       <div class="nav__actions">
         <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
         <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join the Waitlist</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
       </div>
       <button class="nav__hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -256,7 +260,7 @@
   <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
   <a href="login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
-    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join the Waitlist · $29.99/mo</a>
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
   </div>
 </div>
 
@@ -281,7 +285,7 @@
       <div class="hero-flank-text">
     <h1>The Glory Kids<br><span style="color:var(--gold);">12-Month Curriculum</span></h1>
     <p style="font-weight:700;color:#fff;margin-bottom:0.5rem;">Encounter Jesus. Carry His Presence.</p>
-    <p>Glory Kids exists to raise a generation that encounters Jesus, hears His voice, experiences His power, and carries His presence. Twelve complete monthly series — Voice, Power, Presence — woven into one intentional discipleship journey. Included free with Glory Kids Membership, launching September 15, 2026.</p>
+    <p>Glory Kids exists to raise a generation that encounters Jesus, hears His voice, experiences His power, and carries His presence. Twelve complete monthly series — Voice, Power, Presence — woven into one intentional discipleship journey. Included free with Glory Kids Membership.</p>
     </div>
       <div class="hero-flank-side hero-flank-side--right" aria-hidden="true">
         <img class="hero-flank-img hero-flank-img--front" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="David &amp; Goliath" loading="lazy" decoding="async">
@@ -324,18 +328,11 @@
 </section>
 
 <!-- HOW THE CURRICULUM WORKS -->
-<section style="background:var(--primary-lighter);">
+<section style="background:var(--color-card);">
   <div class="container">
     <div class="section-label reveal">Flexible by Design</div>
     <h2 class="section-heading reveal">Join <span class="highlight">Any Month</span> of the Year</h2>
     <p class="section-subheading reveal">Every month is a complete, standalone 4-week series. A church doesn't need to complete October before November, or January before February — but when all 12 series are followed together, they form one intentional discipleship journey.</p>
-    <div class="modular-note reveal">
-      <div class="modular-note__item">Structured, but not dependent</div>
-      <div class="modular-note__item">Progressive, but modular</div>
-      <div class="modular-note__item">Deep, but simple enough for children</div>
-      <div class="modular-note__item">Supernatural, but biblically grounded</div>
-      <div class="modular-note__item">Fun, but never shallow</div>
-    </div>
 
     <h3 style="text-align:center;font-family:var(--font-heading);font-weight:800;color:var(--white);margin:3rem 0 1.5rem;font-size:1.15rem;">What Every Lesson Walks Through</h3>
     <div class="flow-chain reveal">
@@ -375,7 +372,6 @@
       </div>
       <!-- nodes injected by JS -->
     </div>
-    <p class="journey-caption reveal">🎨 Placeholder art shown — final themed illustrations coming soon for every month.</p>
   </div>
 </section>
 
@@ -416,23 +412,10 @@
 <!-- YEAR AT A GLANCE / BROWSE THE SERIES -->
 <section class="section--gray" id="series">
   <div class="container">
-    <div class="section-label reveal">October 2026 – September 2027</div>
-    <h2 class="section-heading reveal">Browse the <span class="highlight">Series</span></h2>
-    <p class="section-subheading reveal">All 12 series are included with Glory Kids Membership, launching September 15, 2026. Tap a month below to see the full four-week breakdown.</p>
-
-    <div class="yag-wrap reveal">
-      <table class="yag-table">
-        <thead><tr><th>Month</th><th>Series</th><th>Focus</th></tr></thead>
-        <tbody id="yagTableBody"></tbody>
-      </table>
-    </div>
-
     <div class="month-grid reveal" id="monthGrid"></div>
 
-    <div class="month-detail" id="monthDetail"></div>
-
     <div class="text-center mt-12 reveal">
-      <a href="free-lessons.html" class="btn btn--outline btn--lg">Browse the Lesson Library →</a>
+      <a href="glory-kids-membership.html" class="btn btn--outline btn--lg">✨ Join Membership!</a>
     </div>
   </div>
 </section>
@@ -458,7 +441,7 @@
 
   var YEAR = [
     {
-      month: 'October', emoji: '✨', grad: ['#66249A', '#00BFC4'],
+      month: 'October', emoji: '✨', grad: ['#FF4B32', '#FFB000'], cover: 'images/October.jpeg',
       series: 'Miracles of Jesus', tagline: 'Jesus Changes Everything',
       focus: 'Encounter Jesus', scripture: 'Acts 10:38',
       bigIdea: 'Jesus is powerful, compassionate and present. When people encounter Jesus, things change.',
@@ -471,7 +454,7 @@
       ]
     },
     {
-      month: 'November', emoji: '🍂', grad: ['#E09E00', '#FFB000'],
+      month: 'November', emoji: '🍂', grad: ['#FFB000', '#FF4B32'], cover: 'images/November.jpeg',
       series: 'Generous Hearts', tagline: 'Living Thankful',
       focus: 'Gratitude & Generosity', scripture: '1 Thessalonians 5:16–18',
       bigIdea: "Experiencing God's goodness produces gratitude, generosity and compassion.",
@@ -484,7 +467,7 @@
       ]
     },
     {
-      month: 'December', emoji: '🎄', grad: ['#E13C24', '#009BA0'],
+      month: 'December', emoji: '🎄', grad: ['#0B2E67', '#FF4B32'], cover: 'images/December.jpeg',
       series: 'God With Us', tagline: 'A Glory Kids Christmas Journey',
       focus: 'Christmas', scripture: 'Matthew 1:23',
       bigIdea: "Christmas is the story of God's presence coming near. Jesus is Immanuel — God with us.",
@@ -496,7 +479,7 @@
       ]
     },
     {
-      month: 'January', emoji: '🌟', grad: ['#00BFC4', '#66249A'],
+      month: 'January', emoji: '🌟', grad: ['#FF4B32', '#0B2E67'], cover: 'images/January.jpeg',
       series: 'Who God Says I Am', tagline: 'Identity',
       focus: 'Identity', scripture: 'Ephesians 2:10',
       bigIdea: "My identity isn't determined by popularity, appearance, ability or what other people say. I discover who I am by discovering who God says I am.",
@@ -508,7 +491,7 @@
       ]
     },
     {
-      month: 'February', emoji: '👂', grad: ['#0B2E67', '#00BFC4'],
+      month: 'February', emoji: '👂', grad: ['#0B2E67', '#FFB000'], cover: 'images/February.jpeg',
       series: 'God Speaks', tagline: "Learning to Hear God's Voice",
       focus: "Hearing God's Voice", scripture: 'John 10:27',
       bigIdea: 'God is relational. He speaks through Scripture and leads His people by His Spirit. Children can learn to recognize His voice and respond biblically.',
@@ -520,7 +503,7 @@
       ]
     },
     {
-      month: 'March', emoji: '✝️', grad: ['#FF4B32', '#66249A'],
+      month: 'March', emoji: '✝️', grad: ['#FFB000', '#0B2E67'], cover: 'images/March.jpeg',
       series: 'Jesus Gave Everything', tagline: 'The Easter Journey',
       focus: 'Gospel / Easter', scripture: 'John 3:16',
       bigIdea: 'Jesus came to rescue us. Through His death and resurrection, sin and death have been defeated and we can know God.',
@@ -533,7 +516,7 @@
       ]
     },
     {
-      month: 'April', emoji: '🦁', grad: ['#FF4B32', '#FFB000'],
+      month: 'April', emoji: '🦁', grad: ['#FF4B32', '#FFB000'], cover: 'images/April.jpeg',
       series: 'Courageous Faith', tagline: 'Trust God. Take Courage.',
       focus: 'Faith & Obedience', scripture: 'Joshua 1:9',
       bigIdea: "Faith doesn't mean we're never afraid. Faith means trusting God enough to follow Him even when we're afraid.",
@@ -545,7 +528,7 @@
       ]
     },
     {
-      month: 'May', emoji: '🔥', grad: ['#66249A', '#FFB000'],
+      month: 'May', emoji: '🔥', grad: ['#FFB000', '#FF4B32'], cover: 'images/May.jpeg',
       series: 'Holy Spirit', tagline: 'God’s Presence With Me',
       focus: 'Pentecost / Presence & Power', scripture: 'Acts 1:8',
       bigIdea: "The Holy Spirit isn't simply a force or feeling. He is God with us and in us, helping us know Jesus, transforming us and empowering us to live His way.",
@@ -558,7 +541,7 @@
       ]
     },
     {
-      month: 'June', emoji: '🙏', grad: ['#00BFC4', '#0B2E67'],
+      month: 'June', emoji: '🙏', grad: ['#0B2E67', '#FF4B32'], cover: 'images/June.jpeg',
       series: 'Talk With God', tagline: 'Prayer',
       focus: 'Prayer', scripture: 'Jeremiah 33:3',
       bigIdea: 'Prayer isn’t performing for God. Prayer is relationship — talking, listening, worshipping, asking and simply being with Him.',
@@ -570,7 +553,7 @@
       ]
     },
     {
-      month: 'July', emoji: '❤️', grad: ['#D45D9C', '#FFB000'],
+      month: 'July', emoji: '❤️', grad: ['#FF4B32', '#0B2E67'], cover: 'images/July.jpeg',
       series: 'Live Like Jesus', tagline: 'Kingdom Life',
       focus: 'Kingdom Character', scripture: 'John 13:34–35',
       bigIdea: 'Encountering Jesus changes how we live and how we treat people.',
@@ -582,7 +565,7 @@
       ]
     },
     {
-      month: 'August', emoji: '⭐', grad: ['#FFB000', '#E13C24'],
+      month: 'August', emoji: '⭐', grad: ['#FFB000', '#0B2E67'], cover: 'images/August.jpeg',
       series: 'God Can Use Me', tagline: "You're Never Too Young",
       focus: 'Calling & Purpose', scripture: '1 Timothy 4:12',
       bigIdea: "Children don't have to wait until they're adults to participate in God's Kingdom.",
@@ -594,7 +577,7 @@
       ]
     },
     {
-      month: 'September', emoji: '🌍', grad: ['#009BA0', '#66249A'],
+      month: 'September', emoji: '🌍', grad: ['#0B2E67', '#FFB000'], cover: 'images/September.jpeg',
       series: 'Carry the Light', tagline: 'Living on Mission',
       focus: 'Mission', scripture: 'Matthew 5:14–16',
       bigIdea: "God's presence isn't something we experience only at church. Jesus sends us to carry His love and light everywhere we go.",
@@ -607,65 +590,20 @@
     }
   ];
 
-  var PILLAR_LABEL = { voice: 'VOICE', power: 'POWER', presence: 'PRESENCE' };
-
-  function pillarChips(pillars) {
-    return (pillars || []).map(function (p) {
-      return '<span class="pillar-chip pillar-chip--' + p + '">' + PILLAR_LABEL[p] + '</span>';
-    }).join('');
-  }
-
-  function weekCard(w, i) {
-    var media = w.image
-      ? '<img class="week-card__img" src="' + w.image + '" alt="' + w.title + '" loading="lazy" decoding="async" />'
-      : '<div class="week-card__ph">' + (w.emoji || '📖') + '</div>';
-    return '' +
-      '<div class="week-card">' +
-        media +
-        '<div class="week-card__body">' +
-          '<div class="week-card__num">Week ' + (i + 1) + '</div>' +
-          '<div class="week-card__title">' + w.title + '</div>' +
-          '<div class="week-card__pillars">' + pillarChips(w.pillars) + '</div>' +
-          '<div class="week-card__scripture">📜 ' + w.scripture + '</div>' +
-          '<div class="week-card__theme">' + w.theme + '</div>' +
-          (w.bigIdea ? '<div class="week-card__bigidea">' + w.bigIdea + '</div>' : '') +
-          (w.activation ? '<div class="week-card__activation"><strong>Encounter Activation:</strong> ' + w.activation + '</div>' : '') +
-        '</div>' +
-      '</div>';
-  }
-
-  function renderDetail(idx) {
-    var m = YEAR[idx];
-    var panel = document.getElementById('monthDetail');
-    panel.innerHTML = '' +
-      '<div class="month-detail__head">' +
-        '<div>' +
-          '<div class="month-detail__eyebrow">' + m.month + ' · Month ' + (idx + 1) + ' of 12</div>' +
-          '<div class="month-detail__title">' + m.series + '</div>' +
-          '<div class="month-detail__tagline">' + m.tagline + '</div>' +
-          '<p class="month-detail__bigidea">' + m.bigIdea + '</p>' +
-          (m.note ? '<div class="month-detail__note">' + m.note + '</div>' : '') +
-        '</div>' +
-        '<div class="month-detail__scripture">📖 ' + m.scripture + '</div>' +
-      '</div>' +
-      '<div class="week-grid">' + m.weeks.map(weekCard).join('') + '</div>';
-
+  /* Toggle the active highlight on both the circular journey nodes and the
+     month-card grid — purely visual now that there's no detail panel to
+     expand into. */
+  function setActiveMonth(idx) {
     document.querySelectorAll('.month-card').forEach(function (c, i) {
       c.classList.toggle('is-active', i === idx);
     });
-  }
-
-  function selectMonth(idx, scroll) {
-    renderDetail(idx);
     document.querySelectorAll('.journey-node').forEach(function (n, i) {
       n.classList.toggle('is-active', i === idx);
     });
-    if (scroll) document.getElementById('monthDetail').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   /* Circular "Year Journey" flow chart — 12 nodes evenly spaced around an
-     ellipse (percent-based, so it reflows with any container aspect ratio).
-     Reuses the same YEAR data and selectMonth() as the grid/table below. */
+     ellipse (percent-based, so it reflows with any container aspect ratio). */
   function renderJourney() {
     var wrap = document.getElementById('journeyWrap');
     if (!wrap) return;
@@ -674,8 +612,8 @@
       var angle = (-90 + i * (360 / YEAR.length)) * Math.PI / 180;
       var x = 50 + rx * Math.cos(angle);
       var y = 50 + ry * Math.sin(angle);
-      var media = m.image
-        ? '<img src="' + m.image + '" alt="' + m.series + '" loading="lazy" decoding="async" />'
+      var media = m.cover
+        ? '<img src="' + m.cover + '" alt="' + m.series + '" loading="lazy" decoding="async" />'
         : m.emoji;
       return '' +
         '<div class="journey-node" data-idx="' + i + '" style="left:' + x.toFixed(2) + '%;top:' + y.toFixed(2) + '%;--journey-accent:' + m.grad[0] + ';">' +
@@ -690,20 +628,19 @@
     wrap.insertAdjacentHTML('beforeend', html);
     wrap.insertAdjacentHTML('beforeend', '<div class="journey-start" style="left:50%;top:4%;transform:translate(-105%,0);">Start Here 👉</div>');
     wrap.querySelectorAll('.journey-node').forEach(function (n) {
-      n.addEventListener('click', function () { selectMonth(Number(n.dataset.idx), true); });
+      n.addEventListener('click', function () { setActiveMonth(Number(n.dataset.idx)); });
     });
   }
 
-  document.getElementById('yagTableBody').innerHTML = YEAR.map(function (m) {
-    return '<tr data-idx="' + YEAR.indexOf(m) + '"><td>' + m.month + '</td><td>' + m.series + '</td><td>' + m.focus + '</td></tr>';
-  }).join('');
-
   document.getElementById('monthGrid').innerHTML = YEAR.map(function (m, i) {
+    var head = m.cover
+      ? '<img src="' + m.cover + '" alt="' + m.series + ' cover art" loading="lazy" decoding="async" onerror="this.parentElement.style.background=\'linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ')\';this.remove();" />'
+      : m.emoji;
     return '' +
       '<div class="month-card" data-idx="' + i + '">' +
-        '<div class="month-card__head" style="background:linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ');">' +
+        '<div class="month-card__head"' + (m.cover ? '' : ' style="background:linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ');"') + '>' +
           '<span class="month-card__num">' + (i + 1) + ' / 12</span>' +
-          m.emoji +
+          head +
         '</div>' +
         '<div class="month-card__body">' +
           '<div class="month-card__month">' + m.month + '</div>' +
@@ -713,12 +650,12 @@
       '</div>';
   }).join('');
 
-  document.querySelectorAll('.month-card, #yagTableBody tr').forEach(function (el) {
-    el.addEventListener('click', function () { selectMonth(Number(el.dataset.idx), true); });
+  document.querySelectorAll('.month-card').forEach(function (el) {
+    el.addEventListener('click', function () { setActiveMonth(Number(el.dataset.idx)); });
   });
 
   renderJourney();
-  selectMonth(0, false);
+  setActiveMonth(0);
 })();
 </script>
 
@@ -732,7 +669,7 @@
       <div class="step reveal reveal-delay-1">
         <div class="step__num">1</div>
         <div class="step__title">Join Membership</div>
-        <div class="step__desc">Join the Glory Kids Membership waitlist. Membership opens September 15, 2026, with instant access to every series and lesson.</div>
+        <div class="step__desc">Join Glory Kids Membership today for instant access to every series and lesson.</div>
       </div>
       <div class="step reveal reveal-delay-2">
         <div class="step__num">2</div>
@@ -781,20 +718,22 @@
   </div>
 </section>
 
-<!-- FINAL CTA -->
+<!-- FINAL CTA — hidden for now (off-brand purple/orange), will be rebuilt properly later.
 <section style="padding:4rem 0;">
   <div class="container">
     <div class="cta-banner reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary),#66249A);">
       <h2 style="color:white;">Get the Full 12-Month Journey</h2>
       <p>Join today and get instant access to every series, lesson, activity, and resource we've ever created — plus new content added every week.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join the Waitlist →</a>
+        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Membership →</a>
         <a href="free-lessons.html" class="btn btn--outline-white">Try Free Lessons First</a>
       </div>
       <p style="margin-top:1.5rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">14-day money-back guarantee · Cancel anytime</p>
     </div>
   </div>
 </section>
+-->
+
 
 <footer class="gk-footer">
   <div class="container">
@@ -847,6 +786,8 @@
       <div class="gk-footer__legal">
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms-of-use.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
+        <a href="delivery-policy.html">Delivery Policy</a>
         <a href="contact.html">Contact</a>
       </div>
     </div>

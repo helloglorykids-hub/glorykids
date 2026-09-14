@@ -341,6 +341,21 @@
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
 
+  // Anonymous, cookie-free per-browser ID (localStorage only) so the admin
+  // Analytics tab can show unique visitors/day, not just raw pageviews.
+  // Shared key name with site-settings.js's getVisitorId() — either code
+  // path may run first depending on script load order, so both must agree.
+  function getVisitorId() {
+    try {
+      let id = localStorage.getItem('gk_vid');
+      if (!id) {
+        id = 'v_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem('gk_vid', id);
+      }
+      return id;
+    } catch (e) { return null; }
+  }
+
   // Fire-and-forget pageview counter. Safe for signed-out visitors.
   async function bumpAnalytics(path, referrerHost) {
     try {
@@ -351,7 +366,14 @@
       const patch = { views: inc, updatedAt: Date.now(), byPath: { [pathKey]: inc } };
       const refHost = referrerHost && analyticsKey(referrerHost);
       if (refHost && refHost !== analyticsKey(location.host)) patch.byReferrerHost = { [refHost]: inc };
-      await analyticsCol().doc(todayStamp()).set(patch, { merge: true });
+      const dayDoc = analyticsCol().doc(todayStamp());
+      await dayDoc.set(patch, { merge: true });
+      // One doc per visitor per day (set, not increment) — repeat views from
+      // the same browser/day just overwrite the same doc, so counting docs
+      // in this subcollection (see getAnalyticsRange) gives a true daily-
+      // unique count instead of a raw pageview count.
+      const vid = getVisitorId();
+      if (vid) await dayDoc.collection('visitors').doc(vid).set({ ts: Date.now() }, { merge: true });
     } catch (e) { /* analytics is best-effort */ }
   }
 
@@ -361,16 +383,27 @@
     for (let i = n - 1; i >= 0; i--) {
       out.push(todayStamp(new Date(Date.now() - i * 86400000)));
     }
-    const snaps = await Promise.all(out.map(d => analyticsCol().doc(d).get()));
+    const [snaps, visitorCounts] = await Promise.all([
+      Promise.all(out.map(d => analyticsCol().doc(d).get())),
+      Promise.all(out.map(d =>
+        analyticsCol().doc(d).collection('visitors').count().get()
+          .then(s => s.data().count).catch(() => 0)
+      ))
+    ]);
     const daily = snaps.map((s, i) => ({
       date: out[i],
       views: s.exists ? (s.data().views || 0) : 0,
+      visitors: visitorCounts[i],
       byPath: s.exists ? (s.data().byPath || {}) : {},
       byReferrerHost: s.exists ? (s.data().byReferrerHost || {}) : {}
     }));
-    const totals = { views: 0, byPath: {}, byReferrerHost: {} };
+    // Sums each day's unique-visitor count — accurate per day (what the
+    // chart shows), but a visitor active on multiple days within the range
+    // is counted once per day, not deduped across the whole range.
+    const totals = { views: 0, visitors: 0, byPath: {}, byReferrerHost: {} };
     daily.forEach(d => {
       totals.views += d.views;
+      totals.visitors += d.visitors;
       Object.entries(d.byPath).forEach(([k, v]) => totals.byPath[k] = (totals.byPath[k] || 0) + v);
       Object.entries(d.byReferrerHost).forEach(([k, v]) => totals.byReferrerHost[k] = (totals.byReferrerHost[k] || 0) + v);
     });

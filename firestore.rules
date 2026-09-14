@@ -78,6 +78,17 @@ service cloud.firestore {
       allow read: if isAdmin();
       allow create, update: if true;
       allow delete: if false;
+
+      // One doc per visitor per day (anonymous localStorage ID) — lets the
+      // admin Analytics tab do a count() aggregate for true daily-unique
+      // visitors instead of raw pageviews. Same public-write / admin-read
+      // shape as the parent doc; a count() query doesn't need doc content,
+      // so it works under "read: admin only" like the parent.
+      match /visitors/{visitorId} {
+        allow read: if isAdmin();
+        allow create, update: if true;
+        allow delete: if false;
+      }
     }
 
     // Per-lesson interaction counters, written ONLY by the /api/lesson-hit

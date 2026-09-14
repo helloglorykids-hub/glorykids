@@ -34,10 +34,6 @@
       answer: "If something doesn't look right with a charge, we're happy to help — please use the \"Talk to a live agent\" option below and our team will sort it out within 24 hours."
     },
     {
-      keywords: ['activity', 'activities', 'craft', 'coloring', 'printable', 'worksheet'],
-      answer: "You'll find printable crafts, coloring pages, and games on our <a href=\"activities.html\">Activities & Resources</a> page — many are free, with the full, growing library available to Glory Kids members."
-    },
-    {
       keywords: ['blog', 'article', 'articles', 'tips'],
       answer: "Our <a href=\"blog.html\">Blog</a> has articles for parents, pastors, and kidmin leaders — practical tips on everything from prayer to volunteer recruitment."
     },

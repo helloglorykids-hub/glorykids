@@ -12,6 +12,7 @@ const { db, FieldValue } = require('./_lib/firebase');
 const { verifyItnSignature, serverValidate } = require('./_lib/payfast');
 const { sign } = require('./_lib/tokens');
 const { parseBody } = require('./_lib/http');
+const { notifyAdmin } = require('./_lib/notify');
 
 const ok = { statusCode: 200, body: 'OK' };
 const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
@@ -85,6 +86,11 @@ exports.handler = async (event) => {
     orderId,
     date: Date.now()
   }).catch(e => console.error('payment log failed', e));
+
+  notifyAdmin(
+    `🛒 New order — R${gross.toFixed(2)}`,
+    `New shop order paid.\n\nBuyer: ${order.buyerEmail}\nItems: ${(order.items || []).map(i => i.title).join(', ')}\nAmount: R${gross.toFixed(2)}\nOrder ID: ${orderId}`
+  ).catch(() => {});
 
   // Bump discount usage
   if (order.discountCode) {
@@ -217,6 +223,13 @@ async function handleMembership(form) {
 
   // MailerLite — welcome on the first payment, otherwise just keep them synced.
   mlEvent(firstPayment ? 'membership-welcome' : 'purchase', sub).catch(() => {});
+
+  if (firstPayment) {
+    notifyAdmin(
+      `🎉 New Glory Kids member — ${sub.email}`,
+      `A new member just signed up and paid!\n\nEmail: ${sub.email}\nPlan: ${sub.planKey || 'monthly'}${sub.orgName ? '\nOrg: ' + sub.orgName : ''}\nAmount: R${gross.toFixed(2)}\n\nCheck the admin dashboard for details.`
+    ).catch(() => {});
+  }
 
   return ok;
 }

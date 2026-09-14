@@ -313,6 +313,21 @@
   }
 
   /* ---------- feature: pageview counter ---------- */
+  // Anonymous, cookie-free per-browser ID (localStorage only) so the admin
+  // Analytics tab can show unique visitors/day, not just raw pageviews.
+  // Shared key name with admin-data.js's getVisitorId() — either code path
+  // may run first depending on script load order, so both must agree.
+  function getVisitorId() {
+    try {
+      var id = localStorage.getItem('gk_vid');
+      if (!id) {
+        id = 'v_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem('gk_vid', id);
+      }
+      return id;
+    } catch (e) { return null; }
+  }
+
   function recordView() {
     var refHost = '';
     try { refHost = document.referrer ? new URL(document.referrer).host : ''; } catch (e) {}
@@ -333,11 +348,22 @@
         transforms.push({ fieldPath: '`byReferrerHost`.`' + rk + '`', increment: { integerValue: '1' } });
       }
     }
-    var body = { writes: [{
+    var writes = [{
       update: { name: docName, fields: { updatedAt: { integerValue: String(Date.now()) } } },
       updateMask: { fieldPaths: ['updatedAt'] },
       updateTransforms: transforms
-    }] };
+    }];
+    // One doc per visitor per day (set, not increment) — repeat views from
+    // the same browser/day just overwrite the same doc, so counting docs in
+    // this subcollection gives a true daily-unique count.
+    var vid = getVisitorId();
+    if (vid) {
+      writes.push({
+        update: { name: docName + '/visitors/' + vid, fields: { ts: { integerValue: String(Date.now()) } } },
+        updateMask: { fieldPaths: ['ts'] }
+      });
+    }
+    var body = { writes: writes };
     fetch('https://firestore.googleapis.com/v1/projects/' + PROJECT +
           '/databases/(default)/documents:commit?key=' + API_KEY, {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)

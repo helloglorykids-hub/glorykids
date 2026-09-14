@@ -45,9 +45,9 @@ var GK_MAIN_PLANS = [
       'Member-only resources',
       'Cancel anytime'
     ],
-    ctaText: 'Join the Waitlist',
+    ctaText: 'Join Membership',
     ctaHref: 'glory-kids-membership.html',
-    note: 'Launching September 15, 2026. 14-day money-back guarantee. No questions asked.'
+    note: '14-day money-back guarantee. No questions asked.'
   },
   {
     id: 'church',
@@ -67,7 +67,7 @@ var GK_MAIN_PLANS = [
     ],
     ctaText: 'View Church Plans',
     ctaHref: 'church-pricing.html',
-    note: 'Launching September 15, 2026. Flexible options for ministries of different sizes.'
+    note: 'Flexible options for ministries of different sizes.'
   }
 ];
 

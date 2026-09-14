@@ -890,7 +890,7 @@ p  { font-size: 1.05rem; line-height: 1.75; font-weight: 400; }
 /* ─── SECTIONS ───────────────────────────────────────────────── */
 section { padding: 5rem 0; }
 .section--gray   { background: var(--gray-50); }
-.section--light  { background: var(--primary-lighter); }
+.section--light  { background: var(--color-card); }
 .section--navy   { background: var(--navy); }
 .section--purple { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); }
 

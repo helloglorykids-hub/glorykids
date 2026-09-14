@@ -416,7 +416,8 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
    for their subtree so .gk-light-section's inversion above doesn't
    also flip their text to dark-on-dark. */
 .gk-light-section .gk-pricing3__card, .gk-light-section .gk-pricing2,
-.gk-light-section .pack-card, .gk-light-section .product-card,
+.gk-light-section .pack-card, .gk-light-section .pack-card-full,
+.gk-light-section .product-card,
 .gk-light-section .included-card, .gk-light-section .lesson-card,
 .gk-light-section .blog-card, .gk-light-section .top10__card,
 .gk-light-section .pillar-card, .gk-light-section .activity-card,
