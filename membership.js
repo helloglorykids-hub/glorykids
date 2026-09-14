@@ -21,7 +21,7 @@
 (function () {
   'use strict';
 
-  var MEMBERSHIP_LIVE = false;
+  var MEMBERSHIP_LIVE = true;
   var forceCheckout = /[?&]checkout=1\b/.test(location.search);
   var LIVE = MEMBERSHIP_LIVE || forceCheckout;
 
