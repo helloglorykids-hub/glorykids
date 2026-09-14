@@ -25,10 +25,14 @@
          color matching the wave divider below — the angled linear-
          gradient above varies its edge color with the box's aspect
          ratio, so it can't reliably match a flat wave-fill color on
-         its own at every viewport width. */
-      background: radial-gradient(ellipse at 80% 20%, rgba(255,176,0,0.12), transparent 55%),
-                  radial-gradient(ellipse at 10% 80%, rgba(255,75,50,0.08), transparent 50%),
-                  linear-gradient(to bottom, transparent 85%, var(--primary, #FF4B32) 100%);
+         its own at every viewport width. This layer must be painted
+         FIRST (multiple CSS backgrounds paint top-listed on top) so its
+         opaque flat band fully covers the radial glows below it —
+         otherwise their falloff still shows through the "flat" band,
+         breaking the match with the wave SVG's single solid fill. */
+      background: linear-gradient(to bottom, transparent 85%, var(--primary, #FF4B32) 100%),
+                  radial-gradient(ellipse at 80% 20%, rgba(255,176,0,0.12), transparent 55%),
+                  radial-gradient(ellipse at 10% 80%, rgba(255,75,50,0.08), transparent 50%);
     }
     .post-hero__inner {
       position: relative; z-index: 1;

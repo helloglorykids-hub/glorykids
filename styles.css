@@ -1593,9 +1593,14 @@ section { padding: 5rem 0; }
      independent color (matching the wave-divider fill sections use right
      below the hero) — the radial gradient underneath varies its edge
      color by viewport width, so a flat wave-fill color only matched it
-     by accident at some widths and showed a seam at others. */
-  background: radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.5) 100%),
-              linear-gradient(to bottom, transparent 82%, #101114 100%);
+     by accident at some widths and showed a seam at others. This layer
+     must be painted FIRST (multiple CSS backgrounds paint top-listed on
+     top) so its opaque flat band fully covers the vignette below it —
+     otherwise the vignette's radial falloff still shows through the
+     "flat" band, making it non-uniform and visibly different from the
+     wave SVG's single solid fill. */
+  background: linear-gradient(to bottom, transparent 82%, #101114 100%),
+              radial-gradient(ellipse at center, transparent 42%, rgba(0,0,0,0.5) 100%);
 }
 
 /* FX layer — floating orbs + sparkles (markup: .page-hero__fx) */
