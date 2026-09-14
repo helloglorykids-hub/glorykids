@@ -14,8 +14,8 @@
   /* ── Knowledge base ───────────────────────────────────────── */
   const KB = [
     {
-      keywords: ['free', 'lesson', 'lessons', 'trial'],
-      answer: "Enter your email on the <a href=\"free-lessons.html\">Free Lessons</a> page and we'll send you 10 complete, ready-to-teach Bible lessons — free, no credit card."
+      keywords: ['free', 'lesson', 'lessons', 'trial', '10 lessons'],
+      answer: "Create a <a href=\"signup.html\">free account</a> and we'll send you all 10 complete, ready-to-teach Bible lessons, free, no credit card — plus they're saved to your dashboard so you can always come back to them."
     },
     {
       keywords: ['curriculum', 'pack', 'packs', 'series'],
@@ -23,57 +23,178 @@
     },
     {
       keywords: ['price', 'pricing', 'cost', 'how much', 'membership', 'glory kids', 'subscription'],
-      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-membership.html\">Membership page</a>."
+      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> (or $249/year) and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-membership.html\">Membership page</a>."
+    },
+    {
+      keywords: ['church pricing', 'church plan', 'multi campus', 'multi-campus', 'nonprofit pricing', 'church license', 'kidmin team', 'church discount', 'group discount'],
+      answer: "We have licensing plans built for whole church teams, not just individuals — see <a href=\"church-pricing.html\">Church Pricing</a> for Small Church and Growing Church plans. We also offer multi-campus and nonprofit/ministry pricing on request — just <a href=\"contact.html\">contact our team</a>."
     },
     {
       keywords: ['cancel', 'pause', 'downgrade', 'unsubscribe'],
-      answer: "You can pause or cancel your Glory Kids membership any time from your <a href=\"dashboard.html\">Dashboard → Profile</a>, or just ask here and I can connect you with our team to handle it for you — no long-term contracts, ever."
+      answer: "You can pause or cancel your Glory Kids membership any time from your <a href=\"dashboard.html\">Dashboard → Membership</a> tab, or just ask here and I can connect you with our team to handle it for you — no long-term contracts, ever."
     },
     {
-      keywords: ['refund', 'money back', 'charge', 'billing'],
-      answer: "If something doesn't look right with a charge, we're happy to help — please use the \"Talk to a live agent\" option below and our team will sort it out within 24 hours."
+      keywords: ['refund', 'money back', 'guarantee'],
+      answer: "New memberships come with a 14-day money-back guarantee on your first payment. One-time digital downloads and curriculum packs are non-refundable once accessed. Full details are on our <a href=\"refund-policy.html\">Refund Policy</a> page, or use \"Talk to a live agent\" below and our team will sort it out."
+    },
+    {
+      keywords: ['charge', 'billing', 'payment', 'invoice', 'receipt', 'double charged', 'wrong amount'],
+      answer: "If something doesn't look right with a charge, we're happy to help — please use the \"Talk to a live agent\" option below and our team will sort it out within 24 hours. You can also see your billing history in your <a href=\"dashboard.html\">Dashboard → Membership</a> tab."
+    },
+    {
+      keywords: ['delivery', 'shipping', 'when will i receive', 'digital delivery'],
+      answer: "Digital products (lessons, curriculum packs) are available instantly after purchase — no shipping wait. See our <a href=\"delivery-policy.html\">Delivery Policy</a> for full details."
     },
     {
       keywords: ['blog', 'article', 'articles', 'tips'],
       answer: "Our <a href=\"blog.html\">Blog</a> has articles for parents, pastors, and kidmin leaders — practical tips on everything from prayer to volunteer recruitment."
     },
     {
-      keywords: ['shop', 'store', 'buy', 'merch', 'product'],
+      keywords: ['shop', 'store', 'buy', 'merch', 'product', 'physical'],
       answer: "Check out our <a href=\"shop.html\">Shop</a> for printed curriculum, books, and ministry resources you can purchase directly."
     },
     {
-      keywords: ['account', 'login', 'log in', 'sign in', 'password', 'signup', 'sign up', 'register'],
+      keywords: ['account', 'login', 'log in', 'sign in', 'password', 'signup', 'sign up', 'register', 'forgot password'],
       answer: "You can create a free account on our <a href=\"signup.html\">Sign Up</a> page, or sign in at <a href=\"login.html\">Login</a>. Forgot your password? Use the <a href=\"forgot-password.html\">reset link</a> there."
     },
     {
       keywords: ['age', 'ages', 'grade', 'toddler', 'kids', 'children', 'age group'],
-      answer: "Our lessons and curriculum are designed for kids roughly ages 4–12, with most series noting a specific age range so you can pick what fits your group."
+      answer: "Our lessons and curriculum are designed for kids roughly ages 3–12, with most series noting a specific age range so you can pick what fits your group."
     },
     {
       keywords: ['church', 'volunteer', 'kidmin', 'sunday school', 'vbs'],
-      answer: "We're built for churches and kidmin teams — many of our curriculum packs are VBS- and Sunday-school-ready, and our blog has articles specifically on recruiting and equipping volunteers."
+      answer: "We're built for churches and kidmin teams — many of our curriculum packs are Sunday-school-ready, and our blog has articles specifically on recruiting and equipping volunteers. Running a whole team? See <a href=\"church-pricing.html\">Church Pricing</a>."
     },
     {
-      keywords: ['contact', 'support', 'help', 'reach', 'email', 'phone'],
+      keywords: ['compare', 'comparison', 'versus', ' vs ', 'orange curriculum', 'rightnow media', 'go curriculum'],
+      answer: "See our full <a href=\"comparison.html\">Comparison page</a> for how Glory Kids stacks up against Orange, RightNow Media, and GO Curriculum on price, content, and free access."
+    },
+    {
+      keywords: ['contact', 'support', 'help', 'reach', 'phone number'],
       answer: "You can reach our team any time at <a href=\"mailto:" + SUPPORT_EMAIL + "\">" + SUPPORT_EMAIL + "</a>, through our <a href=\"contact.html\">Contact page</a>, or just leave a message right here and we'll get back to you within 24 hours."
     },
     {
-      keywords: ['delete', 'remove account', 'privacy', 'data'],
-      answer: "You can delete your account any time from your <a href=\"dashboard.html\">Dashboard → Profile → Danger Zone</a>. This permanently removes your data. Need help with anything privacy-related? Let us know below."
+      keywords: ['delete', 'remove account', 'privacy', 'data', 'gdpr', 'popia'],
+      answer: "You can delete your account any time from your <a href=\"dashboard.html\">Dashboard → Profile → Danger Zone</a>. This permanently removes your data. See our <a href=\"privacy-policy.html\">Privacy Policy</a> for more, or let us know below if you need help."
+    },
+    {
+      keywords: ['terms', 'terms of use', 'terms of service', 'legal'],
+      answer: "You can read our full <a href=\"terms-of-use.html\">Terms of Use</a> any time — it's also linked in the footer of every page."
+    },
+    {
+      keywords: ['faq', 'frequently asked', 'questions'],
+      answer: "Our <a href=\"faq/index.html\">FAQ page</a> covers everything from free lessons and pricing to file formats and lesson structure — worth a look before reaching out!"
+    },
+    /* ── Member Portfolio / Dashboard navigation ─────────────────── */
+    {
+      keywords: ['dashboard', 'portfolio', 'my portfolio', 'member portfolio', 'my account page', 'my library'],
+      answer: "Your <a href=\"dashboard.html\">Dashboard</a> (your \"member portfolio\") is where everything lives once you're signed in. The left-hand menu has: <strong>Dashboard</strong> (overview), <strong>My Lessons</strong>, <strong>Curriculum</strong>, <strong>Activities</strong>, <strong>Saved</strong>, <strong>My Purchases</strong>, <strong>Profile</strong>, and <strong>Membership</strong>. Ask me about any of those and I'll point you to the right one!"
+    },
+    {
+      keywords: ['where are my lessons', 'find my lessons', 'my lessons tab', 'downloaded lessons', 'where do i download'],
+      answer: "Go to <a href=\"dashboard.html#lessons\">Dashboard → My Lessons</a> — that's where your 10 free lessons (and any others you've unlocked) live, with download links for each."
+    },
+    {
+      keywords: ['where is curriculum', 'my curriculum', 'curriculum tab', 'monthly series'],
+      answer: "Your monthly curriculum series are under <a href=\"dashboard.html#curriculum\">Dashboard → Curriculum</a> — available in full to active Glory Kids members."
+    },
+    {
+      keywords: ['saved', 'favourites', 'favorites', 'bookmarks', 'wishlist'],
+      answer: "Anything you've bookmarked while browsing shows up under <a href=\"dashboard.html#saved\">Dashboard → Saved</a>."
+    },
+    {
+      keywords: ['my purchases', 'order history', 'past orders', 'what did i buy', 'my orders'],
+      answer: "Your order history for anything bought from the Shop is under <a href=\"dashboard.html#purchases\">Dashboard → My Purchases</a>."
+    },
+    {
+      keywords: ['profile', 'my details', 'change name', 'change email', 'update profile'],
+      answer: "You can update your name, email, and account details under <a href=\"dashboard.html#profile\">Dashboard → Profile</a> — that's also where account deletion lives, under Danger Zone."
+    },
+    {
+      keywords: ['manage membership', 'my membership', 'membership tab', 'billing history'],
+      answer: "Your plan, billing history, and cancel/pause options are all under <a href=\"dashboard.html#membership\">Dashboard → Membership</a>."
+    },
+    {
+      keywords: ['find a lesson', 'search lesson', 'looking for a lesson', 'do you have a lesson on', 'lesson about', 'lesson on'],
+      answer: "Tell me the Bible story, character, or topic you're after and I'll search our lesson library for you — or browse everything yourself on the <a href=\"free-lessons.html\">Free Lessons</a> page."
     }
   ];
 
   const ESCALATE_KEYWORDS = ['agent', 'human', 'person', 'someone', 'representative', 'talk to you', 'jandre', 'real person', 'live chat', 'speak to'];
 
-  function findAnswer(text) {
+  // Scores an entry by its matched keywords, weighting multi-word phrases
+  // higher (they're more specific) and de-duping overlaps like 'lesson' vs
+  // 'lessons' so a plural doesn't silently count twice for the same idea.
+  function bestKbMatch(text) {
     const t = text.toLowerCase();
-    if (ESCALATE_KEYWORDS.some(k => t.includes(k))) return null;
     let best = null, bestScore = 0;
     KB.forEach(entry => {
-      const score = entry.keywords.reduce((s, k) => s + (t.includes(k) ? 1 : 0), 0);
-      if (score > bestScore) { bestScore = score; best = entry; }
+      let matched = [];
+      entry.keywords.forEach(k => {
+        if (!t.includes(k)) return;
+        if (matched.some(m => m.indexOf(k) !== -1)) return; // subsumed by an already-matched keyword
+        matched = matched.filter(m => k.indexOf(m) === -1); // this one subsumes a shorter match
+        matched.push(k);
+      });
+      const score = matched.reduce((s, k) => s + k.trim().split(/\s+/).length, 0);
+      if (score >= bestScore && score > 0) { bestScore = score; best = entry; }
     });
-    return bestScore > 0 ? best.answer : undefined; // undefined = no match, null = explicit escalate
+    return { entry: best, score: bestScore };
+  }
+
+  /* ── Live site search — searches every published lesson/blog post ──
+     Used as a fallback when nothing in the static KB matches, so a
+     question like "do you have a lesson on Noah's Ark?" finds the real
+     post instead of going straight to "talk to a live agent". */
+  const STOPWORDS = [
+    'the', 'a', 'an', 'is', 'are', 'do', 'you', 'have', 'has', 'for', 'on', 'about', 'any',
+    'lesson', 'lessons', 'bible', 'story', 'kids', 'child', 'children', 'and', 'with', 'that',
+    'this', 'can', 'find', 'looking', 'search', 'where', 'get', 'got', 'want', 'need', 'know',
+    'tell', 'let', 'let\'s', 'how', 'what', 'why', 'when', 'who', 'will', 'would', 'could',
+    'should', 'please', 'thanks', 'thank', 'your', 'yours', 'from', 'into', 'out', 'not', 'just',
+    'like', 'some', 'all', 'one', 'our', 'ours', 'her', 'his', 'its', 'their', 'them', 'there',
+    'here', 'give', 'giving', 'make', 'made', 'does', 'did', 'be', 'was', 'were', 'been', 'being'
+  ];
+  const BLOG_CATEGORIES = ['parents', 'pastors', 'kidmin'];
+  let postsCache = null;
+
+  function postUrl(post) {
+    const slug = encodeURIComponent(post.slug);
+    if (post.category === 'free_lessons') return 'free-bible-lessons/' + slug;
+    const cat = BLOG_CATEGORIES.indexOf(post.category) !== -1 ? post.category : 'parents';
+    return 'blog/' + cat + '/' + slug;
+  }
+
+  async function loadPostsCache() {
+    if (postsCache) return postsCache;
+    if (typeof GK === 'undefined' || !GK.listPublishedPosts) return [];
+    try {
+      postsCache = await GK.listPublishedPosts();
+    } catch (e) {
+      postsCache = [];
+    }
+    return postsCache;
+  }
+
+  // Returns { posts: [...], topScore } — topScore lets the caller weigh a
+  // strong content match (e.g. "Noah's Ark") against a generic KB answer.
+  async function searchSite(text) {
+    const words = text.toLowerCase()
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(w => w.length > 2 && STOPWORDS.indexOf(w) === -1);
+    if (!words.length) return { posts: [], topScore: 0 };
+    const posts = await loadPostsCache();
+    const scored = posts.map(function (p) {
+      const hay = [p.title, p.excerpt, p.scripture, (p.tags || []).join(' ')].join(' ').toLowerCase();
+      const score = words.reduce(function (s, w) { return s + (hay.indexOf(w) !== -1 ? 1 : 0); }, 0);
+      return { post: p, score: score };
+    }).filter(function (x) { return x.score > 0; })
+      .sort(function (a, b) { return b.score - a.score; });
+    return {
+      posts: scored.slice(0, 4).map(function (x) { return x.post; }),
+      topScore: scored.length ? scored[0].score : 0
+    };
   }
 
   /* ── Persisted history ────────────────────────────────────── */
@@ -165,11 +286,11 @@
   /* ── Markup ───────────────────────────────────────────────── */
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `
-    <button id="gk-chat-btn" aria-label="Chat with us">💬<span class="gk-chat-badge" id="gk-chat-badge">1</span></button>
+    <button id="gk-chat-btn" aria-label="Ask Glory Kids">💬<span class="gk-chat-badge" id="gk-chat-badge">1</span></button>
     <div id="gk-chat-panel">
       <div class="gk-chat-header">
         <div>
-          <div class="gk-chat-header__title">✝️ Ministry Support</div>
+          <div class="gk-chat-header__title">Ask Glory Kids 👋</div>
           <div class="gk-chat-header__sub">Ask a question or talk to a live agent</div>
         </div>
         <button class="gk-chat-header__close" id="gk-chat-close">✕</button>
@@ -276,15 +397,30 @@
 
   function respondTo(text) {
     addMessage('user', escapeHtml(text));
-    showTyping(() => {
-      const answer = findAnswer(text);
-      if (answer === undefined) {
-        offerEscalation("I couldn't quite find an answer to that in what I know. Want to reach a real person?");
-      } else if (answer === null) {
-        offerEscalation("Sure thing — here's the fastest way to reach our team:");
-      } else {
-        addMessage('bot', answer);
-      }
+    const t = text.toLowerCase();
+    if (ESCALATE_KEYWORDS.some(k => t.includes(k))) {
+      showTyping(function () { offerEscalation("Sure thing — here's the fastest way to reach our team:"); });
+      return;
+    }
+    const kb = bestKbMatch(text);
+    showTyping(function () {
+      searchSite(text).then(function (result) {
+        // A strong, specific content match (e.g. "Noah's Ark") should win
+        // over a generic KB answer like the one for the word "lesson".
+        if (result.posts.length && (kb.score === 0 || (result.topScore >= kb.score && result.topScore >= 2))) {
+          const list = result.posts.map(function (p) {
+            return '<li><a href="' + postUrl(p) + '">' + escapeHtml(p.title) + '</a></li>';
+          }).join('');
+          addMessage('bot', "Here's what I found in our library:<ul style=\"margin:0.4rem 0 0;padding-left:1.1rem;\">" + list + "</ul>");
+        } else if (kb.score > 0) {
+          addMessage('bot', kb.entry.answer);
+        } else {
+          offerEscalation("I couldn't quite find an answer to that in what I know. Want to reach a real person?");
+        }
+      }).catch(function () {
+        if (kb.score > 0) addMessage('bot', kb.entry.answer);
+        else offerEscalation("I couldn't quite find an answer to that in what I know. Want to reach a real person?");
+      });
     });
   }
 
@@ -310,10 +446,12 @@
     badge.style.display = 'none';
     if (!greeted) {
       greeted = true;
-      addMessage('bot', "Hi! 👋 I'm the Glory Kids Ministries assistant. Ask me about free lessons, curriculum, membership pricing, or anything else — and if I can't help, I'll connect you straight to our team.", {
+      addMessage('bot', "Hi! 👋 I'm Ask Glory Kids. Ask me about free lessons, curriculum, membership pricing, your dashboard, or anything else — and if I can't help, I'll connect you straight to our team.", {
         chips: [
           { label: '💰 Membership pricing', onClick: () => respondTo('membership pricing') },
           { label: '📖 Free lessons', onClick: () => respondTo('free lessons') },
+          { label: '🧭 My Dashboard', onClick: () => respondTo('how do I navigate my dashboard') },
+          { label: '🔎 Find a lesson', onClick: () => { input.value = ''; input.placeholder = 'e.g. Noah\'s Ark, prayer, forgiveness…'; input.focus(); } },
           { label: '🙋 Talk to a live agent', escalate: true, onClick: () => offerEscalation("Of course! Here's the fastest way to reach our team:") }
         ],
         skipSave: true

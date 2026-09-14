@@ -193,7 +193,7 @@
           </div>
           <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
             <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
               Sign Up Free →
             </a>
@@ -227,7 +227,7 @@
                lessons flagged freeWithAccount — free to any signed-in user) -->
           <div id="signupLockWrap" class="mailerlite-box mailerlite-box--signup" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
             <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
               Sign Up Free →
             </a>
@@ -253,15 +253,18 @@
           <!-- Comments section -->
           <div class="mt-14 pt-10 border-t border-white/10">
             <h3 class="text-white font-bold text-xl mb-5" id="comments">Comments</h3>
-            <form onsubmit="return false;" class="mb-8 space-y-3">
-              <textarea rows="3" placeholder="Share your thoughts..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+            <form id="commentForm" class="mb-8 space-y-3">
+              <input type="text" name="_hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;" />
+              <textarea id="commentMessage" required maxlength="2000" rows="3" placeholder="Share your thoughts..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
               <div class="flex gap-3">
-                <input type="text" placeholder="Name" class="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500" />
-                <input type="email" placeholder="Email (not published)" class="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <input type="text" id="commentName" required maxlength="80" placeholder="Name" class="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+                <input type="email" id="commentEmail" required placeholder="Email (not published)" class="flex-1 px-4 py-2.5 rounded-xl bg-white/5 border border-white/15 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-orange-500" />
               </div>
-              <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm px-6 py-2.5 rounded-xl transition-colors">Post Comment</button>
+              <button type="submit" id="commentSubmitBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-sm px-6 py-2.5 rounded-xl transition-colors">Post Comment</button>
+              <p id="commentStatusMsg" class="text-sm" style="display:none;"></p>
             </form>
-            <p class="text-slate-500 text-sm">No comments yet — be the first to share your thoughts.</p>
+            <div id="commentsList" class="space-y-5"></div>
+            <p id="commentsEmpty" class="text-slate-500 text-sm">No comments yet — be the first to share your thoughts.</p>
           </div>
         </div>
       </div>
@@ -543,6 +546,68 @@
     document.getElementById('postWrap').style.display = 'block';
 
     GK.relatedPosts(post.category, post.id, 3).then(renderRelated);
+    initComments(post);
+  }
+
+  function escapeCommentHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = String(s == null ? '' : s);
+    return d.innerHTML;
+  }
+
+  function renderCommentsList(comments) {
+    const list = document.getElementById('commentsList');
+    const empty = document.getElementById('commentsEmpty');
+    if (!comments.length) { list.innerHTML = ''; empty.style.display = 'block'; return; }
+    empty.style.display = 'none';
+    list.innerHTML = comments.map(c => `
+      <div class="pb-5 border-b border-white/10">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="text-white font-semibold text-sm">${escapeCommentHtml(c.name)}</span>
+          <span class="text-slate-500 text-xs">${new Date(c.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+        </div>
+        <p class="text-slate-300 text-sm whitespace-pre-wrap">${escapeCommentHtml(c.message)}</p>
+      </div>
+    `).join('');
+  }
+
+  function initComments(post) {
+    GK.listApprovedComments(post.slug).then(renderCommentsList).catch(() => {});
+
+    const form = document.getElementById('commentForm');
+    if (form.__wired) return;
+    form.__wired = true;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const hp = form.querySelector('input[name="_hp"]');
+      const statusEl = document.getElementById('commentStatusMsg');
+      const btn = document.getElementById('commentSubmitBtn');
+      const name = document.getElementById('commentName').value.trim();
+      const email = document.getElementById('commentEmail').value.trim();
+      const message = document.getElementById('commentMessage').value.trim();
+      if (hp && hp.value) return; // honeypot — silently ignore
+      if (!name || !email || !message) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Posting…';
+      GK.addComment({ postSlug: post.slug, postId: post.id, postTitle: post.title, name, email, message })
+        .then(function () {
+          form.reset();
+          statusEl.textContent = '✅ Thanks! Your comment is awaiting approval and will appear here once reviewed.';
+          statusEl.style.display = 'block';
+          statusEl.style.color = '#4ade80';
+        })
+        .catch(function () {
+          statusEl.textContent = 'Sorry, something went wrong posting your comment. Please try again.';
+          statusEl.style.display = 'block';
+          statusEl.style.color = '#f87171';
+        })
+        .finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Post Comment';
+        });
+    });
   }
 
   function showNotFound() {
@@ -599,8 +664,11 @@
     contentEl.innerHTML = post.bodyHtml || '';
 
     const isLesson = post.category === 'free_lessons';
-    // Three tiers: isFreeLesson (email only, no account) → isFreeWithAccount
-    // (free, but needs a signed-in account) → isLocked (paid membership only).
+    // Two tiers: isFreeLesson (one of the 10, free with a free account) →
+    // isLocked (everything else, paid Glory Kids Membership only).
+    // freeWithAccount is legacy from the old 3-tier model and should no
+    // longer be set on any post, but the check is left in place as a safety
+    // net in case an old post record still has it.
     const isFreeWithAccount = isLesson && !post.isFreeLesson && !!post.freeWithAccount;
     const isLocked = isLesson && !post.isFreeLesson && !post.freeWithAccount;
 
@@ -638,26 +706,18 @@
       }
     }
 
-    // ── Email opt-in ────────────────────────────────────────────────
-    //  • one of the 10 free lessons  → "get all 10 free lessons" opt-in
-    //    (MailerLite "Free 10 Lessons" group → 10-lesson automation),
-    //    shown both above (#1) and below (#2) the article.
-    //  • a free_lessons post NOT in the 10 → membership waitlist opt-in.
-    //  • any other blog post → membership waitlist opt-in (bottom only).
-    // gk-forms.js wires <form data-gk-form="…"> and handles the
-    // "check your inbox" vs "we already sent it" messaging.
+    // ── Opt-in / CTA boxes ────────────────────────────────────────────
+    //  • one of the 10 free lessons  → "create a free account" CTA (account
+    //    creation fires the MailerLite "Free 10 Lessons" automation — see
+    //    auth.js subscribeFreeLessons() — and unlocks the lesson in their
+    //    dashboard), shown both above (#1) and below (#2) the article.
+    //  • a free_lessons post NOT in the 10 → "Join Membership" CTA.
+    //  • any other blog post → "Join Membership" CTA (bottom only).
     function optinFormHtml(kind) {
       if (kind !== 'free-lessons') {
         return '<a href="/glory-kids-membership.html" class="gk-optin-form__btn" style="display:inline-block;text-decoration:none;">✨ Join Membership →</a>';
       }
-      return (
-        '<form data-gk-form="' + kind + '" class="gk-optin-form">' +
-          '<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
-            'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />' +
-          '<input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />' +
-          '<button type="submit" class="gk-optin-form__btn">Send my 10 lessons</button>' +
-        '</form>'
-      );
+      return '<a href="/signup.html" class="gk-optin-form__btn" style="display:inline-block;text-decoration:none;">✨ Sign Up Free — Get All 10 Lessons →</a>';
     }
     function fillOptinBox(wrap, heading, blurb, kind) {
       wrap.style.display = 'block';
@@ -673,7 +733,8 @@
       var target = wrap.querySelector('[id^="mailerliteEmbedTarget"]');
       if (target) injectHtmlWithScripts(target, optinFormHtml(kind));
 
-      // Point free-lesson opt-ins toward the bigger free-account library too.
+      // Point free-lesson opt-ins toward Glory Kids Membership for everything
+      // beyond the 10 free lessons.
       var note = wrap.querySelector('p.gk-optin-note');
       if (kind === 'free-lessons') {
         if (!note) {
@@ -681,7 +742,7 @@
           note.className = 'gk-optin-note text-slate-400 text-xs mt-3';
           wrap.appendChild(note);
         }
-        note.innerHTML = 'Want more? <a href="/signup.html" class="text-orange-400 font-semibold">Sign up free</a> to unlock all 35 free lessons.';
+        note.innerHTML = 'Want the full, growing library? <a href="/glory-kids-membership.html" class="text-orange-400 font-semibold">See Glory Kids Membership</a>.';
         note.style.display = '';
       } else if (note) {
         note.style.display = 'none';
@@ -702,13 +763,13 @@
       fillOptinBox(
         document.getElementById('mailerliteWrapTop'),
         '📥 Get All 10 Free Lessons',
-        'Enter your email and we’ll send you all 10 free, ready-to-teach Bible lessons — including this one.',
+        'Create a free account and we’ll send you all 10 free, ready-to-teach Bible lessons — including this one — plus save them to your dashboard.',
         'free-lessons'
       );
       fillOptinBox(
         document.getElementById('mailerliteWrap'),
         '📥 Get All 10 Free Lessons',
-        'One email, all 10 lessons. No credit card — just tell us where to send them.',
+        'One free account, all 10 lessons — emailed to you and saved to your dashboard. No credit card required.',
         'free-lessons'
       );
     } else if (isFreeWithAccount) {
@@ -813,7 +874,8 @@
   /* ── Member download pack ─────────────────────────────────────────
      Shows the download box for any lesson that has files attached.
      • active member  → working download links (signed, 10-min)
-     • free lesson, not a member → hidden (the email opt-in covers it)
+     • free lesson, signed in with a free account → working download links
+     • free lesson, not signed in → hidden (the "create a free account" CTA covers it)
      • paid lesson, not a member → "included with membership" + Subscribe */
   function isActiveMember(rec) {
     if (!rec) return false;
@@ -869,8 +931,8 @@
     function decide(user) {
       if (handled) return; handled = true;
       if (!user) { showLocked(); return; }
-      // Signed-in users can always download the 10 free lessons, and any
-      // lesson marked free-with-account (the other 25 of the 35 total).
+      // Signed-in users can always download the 10 free lessons.
+      // freeWithAccount is retired (always false) but kept as a safety net.
       if (post.isFreeLesson || post.freeWithAccount) { showMember(); return; }
       GK.getUserRecord(user.uid).then(function (rec) {
         if (isActiveMember(rec)) showMember(); else showLocked();

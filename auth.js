@@ -176,6 +176,18 @@ async function handleLogin(e) {
   }
 }
 
+/* Fires the same MailerLite "Free 10 Lessons" automation the lesson-page
+   opt-in forms use, so a brand-new free account gets the 10 free lessons
+   emailed to them too (best-effort — never blocks signup). */
+function subscribeFreeLessons(email, name) {
+  if (!email) return;
+  fetch('/api/mailerlite', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'free-lessons', email, name: name || '', source: 'signup' })
+  }).catch(() => {});
+}
+
 /* ─── SIGNUP FORM ────────────────────────────────────────────── */
 async function handleSignup(e) {
   e.preventDefault();
@@ -200,6 +212,7 @@ async function handleSignup(e) {
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({ displayName: name });
     await GK.ensureUserRecord(cred.user, { displayName: name });
+    subscribeFreeLessons(email, name);
     // Trigger state change manually since profile update doesn't fire it
     const params = new URLSearchParams(window.location.search);
     window.location.href = params.get('redirect') || 'dashboard.html';
@@ -216,6 +229,9 @@ async function signInWithGoogle(redirectAfter) {
   try {
     const cred = await auth.signInWithPopup(googleProvider);
     await GK.ensureUserRecord(cred.user);
+    if (cred.additionalUserInfo && cred.additionalUserInfo.isNewUser) {
+      subscribeFreeLessons(cred.user.email, cred.user.displayName);
+    }
     const params = new URLSearchParams(window.location.search);
     window.location.href = redirectAfter || params.get('redirect') || 'dashboard.html';
   } catch (err) {

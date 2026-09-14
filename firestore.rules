@@ -49,6 +49,20 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Blog comments — anyone can submit one (always created unapproved, so
+    // it isn't publicly visible until the admin approves it); anyone can
+    // read comments that are already approved; only the admin can see the
+    // pending queue or approve/reject/delete.
+    match /comments/{id} {
+      allow create: if
+        request.resource.data.approved == false &&
+        request.resource.data.postSlug is string && request.resource.data.postSlug.size() > 0 &&
+        request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80 &&
+        request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 2000;
+      allow read: if resource.data.approved == true || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+
     // ── Site backend (admin panel "Squarespace-style" controls) ──────────
     // Settings that shape every public page. Anyone can read them (the
     // shared site-settings.js applies them at page load); only the admin

@@ -38,12 +38,12 @@
       </a>
 
       <div class="auth-left__content">
-        <div class="auth-left__badge">🎉 Free to join</div>
-        <h1 class="auth-left__title">
+        <div class="auth-left__badge" id="authLeftBadge">🎉 Free to join</div>
+        <h1 class="auth-left__title" id="authLeftTitle">
           Join<br>2,000+<br>
           <span class="auth-left__accent">Ministry Leaders</span>
         </h1>
-        <p class="auth-left__desc">
+        <p class="auth-left__desc" id="authLeftDesc">
           Create your free account to access free lessons, save your favourites, and unlock the Glory Kids library.
         </p>
 
@@ -51,7 +51,7 @@
           <div class="auth-perk">
             <span class="auth-perk__icon">📖</span>
             <div>
-              <strong>35 Free Lessons Instantly</strong>
+              <strong>10 Free Lessons Instantly</strong>
               <span>Downloadable Bible lessons, no credit card needed</span>
             </div>
           </div>
@@ -91,8 +91,8 @@
   <div class="auth-right">
     <div class="auth-right__inner">
       <div class="auth-right__header">
-        <h2 class="auth-form-title">Create your free account</h2>
-        <p class="auth-form-sub">Already have an account? <a href="login.html" class="auth-link">Sign in →</a></p>
+        <h2 class="auth-form-title" id="authFormTitle">Create your free account</h2>
+        <p class="auth-form-sub" id="authFormSub">Already have an account? <a href="login.html" class="auth-link">Sign in →</a></p>
       </div>
 
       <!-- GOOGLE BUTTON -->
@@ -203,5 +203,34 @@
 <script src="site-settings.js" defer></script>
 <script src="auth.js"></script>
 <script src="chatbot.js"></script>
+<script>
+(function () {
+  // Arriving here mid-checkout (sent by membership.js before signing in)?
+  // Say so, instead of showing the generic free-signup pitch — the visitor
+  // is about to pay, not just create a free account.
+  var redirect = new URLSearchParams(location.search).get('redirect') || '';
+  if (!/checkout=1/.test(redirect)) return;
+
+  var PLAN_NAMES = {
+    monthly: 'Glory Kids Monthly Membership',
+    annual: 'Glory Kids Annual Membership',
+    'church-small': 'Small Church plan',
+    'church-growing': 'Growing Church plan'
+  };
+  var m = /[?&]plan=([a-z-]+)/.exec(redirect);
+  var planName = (m && PLAN_NAMES[m[1]]) || 'Glory Kids Membership';
+
+  var badge = document.getElementById('authLeftBadge');
+  if (badge) { badge.textContent = '✨ Almost there'; }
+  var title = document.getElementById('authLeftTitle');
+  if (title) { title.innerHTML = 'Continue to<br><span class="auth-left__accent">' + planName + '</span>'; }
+  var desc = document.getElementById('authLeftDesc');
+  if (desc) { desc.textContent = 'Create your account to continue — you\'ll go straight to secure payment for your ' + planName + ' right after.'; }
+  var formTitle = document.getElementById('authFormTitle');
+  if (formTitle) { formTitle.textContent = 'Create your account to continue'; }
+  var formSub = document.getElementById('authFormSub');
+  if (formSub) { formSub.innerHTML = 'This is the last step before payment. Already have an account? <a href="login.html?redirect=' + encodeURIComponent(redirect) + '" class="auth-link">Sign in →</a>'; }
+})();
+</script>
 </body>
 </html>

@@ -13,6 +13,7 @@
   function postsCol()    { return db.collection('posts'); }
   function paymentsCol() { return db.collection('payments'); }
   function ticketsCol()  { return db.collection('tickets'); }
+  function commentsCol() { return db.collection('comments'); }
   function pagesCol()     { return db.collection('pages'); }
   function redirectsCol() { return db.collection('redirects'); }
   function analyticsCol() { return db.collection('analyticsDaily'); }
@@ -232,6 +233,40 @@
 
   async function deleteTicket(id) {
     await ticketsCol().doc(id).delete();
+  }
+
+  /* ── Blog comments (moderation queue + public read/submit) ────
+     Every comment is created with approved:false so it never shows
+     publicly until an admin approves it (see firestore.rules). */
+  async function listComments() {
+    const snap = await commentsCol().get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
+
+  async function listApprovedComments(postSlug) {
+    const snap = await commentsCol().where('postSlug', '==', postSlug).where('approved', '==', true).get();
+    return snap.docs.map(docToObj).sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  }
+
+  async function addComment({ postSlug, postId, postTitle, name, email, message }) {
+    const rec = {
+      postSlug, postId: postId || '', postTitle: postTitle || '',
+      name: String(name || '').slice(0, 80),
+      email: String(email || '').slice(0, 200),
+      message: String(message || '').slice(0, 2000),
+      approved: false,
+      createdAt: Date.now()
+    };
+    const ref = await commentsCol().add(rec);
+    return { id: ref.id, ...rec };
+  }
+
+  async function approveComment(id) {
+    await commentsCol().doc(id).set({ approved: true }, { merge: true });
+  }
+
+  async function deleteComment(id) {
+    await commentsCol().doc(id).delete();
   }
 
   // Lightweight per-user activity log, stored in localStorage under
@@ -621,6 +656,7 @@
     listPosts, listPublishedPosts, getPost, getPostBySlug, relatedPosts, savePost, deletePost,
     listPayments, addPayment, deletePayment,
     listTickets, addTicket, updateTicket, deleteTicket,
+    listComments, listApprovedComments, addComment, approveComment, deleteComment,
     getAnalytics, slugify, gkLogActivity,
     getSiteConfig, saveSiteConfig,
     listPages, seedPages, savePage, deletePage,
