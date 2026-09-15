@@ -67,7 +67,7 @@ function updateNav(user) {
           </div>
           <div class="nav__user-dropdown-divider"></div>
           <a href="dashboard.html" class="nav__user-dropdown-item">📚 My Dashboard</a>
-          <a href="glory-kids-membership.html" class="nav__user-dropdown-item">✨ Upgrade to Glory Kids</a>
+          <a href="glory-kids-membership.html#pricing" class="nav__user-dropdown-item">✨ Upgrade to Glory Kids</a>
           <a href="free-lessons.html" class="nav__user-dropdown-item">📖 Free Lessons</a>
           <div class="nav__user-dropdown-divider"></div>
           <button class="nav__user-dropdown-item nav__user-dropdown-signout" onclick="signOut()">
@@ -86,7 +86,7 @@ function updateNav(user) {
     actions.innerHTML = `
       <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
       <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-      <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
+      <a href="glory-kids-membership.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
     `;
   }
 }
