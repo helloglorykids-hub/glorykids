@@ -53,6 +53,12 @@ if (nav) {
       }
     }
 
+    // Mirrored on <body> so any page's sticky bars (e.g. shop filter bar) can
+    // offset themselves by the nav's real height only while it's actually
+    // visible, instead of hardcoding a fixed gap that goes stale the moment
+    // the nav slides away on scroll-down.
+    document.body.classList.toggle('nav-hidden', nav.classList.contains('nav--hidden'));
+
     lastScroll = scroll;
   }, { passive: true });
 

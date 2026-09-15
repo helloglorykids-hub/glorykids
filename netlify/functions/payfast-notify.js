@@ -33,13 +33,15 @@ exports.handler = async (event) => {
   if (!form) return fail(null, 'no form body');
 
   const isMembership = form.custom_str2 === 'membership' || form.subscription_type === '1';
+  const isDonation = form.custom_str2 === 'donation';
   const failId = isMembership ? (form.m_payment_id || null) : (form.custom_str1 || form.m_payment_id);
-  const failCollection = isMembership ? 'subscriptions' : 'orders';
+  const failCollection = isMembership ? 'subscriptions' : (isDonation ? 'donations' : 'orders');
 
   if (!verifyItnSignature(pairs, form.signature)) return fail(failId, 'bad signature', null, failCollection);
   if (!(await serverValidate(raw))) return fail(failId, 'server validate != VALID', null, failCollection);
 
   if (isMembership) return handleMembership(form);
+  if (isDonation) return handleDonation(form);
 
   const orderId = form.custom_str1 || form.m_payment_id;
   const ref = db.collection('orders').doc(String(orderId));
@@ -119,6 +121,53 @@ exports.handler = async (event) => {
 
   return ok;
 };
+
+/* ─── One-time donation ITN ─────────────────────────────────────────── */
+async function handleDonation(form) {
+  const donationId = form.custom_str1 || form.m_payment_id;
+  const ref = db.collection('donations').doc(String(donationId));
+  const snap = await ref.get();
+  if (!snap.exists) return fail(donationId, 'donation not found', null, 'donations');
+  const donation = snap.data();
+
+  if (donation.status === 'paid') return ok; // idempotent — PayFast may resend
+
+  if (form.payment_status !== 'COMPLETE') {
+    await ref.set({ status: form.payment_status === 'FAILED' ? 'failed' : donation.status, pfStatus: form.payment_status }, { merge: true });
+    return ok;
+  }
+
+  const gross = Number(form.amount_gross);
+  if (Math.abs(gross - Number(donation.amountZAR)) > 0.01) {
+    return fail(donationId, 'amount mismatch', `itn=${gross} donation=${donation.amountZAR}`, 'donations');
+  }
+
+  await ref.set({
+    status: 'paid',
+    paidAt: Date.now(),
+    pfPaymentId: form.pf_payment_id || '',
+    pfStatus: 'COMPLETE',
+    amountGrossZAR: gross
+  }, { merge: true });
+
+  await db.collection('payments').add({
+    uid: null,
+    email: donation.donorEmail,
+    amount: gross,
+    note: 'Donation' + (donation.donorName ? ' from ' + donation.donorName : ''),
+    status: 'paid',
+    source: 'payfast-donation',
+    donationId,
+    date: Date.now()
+  }).catch(e => console.error('donation payment log failed', e));
+
+  notifyAdmin(
+    `❤️ New donation — R${gross.toFixed(2)}`,
+    `New donation received.\n\nDonor: ${donation.donorName || '(no name given)'}\nEmail: ${donation.donorEmail}\nAmount: R${gross.toFixed(2)}\nDonation ID: ${donationId}`
+  ).catch(() => {});
+
+  return ok;
+}
 
 /* ─── Membership subscription ITN ──────────────────────────────────────
    Fires on the first payment AND on every recurring payment (same

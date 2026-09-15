@@ -47,6 +47,10 @@
   to = "/.netlify/functions/payfast-checkout"
   status = 200
 [[redirects]]
+  from = "/api/payfast-donate"
+  to = "/.netlify/functions/payfast-donate"
+  status = 200
+[[redirects]]
   from = "/api/payfast-notify"
   to = "/.netlify/functions/payfast-notify"
   status = 200

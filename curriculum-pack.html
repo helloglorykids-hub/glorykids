@@ -105,6 +105,7 @@
         </li>
         <li><a href="/faq/index.html" class="nav__link">FAQ</a></li>
         <li><a href="/contact.html" class="nav__link">Contact</a></li>
+        <li><a href="/about.html" class="nav__link">❤️ Donate</a></li>
       </ul>
       <div class="nav__actions">
         <a href="/shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
@@ -128,6 +129,7 @@
   <a href="/blog.html" class="nav__mobile-link">📝 Blog</a>
   <a href="/faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="/contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <a href="/about.html" class="nav__mobile-link">❤️ Donate</a>
   <a href="/shop.html" class="nav__mobile-link">🛒 Shop</a>
   <a href="/login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
@@ -220,7 +222,7 @@
       <div>
         <div class="gk-footer__title">Company</div>
         <ul class="gk-footer__links">
-          <li><a href="/contact.html">About Us</a></li>
+          <li><a href="/about.html">About Us</a></li>
           <li><a href="/faq/index.html">FAQ</a></li>
           <li><a href="/contact.html">Contact</a></li>
           <li><a href="/contact.html">Careers</a></li>
@@ -405,7 +407,7 @@
         var grid = document.getElementById('pd-related-grid');
         grid.innerHTML = related.map(function (r) {
           var rPrice = Number(r.priceUSD != null ? r.priceUSD : r.priceZAR || 0);
-          var cover = (r.images && r.images[0]) ? '<img src="' + r.images[0] + '" alt="" loading="lazy" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;">' : '<div style="aspect-ratio:16/9;background:linear-gradient(140deg,#66249A,#00BFC4);"></div>';
+          var cover = (r.images && r.images[0]) ? '<img src="' + r.images[0] + '" alt="" loading="lazy" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">' : '<div style="aspect-ratio:3/4;background:linear-gradient(140deg,#66249A,#00BFC4);"></div>';
           return '<a href="/pack/' + encodeURIComponent(r.slug) + '" class="pack-card-full" style="text-decoration:none;">' +
             cover +
             '<div style="padding:1rem 1.1rem;">' +

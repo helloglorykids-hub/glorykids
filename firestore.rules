@@ -131,6 +131,12 @@ service cloud.firestore {
         (isSignedIn() && resource.data.uid == request.auth.uid);
       allow write: if isAdmin();
     }
+    // One-time donations — created/fulfilled by payfast-donate.js and
+    // payfast-notify.js via the Admin SDK (bypasses these rules); not tied
+    // to an account, so only the admin can read/manage them.
+    match /donations/{id} {
+      allow read, write: if isAdmin();
+    }
 
     // Membership subscriptions — created/updated only by the Netlify
     // functions (Admin SDK, bypasses rules) and payfast-notify. A signed-in

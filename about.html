@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | Glory Kids Ministries</title>
+  <meta name="description" content="Meet the heart behind Glory Kids Ministries — our mission, values, and what we believe. Support the ministry with a one-time donation." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="auth.css" />
+  <link rel="stylesheet" href="homepage.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .about-values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    @media (max-width: 900px) { .about-values-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .about-values-grid { grid-template-columns: 1fr; } }
+    .about-value-card {
+      background: var(--color-card); border-radius: var(--radius-xl); padding: 1.75rem;
+      border: 1px solid var(--gray-100); box-shadow: var(--shadow-sm);
+    }
+    .about-value-card__title { font-family: var(--font-heading); font-weight: 800; font-size: 1.02rem; color: var(--white); margin-bottom: 0.6rem; }
+    .about-value-card__body { font-size: 0.9rem; color: var(--gray-500); line-height: 1.65; }
+
+    .about-belief { max-width: 780px; margin: 0 auto; }
+    .about-belief p { font-size: 1.02rem; color: var(--gray-500); line-height: 1.85; margin-bottom: 1.25rem; }
+    .about-belief strong { color: var(--white); }
+
+    .donate-card {
+      max-width: 560px; margin: 0 auto; background: var(--color-card);
+      border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-100);
+    }
+    .donate-amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin: 1.25rem 0; }
+    @media (max-width: 480px) { .donate-amounts { grid-template-columns: 1fr 1fr; } }
+    .donate-amount-btn {
+      padding: 0.85rem 0.5rem; border-radius: var(--radius-lg); border: 2px solid var(--gray-200);
+      background: var(--color-card-hover, var(--color-bg)); color: var(--gray-600);
+      font-family: var(--font-heading); font-weight: 800; font-size: 1rem; cursor: pointer;
+      transition: var(--transition);
+    }
+    .donate-amount-btn:hover, .donate-amount-btn.is-selected {
+      border-color: var(--primary); color: var(--primary); background: var(--primary-lighter);
+    }
+    .donate-field { margin-bottom: 1rem; }
+    .donate-field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--gray-400); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .donate-field input {
+      width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-lg);
+      border: 1.5px solid var(--gray-200); font-size: 0.95rem; background: var(--color-bg); color: var(--white);
+    }
+    .donate-status { font-size: 0.85rem; margin-top: 0.75rem; display: none; }
+    .donate-status.is-error { color: var(--rose, #dc2626); display: block; }
+    .donate-status.is-info { color: var(--gray-400); display: block; }
+  </style>
+  <!-- gk:managed:start -->
+  <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
+  <link rel="canonical" href="https://www.glorykidsministry.com/about.html">
+  <meta property="og:title" content="About Us | Glory Kids Ministries">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.glorykidsministry.com/about.html">
+  <meta property="og:description" content="Meet the heart behind Glory Kids Ministries — our mission, values, and what we believe. Support the ministry with a one-time donation.">
+  <meta property="og:site_name" content="Glory Kids Ministries">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:description" content="Meet the heart behind Glory Kids Ministries — our mission, values, and what we believe. Support the ministry with a one-time donation.">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSCHTP0MWY"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FSCHTP0MWY');</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com"}</script>
+  <!-- gk:managed:end -->
+</head>
+<body>
+<div id="page-loader"><div class="loader-content"><div class="loader-logo">🤍 About</div><div class="loader-bar"></div></div></div>
+<div id="progress-bar"></div>
+
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">
+<img class="nav__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="42" height="42" />
+        <span class="nav__logo-text">Glory <span>Kids</span> Ministries</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
+        <li class="nav__dropdown">
+          <a href="curriculum-packs.html" class="nav__link">Curriculum ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
+            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
+            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
+          </div>
+        </li>
+        <li class="nav__dropdown">
+          <a href="blog.html" class="nav__link">Blog ▾</a>
+          <div class="nav__dropdown-menu">
+            <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
+            <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
+            <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
+          </div>
+        </li>
+        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
+        <li><a href="contact.html" class="nav__link">Contact</a></li>
+        <li><a href="about.html" class="nav__link">❤️ Donate</a></li>
+      </ul>
+      <div class="nav__actions">
+        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
+        <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
+        <a href="glory-kids-membership.html" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="nav__mobile">
+  <a href="index.html" class="nav__mobile-link">🏠 Home</a>
+  <a href="free-lessons.html" class="nav__mobile-link">📖 Free Bible Lessons</a>
+  <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
+  <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
+  <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
+  <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
+  <a href="about.html" class="nav__mobile-link">❤️ Donate</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="login.html" class="nav__mobile-link">👤 Login</a>
+  <div class="nav__mobile-cta">
+    <a href="glory-kids-membership.html" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="page-hero page-hero--flanked">
+  <div class="page-hero__fx" aria-hidden="true">
+    <span class="ph-orb ph-orb--a"></span>
+    <span class="ph-orb ph-orb--b"></span>
+    <span class="ph-orb ph-orb--c"></span>
+    <span class="ph-spark" style="top:14%;left:10%;animation-delay:0s">✨</span>
+    <span class="ph-spark" style="top:22%;left:88%;animation-delay:.6s">⭐</span>
+    <span class="ph-spark" style="top:68%;left:6%;animation-delay:1.1s">✨</span>
+    <span class="ph-spark" style="top:78%;left:92%;animation-delay:1.6s">⭐</span>
+    <span class="ph-spark" style="top:8%;left:52%;animation-delay:2s">✨</span>
+  </div>
+  <div class="container">
+    <div class="hero-flank-row">
+      <div class="hero-flank-side hero-flank-side--left" aria-hidden="true">
+        <img class="hero-flank-img hero-flank-img--back" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894735986_featured.jpg?alt=media&token=c2ac3e9a-5118-45dc-be48-6608b0157896" alt="Moses &amp; the Red Sea" loading="lazy" decoding="async">
+        <img class="hero-flank-img hero-flank-img--front" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="Daniel in the Lions' Den" loading="lazy" decoding="async">
+      </div>
+      <div class="hero-flank-text">
+        <h1>About <span style="color:var(--gold);">Glory Kids</span></h1>
+        <p>Raising a generation of children who encounter Jesus, know His Word, and carry His presence into everyday life.</p>
+      </div>
+      <div class="hero-flank-side hero-flank-side--right" aria-hidden="true">
+        <img class="hero-flank-img hero-flank-img--front" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786637416732_featured.jpg?alt=media&token=877e030b-86dc-47fe-ab7d-530202991dfa" alt="The Lord's Prayer, Explained for Kids" loading="lazy" decoding="async">
+        <img class="hero-flank-img hero-flank-img--back" src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894478782_featured.jpg?alt=media&token=31f23597-4ab4-484c-ab00-16f55b3df25a" alt="The Nativity Story" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONAL / BIO -->
+<section class="gk-section--force-dark gk-light-section" style="position:relative;overflow:hidden;">
+  <svg style="position:absolute;left:0;right:0;top:-1px;width:100%;height:56px;z-index:1;pointer-events:none;" viewBox="0 0 1440 72" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 0H1440V33C1245 59 1090 14 760 31 470 46 245 9 0 30Z" fill="#101114"/>
+  </svg>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="gk-personal__grid">
+      <img src="images/jandre-founder.jpeg" alt="Jandré, Founder of Glory Kids Ministries" loading="lazy" decoding="async" class="gk-personal__photo reveal reveal--left" />
+      <div class="reveal reveal--right">
+        <h2 class="gk-h2 gk-h2--left">A Note From Jandré</h2>
+        <p class="gk-personal__sub">Hi, I'm Jandré — a pastor, children's ministry leader, and the heart behind Glory Kids. More than anything, I love Jesus. And everything you'll find here flows from that place.</p>
+        <p class="gk-personal__quote">With more than 12 years leading children's and family ministry, I've seen firsthand what happens when kids don't just learn about Jesus, but actually encounter Him.</p>
+        <p class="gk-personal__quote">I believe the next generation isn't just the future of the Church — they are the Church right now. And they deserve more than surface-level teaching. They deserve to truly encounter Jesus… to know His voice, to love His Word, and to walk daily with the Holy Spirit.</p>
+        <p class="gk-personal__quote">That's why Glory Kids exists.</p>
+        <p class="gk-personal__quote">I create Bible lessons, resources, and curriculums that are not just informative, but transformational — helping kids, families, churches, and schools experience the presence of God in a real and lasting way.</p>
+        <p class="gk-personal__quote">My heart is to equip you — whether you're a parent, teacher, or pastor — with everything you need to disciple children with confidence, depth, and joy. Because when a child encounters Jesus, everything changes.</p>
+        <p class="gk-personal__quote">And when families build their lives on His Word, generations are impacted.</p>
+        <p class="gk-personal__quote">Welcome to Glory Kids. 🤍</p>
+        <div class="gk-personal__author">— Jandré, Founder<br>Glory Kids Ministries</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="gk-section">
+  <div class="container">
+    <div class="about-belief">
+      <div class="section-label reveal" style="text-align:center;">Our Mission</div>
+      <h2 class="gk-h2 reveal" style="text-align:center;">Why Glory Kids Exists</h2>
+      <p class="reveal" style="text-align:center;font-size:1.15rem;font-weight:700;color:var(--white);">Glory Kids Ministries exists to raise a generation of children who encounter Jesus, know His Word, hear His voice, walk in the power of the Holy Spirit, and carry His presence into everyday life.</p>
+      <p class="reveal" style="text-align:center;">We equip churches, leaders, and families with Scripture-centered, Spirit-filled resources that help children not simply learn about God, but genuinely know Him and follow Him.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CORE VALUES -->
+<section class="gk-section gk-section--force-dark">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center;">What Drives Us</div>
+    <h2 class="gk-h2 reveal" style="text-align:center;margin-bottom:2.5rem;">Our Core Values</h2>
+    <div class="about-values-grid">
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">✝️ Jesus at the Center</div>
+        <div class="about-value-card__body">Everything begins and ends with Jesus. Our greatest goal is not simply to raise children who know Bible stories, but children who know, love, and follow Jesus.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">📖 Scripture as Our Foundation</div>
+        <div class="about-value-card__body">We believe the Bible is the inspired Word of God and the foundation for what we teach and how we live. Encounter never replaces Scripture; genuine encounter leads us deeper into God's Word and into obedience to Jesus.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">🔥 Encounter, Not Just Information</div>
+        <div class="about-value-card__body">Children are capable of genuinely knowing and experiencing God. We create space for children to respond to what they are learning through prayer, worship, listening, reflection, and practical activation.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">🕊️ The Presence of God</div>
+        <div class="about-value-card__body">We want children to grow in an everyday awareness of God's presence — not only at church, but at home, at school, with friends, and wherever they go.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">✨ Life With the Holy Spirit</div>
+        <div class="about-value-card__body">We believe the Holy Spirit is active in the lives of children. He reveals Jesus, helps us understand Scripture, transforms us to become more like Christ, gives spiritual gifts, and empowers us to live courageously for God.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">💪 Faith That Becomes Action</div>
+        <div class="about-value-card__body">Following Jesus changes how we live. We encourage children to pray, worship, obey, serve, forgive, show compassion, share their faith, and demonstrate God's love to the people around them.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">👑 Children Can Carry the Kingdom</div>
+        <div class="about-value-card__body">Children are not merely the Church of tomorrow — they are part of the Church today. We believe God can speak to them, work through them, and use their lives to impact their families, schools, communities, and the world.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">🏡 Church and Family Together</div>
+        <div class="about-value-card__body">Discipleship is bigger than a Sunday lesson. We equip children's ministry leaders, churches, and parents to work together in helping children build a lifelong relationship with Jesus.</div>
+      </div>
+      <div class="about-value-card reveal">
+        <div class="about-value-card__title">🎨 Joy, Creativity &amp; Wonder</div>
+        <div class="about-value-card__body">Learning about God should awaken wonder. We use storytelling, creativity, music, play, imagination, conversation, and age-appropriate experiences to help biblical truth become memorable and meaningful.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE BELIEVE -->
+<section class="gk-section">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center;">Statement of Faith</div>
+    <h2 class="gk-h2 reveal" style="text-align:center;margin-bottom:2rem;">What We Believe</h2>
+    <div class="about-belief">
+      <p class="reveal">We believe in <strong>one God — Father, Son, and Holy Spirit — eternally existing as three Persons.</strong></p>
+      <p class="reveal">We believe the <strong>Bible is the inspired and authoritative Word of God</strong>, revealing who God is, His purposes for humanity, and the good news of Jesus Christ.</p>
+      <p class="reveal">We believe <strong>Jesus Christ is the Son of God</strong>, fully God and fully human. He lived a sinless life, died on the cross for our sins, rose bodily from the dead, ascended to the Father, and will come again.</p>
+      <p class="reveal">We believe humanity was created in the image of God but has been separated from Him through sin. <strong>Salvation is God's gift of grace</strong>, received through repentance and faith in Jesus Christ, not something we can earn.</p>
+      <p class="reveal">We believe the <strong>Holy Spirit lives in believers</strong>, revealing Jesus, transforming us into His likeness, helping us understand God's Word, empowering us to live holy and courageous lives, and giving spiritual gifts for the building up of the Church and the advancement of God's Kingdom.</p>
+      <p class="reveal">We believe <strong>God still speaks and works today</strong> in ways that are consistent with Scripture. We believe in prayer, healing, prophecy, spiritual gifts, and the supernatural work of the Holy Spirit, always centered on Jesus and tested according to God's Word.</p>
+      <p class="reveal">We believe <strong>children can genuinely know God and participate in the life of His Kingdom</strong>. They can pray, worship, hear God's voice, respond to the Holy Spirit, serve others, share their faith, and grow as disciples of Jesus.</p>
+      <p class="reveal">We believe in the <strong>Church as the family and people of God</strong>, called to worship Jesus, make disciples, love one another, care for those in need, and carry the gospel to the world.</p>
+      <p class="reveal">We believe Jesus calls us to <strong>love God wholeheartedly and love others</strong>, and that a life transformed by Him should increasingly demonstrate His character, compassion, holiness, justice, generosity, and love.</p>
+      <p class="reveal" style="text-align:center;font-weight:700;color:var(--white);margin-top:2rem;">Above everything, we believe Christianity is not merely about knowing things about God. <strong>We were created to know Him.</strong></p>
+      <p class="reveal" style="text-align:center;">Our desire is to see a generation of children who <strong>encounter Jesus and carry His presence.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE -->
+<section class="gk-section gk-section--force-dark" id="donate">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center;">Support the Ministry</div>
+    <h2 class="gk-h2 reveal" style="text-align:center;">Help Us Reach More Children</h2>
+    <p class="reveal" style="text-align:center;max-width:600px;margin:0 auto 2.5rem;color:var(--gray-500);">Glory Kids is sustained by memberships, sales, and gifts from people like you. Every donation helps us create more free lessons, curriculum, and resources for churches and families around the world.</p>
+
+    <div class="donate-card reveal" id="donateSuccessCard" style="display:none;text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">🙏</div>
+      <h3 style="font-family:var(--font-heading);font-weight:800;color:var(--white);margin-bottom:0.5rem;">Thank You!</h3>
+      <p style="color:var(--gray-500);">Your generosity helps us raise a generation that encounters Jesus. We're so grateful for your support.</p>
+    </div>
+
+    <form class="donate-card reveal" id="donateForm">
+      <div class="donate-amounts" id="donateAmounts">
+        <button type="button" class="donate-amount-btn" data-amount="10">$10</button>
+        <button type="button" class="donate-amount-btn" data-amount="25">$25</button>
+        <button type="button" class="donate-amount-btn is-selected" data-amount="50">$50</button>
+        <button type="button" class="donate-amount-btn" data-amount="100">$100</button>
+      </div>
+      <div class="donate-field">
+        <label for="donate-custom">Or enter a custom amount (USD)</label>
+        <input type="number" id="donate-custom" min="1" max="10000" step="1" placeholder="e.g. 75" />
+      </div>
+      <div class="donate-field">
+        <label for="donate-name">Your name</label>
+        <input type="text" id="donate-name" required placeholder="Full name" />
+      </div>
+      <div class="donate-field">
+        <label for="donate-email">Your email</label>
+        <input type="email" id="donate-email" required placeholder="you@example.com" />
+      </div>
+      <button type="submit" class="btn btn--primary btn--lg" id="donateSubmitBtn" style="width:100%;justify-content:center;">❤️ Donate $50 →</button>
+      <p class="donate-status" id="donateStatus"></p>
+      <p style="text-align:center;font-size:0.78rem;color:var(--gray-400);margin-top:1rem;">🔒 Secure checkout via PayFast. One-time payment, no account required.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="gk-footer">
+  <div class="container">
+    <div class="gk-footer__grid">
+      <div class="gk-footer__brand">
+        <div class="gk-footer__logo"><img class="footer__logo-img" src="images/glory-kids-logo.png" alt="Glory Kids Ministries logo" width="32" height="32" /> Glory Kids Ministries</div>
+        <p class="gk-footer__desc">The #1 spirit-filled Bible curriculum designed for kids to encounter Jesus—used by 2,000+ churches, thousands of families, and Christian schools worldwide. Free printable Bible lessons, complete curriculum, and resources for creating real encounters with God at home, in church, and at school. Raising a generation that encounters Jesus.</p>
+        <div class="gk-footer__social">
+          <a href="https://www.instagram.com/glorykidsministry/" aria-label="Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.youtube.com/@Glorykidsministry" aria-label="YouTube" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.391.524A2.994 2.994 0 0 0 .502 6.186 31.26 31.26 0 0 0 0 12a31.26 31.26 0 0 0 .502 5.814 2.994 2.994 0 0 0 2.107 2.117c1.886.524 9.391.524 9.391.524s7.505 0 9.391-.524a2.994 2.994 0 0 0 2.107-2.117A31.26 31.26 0 0 0 24 12a31.26 31.26 0 0 0-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.pinterest.com/glorykidsbiblelessons/" aria-label="Pinterest" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.768 1.518 1.688 0 1.029-.653 2.567-.992 3.995-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.4.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.365 18.592 0 12.017 0z"/></svg></a>
+          <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.62h-3.45v13.3a3.3 3.3 0 1 1-2.33-3.15V8.9a6.75 6.75 0 1 0 5.78 6.68V9.4a8.16 8.16 0 0 0 4.9 1.63V7.57a4.85 4.85 0 0 1-3.5-1.75z"/></svg></a>
+          <a href="https://www.etsy.com/shop/GloryKidsMinistries" aria-label="Etsy Shop" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Resources</div>
+        <ul class="gk-footer__links">
+          <li><a href="free-lessons.html">Free Bible Lessons</a></li>
+          <li><a href="curriculum-packs.html">Curriculum Packs</a></li>
+          <li><a href="glory-kids-curriculum.html">Glory Kids Curriculum</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Company</div>
+        <ul class="gk-footer__links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="faq/index.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html#donate">Donate</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="gk-footer__title">Stay Inspired</div>
+        <p class="gk-footer__desc">Get free lessons, tips, and ministry inspiration.</p>
+        <form class="newsletter-form gk-newsletter" data-gk-form="newsletter">
+          <input type="email" name="email" required placeholder="Enter your email" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="gk-footer__bottom">
+      <span>© 2026 Glory Kids Ministries. All rights reserved.</span>
+      <div class="gk-footer__legal">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-use.html">Terms of Service</a>
+        <a href="refund-policy.html">Refund Policy</a>
+        <a href="delivery-policy.html">Delivery Policy</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script src="gk-forms.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="admin-data.js"></script>
+<script src="site-settings.js" defer></script>
+<script src="auth.js"></script>
+<script src="chatbot.js"></script>
+<script>
+(function () {
+  var selectedAmount = 50;
+  var amountsWrap = document.getElementById('donateAmounts');
+  var customInput = document.getElementById('donate-custom');
+  var submitBtn = document.getElementById('donateSubmitBtn');
+  var statusEl = document.getElementById('donateStatus');
+  var form = document.getElementById('donateForm');
+
+  function setSelected(amount, btn) {
+    selectedAmount = amount;
+    amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (b) { b.classList.remove('is-selected'); });
+    if (btn) btn.classList.add('is-selected');
+    customInput.value = '';
+    submitBtn.textContent = '❤️ Donate $' + amount + ' →';
+  }
+
+  amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setSelected(Number(btn.dataset.amount), btn);
+    });
+  });
+
+  customInput.addEventListener('input', function () {
+    var v = Number(customInput.value);
+    if (v > 0) {
+      amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (b) { b.classList.remove('is-selected'); });
+      selectedAmount = v;
+      submitBtn.textContent = '❤️ Donate $' + v + ' →';
+    }
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    statusEl.className = 'donate-status';
+    statusEl.style.display = 'none';
+
+    var amount = Number(customInput.value) > 0 ? Number(customInput.value) : selectedAmount;
+    var name = document.getElementById('donate-name').value.trim();
+    var email = document.getElementById('donate-email').value.trim();
+    if (!name || !email) return;
+    if (!amount || amount < 1) {
+      statusEl.textContent = 'Please choose or enter a valid amount.';
+      statusEl.className = 'donate-status is-error';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Redirecting to secure checkout…';
+
+    fetch('/api/payfast-donate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amountUSD: amount, name: name, email: email })
+    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error((res.d && res.d.error) || 'Something went wrong.');
+        var f = document.createElement('form');
+        f.method = 'POST';
+        f.action = res.d.processUrl;
+        Object.keys(res.d.fields).forEach(function (k) {
+          var i = document.createElement('input');
+          i.type = 'hidden'; i.name = k; i.value = res.d.fields[k];
+          f.appendChild(i);
+        });
+        document.body.appendChild(f);
+        f.submit();
+      })
+      .catch(function (err) {
+        statusEl.textContent = err.message;
+        statusEl.className = 'donate-status is-error';
+        submitBtn.disabled = false;
+        submitBtn.textContent = '❤️ Donate $' + amount + ' →';
+      });
+  });
+
+  // Returned from a successful donation payment
+  if (/[?&]donated=1\b/.test(location.search)) {
+    form.style.display = 'none';
+    document.getElementById('donateSuccessCard').style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>

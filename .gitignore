@@ -17,6 +17,9 @@ sitemap.xml
 scratchpad-*
 scratchpad/
 
+# Uncompressed source images kept locally as a backup, not for deploy
+images/_originals_uncompressed/
+
 # OS / editor cruft
 .DS_Store
 *.swp
