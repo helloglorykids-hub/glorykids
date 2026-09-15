@@ -88,11 +88,13 @@ var GK_CHURCH_PLANS = [
       'Church-wide ministry license',
       'Print and use resources for your ministry',
       'Leader training',
+      'Monthly Live Q&amp;A with Jandre',
+      'Private Facebook Group for church leaders',
       'Family discipleship resources',
       'New resources added regularly',
       'Additional locations: +$49/mo each'
     ],
-    ctaText: 'Join the Waitlist',
+    ctaText: 'Join Membership',
     ctaHref: '#',
     checkoutPlan: 'church'
   },
