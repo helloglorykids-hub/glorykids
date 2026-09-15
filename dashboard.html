@@ -893,10 +893,10 @@ async function renderLibrarySection(section) {
     const cover = c.coverImage ? `<img src="${c.coverImage}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:12px 12px 0 0;">` : `<div style="height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#EDE7F6,#FEF0D3);border-radius:12px 12px 0 0;">📚</div>`;
     let body;
     if (!isMember) {
-      body = `<a href="glory-kids-membership.html" style="display:inline-block;margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;background:var(--gray-100);color:var(--gray-500);text-decoration:none;">🔒 Members only</a>`;
+      body = `<a href="glory-kids-membership.html" style="display:inline-block;margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;background:rgba(0,0,0,0.06);color:#4b5563;text-decoration:none;">🔒 Members only</a>`;
     } else if (c.type === 'series') {
       body = `<div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">` +
-        c.weeks.map(w => `<button data-cur="${c.id}" data-week="${w.index}" style="text-align:left;font:500 0.82rem Poppins,system-ui,sans-serif;padding:0.5rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;background:#fff;cursor:pointer;">⬇ ${(w.title || 'Week').replace(/[<>&]/g,'')} <span style="color:var(--gray-400)">· ${w.fileCount} file(s)</span></button>`).join('') +
+        c.weeks.map(w => `<button data-cur="${c.id}" data-week="${w.index}" style="text-align:left;font:500 0.82rem Poppins,system-ui,sans-serif;padding:0.5rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;background:#fff;color:#17191C;cursor:pointer;">⬇ ${(w.title || 'Week').replace(/[<>&]/g,'')} <span style="color:#6b7280">· ${w.fileCount} file(s)</span></button>`).join('') +
         `</div>`;
     } else {
       body = `<button data-cur="${c.id}" style="margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;border:0;background:#059669;color:#fff;cursor:pointer;">⬇ Download pack (${c.fileCount} file${c.fileCount === 1 ? '' : 's'})</button>`;
@@ -905,9 +905,9 @@ async function renderLibrarySection(section) {
       <div style="border:1px solid var(--gray-200);border-radius:12px;overflow:hidden;margin-bottom:1.25rem;background:#fff;">
         ${cover}
         <div style="padding:1rem 1.1rem;">
-          <div style="font:800 1rem Poppins,system-ui,sans-serif;">${(c.title || 'Curriculum').replace(/[<>&]/g,'')}</div>
-          <div style="font-size:0.82rem;color:var(--gray-500);margin:0.3rem 0;">${(c.type === 'series' ? c.weeks.length + '-week series' : 'Downloadable pack')}${c.ageGroups && c.ageGroups.length ? ' · ' + c.ageGroups.join(', ') : ''}</div>
-          <p style="font-size:0.85rem;color:var(--gray-600);line-height:1.5;margin:0.4rem 0 0;">${(c.description || '').replace(/[<>&]/g,'').slice(0,180)}</p>
+          <div style="font:800 1rem Poppins,system-ui,sans-serif;color:#17191C;">${(c.title || 'Curriculum').replace(/[<>&]/g,'')}</div>
+          <div style="font-size:0.82rem;color:#6b7280;margin:0.3rem 0;">${(c.type === 'series' ? c.weeks.length + '-week series' : 'Downloadable pack')}${c.ageGroups && c.ageGroups.length ? ' · ' + c.ageGroups.join(', ') : ''}</div>
+          <p style="font-size:0.85rem;color:#4b5563;line-height:1.5;margin:0.4rem 0 0;">${(c.description || '').replace(/[<>&]/g,'').slice(0,180)}</p>
           ${body}
         </div>
       </div>`;
