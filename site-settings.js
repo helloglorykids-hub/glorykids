@@ -230,7 +230,7 @@
     bar.id = 'gk-announce-bar';
     bar.style.cssText = 'position:relative;z-index:1200;background:' + (a.bg || '#1f2937') +
       ';color:' + (a.fg || '#fff') + ';font:600 14px/1.4 Inter,system-ui,sans-serif;' +
-      'text-align:center;padding:10px 40px;';
+      'text-align:center;padding:18px 40px;';
     var inner = a.text;
     if (a.linkUrl) {
       inner = '<a href="' + a.linkUrl + '" style="color:inherit;text-decoration:underline;">' +
