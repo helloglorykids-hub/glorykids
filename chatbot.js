@@ -14,8 +14,8 @@
   /* ── Knowledge base ───────────────────────────────────────── */
   const KB = [
     {
-      keywords: ['free', 'lesson', 'lessons', 'trial', '10 lessons'],
-      answer: "Create a <a href=\"signup.html\">free account</a> and we'll send you all 10 complete, ready-to-teach Bible lessons, free, no credit card — plus they're saved to your dashboard so you can always come back to them."
+      keywords: ['free', 'lesson', 'lessons', 'trial'],
+      answer: "Head to our <a href=\"free-lessons.html\">Free Lessons</a> page, open any of the Top 10 lessons, and enter your email in the \"Get All 10 Free Lessons\" box — we'll send you 10 complete, ready-to-teach Bible lessons, free, no credit card. Want more? <a href=\"signup.html\">Create a free account</a> to unlock all 35 free lessons."
     },
     {
       keywords: ['curriculum', 'pack', 'packs', 'series'],

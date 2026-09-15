@@ -2933,7 +2933,12 @@ section { padding: 5rem 0; }
 
 .pricing-orbs {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
+  /* Extends as high as the wave's own overlap (see .pricing-wave-seam's
+     `top`) so the clip boundary sits above the visible wave curve, not at
+     .pricing-premium's own box edge — otherwise the glow gets clipped off
+     well before reaching the seam, leaving a flat, glow-less dark band
+     between the gradient above and the wave. */
+  top: -64px; left: 0; right: 0; bottom: 0;
   pointer-events: none;
   overflow: hidden;           /* clips the orbs now that .pricing-premium is overflow:visible */
   z-index: 1;
@@ -2942,11 +2947,13 @@ section { padding: 5rem 0; }
 /* Bottom half of ".gkc"'s .gkc-orb-2 (380px circle, right:-100px, centre
    ~50px above this section's top). .pricing-orbs' overflow:hidden trims it to
    the seam so the top half stays in .gkc — together they read as one circle
-   that the wave cuts through. Values mirror .gkc-orb-2 exactly. */
+   that the wave cuts through. Values mirror .gkc-orb-2 exactly, offset by
+   the same 64px .pricing-orbs was extended upward so its absolute position
+   on screen is unchanged. */
 .orb-teal-sm {
   width: 380px;
   height: 380px;
-  top: -240px;
+  top: -176px;
   right: -100px;
   position: absolute;
   background: radial-gradient(circle, #00BFC4 0%, transparent 70%);

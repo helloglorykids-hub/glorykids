@@ -193,7 +193,7 @@
           </div>
           <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
             <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
               Sign Up Free →
             </a>
@@ -227,7 +227,7 @@
                lessons flagged freeWithAccount — free to any signed-in user) -->
           <div id="signupLockWrap" class="mailerlite-box mailerlite-box--signup" style="display:none;">
             <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
+            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
             <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
               Sign Up Free →
             </a>
@@ -664,11 +664,8 @@
     contentEl.innerHTML = post.bodyHtml || '';
 
     const isLesson = post.category === 'free_lessons';
-    // Two tiers: isFreeLesson (one of the 10, free with a free account) →
-    // isLocked (everything else, paid Glory Kids Membership only).
-    // freeWithAccount is legacy from the old 3-tier model and should no
-    // longer be set on any post, but the check is left in place as a safety
-    // net in case an old post record still has it.
+    // Three tiers: isFreeLesson (email only, no account) → isFreeWithAccount
+    // (free, but needs a signed-in account) → isLocked (paid membership only).
     const isFreeWithAccount = isLesson && !post.isFreeLesson && !!post.freeWithAccount;
     const isLocked = isLesson && !post.isFreeLesson && !post.freeWithAccount;
 
@@ -706,18 +703,26 @@
       }
     }
 
-    // ── Opt-in / CTA boxes ────────────────────────────────────────────
-    //  • one of the 10 free lessons  → "create a free account" CTA (account
-    //    creation fires the MailerLite "Free 10 Lessons" automation — see
-    //    auth.js subscribeFreeLessons() — and unlocks the lesson in their
-    //    dashboard), shown both above (#1) and below (#2) the article.
-    //  • a free_lessons post NOT in the 10 → "Join Membership" CTA.
-    //  • any other blog post → "Join Membership" CTA (bottom only).
+    // ── Email opt-in ────────────────────────────────────────────────
+    //  • one of the 10 free lessons  → "get all 10 free lessons" opt-in
+    //    (MailerLite "Free 10 Lessons" group → 10-lesson automation),
+    //    shown both above (#1) and below (#2) the article.
+    //  • a free_lessons post NOT in the 10 → membership waitlist opt-in.
+    //  • any other blog post → membership waitlist opt-in (bottom only).
+    // gk-forms.js wires <form data-gk-form="…"> and handles the
+    // "check your inbox" vs "we already sent it" messaging.
     function optinFormHtml(kind) {
       if (kind !== 'free-lessons') {
         return '<a href="/glory-kids-membership.html" class="gk-optin-form__btn" style="display:inline-block;text-decoration:none;">✨ Join Membership →</a>';
       }
-      return '<a href="/signup.html" class="gk-optin-form__btn" style="display:inline-block;text-decoration:none;">✨ Sign Up Free — Get All 10 Lessons →</a>';
+      return (
+        '<form data-gk-form="' + kind + '" class="gk-optin-form">' +
+          '<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
+            'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />' +
+          '<input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />' +
+          '<button type="submit" class="gk-optin-form__btn">Send my 10 lessons</button>' +
+        '</form>'
+      );
     }
     function fillOptinBox(wrap, heading, blurb, kind) {
       wrap.style.display = 'block';
@@ -733,8 +738,7 @@
       var target = wrap.querySelector('[id^="mailerliteEmbedTarget"]');
       if (target) injectHtmlWithScripts(target, optinFormHtml(kind));
 
-      // Point free-lesson opt-ins toward Glory Kids Membership for everything
-      // beyond the 10 free lessons.
+      // Point free-lesson opt-ins toward the bigger free-account library too.
       var note = wrap.querySelector('p.gk-optin-note');
       if (kind === 'free-lessons') {
         if (!note) {
@@ -742,7 +746,7 @@
           note.className = 'gk-optin-note text-slate-400 text-xs mt-3';
           wrap.appendChild(note);
         }
-        note.innerHTML = 'Want the full, growing library? <a href="/glory-kids-membership.html" class="text-orange-400 font-semibold">See Glory Kids Membership</a>.';
+        note.innerHTML = 'Want more? <a href="/signup.html" class="text-orange-400 font-semibold">Sign up free</a> to unlock all 35 free lessons.';
         note.style.display = '';
       } else if (note) {
         note.style.display = 'none';
@@ -763,13 +767,13 @@
       fillOptinBox(
         document.getElementById('mailerliteWrapTop'),
         '📥 Get All 10 Free Lessons',
-        'Create a free account and we’ll send you all 10 free, ready-to-teach Bible lessons — including this one — plus save them to your dashboard.',
+        'Enter your email and we’ll send you all 10 free, ready-to-teach Bible lessons — including this one.',
         'free-lessons'
       );
       fillOptinBox(
         document.getElementById('mailerliteWrap'),
         '📥 Get All 10 Free Lessons',
-        'One free account, all 10 lessons — emailed to you and saved to your dashboard. No credit card required.',
+        'One email, all 10 lessons. No credit card — just tell us where to send them.',
         'free-lessons'
       );
     } else if (isFreeWithAccount) {
@@ -874,8 +878,7 @@
   /* ── Member download pack ─────────────────────────────────────────
      Shows the download box for any lesson that has files attached.
      • active member  → working download links (signed, 10-min)
-     • free lesson, signed in with a free account → working download links
-     • free lesson, not signed in → hidden (the "create a free account" CTA covers it)
+     • free lesson, not a member → hidden (the email opt-in covers it)
      • paid lesson, not a member → "included with membership" + Subscribe */
   function isActiveMember(rec) {
     if (!rec) return false;
@@ -931,8 +934,8 @@
     function decide(user) {
       if (handled) return; handled = true;
       if (!user) { showLocked(); return; }
-      // Signed-in users can always download the 10 free lessons.
-      // freeWithAccount is retired (always false) but kept as a safety net.
+      // Signed-in users can always download the 10 free lessons, and any
+      // lesson marked free-with-account (the other 25 of the 35 total).
       if (post.isFreeLesson || post.freeWithAccount) { showMember(); return; }
       GK.getUserRecord(user.uid).then(function (rec) {
         if (isActiveMember(rec)) showMember(); else showLocked();
