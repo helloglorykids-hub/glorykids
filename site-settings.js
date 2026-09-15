@@ -239,12 +239,45 @@
     bar.innerHTML = inner +
       '<button aria-label="Dismiss" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);' +
       'background:none;border:0;color:inherit;font-size:18px;cursor:pointer;line-height:1;">&times;</button>';
+
+    // The main nav is position:fixed at top:0, so it renders in the exact
+    // same spot as this bar (which sits in normal document flow) and gets
+    // covered by it. Push the nav down by the bar's live height, and let it
+    // ease back to top:0 as the bar scrolls out of the document flow above it
+    // — that way nothing is permanently pushed down, only offset while the
+    // bar is actually still on screen.
+    var nav = document.getElementById('nav');
+    var ticking = false;
+    function syncNavOffset() {
+      ticking = false;
+      if (!nav || !bar.isConnected) return;
+      var offset = Math.max(0, bar.offsetHeight - window.scrollY);
+      nav.style.top = offset + 'px';
+    }
+    function onScrollOrResize() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(syncNavOffset);
+    }
+    function teardownNavOffset() {
+      window.removeEventListener('scroll', onScrollOrResize);
+      window.removeEventListener('resize', onScrollOrResize);
+      if (nav) nav.style.top = '';
+    }
+
     bar.querySelector('button').onclick = function () {
       bar.remove();
+      teardownNavOffset();
       try { sessionStorage.setItem('gk_announce_dismissed', a.text); } catch (e) {}
     };
     try { if (sessionStorage.getItem('gk_announce_dismissed') === a.text) return; } catch (e) {}
     document.body.insertBefore(bar, document.body.firstChild);
+
+    if (nav) {
+      syncNavOffset();
+      window.addEventListener('scroll', onScrollOrResize, { passive: true });
+      window.addEventListener('resize', onScrollOrResize);
+    }
   }
 
   /* ---------- feature: redirect map ---------- */

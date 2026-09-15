@@ -47,7 +47,7 @@ var GK_MAIN_PLANS = [
     ],
     ctaText: 'Join Membership',
     ctaHref: 'glory-kids-membership.html',
-    note: '14-day money-back guarantee. No questions asked.'
+    note: 'No contracts. Cancel anytime.'
   },
   {
     id: 'church',

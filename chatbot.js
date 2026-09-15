@@ -35,7 +35,7 @@
     },
     {
       keywords: ['refund', 'money back', 'guarantee'],
-      answer: "New memberships come with a 14-day money-back guarantee on your first payment. One-time digital downloads and curriculum packs are non-refundable once accessed. Full details are on our <a href=\"refund-policy.html\">Refund Policy</a> page, or use \"Talk to a live agent\" below and our team will sort it out."
+      answer: "Because our digital products and membership give instant access, sales are generally final and non-refundable — this covers change of mind, accidental purchases, or deciding a resource isn't the right fit. If you got the wrong file, hit a technical problem accessing your purchase, or think you were charged incorrectly, we'll always sort it out. Full details are on our <a href=\"refund-policy.html\">Refund Policy</a> page, or use \"Talk to a live agent\" below and our team will help."
     },
     {
       keywords: ['charge', 'billing', 'payment', 'invoice', 'receipt', 'double charged', 'wrong amount'],

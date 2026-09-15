@@ -97,7 +97,7 @@
 
 /* ─── RESET & BASE ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; font-size: 16px; }
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
 body {
   font-family: var(--font-body);
   color: var(--gray-700);
