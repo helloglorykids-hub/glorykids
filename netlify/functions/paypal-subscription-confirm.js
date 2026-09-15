@@ -14,17 +14,11 @@ const { admin, db, configured } = require('./_lib/firebase');
 const { api } = require('./_lib/paypal');
 const { activateSubscription } = require('./_lib/paypal-fulfill');
 const { json, parseBody } = require('./_lib/http');
-
-// Must match the ppPlanId mapping in paypal-subscription-start.js — used
-// below to make sure the PayPal subscription being confirmed is actually
-// for the plan this subId was started for, not some other real (but
-// cheaper, or differently-priced) subscription the caller happens to hold.
-const EXPECTED_PP_PLAN_ID = {
-  monthly: process.env.PAYPAL_PLAN_MONTHLY,
-  annual: process.env.PAYPAL_PLAN_ANNUAL,
-  church: process.env.PAYPAL_PLAN_CHURCH,
-  'church-annual': process.env.PAYPAL_PLAN_CHURCH_ANNUAL
-};
+// Used below to make sure the PayPal subscription being confirmed is
+// actually for the plan this subId was started for, not some other real
+// (but cheaper, or differently-priced) subscription the caller happens
+// to hold.
+const EXPECTED_PP_PLAN_ID = require('./_lib/paypal-plan-ids');
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'POST only' });

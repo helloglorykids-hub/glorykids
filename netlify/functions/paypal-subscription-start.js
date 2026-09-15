@@ -23,6 +23,7 @@
 'use strict';
 const { admin, db, configured } = require('./_lib/firebase');
 const { json, parseBody } = require('./_lib/http');
+const PP_PLAN_IDS = require('./_lib/paypal-plan-ids');
 
 const MONTHLY_USD = Number(process.env.MEMBERSHIP_MONTHLY_USD) || 29.99;
 const ANNUAL_USD = Number(process.env.MEMBERSHIP_ANNUAL_USD) || 299;
@@ -35,10 +36,10 @@ const CHURCH_BASE_LOCATIONS = 1;
 const MEMBERSHIP_LIVE = String(process.env.MEMBERSHIP_LIVE || '').toLowerCase() === 'true';
 
 const PLANS = {
-  monthly:       { frequency: 'monthly', usd: MONTHLY_USD,       label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: process.env.PAYPAL_PLAN_MONTHLY },
-  annual:        { frequency: 'annual',  usd: ANNUAL_USD,        label: 'Glory Kids Membership — Annual',  accountPlan: 'glory_kids', ppPlanId: process.env.PAYPAL_PLAN_ANNUAL },
-  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: process.env.PAYPAL_PLAN_CHURCH, quantityPriced: true },
-  'church-annual': { frequency: 'annual', usd: CHURCH_ANNUAL_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Annual',  accountPlan: 'church', ppPlanId: process.env.PAYPAL_PLAN_CHURCH_ANNUAL, quantityPriced: true }
+  monthly:       { frequency: 'monthly', usd: MONTHLY_USD,       label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.monthly },
+  annual:        { frequency: 'annual',  usd: ANNUAL_USD,        label: 'Glory Kids Membership — Annual',  accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.annual },
+  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true },
+  'church-annual': { frequency: 'annual', usd: CHURCH_ANNUAL_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Annual',  accountPlan: 'church', ppPlanId: PP_PLAN_IDS['church-annual'], quantityPriced: true }
 };
 
 exports.handler = async (event) => {

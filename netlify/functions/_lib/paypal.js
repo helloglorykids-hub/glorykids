@@ -5,7 +5,12 @@
 const MODE = (process.env.PAYPAL_MODE || 'sandbox').toLowerCase();
 const API = MODE === 'live' ? 'https://api-m.paypal.com' : 'https://api-m.sandbox.paypal.com';
 
-const CLIENT_ID = process.env.PAYPAL_CLIENT_ID || '';
+// Client IDs are public by design (they're already in the page source on
+// every checkout button) — hardcoding it here, like the frontend does,
+// keeps it out of Netlify's function-scoped env vars, which count toward
+// AWS Lambda's hard 4KB-per-function limit alongside FIREBASE_SERVICE_ACCOUNT
+// and everything else. Only the Secret and Webhook ID are actually secret.
+const CLIENT_ID = 'BAApvD_Zb9FcjZo44jT5oUS-v8iSA788-nrLqh8GmwVJpBcs2O3TtLGVCTbKi_Oc9Zg_a3G6YQWKD2R308';
 const CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET || '';
 const WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID || '';
 
