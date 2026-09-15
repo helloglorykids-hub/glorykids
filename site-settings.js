@@ -228,7 +228,12 @@
     if (document.getElementById('gk-announce-bar')) return;
     var bar = document.createElement('div');
     bar.id = 'gk-announce-bar';
-    bar.style.cssText = 'position:relative;z-index:1200;background:' + (a.bg || '#1f2937') +
+    // Fixed at the very top, above the nav — the nav then gets pushed down
+    // by the bar's height, and so does the rest of the page (via padding on
+    // <body>), so nothing ever sits underneath the bar or the now-lower nav,
+    // at any scroll position. Dismissing puts both back exactly where they
+    // started.
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:1200;background:' + (a.bg || '#1f2937') +
       ';color:' + (a.fg || '#fff') + ';font:600 14px/1.4 Inter,system-ui,sans-serif;' +
       'text-align:center;padding:18px 40px;';
     var inner = a.text;
@@ -240,44 +245,33 @@
       '<button aria-label="Dismiss" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);' +
       'background:none;border:0;color:inherit;font-size:18px;cursor:pointer;line-height:1;">&times;</button>';
 
-    // The main nav is position:fixed at top:0, so it renders in the exact
-    // same spot as this bar (which sits in normal document flow) and gets
-    // covered by it. Push the nav down by the bar's live height, and let it
-    // ease back to top:0 as the bar scrolls out of the document flow above it
-    // — that way nothing is permanently pushed down, only offset while the
-    // bar is actually still on screen.
     var nav = document.getElementById('nav');
-    var ticking = false;
-    function syncNavOffset() {
-      ticking = false;
-      if (!nav || !bar.isConnected) return;
-      var offset = Math.max(0, bar.offsetHeight - window.scrollY);
-      nav.style.top = offset + 'px';
+    var resizeHandler = null;
+
+    function applyOffset() {
+      var h = bar.offsetHeight;
+      if (nav) nav.style.top = h + 'px';
+      document.body.style.paddingTop = h + 'px';
     }
-    function onScrollOrResize() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(syncNavOffset);
-    }
-    function teardownNavOffset() {
-      window.removeEventListener('scroll', onScrollOrResize);
-      window.removeEventListener('resize', onScrollOrResize);
+    function teardownOffset() {
+      if (resizeHandler) window.removeEventListener('resize', resizeHandler);
       if (nav) nav.style.top = '';
+      document.body.style.paddingTop = '';
     }
 
     bar.querySelector('button').onclick = function () {
       bar.remove();
-      teardownNavOffset();
+      teardownOffset();
       try { sessionStorage.setItem('gk_announce_dismissed', a.text); } catch (e) {}
     };
     try { if (sessionStorage.getItem('gk_announce_dismissed') === a.text) return; } catch (e) {}
     document.body.insertBefore(bar, document.body.firstChild);
 
-    if (nav) {
-      syncNavOffset();
-      window.addEventListener('scroll', onScrollOrResize, { passive: true });
-      window.addEventListener('resize', onScrollOrResize);
-    }
+    applyOffset();
+    // The bar's height can change on resize (its text reflows to more/fewer
+    // lines at different widths), so keep the offset in sync.
+    resizeHandler = applyOffset;
+    window.addEventListener('resize', resizeHandler);
   }
 
   /* ---------- feature: redirect map ---------- */

@@ -39,7 +39,6 @@ const SITEMAP_EXCLUDE = new Set([
   'glory-kids-membership-preview.html',
   'admin.html',
   'admin-login.html',
-  'admin-import.html',
   'admin-data.html',
   'lesson-gate.html',
   'checkout.html',
@@ -336,7 +335,7 @@ const CONTENT_PAGE_IDS = {
   console.log(`Baked SEO into ${changed}/${htmlFiles.length} HTML files.`);
 
   /* robots.txt */
-  let robots = cfg.robotsTxt || 'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html\nDisallow: /admin-import.html';
+  let robots = cfg.robotsTxt || 'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html';
   robots = robots.replace(/\nSitemap:.*$/gm, '').trimEnd() + `\n\nSitemap: ${SITE_ORIGIN}/sitemap.xml\n`;
   fs.writeFileSync(path.join(DIR, 'robots.txt'), robots);
 

@@ -102,6 +102,26 @@
   from = "/api/lesson-hit"
   to = "/.netlify/functions/lesson-hit"
   status = 200
+[[redirects]]
+  from = "/api/paypal-subscription-start"
+  to = "/.netlify/functions/paypal-subscription-start"
+  status = 200
+[[redirects]]
+  from = "/api/paypal-subscription-confirm"
+  to = "/.netlify/functions/paypal-subscription-confirm"
+  status = 200
+[[redirects]]
+  from = "/api/paypal-webhook"
+  to = "/.netlify/functions/paypal-webhook"
+  status = 200
+[[redirects]]
+  from = "/api/paypal-create-order"
+  to = "/.netlify/functions/paypal-create-order"
+  status = 200
+[[redirects]]
+  from = "/api/paypal-capture-order"
+  to = "/.netlify/functions/paypal-capture-order"
+  status = 200
 
 # ─────────────────────────────────────────────────────────────
 # Old domain → new domain (childrensministrylessons.com cutover).

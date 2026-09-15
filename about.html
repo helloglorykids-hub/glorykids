@@ -29,26 +29,6 @@
       border-radius: var(--radius-xl); padding: 2.5rem; box-shadow: var(--shadow-md);
       border: 1px solid var(--gray-100);
     }
-    .donate-amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.65rem; margin: 1.25rem 0; }
-    @media (max-width: 480px) { .donate-amounts { grid-template-columns: 1fr 1fr; } }
-    .donate-amount-btn {
-      padding: 0.85rem 0.5rem; border-radius: var(--radius-lg); border: 2px solid var(--gray-200);
-      background: var(--color-card-hover, var(--color-bg)); color: var(--gray-600);
-      font-family: var(--font-heading); font-weight: 800; font-size: 1rem; cursor: pointer;
-      transition: var(--transition);
-    }
-    .donate-amount-btn:hover, .donate-amount-btn.is-selected {
-      border-color: var(--primary); color: var(--primary); background: var(--primary-lighter);
-    }
-    .donate-field { margin-bottom: 1rem; }
-    .donate-field label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--gray-400); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .donate-field input {
-      width: 100%; padding: 0.75rem 1rem; border-radius: var(--radius-lg);
-      border: 1.5px solid var(--gray-200); font-size: 0.95rem; background: var(--color-bg); color: var(--white);
-    }
-    .donate-status { font-size: 0.85rem; margin-top: 0.75rem; display: none; }
-    .donate-status.is-error { color: var(--rose, #dc2626); display: block; }
-    .donate-status.is-info { color: var(--gray-400); display: block; }
   </style>
   <!-- gk:managed:start -->
   <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
@@ -267,35 +247,13 @@
     <h2 class="gk-h2 reveal" style="text-align:center;">Help Us Reach More Children</h2>
     <p class="reveal" style="text-align:center;max-width:600px;margin:0 auto 2.5rem;color:var(--gray-500);">Glory Kids is sustained by memberships, sales, and gifts from people like you. Every donation helps us create more free lessons, curriculum, and resources for churches and families around the world.</p>
 
-    <div class="donate-card reveal" id="donateSuccessCard" style="display:none;text-align:center;">
-      <div style="font-size:2.5rem;margin-bottom:0.75rem;">🙏</div>
-      <h3 style="font-family:var(--font-heading);font-weight:800;color:var(--white);margin-bottom:0.5rem;">Thank You!</h3>
-      <p style="color:var(--gray-500);">Your generosity helps us raise a generation that encounters Jesus. We're so grateful for your support.</p>
+    <div class="donate-card reveal" style="text-align:center;">
+      <div style="font-size:2.5rem;margin-bottom:0.75rem;">❤️</div>
+      <h3 style="font-family:var(--font-heading);font-weight:800;color:var(--white);margin-bottom:0.5rem;">Every Gift Helps</h3>
+      <p style="color:var(--gray-500);margin-bottom:1.5rem;">Choose any amount — one-time, secure checkout via PayPal. No account required.</p>
+      <a href="https://www.paypal.com/ncp/payment/JZND8NFRJHXZY" target="_blank" rel="noopener" class="btn btn--primary btn--lg" style="width:100%;justify-content:center;">❤️ Donate via PayPal →</a>
+      <p style="text-align:center;font-size:0.78rem;color:var(--gray-400);margin-top:1rem;">🔒 Opens PayPal's secure checkout in a new tab.</p>
     </div>
-
-    <form class="donate-card reveal" id="donateForm">
-      <div class="donate-amounts" id="donateAmounts">
-        <button type="button" class="donate-amount-btn" data-amount="10">$10</button>
-        <button type="button" class="donate-amount-btn" data-amount="25">$25</button>
-        <button type="button" class="donate-amount-btn is-selected" data-amount="50">$50</button>
-        <button type="button" class="donate-amount-btn" data-amount="100">$100</button>
-      </div>
-      <div class="donate-field">
-        <label for="donate-custom">Or enter a custom amount (USD)</label>
-        <input type="number" id="donate-custom" min="1" max="10000" step="1" placeholder="e.g. 75" />
-      </div>
-      <div class="donate-field">
-        <label for="donate-name">Your name</label>
-        <input type="text" id="donate-name" required placeholder="Full name" />
-      </div>
-      <div class="donate-field">
-        <label for="donate-email">Your email</label>
-        <input type="email" id="donate-email" required placeholder="you@example.com" />
-      </div>
-      <button type="submit" class="btn btn--primary btn--lg" id="donateSubmitBtn" style="width:100%;justify-content:center;">❤️ Donate $50 →</button>
-      <p class="donate-status" id="donateStatus"></p>
-      <p style="text-align:center;font-size:0.78rem;color:var(--gray-400);margin-top:1rem;">🔒 Secure checkout via PayFast. One-time payment, no account required.</p>
-    </form>
   </div>
 </section>
 
@@ -368,88 +326,5 @@
 <script src="site-settings.js" defer></script>
 <script src="auth.js"></script>
 <script src="chatbot.js"></script>
-<script>
-(function () {
-  var selectedAmount = 50;
-  var amountsWrap = document.getElementById('donateAmounts');
-  var customInput = document.getElementById('donate-custom');
-  var submitBtn = document.getElementById('donateSubmitBtn');
-  var statusEl = document.getElementById('donateStatus');
-  var form = document.getElementById('donateForm');
-
-  function setSelected(amount, btn) {
-    selectedAmount = amount;
-    amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (b) { b.classList.remove('is-selected'); });
-    if (btn) btn.classList.add('is-selected');
-    customInput.value = '';
-    submitBtn.textContent = '❤️ Donate $' + amount + ' →';
-  }
-
-  amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      setSelected(Number(btn.dataset.amount), btn);
-    });
-  });
-
-  customInput.addEventListener('input', function () {
-    var v = Number(customInput.value);
-    if (v > 0) {
-      amountsWrap.querySelectorAll('.donate-amount-btn').forEach(function (b) { b.classList.remove('is-selected'); });
-      selectedAmount = v;
-      submitBtn.textContent = '❤️ Donate $' + v + ' →';
-    }
-  });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    statusEl.className = 'donate-status';
-    statusEl.style.display = 'none';
-
-    var amount = Number(customInput.value) > 0 ? Number(customInput.value) : selectedAmount;
-    var name = document.getElementById('donate-name').value.trim();
-    var email = document.getElementById('donate-email').value.trim();
-    if (!name || !email) return;
-    if (!amount || amount < 1) {
-      statusEl.textContent = 'Please choose or enter a valid amount.';
-      statusEl.className = 'donate-status is-error';
-      return;
-    }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Redirecting to secure checkout…';
-
-    fetch('/api/payfast-donate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amountUSD: amount, name: name, email: email })
-    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-      .then(function (res) {
-        if (!res.ok) throw new Error((res.d && res.d.error) || 'Something went wrong.');
-        var f = document.createElement('form');
-        f.method = 'POST';
-        f.action = res.d.processUrl;
-        Object.keys(res.d.fields).forEach(function (k) {
-          var i = document.createElement('input');
-          i.type = 'hidden'; i.name = k; i.value = res.d.fields[k];
-          f.appendChild(i);
-        });
-        document.body.appendChild(f);
-        f.submit();
-      })
-      .catch(function (err) {
-        statusEl.textContent = err.message;
-        statusEl.className = 'donate-status is-error';
-        submitBtn.disabled = false;
-        submitBtn.textContent = '❤️ Donate $' + amount + ' →';
-      });
-  });
-
-  // Returned from a successful donation payment
-  if (/[?&]donated=1\b/.test(location.search)) {
-    form.style.display = 'none';
-    document.getElementById('donateSuccessCard').style.display = 'block';
-  }
-})();
-</script>
 </body>
 </html>

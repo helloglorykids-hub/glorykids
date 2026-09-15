@@ -29,8 +29,8 @@ var GK_MAIN_PLANS = [
     name: 'Glory Kids Membership',
     price: '$29.99<span>/month</span>',
     or: 'OR',
-    priceSub: '$249<span>/year</span>',
-    save: 'Save $111',
+    priceSub: '$299<span>/year</span>',
+    save: 'Save $60',
     features: [
       'Full, growing library of Bible lessons &amp; resources',
       'Full curriculum library',
@@ -41,7 +41,6 @@ var GK_MAIN_PLANS = [
       'Family discipleship resources',
       'Parent devotionals',
       'Video teaching &amp; training',
-      'Community access',
       'Member-only resources',
       'Cancel anytime'
     ],
@@ -52,13 +51,13 @@ var GK_MAIN_PLANS = [
   {
     id: 'church',
     name: 'Glory Kids for Churches',
-    price: 'From $499<span>/year</span>',
-    sub: 'Built for churches, kids ministries and ministry teams.',
+    price: 'From $79<span>/month</span>',
+    sub: 'One church location • Full team access.',
     features: [
       'Everything in Glory Kids Membership',
       'Church-wide curriculum license',
       'Use across your kids ministry',
-      'Multiple leaders and volunteers',
+      'Unlimited leaders and volunteers',
       'Volunteer teaching resources',
       'Ministry planning resources',
       'Leader training',
@@ -67,55 +66,41 @@ var GK_MAIN_PLANS = [
     ],
     ctaText: 'View Church Plans',
     ctaHref: 'church-pricing.html',
-    note: 'Flexible options for ministries of different sizes.'
+    note: 'Also available annually at $799/year — save $149.'
   }
 ];
 
 var GK_CHURCH_PLANS = [
   {
-    id: 'small-church',
-    name: 'Small Church',
-    price: '$499<span>/year</span>',
-    sub: 'For smaller churches and growing kids ministries.',
+    id: 'church',
+    featured: true,
+    badge: '★ Most Popular for Churches',
+    name: 'Glory Kids for Churches',
+    price: '$79<span>/month</span>',
+    or: 'OR',
+    priceSub: '$799<span>/year</span>',
+    save: 'Save $149',
+    sub: 'One church location • Full team access.',
     features: [
       'Full Glory Kids curriculum library',
+      'One church location included',
+      'Unlimited leaders and volunteers on that location',
       'Church-wide ministry license',
-      'Multiple leaders and volunteers',
       'Print and use resources for your ministry',
       'Leader training',
       'Family discipleship resources',
-      'New resources added regularly'
+      'New resources added regularly',
+      'Additional locations: +$49/mo each'
     ],
     ctaText: 'Join the Waitlist',
     ctaHref: '#',
-    checkoutPlan: 'church-small'
-  },
-  {
-    id: 'growing-church',
-    featured: true,
-    badge: 'Most Popular for Churches',
-    name: 'Growing Church',
-    price: '$899<span>/year</span>',
-    sub: 'For established or growing kids ministries.',
-    featuresIntro: 'Everything in Small Church, plus:',
-    features: [
-      'Expanded ministry usage',
-      'Multiple classrooms / ministry environments',
-      'Premium leader training',
-      'Priority support',
-      'Early access to selected new resources',
-      'Premium video / animation resources as they become available',
-      'Seasonal and special-event resources'
-    ],
-    ctaText: 'Join the Waitlist',
-    ctaHref: '#',
-    checkoutPlan: 'church-growing'
+    checkoutPlan: 'church'
   },
   {
     id: 'multi-site',
     name: 'Large / Multi-Site',
     price: 'Custom',
-    sub: 'For large churches, multi-site churches and larger ministry networks.',
+    sub: 'For churches with several extra locations or larger ministry networks.',
     features: [
       'Multi-campus licensing',
       'Larger ministry teams',

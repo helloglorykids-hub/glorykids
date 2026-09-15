@@ -214,8 +214,7 @@
   var PLAN_NAMES = {
     monthly: 'Glory Kids Monthly Membership',
     annual: 'Glory Kids Annual Membership',
-    'church-small': 'Small Church plan',
-    'church-growing': 'Growing Church plan'
+    church: 'Glory Kids for Churches plan'
   };
   var m = /[?&]plan=([a-z-]+)/.exec(redirect);
   var planName = (m && PLAN_NAMES[m[1]]) || 'Glory Kids Membership';

@@ -8,13 +8,16 @@
      Waitlist" group (via the same /api/mailerlite the rest of the
      site uses).
 
-   • Checkout mode: plan buttons start a real PayFast recurring-
-     billing subscription. Signed-out visitors are sent to sign up
-     first, then bounced back here to finish.
+   • Checkout mode: plan buttons start a real PayPal Subscriptions
+     billing plan, rendered as a PayPal button INSIDE the modal (not
+     a redirect — PayPal Subscriptions are created client-side via
+     their JS SDK). Signed-out visitors are sent to sign up first,
+     then bounced back here to finish.
 
    TO GO LIVE:
      1. set  MEMBERSHIP_LIVE = true   (below)
-     2. set Netlify env  MEMBERSHIP_LIVE = true
+     2. set Netlify env  MEMBERSHIP_LIVE = true, PAYPAL_CLIENT_ID,
+        PAYPAL_CLIENT_SECRET, PAYPAL_PLAN_MONTHLY, PAYPAL_PLAN_ANNUAL
    Test the real flow anytime before launch with  ?checkout=1
    (admins can always run checkout regardless of the flag).
    ============================================================ */
@@ -26,10 +29,9 @@
   var LIVE = MEMBERSHIP_LIVE || forceCheckout;
 
   var PLAN_LABEL = {
-    monthly: 'Monthly', annual: 'Annual',
-    'church-small': 'Small Church', 'church-growing': 'Growing Church'
+    monthly: 'Monthly', annual: 'Annual', church: 'Church Monthly', 'church-annual': 'Church Annual'
   };
-  var isChurchPlan = function (p) { return p === 'church-small' || p === 'church-growing'; };
+  var isChurchPlan = function (p) { return p === 'church' || p === 'church-annual'; };
 
   /* ---------- tiny modal ---------------------------------------------- */
   function injectStyles() {
@@ -137,6 +139,115 @@
     return (typeof auth !== 'undefined' && auth.currentUser) ? auth.currentUser : null;
   }
 
+  // PayPal's JS SDK needs to be loaded once, with the client-id in the
+  // script URL itself — can't be requested per-checkout like a normal API
+  // call. Cached on window so repeat checkouts in one page view don't
+  // re-inject it.
+  var PAYPAL_CLIENT_ID = 'BAApvD_Zb9FcjZo44jT5oUS-v8iSA788-nrLqh8GmwVJpBcs2O3TtLGVCTbKi_Oc9Zg_a3G6YQWKD2R308';
+  var paypalSdkPromise = null;
+  function loadPaypalSdk() {
+    if (window.paypal) return Promise.resolve(window.paypal);
+    if (paypalSdkPromise) return paypalSdkPromise;
+    paypalSdkPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&vault=true&intent=subscription';
+      s.onload = function () { resolve(window.paypal); };
+      s.onerror = function () { reject(new Error('Could not load PayPal.')); };
+      document.head.appendChild(s);
+    });
+    return paypalSdkPromise;
+  }
+
+  // Shared by individual + church checkout once we know exactly which plan
+  // key, org name (church only) and location count (church only) to send.
+  function runPaypalCheckout(user, planKey, extra) {
+    body().innerHTML = '<h3>Starting your membership…</h3><p>One moment…</p>';
+
+    user.getIdToken().then(function (idToken) {
+      return Promise.all([
+        idToken,
+        fetch('/api/paypal-subscription-start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+          body: JSON.stringify(Object.assign({ plan: planKey }, extra || {}))
+        }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); }),
+        loadPaypalSdk()
+      ]);
+    }).then(function (results) {
+      var idToken = results[0], res = results[1], paypal = results[2];
+      if (!res.ok) {
+        body().innerHTML = '<h3>Hold on</h3><p>' + ((res.d && res.d.error) || 'We couldn’t start checkout just now.') + '</p>' +
+          (res.d && res.d.already ? '<a class="gk-mem-btn" style="display:block;text-align:center;text-decoration:none" href="dashboard.html">Go to my dashboard →</a>' : '');
+        return;
+      }
+      var subId = res.d.subId, ppPlanId = res.d.ppPlanId, quantity = res.d.quantity || 1;
+
+      body().innerHTML =
+        '<h3>' + PLAN_LABEL[planKey] + ' Membership</h3>' +
+        '<p>Complete your subscription with PayPal below.</p>' +
+        '<div class="gk-mem-err" id="gk-mem-err"></div>' +
+        '<div id="gk-paypal-btn"></div>';
+
+      paypal.Buttons({
+        style: { shape: 'pill', color: 'blue', layout: 'vertical', label: 'subscribe' },
+        createSubscription: function (data, actions) {
+          return actions.subscription.create({ plan_id: ppPlanId, quantity: quantity, custom_id: subId });
+        },
+        onApprove: function (data) {
+          body().innerHTML = '<h3>Confirming your payment…</h3><p>One moment — almost done.</p>';
+          fetch('/api/paypal-subscription-confirm', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+            body: JSON.stringify({ subId: subId, ppSubscriptionId: data.subscriptionID })
+          }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+            .then(function (res2) {
+              if (res2.ok && res2.d.ok) {
+                location.href = 'dashboard.html?welcome=member';
+              } else {
+                body().innerHTML = '<h3>Almost there</h3><p>Your payment is processing — this can take a minute. Check your <a href="dashboard.html">dashboard</a> shortly; if it hasn’t unlocked in a few minutes, contact us and we’ll sort it out.</p>';
+              }
+            }).catch(function () {
+              body().innerHTML = '<h3>Almost there</h3><p>Your payment is processing — check your <a href="dashboard.html">dashboard</a> shortly.</p>';
+            });
+        },
+        onError: function (err) {
+          console.error('PayPal button error', err);
+          var e = body().querySelector('#gk-mem-err');
+          if (e) { e.textContent = 'Something went wrong with PayPal — please try again.'; e.style.display = 'block'; }
+        }
+      }).render('#gk-paypal-btn');
+    }).catch(function () {
+      body().innerHTML = '<h3>Something went wrong</h3><p>Please try again in a moment, or email us and we’ll sort it out.</p>';
+    });
+  }
+
+  function showChurchLocationStep(user, orgName, frequency) {
+    var planKey = frequency === 'annual' ? 'church-annual' : 'church';
+    body().innerHTML =
+      '<h3>Church plan</h3>' +
+      '<p>' + (frequency === 'annual' ? '$799/year' : '$79/month') + ' includes one church location with full team access. Extra locations are +$49/mo each.</p>' +
+      '<div class="gk-mem-err" id="gk-mem-err"></div>' +
+      '<label for="gk-locations">Number of church locations</label>' +
+      '<input id="gk-locations" type="number" min="1" step="1" value="1">' +
+      '<button class="gk-mem-btn" id="gk-loc-go">Continue to payment →</button>';
+    body().querySelector('#gk-loc-go').addEventListener('click', function () {
+      var n = parseInt(body().querySelector('#gk-locations').value, 10);
+      var err = body().querySelector('#gk-mem-err');
+      if (!n || n < 1) { err.textContent = 'Please enter at least 1 location.'; err.style.display = 'block'; return; }
+      runPaypalCheckout(user, planKey, { orgName: orgName, locations: n });
+    });
+  }
+
+  function showChurchFrequencyStep(user, orgName) {
+    body().innerHTML =
+      '<h3>Church plan</h3>' +
+      '<p>Choose how you’d like to be billed.</p>' +
+      '<button class="gk-mem-btn" id="gk-freq-monthly" style="margin-bottom:0.6rem;">$79/month</button>' +
+      '<button class="gk-mem-btn" id="gk-freq-annual" style="background:linear-gradient(135deg,#FFB000,#FF8A00);">$799/year — Save $149</button>';
+    body().querySelector('#gk-freq-monthly').addEventListener('click', function () { showChurchLocationStep(user, orgName, 'monthly'); });
+    body().querySelector('#gk-freq-annual').addEventListener('click', function () { showChurchLocationStep(user, orgName, 'annual'); });
+  }
+
   function startCheckout(plan, orgName) {
     plan = PLAN_LABEL[plan] ? plan : 'monthly';
     var user = currentUser();
@@ -149,54 +260,32 @@
     }
     open();
 
-    // Church plans need the church/ministry name first.
+    // Church plans need the church/ministry name first, then billing
+    // frequency, then how many locations — only then do we know which
+    // PayPal plan + quantity to check out with.
     if (isChurchPlan(plan) && !orgName) {
       body().innerHTML =
-        '<h3>' + PLAN_LABEL[plan] + ' plan</h3>' +
+        '<h3>Church plan</h3>' +
         '<p>What’s the name of your church or ministry? This licenses the curriculum to your whole team.</p>' +
         '<div class="gk-mem-err" id="gk-mem-err"></div>' +
         '<label for="gk-org">Church / ministry name</label>' +
         '<input id="gk-org" type="text" placeholder="Grace Community Church">' +
-        '<button class="gk-mem-btn" id="gk-org-go">Continue to payment →</button>';
+        '<button class="gk-mem-btn" id="gk-org-go">Continue →</button>';
       body().querySelector('#gk-org-go').addEventListener('click', function () {
         var v = (body().querySelector('#gk-org').value || '').trim();
         var err = body().querySelector('#gk-mem-err');
         if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
-        startCheckout(plan, v);
+        showChurchFrequencyStep(user, v);
       });
       body().querySelector('#gk-org').focus();
       return;
     }
+    if (isChurchPlan(plan)) {
+      showChurchFrequencyStep(user, orgName);
+      return;
+    }
 
-    body().innerHTML = '<h3>Starting your membership…</h3><p>One moment — taking you to our secure payment page.</p>';
-
-    user.getIdToken().then(function (idToken) {
-      return fetch('/api/membership-subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
-        body: JSON.stringify({ plan: plan, orgName: orgName || '' })
-      });
-    }).then(function (r) {
-      return r.json().then(function (d) { return { ok: r.ok, d: d }; });
-    }).then(function (res) {
-      if (!res.ok) {
-        body().innerHTML = '<h3>Hold on</h3><p>' + ((res.d && res.d.error) || 'We couldn’t start the subscription just now.') + '</p>' +
-          (res.d && res.d.already ? '<a class="gk-mem-btn" style="display:block;text-align:center;text-decoration:none" href="dashboard.html">Go to my dashboard →</a>' : '');
-        return;
-      }
-      var f = document.createElement('form');
-      f.method = 'POST';
-      f.action = res.d.processUrl;
-      Object.keys(res.d.fields).forEach(function (k) {
-        var i = document.createElement('input');
-        i.type = 'hidden'; i.name = k; i.value = res.d.fields[k];
-        f.appendChild(i);
-      });
-      document.body.appendChild(f);
-      f.submit();
-    }).catch(function () {
-      body().innerHTML = '<h3>Something went wrong</h3><p>Please try again in a moment, or email us and we’ll sort it out.</p>';
-    });
+    runPaypalCheckout(user, plan);
   }
 
   /* ---------- wire the page ----------------------------------------- */

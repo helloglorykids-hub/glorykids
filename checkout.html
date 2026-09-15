@@ -150,8 +150,8 @@
       <div class="payfast-info">
         <div class="payfast-info__icon">🔒</div>
         <div>
-          <h4>Secure checkout with PayFast</h4>
-          <p>You'll be taken to PayFast's secure payment page to pay by card, Apple Pay, or your preferred method. We never see or store your card details.</p>
+          <h4>Secure checkout with PayPal</h4>
+          <p>Pay with your PayPal account or a card via PayPal — no PayPal account required. We never see or store your card details.</p>
           <div class="payfast-methods">
             <span class="payfast-method-chip">💳 Visa</span>
             <span class="payfast-method-chip">💳 Mastercard</span>
@@ -161,7 +161,8 @@
         </div>
       </div>
 
-      <button class="checkout-pay-btn" id="co-pay-btn" onclick="submitToPayFast()">🔒 Pay Now</button>
+      <button class="checkout-pay-btn" id="co-pay-btn" onclick="startPaypalCheckout()">🔒 Pay Now</button>
+      <div id="co-paypal-btn" style="display:none;margin-top:0.75rem;"></div>
       <div class="checkout-secure">🔐 Your payment is encrypted and secure</div>
     </div>
   </div>
@@ -229,15 +230,32 @@
     });
   });
 
-  // ── SUBMIT TO PAYFAST — real full-page redirect (form POST) to PayFast's
-  //    hosted payment page. No popup/overlay; this page IS the checkout page.
-  //    Works signed-in (order linked to account) or as a guest (name + email
-  //    still required so the order can be delivered and looked up). ──
-  async function submitToPayFast() {
+  // ── PAYPAL CHECKOUT — creates a priced PayPal order server-side, then
+  //    renders PayPal's own button in place of "Pay Now" (PayPal orders are
+  //    approved via their JS SDK, not a redirect like PayFast). Works
+  //    signed-in (order linked to account) or as a guest (name + email still
+  //    required so the order can be delivered and looked up). ──
+  var PAYPAL_CLIENT_ID = 'BAApvD_Zb9FcjZo44jT5oUS-v8iSA788-nrLqh8GmwVJpBcs2O3TtLGVCTbKi_Oc9Zg_a3G6YQWKD2R308';
+  var paypalSdkPromise = null;
+  function loadPaypalSdk() {
+    if (window.paypal) return Promise.resolve(window.paypal);
+    if (paypalSdkPromise) return paypalSdkPromise;
+    paypalSdkPromise = new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = 'https://www.paypal.com/sdk/js?client-id=' + PAYPAL_CLIENT_ID + '&currency=USD&intent=capture';
+      s.onload = function () { resolve(window.paypal); };
+      s.onerror = function () { reject(new Error('Could not load PayPal.')); };
+      document.head.appendChild(s);
+    });
+    return paypalSdkPromise;
+  }
+
+  async function startPaypalCheckout() {
     var first = document.getElementById('co-first').value.trim();
     var last = document.getElementById('co-last').value.trim();
     var email = document.getElementById('co-email').value.trim();
     var btn = document.getElementById('co-pay-btn');
+    var btnContainer = document.getElementById('co-paypal-btn');
     var isGuest = !auth.currentUser;
 
     if (!first || !last) { alert('Please fill in your first and last name.'); return; }
@@ -258,7 +276,7 @@
 
     btn.disabled = true; btn.textContent = 'Connecting…';
     try {
-      var res = await fetch('/api/payfast-checkout', {
+      var res = await fetch('/api/paypal-create-order', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({
@@ -272,17 +290,36 @@
 
       localStorage.setItem('shop_last_order', data.orderId);
 
-      // Build and submit a real form — the browser navigates to PayFast's page.
-      var f = document.createElement('form');
-      f.method = 'POST';
-      f.action = data.processUrl;
-      Object.entries(data.fields).forEach(function ([k, v]) {
-        var inp = document.createElement('input');
-        inp.type = 'hidden'; inp.name = k; inp.value = v;
-        f.appendChild(inp);
-      });
-      document.body.appendChild(f);
-      f.submit();
+      var paypal = await loadPaypalSdk();
+      btn.style.display = 'none';
+      btnContainer.style.display = 'block';
+
+      paypal.Buttons({
+        style: { shape: 'pill', color: 'gold', layout: 'vertical', label: 'pay' },
+        createOrder: function () { return data.ppOrderId; },
+        onApprove: async function () {
+          btnContainer.innerHTML = '<p style="text-align:center;">Confirming your payment…</p>';
+          try {
+            var capRes = await fetch('/api/paypal-capture-order', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ppOrderId: data.ppOrderId, orderId: data.orderId })
+            });
+            var capData = await capRes.json();
+            if (!capRes.ok) throw new Error(capData.error || 'Payment could not be completed.');
+            location.href = 'shop-thankyou.html?order=' + encodeURIComponent(data.orderId);
+          } catch (err) {
+            alert('Sorry — ' + err.message);
+            location.reload();
+          }
+        },
+        onCancel: function () { location.reload(); },
+        onError: function (err) {
+          console.error('PayPal button error', err);
+          alert('Something went wrong with PayPal — please try again.');
+          location.reload();
+        }
+      }).render('#co-paypal-btn');
     } catch (err) {
       alert('Sorry — ' + err.message);
       btn.disabled = false; btn.textContent = '🔒 Pay Now';

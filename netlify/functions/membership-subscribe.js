@@ -17,7 +17,7 @@ const { json, parseBody } = require('./_lib/http');
 const SITE = process.env.SITE_ORIGIN || 'https://www.glorykidsministry.com';
 const USD_ZAR_RATE = Number(process.env.USD_ZAR_RATE) || 18.5;
 const MONTHLY_USD = Number(process.env.MEMBERSHIP_MONTHLY_USD) || 29.99;
-const ANNUAL_USD = Number(process.env.MEMBERSHIP_ANNUAL_USD) || 249;
+const ANNUAL_USD = Number(process.env.MEMBERSHIP_ANNUAL_USD) || 299;
 const CHURCH_SMALL_USD = Number(process.env.CHURCH_SMALL_USD) || 499;
 const CHURCH_GROWING_USD = Number(process.env.CHURCH_GROWING_USD) || 899;
 // Safety gate: keep this unset (or not "true") until membership billing is live.

@@ -2625,7 +2625,7 @@ async function reseedPages() {
 async function renderSeoTab() {
   if (!gkSiteCfg) gkSiteCfg = await GK.getSiteConfig();
   document.getElementById('seo-robots').value = gkSiteCfg.robotsTxt ||
-    'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html\nDisallow: /admin-import.html';
+    'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html';
   renderRedirects();
 }
 
@@ -2822,7 +2822,7 @@ async function renderProducts() {
 }
 
 let pFiles = [];   // [{path,name}]  working copy for the open editor
-let pImage = '';
+let pImages = [];  // [url, ...] — first image is the cover shown on the shop grid
 
 function editProduct(id) {
   const p = id ? gkProducts.find(x => x.id === id) : {
@@ -2832,7 +2832,7 @@ function editProduct(id) {
   };
   pFiles = (p.files && p.files.length) ? p.files.slice()
          : (p.storagePath ? [{ path: p.storagePath, name: p.storagePath.split('/').pop() }] : []);
-  pImage = (p.images && p.images[0]) || '';
+  pImages = (p.images || []).slice();
   const box = document.getElementById('product-editor');
   box.style.display = 'block';
   box.innerHTML = `
@@ -2859,12 +2859,12 @@ function editProduct(id) {
       <div class="gk-field"><label>File note (e.g. "PDF · 100+ pages")</label><input type="text" id="p-filenote" value="${esc(p.fileNote || '')}"></div>
 
       <div class="gk-field">
-        <label>Cover image — drag &amp; drop or click</label>
+        <label>Product images — drag &amp; drop or click (multiple allowed; first image is the cover)</label>
         <div id="p-img-zone" class="featured-dropzone">
-          <img id="p-img-preview" class="featured-dropzone__preview" src="${esc(pImage)}" style="${pImage ? '' : 'display:none;'}max-width:140px;border-radius:8px;">
-          <div class="featured-dropzone__text"><strong>Drag &amp; drop an image</strong> or click to browse</div>
+          <div class="featured-dropzone__text"><strong>Drag &amp; drop images</strong> or click to browse — add screenshots of the curriculum pages for the gallery</div>
         </div>
         <div class="gk-hint" id="p-img-status"></div>
+        <div id="p-img-list" style="display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.6rem;"></div>
       </div>
 
       <div class="gk-field">
@@ -2888,14 +2888,13 @@ function editProduct(id) {
     </div>`;
 
   wireDropzone(document.getElementById('p-img-zone'), {
-    accept: 'image/*',
+    accept: 'image/*', multiple: true,
     onFile: async (file) => {
-      const s = document.getElementById('p-img-status'); s.textContent = 'Uploading…';
+      const s = document.getElementById('p-img-status'); s.textContent = `Uploading ${file.name}…`;
       const url = await uploadSiteAsset(file, 'p-img-status');
-      pImage = url;
-      const img = document.getElementById('p-img-preview');
-      img.src = url; img.style.display = '';
-      s.textContent = 'Image set ✓';
+      pImages.push(url);
+      s.textContent = `${file.name} uploaded ✓`;
+      drawProductImages();
       if (window.GK.addMedia) GK.addMedia({ url, name: file.name, kind: 'image' });
     }
   });
@@ -2911,7 +2910,30 @@ function editProduct(id) {
     }
   });
   drawProductFiles();
+  drawProductImages();
   box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function moveProductImage(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= pImages.length) return;
+  const tmp = pImages[i]; pImages[i] = pImages[j]; pImages[j] = tmp;
+  drawProductImages();
+}
+
+function drawProductImages() {
+  const el = document.getElementById('p-img-list');
+  if (!el) return;
+  el.innerHTML = pImages.map((url, i) => `
+    <div style="position:relative;width:88px;">
+      <img src="${esc(url)}" style="width:88px;height:88px;object-fit:cover;border-radius:8px;border:2px solid ${i === 0 ? 'var(--primary)' : 'var(--gray-200)'};">
+      ${i === 0 ? '<span style="position:absolute;top:2px;left:2px;background:var(--primary);color:#fff;font-size:0.6rem;font-weight:700;padding:1px 5px;border-radius:999px;">COVER</span>' : ''}
+      <div style="display:flex;justify-content:center;gap:0.2rem;margin-top:0.25rem;">
+        <button class="row-btn" title="Move left" ${i === 0 ? 'disabled' : ''} onclick="moveProductImage(${i},-1)">◀</button>
+        <button class="row-btn row-btn--danger" title="Remove" onclick="pImages.splice(${i},1);drawProductImages()">✕</button>
+        <button class="row-btn" title="Move right" ${i === pImages.length - 1 ? 'disabled' : ''} onclick="moveProductImage(${i},1)">▶</button>
+      </div>
+    </div>`).join('');
 }
 
 function drawProductFiles() {
@@ -2935,7 +2957,7 @@ async function saveProductForm(id) {
     ageRange: g('p-age'), weeks: g('p-weeks'), fileNote: g('p-filenote'),
     blurb: g('p-blurb'), descriptionHtml: g('p-desc'),
     features: g('p-features').split('\n').map(s => s.trim()).filter(Boolean),
-    images: pImage ? [pImage] : [],
+    images: pImages.slice(),
     files: pFiles.slice(),
     active: document.getElementById('p-active').checked,
     featured: document.getElementById('p-featured').checked
