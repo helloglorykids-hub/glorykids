@@ -34,12 +34,16 @@
 [[headers]]
   for = "*.css"
   [headers.values]
-    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+    # Short max-age: these are hand-edited during active development, and a
+    # 1-hour cache meant a browser that loaded the old file before a deploy
+    # kept serving it for up to an hour afterwards regardless of how many
+    # times the site redeployed in between.
+    Cache-Control = "public, max-age=300, stale-while-revalidate=3600"
 
 [[headers]]
   for = "*.js"
   [headers.values]
-    Cache-Control = "public, max-age=3600, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=300, stale-while-revalidate=3600"
 
 # Pretty API paths → serverless functions
 [[redirects]]
