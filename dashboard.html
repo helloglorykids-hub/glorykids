@@ -363,7 +363,7 @@
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:1rem;">
-          <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta">✨ Upgrade to Membership</a>
+          <a href="glory-kids-curriculum.html#pricing" class="btn btn--gold" id="plan-cta">✨ Upgrade to Membership</a>
           <a href="#membership" id="plan-manage-link" onclick="showTab('membership', document.querySelector('.dash-nav-item[href=\'#membership\']'))" style="display:none;font-size:0.85rem;font-weight:700;color:var(--primary);white-space:nowrap;">Manage membership →</a>
         </div>
       </div>
@@ -371,7 +371,7 @@
       <!-- Free plan nudge -->
       <div class="plan-free-note" id="free-plan-note">
         <p id="free-plan-note-text">🔓 Loading your free lesson access…</p>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--sm">Join Membership →</a>
+        <a href="glory-kids-curriculum.html#pricing" class="btn btn--primary btn--sm">Join Membership →</a>
       </div>
 
       <!-- Church team seats (church owners only) -->
@@ -461,7 +461,7 @@
           <h3>Unlock Everything with Glory Kids ✨</h3>
           <p>A full, growing lesson library, curriculum series, activity sheets, and new content every week.</p>
         </div>
-        <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);white-space:nowrap;">
+        <a href="glory-kids-curriculum.html#pricing" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);white-space:nowrap;">
           Join for $29.99/mo →
         </a>
       </div>
@@ -525,7 +525,7 @@
       <div id="curriculum-lib-locked" style="display:none;">
         <div class="upgrade-banner">
           <div><h3>Glory Kids Curriculum is a Members-Only Feature ✨</h3><p>Full multi-week series and downloadable curriculum packs — included with Glory Kids Membership.</p></div>
-          <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
+          <a href="glory-kids-curriculum.html#pricing" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
         </div>
       </div>
     </div>
@@ -538,7 +538,7 @@
       <div id="activities-lib-locked" style="display:none;">
         <div class="upgrade-banner">
           <div><h3>Activities &amp; Resources are a Members-Only Feature ✨</h3><p>Crafts, games, coloring pages, object lessons and more — included with Glory Kids Membership.</p></div>
-          <a href="glory-kids-membership.html" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
+          <a href="glory-kids-curriculum.html#pricing" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);">See Membership →</a>
         </div>
       </div>
     </div>
@@ -580,7 +580,7 @@
             <div class="plan-card__status" id="plan-status-row-full"><span class="active-dot"></span> Active</div>
           </div>
         </div>
-        <a href="glory-kids-membership.html" class="btn btn--gold" id="plan-cta-full">✨ Upgrade to Membership</a>
+        <a href="glory-kids-curriculum.html#pricing" class="btn btn--gold" id="plan-cta-full">✨ Upgrade to Membership</a>
         <button id="plan-cancel-full" onclick="cancelMembership()" style="display:none;background:none;border:1px solid var(--gray-200);border-radius:var(--radius-full);padding:0.5rem 1rem;color:var(--rose,#c0392b);font-size:0.8rem;font-weight:700;cursor:pointer;">Cancel membership</button>
       </div>
 
@@ -589,7 +589,7 @@
         <ul id="membership-benefits-list" style="margin:0;padding-left:1.1rem;color:var(--gray-500);font-size:0.9rem;line-height:1.9;"></ul>
       </div>
 
-      <p style="color:var(--gray-500);font-size:0.85rem;">Questions about billing? <a href="contact.html" class="text-primary" style="font-weight:600;">Contact us</a> — or see full plan details on the <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">membership page →</a></p>
+      <p style="color:var(--gray-500);font-size:0.85rem;">Questions about billing? <a href="contact.html" class="text-primary" style="font-weight:600;">Contact us</a> — or see full plan details on the <a href="glory-kids-curriculum.html#pricing" class="text-primary" style="font-weight:600;">membership page →</a></p>
     </div>
 
   </main>
@@ -886,14 +886,14 @@ async function renderLibrarySection(section) {
 
   sub.innerHTML = isMember
     ? (isActivities ? 'Every activity pack below is included with your membership.' : 'Everything below is included with your membership. New series drop on the 15th of each month.')
-    : 'Preview of what members get. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock everything →</a>';
+    : 'Preview of what members get. <a href="glory-kids-curriculum.html#pricing" class="text-primary" style="font-weight:600;">Unlock everything →</a>';
   locked.style.display = isMember ? 'none' : 'block';
 
   host.innerHTML = items.map(c => {
     const cover = c.coverImage ? `<img src="${c.coverImage}" alt="" style="width:100%;height:160px;object-fit:cover;border-radius:12px 12px 0 0;">` : `<div style="height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#EDE7F6,#FEF0D3);border-radius:12px 12px 0 0;">📚</div>`;
     let body;
     if (!isMember) {
-      body = `<a href="glory-kids-membership.html" style="display:inline-block;margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;background:rgba(0,0,0,0.06);color:#4b5563;text-decoration:none;">🔒 Members only</a>`;
+      body = `<a href="glory-kids-curriculum.html#pricing" style="display:inline-block;margin-top:0.6rem;font:600 0.8rem Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;background:rgba(0,0,0,0.06);color:#4b5563;text-decoration:none;">🔒 Members only</a>`;
     } else if (c.type === 'series') {
       body = `<div style="margin-top:0.6rem;display:flex;flex-direction:column;gap:0.4rem;">` +
         c.weeks.map(w => `<button data-cur="${c.id}" data-week="${w.index}" style="text-align:left;font:500 0.82rem Poppins,system-ui,sans-serif;padding:0.5rem 0.7rem;border:1px solid var(--gray-200);border-radius:8px;background:#fff;color:#17191C;cursor:pointer;">⬇ ${(w.title || 'Week').replace(/[<>&]/g,'')} <span style="color:#6b7280">· ${w.fileCount} file(s)</span></button>`).join('') +
@@ -954,7 +954,7 @@ function lessonCardHtml(p, isMember) {
   const meta = [p.scripture, (p.ageGroups || []).length ? (p.ageGroups.length + ' age groups') : ''].filter(Boolean).join(' · ');
   const btnCss = 'display:inline-block;font:600 0.8rem/1 Poppins,system-ui,sans-serif;padding:0.55rem 0.9rem;border-radius:8px;border:0;cursor:pointer;text-decoration:none;';
   let action;
-  if (!open) action = `<a href="glory-kids-membership.html" style="${btnCss}background:var(--gray-100);color:var(--gray-500);">🔒 Members only</a>`;
+  if (!open) action = `<a href="glory-kids-curriculum.html#pricing" style="${btnCss}background:var(--gray-100);color:var(--gray-500);">🔒 Members only</a>`;
   else if (hasFiles) action = `<button data-lesson="${p.id}" style="${btnCss}background:#059669;color:#fff;">⬇ Download pack</button>`;
   else action = `<a href="/free-bible-lessons/${encodeURIComponent(p.slug)}" style="${btnCss}background:var(--primary);color:#fff;">Read lesson →</a>`;
   const icon = p.icon || '📖';
@@ -994,7 +994,7 @@ async function renderLessonsLibrary() {
   const openCount = posts.filter(p => p.isFreeLesson || p.freeWithAccount).length;
   sub.innerHTML = isMember
     ? 'Every lesson below is yours — click to read online, or download the ones with a printable pack.'
-    : `${openCount} of ${posts.length} lessons are unlocked on your free account. <a href="glory-kids-membership.html" class="text-primary" style="font-weight:600;">Unlock the full library →</a>`;
+    : `${openCount} of ${posts.length} lessons are unlocked on your free account. <a href="glory-kids-curriculum.html#pricing" class="text-primary" style="font-weight:600;">Unlock the full library →</a>`;
 
   grid.innerHTML = posts.map(p => lessonCardHtml(p, isMember)).join('');
 

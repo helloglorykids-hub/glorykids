@@ -253,8 +253,7 @@
     var user = currentUser();
     if (!user) {
       // Send them to sign up, then straight back into checkout for this plan.
-      var backPage = isChurchPlan(plan) ? 'church-pricing.html' : 'glory-kids-membership.html';
-      var back = backPage + '?checkout=1&plan=' + plan + '#pricing';
+      var back = 'glory-kids-curriculum.html?checkout=1&plan=' + plan + '#pricing';
       location.href = 'signup.html?redirect=' + encodeURIComponent(back);
       return;
     }

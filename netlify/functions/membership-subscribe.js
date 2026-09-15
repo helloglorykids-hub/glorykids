@@ -96,7 +96,7 @@ exports.handler = async (event) => {
 
   const { fields, processUrl } = buildSubscription({
     return_url: `${SITE}/dashboard.html?welcome=member`,
-    cancel_url: `${SITE}/glory-kids-membership.html?checkout=cancelled`,
+    cancel_url: `${SITE}/glory-kids-curriculum.html?checkout=cancelled#pricing`,
     notify_url: `${SITE}/api/payfast-notify`,
     name_first: name.split(' ')[0] || '',
     email_address: email,

@@ -239,7 +239,7 @@
       <div class="nav__actions">
         <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
         <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-        <a href="glory-kids-membership.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
+        <a href="#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
       </div>
       <button class="nav__hamburger" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -262,7 +262,7 @@
   <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
   <a href="login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
-    <a href="glory-kids-membership.html#pricing" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
+    <a href="#pricing" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
   </div>
 </div>
 
@@ -417,7 +417,7 @@
     <div class="month-grid reveal" id="monthGrid"></div>
 
     <div class="text-center mt-12 reveal">
-      <a href="glory-kids-membership.html" class="btn btn--outline btn--lg">✨ Join Membership!</a>
+      <a href="#pricing" class="btn btn--outline btn--lg">✨ Join Membership!</a>
     </div>
   </div>
 </section>
@@ -720,21 +720,286 @@
   </div>
 </section>
 
-<!-- FINAL CTA — hidden for now (off-brand purple/orange), will be rebuilt properly later.
-<section style="padding:4rem 0;">
+<section class="pricing-premium" id="pricing">
+
+  <!-- Wave seam — real filled SVG shape (not a CSS mask) so the fill is a
+       solid, pixel-exact match with no antialiasing hairline at the seam. -->
+  <svg class="pricing-wave-seam" viewBox="0 -60 1440 132" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 -60H1440V33C1245 59 1090 14 760 31 470 46 245 9 0 30Z" fill="#101114"/>
+  </svg>
+
+  <!-- SUBTLE ORBS -->
+  <div class="pricing-orbs">
+    <div class="orb orb-teal-sm"></div>
+    <div class="orb orb-orange-sm"></div>
+  </div>
+
   <div class="container">
-    <div class="cta-banner reveal" style="background:linear-gradient(135deg,var(--primary-dark),var(--primary),#66249A);">
-      <h2 style="color:white;">Get the Full 12-Month Journey</h2>
-      <p>Join today and get instant access to every series, lesson, activity, and resource we've ever created — plus new content added every week.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <a href="glory-kids-membership.html" class="btn btn--gold btn--lg">✨ Join Membership →</a>
-        <a href="free-lessons.html" class="btn btn--outline-white">Try Free Lessons First</a>
-      </div>
-      <p style="margin-top:1.5rem;font-size:0.85rem;color:rgba(255,255,255,0.5);">No contracts · Cancel anytime</p>
+
+    <!-- HERO -->
+    <div class="pricing-hero">
+      <h2 class="section-title">Simple Pricing. Zero Surprises.</h2>
+      <p class="section-subtitle">Choose your path. Get exactly what your ministry needs.</p>
+      <p class="section-subtitle" style="font-weight:700;">Glory Kids Membership is open now — join today to lock in your spot at these prices.</p>
     </div>
+
+    <!-- AUDIENCE SELECTOR -->
+    <div class="audience-selector-premium">
+      <button class="audience-btn-premium active" data-audience="parents">
+        <span>👨‍👩‍👧</span>
+        <span>I'm a Parent or Teacher</span>
+      </button>
+      <button class="audience-btn-premium" data-audience="church">
+        <span>⛪</span>
+        <span>I'm a Church/Kidmin Leader</span>
+      </button>
+      <button class="audience-btn-premium" data-audience="school">
+        <span>🏫</span>
+        <span>I'm a Christian School</span>
+      </button>
+    </div>
+
+    <!-- PRICING CARDS WRAPPER -->
+    <div class="pricing-cards-premium-wrapper">
+
+      <!-- PARENTS VIEW (Default selected) -->
+      <div class="pricing-cards-set-premium" data-audience="parents">
+
+        <!-- FREE TIER -->
+        <div class="pricing-card-premium pricing-card--free-premium" style="animation-delay: 0ms;">
+          <div class="card-label-premium">Start Free</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$0</span>
+            <span class="price-period">/month</span>
+          </div>
+          <p class="card-desc-premium">Perfect for trying it out</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
+            <li><span class="check">✓</span>Sample activities &amp; resources</li>
+            <li><span class="check">✓</span>No credit card required</li>
+          </ul>
+
+          <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
+          <p class="card-footer-premium">Try first, no commitment.</p>
+        </div>
+
+        <!-- MEMBERSHIP TIER (Highlighted) -->
+        <div class="pricing-card-premium pricing-card--highlighted-premium pricing-card--family" style="animation-delay: 100ms;">
+          <div class="card-badge-premium">Most Popular</div>
+          <div class="card-label-premium">Families &amp; Parents</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$29.99</span>
+            <span class="price-period">/month</span>
+            <span class="price-alt">or <strong>$299/year</strong> (Save $60)</span>
+          </div>
+          <p class="card-desc-premium">For individual parents &amp; teachers</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>All 35 Free Lessons included</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs</li>
+            <li><span class="check">✓</span>48 lessons + activities per year</li>
+            <li><span class="check">✓</span>Family Devotionals and Resources</li>
+            <li><span class="check">✓</span>Exclusive themed Worship Songs</li>
+            <li><span class="check">✓</span>Multiple crafts, games, and activities</li>
+            <li><span class="check">✓</span>Unlimited resource library</li>
+          </ul>
+
+          <a href="#" data-checkout-plan="monthly" class="card-cta-premium card-cta-primary">Join Monthly — $29.99/mo</a>
+          <a href="#" data-checkout-plan="annual" class="card-cta-premium card-cta-secondary" style="margin-top:0.6rem;">Join Annually — $299/yr (Save $60)</a>
+          <p class="card-footer-premium">New curriculum delivered the 15th of each month. Cancel anytime.</p>
+        </div>
+
+        <!-- CHURCH TIER (Teaser) -->
+        <div class="pricing-card-premium pricing-card--teaser-premium" style="animation-delay: 200ms;">
+          <div class="card-label-premium">Church &amp; Kidmin License</div>
+          <div class="card-price-locked-premium">
+            <span class="lock-icon">🔒</span>
+            <span>For larger teams</span>
+          </div>
+          <p class="card-desc-premium">Ready to equip your whole team?</p>
+
+          <a href="#pricing-church" class="card-cta-premium card-cta-secondary card-switch-audience" data-audience="church">See Church Pricing →</a>
+          <p class="card-footer-premium">Switch audience to learn more</p>
+        </div>
+
+      </div>
+
+      <!-- CHURCH VIEW (Hidden by default) -->
+      <div class="pricing-cards-set-premium" data-audience="church" style="display: none;">
+
+        <!-- FREE TIER -->
+        <div class="pricing-card-premium pricing-card--free-premium" style="animation-delay: 0ms;">
+          <div class="card-label-premium">Start Free</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$0</span>
+            <span class="price-period">/month</span>
+          </div>
+          <p class="card-desc-premium">Try first, no credit card</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
+            <li><span class="check">✓</span>Sample activities &amp; resources</li>
+            <li><span class="check">✓</span>No credit card required</li>
+          </ul>
+
+          <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
+          <p class="card-footer-premium">Try first, no commitment.</p>
+        </div>
+
+        <!-- FAMILY TIER (Optional) -->
+        <div class="pricing-card-premium pricing-card--secondary" style="animation-delay: 100ms;">
+          <div class="card-label-premium">Individual License (Optional)</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$29.99</span>
+            <span class="price-period">/month</span>
+          </div>
+          <p class="card-desc-premium">For solo teachers &amp; parents</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>All lessons + resources</li>
+            <li><span class="check">✓</span>Personal account access</li>
+            <li><span class="check">✓</span>Add to your order</li>
+          </ul>
+
+          <a href="#" data-checkout-plan="monthly" class="card-cta-premium card-cta-secondary">Join Membership</a>
+          <p class="card-footer-premium">Cancel anytime.</p>
+        </div>
+
+        <!-- CHURCH TIER (Highlighted) -->
+        <div class="pricing-card-premium pricing-card--highlighted-premium pricing-card--church" style="animation-delay: 200ms;">
+          <div class="card-badge-premium">Designed For You</div>
+          <div class="card-label-premium">Church &amp; Kidmin License</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$79</span>
+            <span class="price-period">/month</span>
+            <span class="price-alt">or <strong>$799/year</strong> (Save $149)</span>
+          </div>
+          <p class="card-desc-premium">For kids ministry teams &amp; organizations</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>Everything in Family plan</li>
+            <li><span class="check">✓</span>Unlimited leaders and volunteers, one church location</li>
+            <li><span class="check">✓</span>Volunteer training resources</li>
+            <li><span class="check">✓</span>Ministry planning tools</li>
+            <li><span class="check">✓</span>Church implementation guide</li>
+            <li><span class="check">✓</span>Priority email support</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs (15th)</li>
+            <li><span class="check">✓</span>Monthly Live Q&amp;A with Jandre</li>
+            <li><span class="check">✓</span>Private Facebook Group for church leaders</li>
+            <li><span class="check">✓</span>Original music album with every pack (crafted specifically for each lesson theme)</li>
+            <li><span class="check">✓</span>Additional locations: +$49/mo each</li>
+          </ul>
+
+          <a href="#" data-checkout-plan="church" class="card-cta-premium card-cta-primary">Join Monthly — $79/mo</a>
+          <a href="#" data-checkout-plan="church-annual" class="card-cta-premium card-cta-secondary" style="margin-top:0.6rem;">Join Annually — $799/yr (Save $149)</a>
+          <p class="card-footer-premium">New curriculum delivered the 15th of each month. Cancel anytime.</p>
+        </div>
+
+      </div>
+
+      <!-- SCHOOL VIEW (Hidden by default) -->
+      <div class="pricing-cards-set-premium" data-audience="school" style="display: none;">
+
+        <!-- FREE TIER -->
+        <div class="pricing-card-premium pricing-card--free-premium" style="animation-delay: 0ms;">
+          <div class="card-label-premium">Start Free</div>
+          <div class="card-price-premium">
+            <span class="price-amt">$0</span>
+            <span class="price-period">/school</span>
+          </div>
+          <p class="card-desc-premium">Explore our curriculum</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
+            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
+            <li><span class="check">✓</span>Sample curriculum &amp; teaching guides</li>
+            <li><span class="check">✓</span>No credit card required</li>
+          </ul>
+
+          <a href="free-lessons.html" class="card-cta-premium card-cta-secondary">Browse Free Lessons</a>
+          <p class="card-footer-premium">Try first, no commitment.</p>
+        </div>
+
+        <!-- SCHOOL TIER (Highlighted) -->
+        <div class="pricing-card-premium pricing-card--highlighted-premium pricing-card--school" style="animation-delay: 100ms;">
+          <div class="card-badge-premium">School Pricing</div>
+          <div class="card-label-premium">Christian School License</div>
+          <div class="card-price-premium">
+            <span class="price-amt">Custom</span>
+            <span class="price-period">/year</span>
+            <span class="price-alt">Based on school size</span>
+          </div>
+          <p class="card-desc-premium">For Christian schools &amp; teachers</p>
+
+          <ul class="card-features-premium">
+            <li><span class="check">✓</span>Everything in Church plan</li>
+            <li><span class="check">✓</span>Site-wide curriculum license</li>
+            <li><span class="check">✓</span>Volunteer &amp; teacher training for all staff</li>
+            <li><span class="check">✓</span>Classroom implementation resources</li>
+            <li><span class="check">✓</span>Admin dashboard</li>
+            <li><span class="check">✓</span>Multi-teacher access</li>
+            <li><span class="check">✓</span>Dedicated account manager</li>
+            <li><span class="check">✓</span>Priority support</li>
+            <li><span class="check">✓</span>4 new complete Premium lesson packs delivered monthly (15th)</li>
+          </ul>
+
+          <a href="contact.html" class="card-cta-premium card-cta-primary">Request School Pricing</a>
+          <p class="card-footer-premium">Flexible options for schools of all sizes.</p>
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 </section>
--->
+
+<script>
+  (function () {
+    var pricingSection = document.getElementById('pricing');
+    if (!pricingSection) return;
+
+    function selectAudience(audience) {
+      pricingSection.querySelectorAll('.audience-btn-premium').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.audience === audience);
+      });
+
+      pricingSection.querySelectorAll('.pricing-cards-set-premium').forEach(function (set) {
+        set.style.display = 'none';
+      });
+
+      var target = pricingSection.querySelector('.pricing-cards-set-premium[data-audience="' + audience + '"]');
+      if (!target) return;
+      target.style.display = 'grid';
+
+      target.querySelectorAll('.pricing-card-premium').forEach(function (card) {
+        card.style.animation = 'none';
+        card.offsetHeight; // force reflow so the fade-in restarts
+        card.style.animation = '';
+      });
+    }
+
+    pricingSection.querySelectorAll('.audience-btn-premium').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        selectAudience(this.dataset.audience);
+      });
+    });
+
+    // Switch audience from the teaser card's CTA
+    pricingSection.querySelectorAll('.card-switch-audience').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        var targetAudience = this.dataset.audience;
+        selectAudience(targetAudience);
+        var btn = pricingSection.querySelector('.audience-btn-premium[data-audience="' + targetAudience + '"]');
+        if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+  })();
+</script>
 
 
 <footer class="gk-footer">
@@ -806,6 +1071,7 @@
 <script src="gk-forms.js" defer></script>
 <script src="content.js" defer></script>
 <script src="auth.js"></script>
+<script src="membership.js" defer></script>
 <script src="chatbot.js"></script>
 </body>
 </html>

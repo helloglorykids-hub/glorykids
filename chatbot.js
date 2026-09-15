@@ -23,11 +23,11 @@
     },
     {
       keywords: ['price', 'pricing', 'cost', 'how much', 'membership', 'glory kids', 'subscription'],
-      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> (or $299/year — save $60) and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-membership.html\">Membership page</a>."
+      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> (or $299/year — save $60) and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-curriculum.html#pricing\">Membership page</a>."
     },
     {
       keywords: ['church pricing', 'church plan', 'multi campus', 'multi-campus', 'nonprofit pricing', 'church license', 'kidmin team', 'church discount', 'group discount'],
-      answer: "Glory Kids for Churches is $79/month (or $799/year — save $149) for one church location with full team access — unlimited leaders and volunteers included. Extra locations are +$49/month each. See <a href=\"church-pricing.html\">Church Pricing</a> for details, or <a href=\"contact.html\">contact our team</a> for multi-site or larger ministry networks."
+      answer: "Glory Kids for Churches is $79/month (or $799/year — save $149) for one church location with full team access — unlimited leaders and volunteers included. Extra locations are +$49/month each. See <a href=\"glory-kids-curriculum.html#pricing\">Church Pricing</a> for details, or <a href=\"contact.html\">contact our team</a> for multi-site or larger ministry networks."
     },
     {
       keywords: ['cancel', 'pause', 'downgrade', 'unsubscribe'],
@@ -63,7 +63,7 @@
     },
     {
       keywords: ['church', 'volunteer', 'kidmin', 'sunday school', 'vbs'],
-      answer: "We're built for churches and kidmin teams — many of our curriculum packs are Sunday-school-ready, and our blog has articles specifically on recruiting and equipping volunteers. Running a whole team? See <a href=\"church-pricing.html\">Church Pricing</a>."
+      answer: "We're built for churches and kidmin teams — many of our curriculum packs are Sunday-school-ready, and our blog has articles specifically on recruiting and equipping volunteers. Running a whole team? See <a href=\"glory-kids-curriculum.html#pricing\">Church Pricing</a>."
     },
     {
       keywords: ['compare', 'comparison', 'versus', ' vs ', 'orange curriculum', 'rightnow media', 'go curriculum'],

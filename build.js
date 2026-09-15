@@ -290,9 +290,7 @@ function applyToHtml(html, cfg, page, canonical) {
 
 const CONTENT_PAGE_IDS = {
   'index.html': 'home',
-  'glory-kids-curriculum.html': 'curriculum',
-  'glory-kids-membership.html': 'membership',
-  'church-pricing.html': 'church-pricing'
+  'glory-kids-curriculum.html': 'curriculum'
 };
 
 (async function main() {

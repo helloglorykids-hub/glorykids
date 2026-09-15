@@ -7,7 +7,6 @@ module.exports = {
     './index.html',
     './free-lessons.html',
     './comparison.html',
-    './church-pricing.html',
     './glory-kids-curriculum.html',
     './blog-post.html',
     './blog-post-template.html',

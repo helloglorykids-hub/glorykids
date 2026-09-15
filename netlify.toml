@@ -45,6 +45,16 @@
   [headers.values]
     Cache-Control = "public, max-age=300, stale-while-revalidate=3600"
 
+# Old membership/church pages, folded into the curriculum page's pricing section
+[[redirects]]
+  from = "/glory-kids-membership.html"
+  to = "/glory-kids-curriculum.html#pricing"
+  status = 301
+[[redirects]]
+  from = "/church-pricing.html"
+  to = "/glory-kids-curriculum.html#pricing"
+  status = 301
+
 # Pretty API paths → serverless functions
 [[redirects]]
   from = "/api/payfast-checkout"

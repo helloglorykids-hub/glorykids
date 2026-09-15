@@ -20,7 +20,7 @@
 
   if (isFree) return;
 
-  var MEMBERSHIP_URL = "../../glory-kids-membership.html";
+  var MEMBERSHIP_URL = "../../glory-kids-curriculum.html#pricing";
 
   document.querySelectorAll(".lesson-optin").forEach(function (box) {
     box.classList.add("lesson-optin--locked");
