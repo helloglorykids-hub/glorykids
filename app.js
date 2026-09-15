@@ -76,17 +76,27 @@ if (nav) {
 const hamburger = document.querySelector('.nav__hamburger');
 const mobileNav = document.querySelector('.nav__mobile');
 if (hamburger && mobileNav) {
+  // On pages where the drawer is narrower than the screen (see homepage.css's
+  // .nav__mobile override), the page behind it was left fully visible and
+  // undimmed — reading as a rendering glitch rather than a deliberate side
+  // panel. A backdrop makes the drawer read as a drawer.
+  const backdrop = document.createElement('div');
+  backdrop.className = 'nav__backdrop';
+  document.body.appendChild(backdrop);
+
+  function setMenuOpen(isOpen) {
+    hamburger.classList.toggle('open', isOpen);
+    mobileNav.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
   hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileNav.classList.toggle('open');
-    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+    setMenuOpen(!mobileNav.classList.contains('open'));
   });
+  backdrop.addEventListener('click', () => setMenuOpen(false));
   document.querySelectorAll('.nav__mobile-link').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
-      document.body.style.overflow = '';
-    });
+    link.addEventListener('click', () => setMenuOpen(false));
   });
 }
 

@@ -424,6 +424,18 @@ p  { font-size: 1.05rem; line-height: 1.75; font-weight: 400; }
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
 }
 .nav__mobile.open { transform: translateX(0); display: flex; }
+.nav__backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: calc(var(--z-nav) - 2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.nav__backdrop.open { opacity: 1; pointer-events: auto; }
+@media (min-width: 1221px) {
+  .nav__backdrop { display: none; }
+}
 .nav__mobile-link {
   font-family: var(--font-heading);
   font-weight: 700;
