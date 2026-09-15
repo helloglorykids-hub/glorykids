@@ -28,6 +28,31 @@ async function notifyAdmin(subject, text) {
   return send(subject, text).catch(() => {});
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/* Customer-facing receipt + download links, sent the moment an order is
+   marked paid. This is the buyer's only durable copy of their download
+   links if they close the thank-you page before it loads — it must never
+   depend on anything client-side. */
+async function sendReceiptEmail(order, tokens) {
+  const { sendMail } = require('./notify');
+  const rows = tokens.map(t =>
+    `<li style="margin:0 0 .6rem;"><a href="${SITE}/api/download?token=${encodeURIComponent(t.token)}" style="color:#66249A;font-weight:700;">${escapeHtml(t.title)}</a></li>`
+  ).join('');
+  const html = `
+    <div style="font:16px/1.6 system-ui,sans-serif;max-width:560px;margin:0 auto;color:#1f2937;">
+      <h1 style="font-size:1.3rem;">Thank you for your order! 🎉</h1>
+      <p>Here ${tokens.length === 1 ? 'is your download link' : 'are your download links'}:</p>
+      <ul style="padding-left:1.1rem;">${rows}</ul>
+      <p style="color:#6b7280;font-size:.9rem;">Each link works for 7 days from today. Lost this email? Re-download anytime from your <a href="${SITE}/dashboard.html">dashboard</a> if you're signed in, or contact us and we'll resend it.</p>
+      <p style="color:#6b7280;font-size:.9rem;">Order ID: ${order.orderId || ''}</p>
+    </div>`;
+  const text = `Thank you for your order!\n\n${tokens.map(t => t.title + ': ' + SITE + '/api/download?token=' + t.token).join('\n')}\n\nEach link works for 7 days. Re-download anytime from your dashboard if signed in, or contact us to have it resent.`;
+  return sendMail({ to: order.buyerEmail, subject: 'Your Glory Kids order — download links inside', html, text }).catch(() => {});
+}
+
 /* Marks a subscription active and flips the member's account. Safe to call
    more than once for the same payment — pass `ppEventId` (a PayPal
    transaction/capture id, or the webhook event id) and it will no-op if
@@ -178,6 +203,8 @@ async function fulfillShopOrder({ orderId, grossUSD, ppCaptureId }) {
     `🛒 New order — $${grossUSD.toFixed(2)}`,
     `New shop order paid via PayPal.\n\nBuyer: ${order.buyerEmail}\nItems: ${(order.items || []).map(i => i.title).join(', ')}\nAmount: $${grossUSD.toFixed(2)}\nOrder ID: ${orderId}`
   );
+
+  sendReceiptEmail(Object.assign({ orderId }, order), tokens);
 
   if (order.discountCode) {
     await db.collection('discountCodes').doc(order.discountCode)

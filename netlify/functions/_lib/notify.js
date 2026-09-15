@@ -44,4 +44,20 @@ async function notifyAdmin(subject, text) {
   }
 }
 
-module.exports = { notifyAdmin };
+/* Generic customer-facing email (receipts, etc.) — same Gmail transport as
+   notifyAdmin, just addressed to the customer instead of the site owner.
+   Best-effort: a failed send must never block fulfilment. */
+async function sendMail({ to, subject, html, text }) {
+  try {
+    const t = getTransporter();
+    if (!t) {
+      console.error('sendMail: GMAIL_USER/GMAIL_APP_PASSWORD not set — skipping email to', to);
+      return;
+    }
+    await t.sendMail({ from: GMAIL_USER, to, subject, html, text });
+  } catch (e) {
+    console.error('sendMail failed:', e && e.message);
+  }
+}
+
+module.exports = { notifyAdmin, sendMail };
