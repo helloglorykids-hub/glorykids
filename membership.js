@@ -238,16 +238,6 @@
     });
   }
 
-  function showChurchFrequencyStep(user, orgName) {
-    body().innerHTML =
-      '<h3>Church plan</h3>' +
-      '<p>Choose how you’d like to be billed.</p>' +
-      '<button class="gk-mem-btn" id="gk-freq-monthly" style="margin-bottom:0.6rem;">$79/month</button>' +
-      '<button class="gk-mem-btn" id="gk-freq-annual" style="background:linear-gradient(135deg,#FFB000,#FF8A00);">$799/year — Save $149</button>';
-    body().querySelector('#gk-freq-monthly').addEventListener('click', function () { showChurchLocationStep(user, orgName, 'monthly'); });
-    body().querySelector('#gk-freq-annual').addEventListener('click', function () { showChurchLocationStep(user, orgName, 'annual'); });
-  }
-
   function startCheckout(plan, orgName) {
     plan = PLAN_LABEL[plan] ? plan : 'monthly';
     var user = currentUser();
@@ -259,28 +249,29 @@
     }
     open();
 
-    // Church plans need the church/ministry name first, then billing
-    // frequency, then how many locations — only then do we know which
-    // PayPal plan + quantity to check out with.
-    if (isChurchPlan(plan) && !orgName) {
-      body().innerHTML =
-        '<h3>Church plan</h3>' +
-        '<p>What’s the name of your church or ministry? This licenses the curriculum to your whole team.</p>' +
-        '<div class="gk-mem-err" id="gk-mem-err"></div>' +
-        '<label for="gk-org">Church / ministry name</label>' +
-        '<input id="gk-org" type="text" placeholder="Grace Community Church">' +
-        '<button class="gk-mem-btn" id="gk-org-go">Continue →</button>';
-      body().querySelector('#gk-org-go').addEventListener('click', function () {
-        var v = (body().querySelector('#gk-org').value || '').trim();
-        var err = body().querySelector('#gk-mem-err');
-        if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
-        showChurchFrequencyStep(user, v);
-      });
-      body().querySelector('#gk-org').focus();
-      return;
-    }
+    // Church plans need the church/ministry name first, then how many
+    // locations — billing frequency (monthly vs annual) is already known
+    // from which button they clicked on the pricing page.
     if (isChurchPlan(plan)) {
-      showChurchFrequencyStep(user, orgName);
+      var frequency = plan === 'church-annual' ? 'annual' : 'monthly';
+      if (!orgName) {
+        body().innerHTML =
+          '<h3>Church plan</h3>' +
+          '<p>What’s the name of your church or ministry? This licenses the curriculum to your whole team.</p>' +
+          '<div class="gk-mem-err" id="gk-mem-err"></div>' +
+          '<label for="gk-org">Church / ministry name</label>' +
+          '<input id="gk-org" type="text" placeholder="Grace Community Church">' +
+          '<button class="gk-mem-btn" id="gk-org-go">Continue →</button>';
+        body().querySelector('#gk-org-go').addEventListener('click', function () {
+          var v = (body().querySelector('#gk-org').value || '').trim();
+          var err = body().querySelector('#gk-mem-err');
+          if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
+          showChurchLocationStep(user, v, frequency);
+        });
+        body().querySelector('#gk-org').focus();
+        return;
+      }
+      showChurchLocationStep(user, orgName, frequency);
       return;
     }
 
