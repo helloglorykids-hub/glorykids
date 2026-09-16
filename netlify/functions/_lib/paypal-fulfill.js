@@ -55,30 +55,47 @@ async function sendReceiptEmail(order, tokens) {
 
 /* Marks a subscription active and flips the member's account. Safe to call
    more than once for the same payment — pass `ppEventId` (a PayPal
-   transaction/capture id, or the webhook event id) and it will no-op if
-   that exact event was already processed. */
+   transaction/capture id, or the webhook event id) and it will no-op the
+   payment-recording side effects if that exact event was already processed.
+
+   The FIRST payment reaches us three separate ways — the instant client-side
+   confirm, PayPal's BILLING.SUBSCRIPTION.ACTIVATED webhook, and its
+   PAYMENT.SALE.COMPLETED webhook — each carrying its own distinct event id,
+   so a plain lastPpEventId match can't catch two of the three. Renewals only
+   ever arrive once, via PAYMENT.SALE.COMPLETED, where the event id IS a
+   reliable dedupe key. So: dedupe the first payment on a one-time
+   `firstPaymentRecorded` flag instead, and dedupe renewals on ppEventId as
+   before — both decided atomically in one transaction so two near-
+   simultaneous calls can't both see themselves as "the" new event. */
 async function activateSubscription({ subId, ppEventId, amountUSD }) {
   const subRef = db.collection('subscriptions').doc(String(subId));
-  const subSnap = await subRef.get();
-  if (!subSnap.exists) return { ok: false, reason: 'subscription not found: ' + subId };
-  const sub = subSnap.data();
 
-  if (ppEventId && sub.lastPpEventId === ppEventId) return { ok: true, already: true, sub };
+  let sub, isNewEvent, firstPayment;
+  await db.runTransaction(async (tx) => {
+    const subSnap = await tx.get(subRef);
+    if (!subSnap.exists) { sub = null; return; }
+    sub = subSnap.data();
+    firstPayment = sub.status !== 'active';
+    isNewEvent = firstPayment
+      ? !sub.firstPaymentRecorded
+      : !(ppEventId && sub.lastPpEventId === ppEventId);
+
+    const patch = {
+      status: 'active',
+      lastPpEventId: ppEventId || sub.lastPpEventId || null,
+      lastPaymentAt: Date.now(),
+      activatedAt: sub.activatedAt || Date.now()
+    };
+    if (isNewEvent) patch.paymentCount = FieldValue.increment(1);
+    if (firstPayment) patch.firstPaymentRecorded = true;
+    tx.set(subRef, patch, { merge: true });
+  });
+  if (!sub) return { ok: false, reason: 'subscription not found: ' + subId };
 
   // For quantity-priced plans (church + seats) the real billed amount lives
   // at PayPal, not in our own price fields — use it when the caller has it
   // (from the subscription/sale payload), falling back to our estimate.
   const paidUSD = amountUSD != null ? Number(amountUSD) : (sub.estimatedPriceUSD || sub.priceUSD);
-
-  const firstPayment = sub.status !== 'active';
-
-  await subRef.set({
-    status: 'active',
-    lastPpEventId: ppEventId || sub.lastPpEventId || null,
-    lastPaymentAt: Date.now(),
-    paymentCount: FieldValue.increment(1),
-    activatedAt: sub.activatedAt || Date.now()
-  }, { merge: true });
 
   const accountPlan = sub.plan === 'church' ? 'church' : 'glory_kids';
   const userPatch = {
@@ -112,6 +129,13 @@ async function activateSubscription({ subId, ppEventId, amountUSD }) {
       await db.collection('users').doc(String(sub.uid)).set({ orgId: sub.uid, isOrgOwner: true }, { merge: true });
     } catch (e) { console.error('org provision failed', e); }
   }
+
+  // Everything above (account flip, org provisioning) is idempotent and
+  // re-runs on every call so access unlocks instantly no matter which
+  // trigger wins the race. Everything below records the payment itself —
+  // gate it on isNewEvent so a duplicate trigger for the same charge
+  // doesn't log it twice or send duplicate emails.
+  if (!isNewEvent) return { ok: true, already: true, sub };
 
   await db.collection('payments').add({
     uid: sub.uid, email: sub.email, amount: paidUSD || 0,

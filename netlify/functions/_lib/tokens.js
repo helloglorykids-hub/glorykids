@@ -32,7 +32,12 @@ function verify(token) {
   if (!token || token.indexOf('.') === -1) return null;
   const [p, sig] = token.split('.');
   const expect = b64url(crypto.createHmac('sha256', secret()).update(p).digest());
-  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expect))) return null;
+  const sigBuf = Buffer.from(sig || '');
+  const expectBuf = Buffer.from(expect);
+  // timingSafeEqual throws on a length mismatch instead of returning false —
+  // a malformed/truncated token would otherwise crash this with a 500
+  // instead of failing closed like any other invalid token.
+  if (sigBuf.length !== expectBuf.length || !crypto.timingSafeEqual(sigBuf, expectBuf)) return null;
   let body;
   try { body = JSON.parse(b64urlDecode(p)); } catch (e) { return null; }
   if (!body.exp || Date.now() > body.exp) return null;
