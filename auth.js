@@ -13,6 +13,8 @@ function onFirebaseReady(cb) {
 }
 
 onFirebaseReady(() => {
+  completeGoogleRedirect();
+
   /* ─── AUTH STATE OBSERVER — runs on every page ─────────────── */
   auth.onAuthStateChanged(user => {
     updateNav(user);
@@ -223,21 +225,44 @@ async function handleSignup(e) {
 }
 
 /* ─── GOOGLE SIGN IN ─────────────────────────────────────────── */
-async function signInWithGoogle(redirectAfter) {
+// Redirect-based rather than a popup: signInWithPopup gets silently
+// blocked by browser/extension popup blockers with no visible error,
+// which looked like "the button does nothing." A redirect can't be
+// popup-blocked — it navigates the whole page to Google and back.
+// Completion (creating the user record, first-time free-lesson signup,
+// and getting them off the login/signup page) happens in
+// completeGoogleRedirect() below, once the page reloads after Google.
+async function signInWithGoogle() {
   clearAuthError('login-error');
   clearAuthError('signup-error');
   try {
-    const cred = await auth.signInWithPopup(googleProvider);
-    await GK.ensureUserRecord(cred.user);
-    if (cred.additionalUserInfo && cred.additionalUserInfo.isNewUser) {
-      subscribeFreeLessons(cred.user.email, cred.user.displayName);
-    }
-    const params = new URLSearchParams(window.location.search);
-    window.location.href = redirectAfter || params.get('redirect') || 'dashboard.html';
+    await auth.signInWithRedirect(googleProvider);
   } catch (err) {
     showAuthError('login-error', friendlyError(err.code));
     showAuthError('signup-error', friendlyError(err.code));
   }
+}
+
+// Runs on every page load. Resolves to a user only on the page load that
+// follows a signInWithRedirect() round-trip; a plain page visit (or a
+// visit with no pending redirect) resolves with no user and is a no-op.
+async function completeGoogleRedirect() {
+  let result;
+  try {
+    result = await auth.getRedirectResult();
+  } catch (err) {
+    showAuthError('login-error', friendlyError(err.code));
+    showAuthError('signup-error', friendlyError(err.code));
+    return;
+  }
+  if (!result || !result.user) return;
+  await GK.ensureUserRecord(result.user);
+  if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
+    subscribeFreeLessons(result.user.email, result.user.displayName);
+  }
+  // Navigation off login.html/signup.html is handled by the
+  // onAuthStateChanged "isAuthPage && user" redirect below — no need to
+  // duplicate it here.
 }
 
 /* ─── PASSWORD RESET ─────────────────────────────────────────── */

@@ -144,10 +144,15 @@ async function activateSubscription({ subId, ppEventId, amountUSD }) {
     subscriptionId: subId, ppSubscriptionId: sub.ppSubscriptionId || null, date: Date.now()
   }).catch(e => console.error('membership payment log failed', e));
 
-  mlEvent(firstPayment ? 'membership-welcome' : 'purchase', sub).catch(() => {});
+  // Netlify/Lambda can freeze or tear down the function process as soon as
+  // the handler's response is sent — an un-awaited background fetch/send
+  // here can get killed mid-flight with no error logged anywhere, which is
+  // exactly what was silently dropping the welcome email and MailerLite
+  // signup. Await both so they finish before this function returns.
+  await mlEvent(firstPayment ? 'membership-welcome' : 'purchase', sub).catch(() => {});
 
   if (firstPayment) {
-    notifyAdmin(
+    await notifyAdmin(
       `🎉 New Glory Kids member — ${sub.email}`,
       `A new member just signed up and paid via PayPal!\n\nEmail: ${sub.email}\nPlan: ${sub.planKey || 'monthly'}${sub.orgName ? '\nOrg: ' + sub.orgName : ''}\n\nCheck the admin dashboard for details.`
     );
@@ -180,7 +185,7 @@ async function deactivateSubscription({ subId, status }) {
     subscriptionId: subId, date: Date.now()
   }).catch(() => {});
 
-  mlEvent(cancelled ? 'membership-cancelled' : 'membership-payment-failed', sub).catch(() => {});
+  await mlEvent(cancelled ? 'membership-cancelled' : 'membership-payment-failed', sub).catch(() => {});
   return { ok: true, sub };
 }
 
@@ -223,12 +228,15 @@ async function fulfillShopOrder({ orderId, grossUSD, ppCaptureId }) {
     date: Date.now()
   }).catch(e => console.error('payment log failed', e));
 
-  notifyAdmin(
+  // Both awaited for the same reason as activateSubscription() above —
+  // Netlify/Lambda can freeze this process the instant the handler
+  // returns, silently killing any un-awaited background send in flight.
+  await notifyAdmin(
     `🛒 New order — $${grossUSD.toFixed(2)}`,
     `New shop order paid via PayPal.\n\nBuyer: ${order.buyerEmail}\nItems: ${(order.items || []).map(i => i.title).join(', ')}\nAmount: $${grossUSD.toFixed(2)}\nOrder ID: ${orderId}`
   );
 
-  sendReceiptEmail(Object.assign({ orderId }, order), tokens);
+  await sendReceiptEmail(Object.assign({ orderId }, order), tokens);
 
   if (order.discountCode) {
     await db.collection('discountCodes').doc(order.discountCode)
