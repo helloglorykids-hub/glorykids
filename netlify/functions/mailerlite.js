@@ -5,6 +5,11 @@
      'purchase'     → customers group + fields
      'free-lessons' → "Free 10 Lessons" group (triggers the 10-lesson automation)
      'waitlist'     → "Membership Waitlist" group
+     'signup-nudge' → "Signup Nudge" group (visitor hit a free-with-account
+                      lesson but didn't sign up on the spot; triggers the
+                      "complete your free account" automation). `redirect`
+                      (the lesson's path) becomes the `unlock_url` field, so
+                      the automation email can link straight back to it.
    For 'free-lessons' / 'waitlist' the response includes { already: bool } —
    true when the email was ALREADY in that group (so the page can say
    "we already sent it" instead of "check your inbox").
@@ -19,6 +24,9 @@ const GROUP_CUSTOMERS = process.env.MAILERLITE_GROUP_CUSTOMERS || '';
 // Group IDs are not secret — safe to ship as defaults; override via env if needed.
 const GROUP_FREE_LESSONS = process.env.MAILERLITE_GROUP_FREE_LESSONS || '197057173518288504';
 const GROUP_WAITLIST = process.env.MAILERLITE_GROUP_WAITLIST || '190369688509744308';
+// No known default — create the group in MailerLite and set this env var.
+const GROUP_SIGNUP_NUDGE = process.env.MAILERLITE_GROUP_SIGNUP_NUDGE || '';
+const SITE_ORIGIN = 'https://www.glorykidsministry.com';
 // Active paying members. Set MAILERLITE_GROUP_MEMBERS in the env and hook your
 // "welcome" + "payment failed" automations to this group / its fields.
 const GROUP_MEMBERS = process.env.MAILERLITE_GROUP_MEMBERS || GROUP_CUSTOMERS;
@@ -60,6 +68,7 @@ exports.handler = async (event) => {
   if (action === 'purchase' && GROUP_CUSTOMERS) groups.add(GROUP_CUSTOMERS);
   if (action === 'free-lessons') groups.add(GROUP_FREE_LESSONS);
   if (action === 'waitlist') groups.add(GROUP_WAITLIST);
+  if (action === 'signup-nudge' && GROUP_SIGNUP_NUDGE) groups.add(GROUP_SIGNUP_NUDGE);
   // Membership lifecycle — same group, distinguished by the `membership_status`
   // field so you can branch automations (welcome vs payment-failed vs cancelled).
   if (action === 'membership-welcome' || action === 'membership-payment-failed' || action === 'membership-cancelled') {
@@ -75,12 +84,18 @@ exports.handler = async (event) => {
   let already = false;
   if (action === 'free-lessons') already = await alreadyInGroup(email, GROUP_FREE_LESSONS);
   if (action === 'waitlist') already = await alreadyInGroup(email, GROUP_WAITLIST);
+  if (action === 'signup-nudge') already = await alreadyInGroup(email, GROUP_SIGNUP_NUDGE);
 
   const fields = { ...(body.fields || {}) };
   if (body.name) fields.name = body.name;
   if (body.source) fields.opt_in_source = String(body.source).slice(0, 250);
   if (Array.isArray(body.downloadLinks) && body.downloadLinks.length) {
     fields.last_download_links = body.downloadLinks.join('\n');
+  }
+  if (action === 'signup-nudge') {
+    fields.unlock_url = body.redirect
+      ? SITE_ORIGIN + '/signup.html?redirect=' + encodeURIComponent(body.redirect)
+      : SITE_ORIGIN + '/signup.html';
   }
 
   const payload = { email, fields, status: 'active' };

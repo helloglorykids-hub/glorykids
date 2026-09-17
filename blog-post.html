@@ -35,7 +35,7 @@
   <meta property="og:site_name" content="Glory Kids Ministries">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-FSCHTP0MWY"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FSCHTP0MWY');</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com","email":"hello."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Glory Kids Ministries","url":"https://www.glorykidsministry.com","email":"hello.glorykids@gmail.com"}</script>
   <!-- gk:managed:end -->
 </head>
 <body>
@@ -194,11 +194,15 @@
             </a>
           </div>
           <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
-            <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
-            <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
-              Sign Up Free →
-            </a>
+            <h3 class="text-white font-bold text-lg mb-2">🔓 Get This Lesson Free</h3>
+            <p class="text-slate-300 text-sm mb-4">Enter your email and we’ll send you everything you need to unlock this lesson — plus 34 more — with a free account.</p>
+            <form data-gk-form="signup-nudge" class="gk-optin-form">
+              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+              <input type="hidden" name="redirect" class="signupLockRedirect" value="" />
+              <input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />
+              <button type="submit" class="gk-optin-form__btn">Send Me the Access Link</button>
+            </form>
+            <p class="text-slate-400 text-xs mt-3">Already ready? <a href="/signup.html" class="signupLockLink text-teal-400 font-semibold">Create your free account now →</a></p>
           </div>
 
           <div id="postContent" class="prose prose-invert prose-lg max-w-none post-prose"></div>
@@ -228,11 +232,15 @@
           <!-- Free-with-account box (shown instead of both boxes above for
                lessons flagged freeWithAccount — free to any signed-in user) -->
           <div id="signupLockWrap" class="mailerlite-box mailerlite-box--signup" style="display:none;">
-            <h3 class="text-white font-bold text-lg mb-2">🔓 Sign Up Free to Unlock This Lesson</h3>
-            <p class="text-slate-300 text-sm mb-4">This lesson is part of our 35 free lessons — free to download with any Glory Kids account, no payment required. Create a free account to get it instantly.</p>
-            <a href="/signup.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-teal-500/30 transition-colors">
-              Sign Up Free →
-            </a>
+            <h3 class="text-white font-bold text-lg mb-2">🔓 Get This Lesson Free</h3>
+            <p class="text-slate-300 text-sm mb-4">Enter your email and we’ll send you everything you need to unlock this lesson — plus 34 more — with a free account.</p>
+            <form data-gk-form="signup-nudge" class="gk-optin-form">
+              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
+              <input type="hidden" name="redirect" class="signupLockRedirect" value="" />
+              <input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />
+              <button type="submit" class="gk-optin-form__btn">Send Me the Access Link</button>
+            </form>
+            <p class="text-slate-400 text-xs mt-3">Already ready? <a href="/signup.html" class="signupLockLink text-teal-400 font-semibold">Create your free account now →</a></p>
           </div>
 
           <!-- CTA box — hidden for locked lessons; the membership lock box above
@@ -782,8 +790,15 @@
       // Shown by default (we don't know auth state synchronously yet);
       // setupMemberDownload() hides these once we confirm the user is
       // actually signed in and shows the real download box instead.
+      var signupRedirect = canonicalPathFor(post);
       ['signupLockWrap', 'signupLockWrapTop'].forEach(function (id) {
-        var el = document.getElementById(id); if (el) el.style.display = 'block';
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.style.display = 'block';
+        var link = el.querySelector('.signupLockLink');
+        if (link) link.href = '/signup.html?redirect=' + encodeURIComponent(signupRedirect);
+        var redirectField = el.querySelector('.signupLockRedirect');
+        if (redirectField) redirectField.value = signupRedirect;
       });
       var ctaBoxFwa = document.getElementById('postCtaBox');
       if (ctaBoxFwa) ctaBoxFwa.style.display = 'none';

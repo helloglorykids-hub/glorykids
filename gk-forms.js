@@ -12,6 +12,11 @@
      shows "we already sent it". A local flag also flips every
      other free-lessons form on the site to the "already" state.
    - data-gk-form="waitlist" → MailerLite "Membership Waitlist".
+   - data-gk-form="signup-nudge" → MailerLite "Signup Nudge" group (a visitor
+     who opened a free-with-account lesson but didn't sign up on the spot;
+     fires the "complete your free account" automation). An optional
+     <input type="hidden" name="redirect"> carries the lesson's own URL so
+     the automation email can send them straight back to it after signup.
    - on success the form is replaced with a thank-you message
      (or, if present, #success-msg is shown and the form hidden)
    Optional: define window.gkFormExtra() → object merged into data.
@@ -19,6 +24,7 @@
 (function () {
   var FREE_FLAG = 'gk_free_lessons_optin';
   var WAIT_FLAG = 'gk_waitlist_optin';
+  var NUDGE_FLAG = 'gk_signup_nudge_optin';
 
   function lsGet(k) { try { return window.localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { window.localStorage.setItem(k, v); } catch (e) {} }
@@ -31,6 +37,10 @@
     'waitlist': {
       'new': '✅ You’re on the waitlist! We’ll email you the moment Glory Kids Membership opens.',
       'already': '✅ You’re already on the waitlist — hang tight, we’ll be in touch soon.'
+    },
+    'signup-nudge': {
+      'new': '✅ Check your inbox — we’ve sent you a link to finish creating your free account.',
+      'already': '✅ Already sent! Check your inbox (and spam folder) for the link to finish your free account.'
     },
     'newsletter': { 'new': 'You’re subscribed — check your inbox!' }
   };
@@ -66,6 +76,7 @@
       var msg = set[key] || set['new'];
       if (formId === 'free-lessons') lsSet(FREE_FLAG, '1');
       if (formId === 'waitlist') lsSet(WAIT_FLAG, '1');
+      if (formId === 'signup-nudge') lsSet(NUDGE_FLAG, '1');
       showNote(form, msg);
       return;
     }
@@ -88,6 +99,10 @@
       showNote(form, MESSAGES['waitlist']['already']);
       return;
     }
+    if (formId === 'signup-nudge' && lsGet(NUDGE_FLAG)) {
+      showNote(form, MESSAGES['signup-nudge']['already']);
+      return;
+    }
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -101,10 +116,10 @@
 
       // The opt-in flows go straight to MailerLite (no Firestore dependency);
       // everything else goes through the generic form-submit endpoint.
-      var isOptin = formId === 'free-lessons' || formId === 'waitlist';
+      var isOptin = formId === 'free-lessons' || formId === 'waitlist' || formId === 'signup-nudge';
       var url = isOptin ? '/api/mailerlite' : '/api/form-submit';
       var body = isOptin
-        ? { action: formId, email: data.email || '', name: data.firstName || data.name || '', source: location.href }
+        ? { action: formId, email: data.email || '', name: data.firstName || data.name || '', source: location.href, redirect: data.redirect || '' }
         : {
             formId: formId,
             data: data,
