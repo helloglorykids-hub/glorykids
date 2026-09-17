@@ -42,11 +42,22 @@ const SITEMAP_EXCLUDE = new Set([
   'admin-data.html',
   'lesson-gate.html',
   'checkout.html',
+  // permanently redirected (see netlify.toml) — listing a page in the
+  // sitemap tells Google "index this" while the server says "actually, go
+  // here instead", which Search Console flags as a coverage issue
+  'glory-kids-membership.html',
+  'church-pricing.html',
   // template, not a real page — individual posts are added from `posts` below
   'blog-post.html',
   // template, not a real page — individual packs are added from `products` below
   'curriculum-pack.html',
 ]);
+
+/* Static per-post / per-pack pages generated below (free-bible-lessons/<slug>/,
+   blog/<category>/<slug>/, pack/<slug>/) — excluded from the general HTML walk
+   so a second build doesn't re-bake or double-list them; they're handled by
+   generatePostPages()/generatePackPages() and added to the sitemap explicitly. */
+const GENERATED_DETAIL_PAGE = /^(free-bible-lessons|blog\/(parents|pastors|kidmin)|pack)\/[^/]+\/index\.html$/;
 
 /* Directories never walked for HTML files (build tooling, VCS, dependencies). */
 const SKIP_DIRS = new Set(['.git', 'node_modules', '.netlify', 'functions', '.claude']);
@@ -293,6 +304,173 @@ const CONTENT_PAGE_IDS = {
   'glory-kids-curriculum.html': 'curriculum'
 };
 
+/* ---- helpers for baking per-record meta into a self-managed template ---- */
+function setAttrById(html, id, attr, value) {
+  const re = new RegExp(`(<[^>]*\\bid="${id}"[^>]*\\s${attr}=")[^"]*(")`);
+  return html.replace(re, (m, pre, post) => pre + esc(value) + post);
+}
+function setTextById(html, id, tag, text) {
+  const re = new RegExp(`(<${tag} id="${id}"[^>]*>)[\\s\\S]*?(</${tag}>)`);
+  return html.replace(re, (m, open, close) => open + esc(text) + close);
+}
+function stripHtml(html) { return String(html || '').replace(/<[^>]+>/g, ' ').trim(); }
+
+const BLOG_CATEGORIES = ['parents', 'pastors', 'kidmin'];
+const CATEGORY_LABELS = { parents: 'For Parents', pastors: 'For Pastors', kidmin: 'For Kidmin Leaders', free_lessons: 'Free Bible Lesson' };
+
+// Matches blog-post.html's canonicalPathFor(): free lessons get their own
+// section, everything else is grouped under /blog/<category>/.
+function postPath(p) {
+  if (p.category === 'free_lessons') return `/free-bible-lessons/${p.slug}`;
+  const cat = BLOG_CATEGORIES.includes(p.category) ? p.category : 'parents';
+  return `/blog/${cat}/${p.slug}`;
+}
+
+/* Bakes this post's real title/description/canonical/OG/Twitter/JSON-LD into
+   a copy of the (already SEO-baked) blog-post.html template, mirroring
+   renderPost() in that file exactly. The client-side JS still hydrates the
+   article body — only the <head> tags need to exist server-side, since an
+   empty canonical in the raw HTML is what let Google pick its own canonical
+   across these near-identical URLs (GSC: "Duplicate, Google chose different
+   canonical" / "Duplicate without user-selected canonical"). */
+function bakePostPage(template, post) {
+  const url = SITE_ORIGIN + postPath(post);
+  const seoTitle = (post.seoTitle || post.title) + ' | Glory Kids Ministries';
+  const desc = post.seoDescription || post.excerpt || '';
+  const image = post.featuredImage || '';
+
+  let html = template;
+  html = setTextById(html, 'metaTitleTag', 'title', seoTitle);
+  html = setAttrById(html, 'metaDescriptionTag', 'content', desc);
+  html = setAttrById(html, 'metaKeywordsTag', 'content', post.seoKeywords || '');
+  html = setAttrById(html, 'metaCanonicalTag', 'href', url);
+  html = setAttrById(html, 'metaOgTitle', 'content', post.title);
+  html = setAttrById(html, 'metaOgDescription', 'content', desc);
+  html = setAttrById(html, 'metaOgImage', 'content', image);
+  html = setAttrById(html, 'metaOgUrl', 'content', url);
+  html = setAttrById(html, 'metaTwitterCard', 'content', image ? 'summary_large_image' : 'summary');
+  html = setAttrById(html, 'metaTwitterTitle', 'content', post.title);
+  html = setAttrById(html, 'metaTwitterDescription', 'content', desc);
+  html = setAttrById(html, 'metaTwitterImage', 'content', image);
+
+  const dateP = post.publishAt || post.createdAt || Date.now();
+  const dateM = post.updatedAt || post.createdAt || dateP;
+  const blogPosting = {
+    '@context': 'https://schema.org', '@type': 'BlogPosting',
+    headline: post.title, description: desc, image,
+    datePublished: new Date(dateP).toISOString(),
+    dateModified: new Date(dateM).toISOString(),
+    author: { '@type': 'Person', name: post.author || 'Jandre van der Walt', url: SITE_ORIGIN + '/contact.html' },
+    publisher: { '@type': 'Organization', name: 'Glory Kids Ministries', logo: { '@type': 'ImageObject', url: SITE_ORIGIN + '/images/glory-kids-logo.png' } },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    articleBody: stripHtml(post.bodyHtml).slice(0, 5000)
+  };
+  html = html.replace(/(<script id="ldBlogPosting"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(blogPosting) + close);
+
+  const breadcrumb = {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_ORIGIN + '/index.html' },
+      post.category === 'free_lessons'
+        ? { '@type': 'ListItem', position: 2, name: 'Free Lessons', item: SITE_ORIGIN + '/free-lessons.html' }
+        : { '@type': 'ListItem', position: 2, name: CATEGORY_LABELS[post.category] || 'Blog', item: SITE_ORIGIN + '/blog.html' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: url }
+    ]
+  };
+  html = html.replace(/(<script id="ldBreadcrumb"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(breadcrumb) + close);
+
+  return html;
+}
+
+/* Same idea as bakePostPage(), mirroring curriculum-pack.html's setMeta(). */
+function bakePackPage(template, prod) {
+  const url = SITE_ORIGIN + '/pack/' + encodeURIComponent(prod.slug);
+  const title = prod.title + ' | Glory Kids Ministries';
+  const desc = (prod.blurb || '').slice(0, 160) || (`Complete children's ministry resource — ${prod.title}. Instant download, ready to teach.`);
+  const image = (prod.images && prod.images[0]) || (SITE_ORIGIN + '/images/glory-kids-logo.png');
+  const parent = (prod.category === 'curriculum' || prod.category === 'bundle')
+    ? { label: 'Curriculum Packs', href: 'curriculum-packs.html' }
+    : { label: 'Shop', href: 'shop.html' };
+
+  let html = template;
+  html = setTextById(html, 'metaTitleTag', 'title', title);
+  html = setAttrById(html, 'metaDescriptionTag', 'content', desc);
+  html = setAttrById(html, 'metaCanonicalTag', 'href', url);
+  html = setAttrById(html, 'metaOgTitle', 'content', title);
+  html = setAttrById(html, 'metaOgDescription', 'content', desc);
+  html = setAttrById(html, 'metaOgImage', 'content', image);
+  html = setAttrById(html, 'metaOgUrl', 'content', url);
+  html = setAttrById(html, 'metaTwitterTitle', 'content', title);
+  html = setAttrById(html, 'metaTwitterDescription', 'content', desc);
+  html = setAttrById(html, 'metaTwitterImage', 'content', image);
+
+  const product = {
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: prod.title, description: desc,
+    image: (prod.images && prod.images.length) ? prod.images : [image],
+    brand: { '@type': 'Brand', name: 'Glory Kids Ministries' },
+    offers: {
+      '@type': 'Offer', url, priceCurrency: 'USD',
+      price: Number(prod.priceUSD != null ? prod.priceUSD : prod.priceZAR || 0),
+      availability: 'https://schema.org/InStock'
+    }
+  };
+  html = html.replace(/(<script id="ldProduct"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(product) + close);
+
+  const breadcrumb = {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_ORIGIN + '/index.html' },
+      { '@type': 'ListItem', position: 2, name: parent.label, item: SITE_ORIGIN + '/' + parent.href },
+      { '@type': 'ListItem', position: 3, name: prod.title, item: url }
+    ]
+  };
+  html = html.replace(/(<script id="ldBreadcrumb"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(breadcrumb) + close);
+
+  return html;
+}
+
+/* Writes one static index.html per row at `${DIR}/<relDir>/index.html`, and
+   removes any previously-generated sibling directory that no longer matches
+   a current row (renamed/unpublished/deleted post or product) — since this
+   can run repeatedly against the same checkout, stale output must not
+   linger the way it would on a one-shot CI build. */
+function writeDetailPages(root, rows, relDirFor, bake, template) {
+  const rootDir = path.join(DIR, root);
+  const keep = new Set(rows.map(r => relDirFor(r)));
+  if (fs.existsSync(rootDir)) {
+    for (const entry of fs.readdirSync(rootDir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const rel = `${root}/${entry.name}`;
+      if (!keep.has(rel)) fs.rmSync(path.join(DIR, rel), { recursive: true, force: true });
+    }
+  }
+  let n = 0;
+  for (const row of rows) {
+    const rel = relDirFor(row);
+    if (!rel) continue;
+    const dir = path.join(DIR, rel);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), bake(template, row));
+    n++;
+  }
+  return n;
+}
+
+function generatePostPages(posts, template) {
+  let total = 0;
+  for (const cat of ['free-bible-lessons', 'blog/parents', 'blog/pastors', 'blog/kidmin']) {
+    const rows = posts.filter(p => p.slug && postPath(p) === `/${cat}/${p.slug}`);
+    total += writeDetailPages(cat, rows, p => `${cat}/${p.slug}`, bakePostPage, template);
+  }
+  return total;
+}
+
+function generatePackPages(products, template) {
+  const rows = products.filter(p => p.active && p.slug);
+  return writeDetailPages('pack', rows, p => `pack/${p.slug}`, bakePackPage, template);
+}
+
 (async function main() {
   let [cfg, pages, redirects, posts, products] = await Promise.all([
     getDoc('site/config'), getCol('pages'), getCol('redirects'),
@@ -319,8 +497,10 @@ const CONTENT_PAGE_IDS = {
   const pageByPath = {};
   pages.forEach(p => { pageByPath[p.path] = p; });
 
-  const htmlFiles = listHtmlFiles(DIR);
+  const htmlFiles = listHtmlFiles(DIR).filter(f => !GENERATED_DETAIL_PAGE.test(f));
   let changed = 0;
+  let blogPostTemplate = null;
+  let curriculumPackTemplate = null;
   for (const f of htmlFiles) {
     const full = path.join(DIR, f);
     const before = fs.readFileSync(full, 'utf8');
@@ -329,8 +509,22 @@ const CONTENT_PAGE_IDS = {
     let after = applyToHtml(before, cfg, page, canonical);
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
+    // Captured post-bake (so generated pages inherit the same favicon/GA4/org
+    // JSON-LD as every other page) for use as the per-record template below.
+    if (f === 'blog-post.html') blogPostTemplate = after;
+    if (f === 'curriculum-pack.html') curriculumPackTemplate = after;
   }
   console.log(`Baked SEO into ${changed}/${htmlFiles.length} HTML files.`);
+
+  /* Static per-post / per-pack pages with a real, server-side canonical tag
+     baked in — fixes GSC "Duplicate without user-selected canonical" and
+     "Duplicate, Google chose different canonical": every free-bible-lessons,
+     blog and pack detail URL used to rewrite to the same template with an
+     empty canonical link, filled in only by client-side JS. */
+  const livePosts = posts.filter(p => !p.publishAt || p.publishAt <= Date.now());
+  const postPagesWritten = blogPostTemplate ? generatePostPages(livePosts, blogPostTemplate) : 0;
+  const packPagesWritten = curriculumPackTemplate ? generatePackPages(products, curriculumPackTemplate) : 0;
+  console.log(`Generated ${postPagesWritten} post page(s) and ${packPagesWritten} pack page(s) with baked-in canonical tags.`);
 
   /* robots.txt */
   let robots = cfg.robotsTxt || 'User-agent: *\nAllow: /\n\nDisallow: /admin.html\nDisallow: /admin-login.html';
@@ -346,18 +540,10 @@ const CONTENT_PAGE_IDS = {
     if (SITEMAP_EXCLUDE.has(f)) return;
     urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
-  // Matches blog-post.html's canonicalPathFor(): free lessons get their own
-  // section, everything else is grouped under /blog/<category>/.
-  const BLOG_CATEGORIES = ['parents', 'pastors', 'kidmin'];
-  function postPath(p) {
-    if (p.category === 'free_lessons') return `/free-bible-lessons/${p.slug}`;
-    const cat = BLOG_CATEGORIES.includes(p.category) ? p.category : 'parents';
-    return `/blog/${cat}/${p.slug}`;
-  }
   // published==true is already guaranteed by the query; publishAt (scheduled
   // future posts, e.g. the monthly curriculum drop) still needs a client-side
   // check since Firestore can't express that OR-condition in the query filter.
-  posts.filter(p => !p.publishAt || p.publishAt <= Date.now()).forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
+  livePosts.forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
   products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/pack/${p.slug}`));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
