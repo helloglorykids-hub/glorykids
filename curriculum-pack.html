@@ -316,7 +316,11 @@
   function setMeta(p) {
     var title = p.title + ' | Glory Kids Ministries';
     var desc = (p.blurb || '').slice(0, 160) || ('Complete children\'s ministry resource — ' + p.title + '. Instant download, ready to teach.');
-    var url = SITE_ORIGIN + '/pack/' + encodeURIComponent(p.slug);
+    // Trailing slash matches how Netlify serves this page (a physical
+    // pack/<slug>/index.html directory) — without it, this client-side
+    // re-render would overwrite build.js's server-baked canonical (which
+    // uses the same slash) with a URL that just 301s back to this one.
+    var url = SITE_ORIGIN + '/pack/' + encodeURIComponent(p.slug) + '/';
     var image = (p.images && p.images[0]) || (SITE_ORIGIN + '/images/glory-kids-logo.png');
     var parent = parentPage(p.category);
 

@@ -502,16 +502,21 @@
   }
 
   // Canonical URL for a post, by category:
-  //   free_lessons          -> /free-bible-lessons/<slug>
-  //   parents/pastors/kidmin -> /blog/<category>/<slug>
-  // Anything else falls back to /blog/parents/<slug> so a post never has no
-  // canonical URL, even with a missing/unexpected category value.
+  //   free_lessons          -> /free-bible-lessons/<slug>/
+  //   parents/pastors/kidmin -> /blog/<category>/<slug>/
+  // Anything else falls back to /blog/parents/<slug>/ so a post never has no
+  // canonical URL, even with a missing/unexpected category value. Trailing
+  // slash matches how Netlify actually serves these (a physical
+  // <path>/index.html directory) — build.js bakes the same slash into the
+  // static version of this tag server-side; without it here too, this
+  // client-side re-render would silently overwrite that fix on any crawler
+  // that executes JS.
   const BLOG_CATEGORIES = ['parents', 'pastors', 'kidmin'];
   function canonicalPathFor(post) {
     const slug = encodeURIComponent(post.slug);
-    if (post.category === 'free_lessons') return '/free-bible-lessons/' + slug;
+    if (post.category === 'free_lessons') return '/free-bible-lessons/' + slug + '/';
     const cat = BLOG_CATEGORIES.indexOf(post.category) !== -1 ? post.category : 'parents';
-    return '/blog/' + cat + '/' + slug;
+    return '/blog/' + cat + '/' + slug + '/';
   }
 
   async function loadPost() {

@@ -326,6 +326,15 @@ function postPath(p) {
   return `/blog/${cat}/${p.slug}`;
 }
 
+// The *public* URL for a generated detail page — these are physically
+// `<path>/index.html` files, and Netlify serves a directory's index at the
+// trailing-slash form, 301ing the bare path to it. A canonical/OG/sitemap
+// URL without the slash would itself redirect, undermining the very fix
+// this file exists to make — so every public-facing URL gets the slash;
+// postPath()/the pack slug stay bare for internal path building.
+function postUrl(p) { return SITE_ORIGIN + postPath(p) + '/'; }
+function packUrl(prod) { return SITE_ORIGIN + '/pack/' + encodeURIComponent(prod.slug) + '/'; }
+
 /* Bakes this post's real title/description/canonical/OG/Twitter/JSON-LD into
    a copy of the (already SEO-baked) blog-post.html template, mirroring
    renderPost() in that file exactly. The client-side JS still hydrates the
@@ -334,7 +343,7 @@ function postPath(p) {
    across these near-identical URLs (GSC: "Duplicate, Google chose different
    canonical" / "Duplicate without user-selected canonical"). */
 function bakePostPage(template, post) {
-  const url = SITE_ORIGIN + postPath(post);
+  const url = postUrl(post);
   const seoTitle = (post.seoTitle || post.title) + ' | Glory Kids Ministries';
   const desc = post.seoDescription || post.excerpt || '';
   const image = post.featuredImage || '';
@@ -384,7 +393,7 @@ function bakePostPage(template, post) {
 
 /* Same idea as bakePostPage(), mirroring curriculum-pack.html's setMeta(). */
 function bakePackPage(template, prod) {
-  const url = SITE_ORIGIN + '/pack/' + encodeURIComponent(prod.slug);
+  const url = packUrl(prod);
   const title = prod.title + ' | Glory Kids Ministries';
   const desc = (prod.blurb || '').slice(0, 160) || (`Complete children's ministry resource — ${prod.title}. Instant download, ready to teach.`);
   const image = (prod.images && prod.images[0]) || (SITE_ORIGIN + '/images/glory-kids-logo.png');
@@ -543,8 +552,8 @@ function generatePackPages(products, template) {
   // published==true is already guaranteed by the query; publishAt (scheduled
   // future posts, e.g. the monthly curriculum drop) still needs a client-side
   // check since Firestore can't express that OR-condition in the query filter.
-  livePosts.forEach(p => urls.push(SITE_ORIGIN + postPath(p)));
-  products.filter(p => p.active && p.slug).forEach(p => urls.push(`${SITE_ORIGIN}/pack/${p.slug}`));
+  livePosts.forEach(p => urls.push(postUrl(p)));
+  products.filter(p => p.active && p.slug).forEach(p => urls.push(packUrl(p)));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
     urls.map(u => `  <url><loc>${esc(u)}</loc></url>`).join('\n') + `\n</urlset>\n`);
