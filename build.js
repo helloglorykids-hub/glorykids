@@ -480,6 +480,69 @@ function generatePackPages(products, template) {
   return writeDetailPages('pack', rows, p => `pack/${p.slug}`, bakePackPage, template);
 }
 
+// Mirrors free-lessons.html's AGE_LABELS/GRAD_PALETTE/normalizeDynamic/
+// cardHtml() exactly, so the grid it bakes in matches what the client's own
+// JS would render for the same post.
+const FREE_LESSON_AGE_LABELS = { preschool: 'Preschool (2-5)', k2: 'K-2nd', upper35: '3rd-5th', sixplus: '6th+' };
+const FREE_LESSON_GRAD_PALETTE = ['#66249A,#00BFC4', '#FF4B32,#FFB000', '#0B2E67,#00BFC4', '#FFB000,#66249A', '#009BA0,#66249A', '#D45D9C,#FFB000'];
+
+function freeLessonCardData(post, index) {
+  const ageGroups = post.ageGroups && post.ageGroups.length ? post.ageGroups : ['sixplus'];
+  const ageLabel = ageGroups.map(a => FREE_LESSON_AGE_LABELS[a] || a).join(' / ');
+  return {
+    title: post.title || '', story: post.scripture || '', desc: post.excerpt || '',
+    ageGroups, ageLabel,
+    topicIds: post.lessonTopics && post.lessonTopics.length ? post.lessonTopics : [],
+    type: post.lessonType || 'lesson', season: post.season || 'general',
+    emoji: post.icon || '📖', image: post.featuredImage || null,
+    grad: FREE_LESSON_GRAD_PALETTE[index % FREE_LESSON_GRAD_PALETTE.length],
+    href: '/free-bible-lessons/' + post.slug,
+    isFreeLesson: !!post.isFreeLesson, freeWithAccount: !!post.freeWithAccount
+  };
+}
+
+/* Bakes real <div class="lesson-card"> markup into free-lessons.html's empty
+   #cardGrid shell — that div is normally filled in entirely by client-side
+   JS after an async Firestore fetch, so Google's crawl of the raw page (or a
+   render pass that times out before that fetch resolves) can see the grid
+   as near-empty relative to what the page's own title/meta promise ("35
+   free lessons"). GSC flagged this page "Crawled - currently not indexed" —
+   the same thin-content-on-first-paint issue as the per-post canonical bug
+   above, just showing up as a quality signal instead of a duplicate one.
+   The client's own renderGrid() overwrites this on load, so real visitors
+   never notice — this only changes what a non-JS fetch sees. Values are
+   HTML-escaped here (the client version isn't) since this baked copy is
+   what a crawler actually indexes; it's overwritten client-side either way. */
+function freeLessonCardHtml(lesson, index) {
+  return (
+    `<div class="lesson-card" data-index="${index}" data-title="${esc(lesson.title.toLowerCase())}" data-story="${esc(lesson.story.toLowerCase())}"` +
+    ` data-age="${esc(lesson.ageGroups.join(' '))}" data-topic="${esc(lesson.topicIds.join(' '))}" data-type="${esc(lesson.type)}" data-season="${esc(lesson.season)}">` +
+      `<div class="lesson-card__thumb" style="background:linear-gradient(135deg,${lesson.grad});">` +
+        (lesson.image ? `<img src="${esc(lesson.image)}" alt="${esc(lesson.title)}" class="lesson-card__img" />` : lesson.emoji) +
+        `<span class="lesson-card__age">${esc(lesson.ageLabel)}</span>` +
+        (lesson.isFreeLesson ? '' :
+          lesson.freeWithAccount
+            ? '<span class="lesson-card__account" title="Free with a Glory Kids account — no payment required">🆓 Free Account</span>'
+            : '<span class="lesson-card__lock" title="Requires Glory Kids Membership">🔒 Membership</span>') +
+      '</div>' +
+      '<div class="lesson-card__body">' +
+        `<div class="lesson-card__title">${esc(lesson.title)}</div>` +
+        (lesson.story ? `<div class="lesson-card__story">📜 ${esc(lesson.story)}</div>` : '') +
+        `<div class="lesson-card__desc">${esc(lesson.desc)}</div>` +
+        '<div class="lesson-card__footer">' +
+          `<a href="${esc(lesson.href)}" class="lesson-card__view">View Free Lesson →</a>` +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+function bakeFreeLessonsGrid(html, posts) {
+  const rows = posts.filter(p => p.category === 'free_lessons' && p.slug);
+  const cardsHtml = rows.map((p, i) => freeLessonCardHtml(freeLessonCardData(p, i), i)).join('');
+  return html.replace(/<div id="cardGrid"([^>]*)><\/div>/, (m, attrs) => `<div id="cardGrid"${attrs}>${cardsHtml}</div>`);
+}
+
 (async function main() {
   let [cfg, pages, redirects, posts, products] = await Promise.all([
     getDoc('site/config'), getCol('pages'), getCol('redirects'),
@@ -506,6 +569,11 @@ function generatePackPages(products, template) {
   const pageByPath = {};
   pages.forEach(p => { pageByPath[p.path] = p; });
 
+  // published==true is already guaranteed by the query; publishAt (scheduled
+  // future posts, e.g. the monthly curriculum drop) still needs a client-side
+  // check since Firestore can't express that OR-condition in the query filter.
+  const livePosts = posts.filter(p => !p.publishAt || p.publishAt <= Date.now());
+
   const htmlFiles = listHtmlFiles(DIR).filter(f => !GENERATED_DETAIL_PAGE.test(f));
   let changed = 0;
   let blogPostTemplate = null;
@@ -517,6 +585,7 @@ function generatePackPages(products, template) {
     const canonical = (page && page.canonicalUrl) || SITE_ORIGIN + '/' + urlPathFor(f);
     let after = applyToHtml(before, cfg, page, canonical);
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
+    if (f === 'free-lessons.html') after = bakeFreeLessonsGrid(after, livePosts);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
     // Captured post-bake (so generated pages inherit the same favicon/GA4/org
     // JSON-LD as every other page) for use as the per-record template below.
@@ -530,7 +599,6 @@ function generatePackPages(products, template) {
      "Duplicate, Google chose different canonical": every free-bible-lessons,
      blog and pack detail URL used to rewrite to the same template with an
      empty canonical link, filled in only by client-side JS. */
-  const livePosts = posts.filter(p => !p.publishAt || p.publishAt <= Date.now());
   const postPagesWritten = blogPostTemplate ? generatePostPages(livePosts, blogPostTemplate) : 0;
   const packPagesWritten = curriculumPackTemplate ? generatePackPages(products, curriculumPackTemplate) : 0;
   console.log(`Generated ${postPagesWritten} post page(s) and ${packPagesWritten} pack page(s) with baked-in canonical tags.`);
@@ -549,9 +617,6 @@ function generatePackPages(products, template) {
     if (SITEMAP_EXCLUDE.has(f)) return;
     urls.push(SITE_ORIGIN + '/' + urlPathFor(f));
   });
-  // published==true is already guaranteed by the query; publishAt (scheduled
-  // future posts, e.g. the monthly curriculum drop) still needs a client-side
-  // check since Firestore can't express that OR-condition in the query filter.
   livePosts.forEach(p => urls.push(postUrl(p)));
   products.filter(p => p.active && p.slug).forEach(p => urls.push(packUrl(p)));
   fs.writeFileSync(path.join(DIR, 'sitemap.xml'),
