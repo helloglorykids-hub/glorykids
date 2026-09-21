@@ -67,59 +67,39 @@
     .journey-orb--a { width: 420px; height: 420px; top: -140px; left: -100px; background: radial-gradient(circle,#66249A,transparent 70%); }
     .journey-orb--b { width: 460px; height: 460px; bottom: -160px; right: -120px; background: radial-gradient(circle,#00BFC4,transparent 70%); }
 
-    .journey-wrap {
-      position: relative; width: 100%; max-width: 1000px; margin: 0 auto;
-      aspect-ratio: 16/10.5; z-index: 1;
-    }
-    .journey-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-    .journey-svg ellipse { fill: none; stroke: rgba(255,255,255,0.16); stroke-width: 0.45; stroke-dasharray: 2.2 2.4; }
-    .journey-arrow { fill: var(--gold); }
+    /* ── Year at a Glance — two-column: pitch + checklist on the left,
+       a 2-column grid of every month's real cover art on the right. */
+    .yag2-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 3.5rem; align-items: center; }
+    @media (max-width: 980px) { .yag2-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
 
-    .journey-center {
-      position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
-      text-align: center; width: 46%; z-index: 1; pointer-events: none;
+    .yag2-title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.2; margin-bottom: 1.1rem; }
+    .yag2-desc { font-size: 0.98rem; color: var(--gray-400); line-height: 1.7; margin-bottom: 2rem; max-width: 520px; }
+    .yag2-check-title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: 1.02rem; margin-bottom: 1.1rem; }
+    .yag2-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem 1.5rem; margin-bottom: 2.25rem; }
+    @media (max-width: 480px) { .yag2-checklist { grid-template-columns: 1fr; } }
+    .yag2-check-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.88rem; color: var(--gray-300); font-weight: 600; line-height: 1.35; }
+    .yag2-check-icon {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--primary-light);
+      display: flex; align-items: center; justify-content: center; font-size: 0.85rem;
     }
-    .journey-center__eyebrow { font-family: var(--font-heading); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
-    .journey-center__title { font-family: var(--font-heading); font-weight: 800; color: var(--white); font-size: clamp(1.05rem, 2vw, 1.5rem); line-height: 1.3; margin-bottom: 0.6rem; }
-    .journey-center__sub { font-size: 0.78rem; color: var(--gray-500); line-height: 1.6; }
+    .yag2-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-    .journey-node {
-      position: absolute; transform: translate(-50%,-50%); z-index: 2;
-      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
-      cursor: pointer; width: 118px; text-align: center;
+    .yag2-right { position: relative; z-index: 1; }
+    .yag2-imggrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 480px) { .yag2-imggrid { grid-template-columns: 1fr; } }
+    .yag2-tile {
+      position: relative; border-radius: 16px; overflow: hidden; cursor: pointer; aspect-ratio: 2/1;
+      background: var(--color-card); box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+      border: 2px solid transparent; transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    .journey-node__badge {
-      width: 62px; height: 62px; border-radius: 50%; position: relative;
-      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
-      border: 3px solid rgba(255,255,255,0.9); box-shadow: 0 10px 24px rgba(0,0,0,0.45);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      overflow: hidden;
-    }
-    .journey-node__badge img { width: 100%; height: 100%; object-fit: cover; }
-    .journey-node:hover .journey-node__badge, .journey-node.is-active .journey-node__badge {
-      transform: scale(1.12); box-shadow: 0 14px 30px rgba(0,0,0,0.55), 0 0 0 4px var(--journey-accent, var(--gold));
-    }
-    .journey-node__num {
-      position: absolute; top: -6px; right: -6px; width: 22px; height: 22px; border-radius: 50%;
-      background: var(--journey-accent, var(--gold)); color: #17191C;
-      font-family: var(--font-heading); font-size: 0.62rem; font-weight: 900;
-      display: flex; align-items: center; justify-content: center; border: 2px solid var(--color-darkest);
-    }
-    .journey-node__month { font-family: var(--font-heading); font-size: 0.66rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--journey-accent, var(--gold)); }
-    .journey-node__series { font-size: 0.72rem; font-weight: 700; color: var(--white); line-height: 1.25; }
-
-    .journey-start {
-      position: absolute; z-index: 2; font-family: var(--font-heading); font-weight: 800; font-size: 0.72rem;
-      color: var(--gold); background: rgba(255,176,0,0.12); border: 1px solid rgba(255,176,0,0.4);
-      padding: 0.3rem 0.75rem; border-radius: var(--radius-full); white-space: nowrap;
-    }
-    .journey-caption { text-align: center; font-size: 0.8rem; color: var(--gray-500); margin-top: 1.5rem; }
-
-    @media (max-width: 900px) {
-      .journey-wrap { aspect-ratio: 1/1.55; max-width: 480px; }
-      .journey-node { width: 92px; }
-      .journey-node__badge { width: 50px; height: 50px; font-size: 1.3rem; }
-      .journey-center { width: 60%; }
+    .yag2-tile:hover, .yag2-tile.is-active { transform: translateY(-4px) scale(1.02); border-color: var(--tile-accent, var(--gold)); box-shadow: 0 16px 32px rgba(0,0,0,0.45); }
+    .yag2-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .yag2-tile .yag2-tile__emoji { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; background: linear-gradient(135deg, var(--tile-g1), var(--tile-g2)); }
+    .yag2-tile__badge {
+      position: absolute; top: 0.55rem; left: 0.55rem; z-index: 2; font-family: var(--font-heading);
+      font-size: 0.62rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+      color: #fff; background: rgba(0,0,0,0.55); backdrop-filter: blur(3px);
+      padding: 0.22rem 0.55rem; border-radius: var(--radius-full);
     }
 
     /* ── Month cards (Browse the Series) ─────────────────────────── */
@@ -219,15 +199,16 @@
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
         <li class="nav__dropdown">
-          <a href="curriculum-packs.html" class="nav__link">Curriculum ▾</a>
+          <a href="glory-kids-curriculum.html" class="nav__link">Curriculum ▾</a>
           <div class="nav__dropdown-menu">
             <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
             <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
             <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
           </div>
         </li>
+        <li><a href="shop.html" class="nav__link">Shop Now</a></li>
         <li class="nav__dropdown">
-          <a href="blog.html" class="nav__link">Blog ▾</a>
+          <a href="blog.html" class="nav__link">Resources ▾</a>
           <div class="nav__dropdown-menu">
             <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
             <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
@@ -239,7 +220,6 @@
         <li><a href="about.html" class="nav__link">About Us</a></li>
       </ul>
       <div class="nav__actions">
-        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
         <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
         <a href="#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
       </div>
@@ -257,11 +237,11 @@
   <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
   <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
   <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
-  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Resources</a>
   <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
   <a href="about.html" class="nav__mobile-link">ℹ️ About Us</a>
-  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop Now</a>
   <a href="login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
     <a href="#pricing" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>
@@ -354,27 +334,31 @@
   </div>
 </section>
 
-<!-- YEAR JOURNEY — circular flow chart, 12 months -->
+<!-- YEAR AT A GLANCE — pitch + checklist left, cover-art grid right -->
 <section class="journey-outer">
   <div class="journey-orbs" aria-hidden="true">
     <span class="journey-orb journey-orb--a"></span>
     <span class="journey-orb journey-orb--b"></span>
   </div>
   <div class="container" style="position:relative;z-index:1;">
-    <div class="section-label reveal">One Journey, Twelve Months</div>
-    <h2 class="section-heading reveal">Your Year at a <span class="highlight">Glance</span></h2>
-    <p class="section-subheading reveal">Tap any month to jump straight to its four-week breakdown below.</p>
+    <div class="yag2-grid">
+      <div class="yag2-left reveal">
+        <div class="section-label">One Journey, Twelve Months</div>
+        <h2 class="yag2-title">Your Year at a <span class="highlight">Glance</span></h2>
+        <p class="yag2-desc">Twelve standalone, four-week themed series — everything you need to teach your elementary-aged kids and preteens all year. Start wherever your ministry calendar is right now, and tap any month below to jump straight to its full breakdown.</p>
 
-    <div class="journey-wrap reveal" id="journeyWrap">
-      <svg class="journey-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <ellipse cx="50" cy="50" rx="44" ry="38"></ellipse>
-      </svg>
-      <div class="journey-center">
-        <div class="journey-center__eyebrow">Encounter Jesus</div>
-        <div class="journey-center__title">Carry His Presence</div>
-        <div class="journey-center__sub">Each circle is one month's themed series — start wherever your ministry calendar is right now.</div>
+        <div class="yag2-check-title">Every Month Comes With...</div>
+        <div class="yag2-checklist" id="yag2Checklist"></div>
+
+        <div class="yag2-ctas">
+          <a href="#pricing" class="btn btn--primary btn--lg">✨ Join Membership</a>
+          <a href="/free-lessons.html" class="btn btn--outline btn--lg">Try Free Lessons</a>
+        </div>
       </div>
-      <!-- nodes injected by JS -->
+
+      <div class="yag2-right reveal">
+        <div class="yag2-imggrid" id="yag2Grid"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -594,44 +578,58 @@
     }
   ];
 
-  /* Toggle the active highlight on both the circular journey nodes and the
+  /* Toggle the active highlight on the year-glance image grid and the
      month-card grid — purely visual now that there's no detail panel to
      expand into. */
   function setActiveMonth(idx) {
     document.querySelectorAll('.month-card').forEach(function (c, i) {
       c.classList.toggle('is-active', i === idx);
     });
-    document.querySelectorAll('.journey-node').forEach(function (n, i) {
-      n.classList.toggle('is-active', i === idx);
+    document.querySelectorAll('.yag2-tile').forEach(function (n) {
+      n.classList.toggle('is-active', Number(n.dataset.idx) === idx);
     });
   }
 
-  /* Circular "Year Journey" flow chart — 12 nodes evenly spaced around an
-     ellipse (percent-based, so it reflows with any container aspect ratio). */
-  function renderJourney() {
-    var wrap = document.getElementById('journeyWrap');
-    if (!wrap) return;
-    var rx = 44, ry = 38;
-    var html = YEAR.map(function (m, i) {
-      var angle = (-90 + i * (360 / YEAR.length)) * Math.PI / 180;
-      var x = 50 + rx * Math.cos(angle);
-      var y = 50 + ry * Math.sin(angle);
+  // Grounded in the real inclusions already described elsewhere on this page
+  // (the "What Makes It Different" section, each month's own data) — not
+  // claims invented for this checklist.
+  var YEAR_CHECKLIST = [
+    { icon: '🔄', text: '12 monthly themed series' },
+    { icon: '📅', text: '48 weeks of full lesson plans' },
+    { icon: '🎯', text: 'Preschool, K-2nd & 3rd-5th versions' },
+    { icon: '📋', text: 'Step-by-step teacher scripts & prep' },
+    { icon: '✨', text: 'A Holy Spirit / Encounter Activation every week' },
+    { icon: '🎨', text: 'Printable activities & craft pages' },
+    { icon: '🏠', text: 'Take-home family devotionals' },
+    { icon: '📖', text: 'Reviewed by pastors & theologians' },
+    { icon: '🗣️', text: 'Built on Voice, Power, Presence' },
+    { icon: '⚡', text: 'Ready to teach in 15 minutes' },
+    { icon: '🔁', text: 'Start any month — no fixed start date' },
+    { icon: '🙌', text: 'Beginner-friendly for first-time volunteers' }
+  ];
+
+  function renderChecklist() {
+    var el = document.getElementById('yag2Checklist');
+    if (!el) return;
+    el.innerHTML = YEAR_CHECKLIST.map(function (c) {
+      return '<div class="yag2-check-item"><span class="yag2-check-icon">' + c.icon + '</span>' + c.text + '</div>';
+    }).join('');
+  }
+
+  function renderYearGrid() {
+    var grid = document.getElementById('yag2Grid');
+    if (!grid) return;
+    grid.innerHTML = YEAR.map(function (m, i) {
       var media = m.cover
-        ? '<img src="' + m.cover + '" alt="' + m.series + '" loading="lazy" decoding="async" />'
-        : m.emoji;
+        ? '<img src="' + m.cover + '" alt="' + m.series + ' cover art" loading="lazy" decoding="async" onerror="this.parentElement.innerHTML=\'<div class=&quot;yag2-tile__emoji&quot;>' + m.emoji + '</div>\';" />'
+        : '<div class="yag2-tile__emoji">' + m.emoji + '</div>';
       return '' +
-        '<div class="journey-node" data-idx="' + i + '" style="left:' + x.toFixed(2) + '%;top:' + y.toFixed(2) + '%;--journey-accent:' + m.grad[0] + ';">' +
-          '<div class="journey-node__badge" style="background:linear-gradient(135deg,' + m.grad[0] + ',' + m.grad[1] + ');">' +
-            '<span class="journey-node__num">' + (i + 1) + '</span>' +
-            media +
-          '</div>' +
-          '<div class="journey-node__month">' + m.month + '</div>' +
-          '<div class="journey-node__series">' + m.series + '</div>' +
+        '<div class="yag2-tile" data-idx="' + i + '" style="--tile-g1:' + m.grad[0] + ';--tile-g2:' + m.grad[1] + ';--tile-accent:' + m.grad[0] + ';">' +
+          '<div class="yag2-tile__badge">' + m.month.slice(0, 3) + '</div>' +
+          media +
         '</div>';
     }).join('');
-    wrap.insertAdjacentHTML('beforeend', html);
-    wrap.insertAdjacentHTML('beforeend', '<div class="journey-start" style="left:50%;top:4%;transform:translate(-105%,0);">Start Here 👉</div>');
-    wrap.querySelectorAll('.journey-node').forEach(function (n) {
+    grid.querySelectorAll('.yag2-tile').forEach(function (n) {
       n.addEventListener('click', function () { setActiveMonth(Number(n.dataset.idx)); });
     });
   }
@@ -658,7 +656,8 @@
     el.addEventListener('click', function () { setActiveMonth(Number(el.dataset.idx)); });
   });
 
-  renderJourney();
+  renderChecklist();
+  renderYearGrid();
   setActiveMonth(0);
 })();
 </script>
@@ -738,6 +737,13 @@
 
   <div class="container">
 
+    <!-- START FREE banner -->
+    <div class="max-w-2xl mx-auto text-center mb-10" style="background:var(--color-card);border:2px solid rgba(255,255,255,0.1);border-radius:var(--radius-xl);padding:1.75rem;">
+      <h3 class="text-white font-bold text-lg mb-2">Start Free. Go Deeper With Membership.</h3>
+      <p class="text-slate-400 text-sm mb-4">Access 35 free Bible lessons, experience a Premium curriculum sample, and upgrade when you're ready for complete monthly curriculum.</p>
+      <a href="/free-lessons.html" class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-7 py-3 rounded-xl transition-colors">Start Free →</a>
+    </div>
+
     <!-- HERO -->
     <div class="pricing-hero">
       <h2 class="section-title">Simple Pricing. Zero Surprises.</h2>
@@ -777,9 +783,9 @@
           <p class="card-desc-premium">Perfect for trying it out</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
-            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
-            <li><span class="check">✓</span>Sample activities &amp; resources</li>
+            <li><span class="check">✓</span>35 Free Bible Lessons Instantly</li>
+            <li><span class="check">✓</span>Includes 1 Premium curriculum sample</li>
+            <li><span class="check">✓</span>Discussion questions & Holy Spirit Activation</li>
             <li><span class="check">✓</span>No credit card required</li>
           </ul>
 
@@ -841,9 +847,9 @@
           <p class="card-desc-premium">Try first, no credit card</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
-            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
-            <li><span class="check">✓</span>Sample activities &amp; resources</li>
+            <li><span class="check">✓</span>35 Free Bible Lessons Instantly</li>
+            <li><span class="check">✓</span>Includes 1 Premium curriculum sample</li>
+            <li><span class="check">✓</span>Discussion questions & Holy Spirit Activation</li>
             <li><span class="check">✓</span>No credit card required</li>
           </ul>
 
@@ -861,9 +867,13 @@
           <p class="card-desc-premium">For solo teachers &amp; parents</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>All lessons + resources</li>
-            <li><span class="check">✓</span>Personal account access</li>
-            <li><span class="check">✓</span>Add to your order</li>
+            <li><span class="check">✓</span>Licensed for 1 individual user</li>
+            <li><span class="check">✓</span>New 4-week premium curriculum every month</li>
+            <li><span class="check">✓</span>48 new premium lessons/year</li>
+            <li><span class="check">✓</span>3 games + 3 crafts + object lessons</li>
+            <li><span class="check">✓</span>Parent take-home guides &amp; family discipleship resources</li>
+            <li><span class="check">✓</span>Original worship songs for each curriculum series</li>
+            <li><span class="check">✓</span>Premium resource library</li>
           </ul>
 
           <a href="#" data-checkout-plan="monthly" class="card-cta-premium card-cta-secondary">Join Membership</a>
@@ -914,9 +924,9 @@
           <p class="card-desc-premium">Explore our curriculum</p>
 
           <ul class="card-features-premium">
-            <li><span class="check">✓</span>10 Free Lessons Instantly (just your email)</li>
-            <li><span class="check">✓</span>35 Free Lessons Total (with a free account)</li>
-            <li><span class="check">✓</span>Sample curriculum &amp; teaching guides</li>
+            <li><span class="check">✓</span>35 Free Bible Lessons Instantly</li>
+            <li><span class="check">✓</span>Includes 1 Premium curriculum sample</li>
+            <li><span class="check">✓</span>Discussion questions & Holy Spirit Activation</li>
             <li><span class="check">✓</span>No credit card required</li>
           </ul>
 

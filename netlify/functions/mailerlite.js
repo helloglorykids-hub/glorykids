@@ -3,13 +3,18 @@
    actions:
      'subscribe'    → newsletter group
      'purchase'     → customers group + fields
-     'free-lessons' → "Free 10 Lessons" group (triggers the 10-lesson automation)
+     'free-lessons' → "Free 10 Lessons" group (triggers the 10-lesson
+                      automation). Retired from the site's own UI — every
+                      lesson now unlocks the same way (see 'signup-nudge'
+                      below) — but left wired here rather than deleted,
+                      since the group/automation itself still exists in
+                      MailerLite and nothing calls this action anymore.
      'waitlist'     → "Membership Waitlist" group
-     'signup-nudge' → "Signup Nudge" group (visitor hit a free-with-account
-                      lesson but didn't sign up on the spot; triggers the
-                      "complete your free account" automation). `redirect`
-                      (the lesson's path) becomes the `unlock_url` field, so
-                      the automation email can link straight back to it.
+     'signup-nudge' → "Signup Nudge" group (visitor didn't sign up on the
+                      spot for a lesson; triggers the "complete your free
+                      account" automation). `redirect` (the lesson's path)
+                      becomes the `unlock_url` field, so the automation
+                      email can link straight back to it.
    For 'free-lessons' / 'waitlist' the response includes { already: bool } —
    true when the email was ALREADY in that group (so the page can say
    "we already sent it" instead of "check your inbox").

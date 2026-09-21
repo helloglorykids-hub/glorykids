@@ -178,18 +178,6 @@ async function handleLogin(e) {
   }
 }
 
-/* Fires the same MailerLite "Free 10 Lessons" automation the lesson-page
-   opt-in forms use, so a brand-new free account gets the 10 free lessons
-   emailed to them too (best-effort — never blocks signup). */
-function subscribeFreeLessons(email, name) {
-  if (!email) return;
-  fetch('/api/mailerlite', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'free-lessons', email, name: name || '', source: 'signup' })
-  }).catch(() => {});
-}
-
 /* ─── SIGNUP FORM ────────────────────────────────────────────── */
 async function handleSignup(e) {
   e.preventDefault();
@@ -214,7 +202,6 @@ async function handleSignup(e) {
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     await cred.user.updateProfile({ displayName: name });
     await GK.ensureUserRecord(cred.user, { displayName: name });
-    subscribeFreeLessons(email, name);
     // Trigger state change manually since profile update doesn't fire it
     const params = new URLSearchParams(window.location.search);
     window.location.href = params.get('redirect') || 'dashboard.html';
@@ -257,9 +244,6 @@ async function completeGoogleRedirect() {
   }
   if (!result || !result.user) return;
   await GK.ensureUserRecord(result.user);
-  if (result.additionalUserInfo && result.additionalUserInfo.isNewUser) {
-    subscribeFreeLessons(result.user.email, result.user.displayName);
-  }
   // Navigation off login.html/signup.html is handled by the
   // onAuthStateChanged "isAuthPage && user" redirect below — no need to
   // duplicate it here.

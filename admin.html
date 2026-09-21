@@ -429,20 +429,18 @@
               <div style="font-size:0.85rem; font-weight:800; color:var(--gray-700); margin-bottom:1rem;">📖 Free Lesson Details</div>
               <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
                 <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#17191C;">
-                  <input type="checkbox" id="post-free-lesson" style="width:auto;" /> Include in the 10 Free Lessons
+                  <input type="checkbox" id="post-free-lesson" style="width:auto;" /> Feature in the "Top 10 Free Lessons" rail
                 </label>
                 <p style="font-size:0.78rem; color:#6b7280; margin:0.4rem 0 0; line-height:1.5;">
-                  Checked: this lesson shows the MailerLite signup below and is downloadable by email alone, no account needed.
-                  Unchecked (default): falls through to the rules below — only check this for the 10 lessons you're giving away by email.
+                  Every lesson here unlocks the same way — a free account, no payment — so this only controls whether it's eligible for the ranked "Top 10" trending rail on the free-lessons page, nothing about access.
                 </p>
               </div>
               <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
                 <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#17191C;">
-                  <input type="checkbox" id="post-free-with-account" style="width:auto;" /> Free With Account Signup (part of the 35)
+                  <input type="checkbox" id="post-premium-sample" style="width:auto;" /> ⭐ Premium Sample (bonus preview from paid Membership curriculum)
                 </label>
                 <p style="font-size:0.78rem; color:#6b7280; margin:0.4rem 0 0; line-height:1.5;">
-                  Checked: any signed-in user can download this for free — no paid membership needed, just a free account. Use this for the remaining ~25 lessons that make up the "35 free lessons" promise (10 by email + 25 more with signup).
-                  Unchecked, and not one of the 10 above: the "Join Glory Kids Membership" prompt shows instead.
+                  Checked: shown with a "Premium Sample" badge and framed as a free taste of the paid Membership curriculum, instead of one of the 35. Still unlocks the same way — a free account. Use this for exactly one lesson at a time.
                 </p>
               </div>
               <div>
@@ -514,7 +512,7 @@
                 <div class="gk-hint" id="lesson-files-status" style="font-size:0.75rem; color:var(--gray-400); margin-top:0.35rem;"></div>
                 <ul id="lesson-files-list" style="list-style:none; padding:0; margin:0.5rem 0 0;"></ul>
                 <p style="font-size:0.78rem; color:var(--gray-500); margin:0.5rem 0 0; line-height:1.5;">
-                  For the 10 free lessons these download for free (also delivered by the MailerLite email). Lessons marked "Free With Account Signup" download for free to any signed-in user. For every other lesson, only active Glory Kids / Church members can download them.
+                  Any signed-in user can download these files for free — no paid membership needed, same as every other lesson.
                 </p>
               </div>
             </div>
@@ -1895,7 +1893,7 @@ function showPostForm(post, presetCategory) {
   document.getElementById('post-lesson-type').value = post ? (post.lessonType || 'lesson') : 'lesson';
   document.getElementById('post-season').value = post ? (post.season || 'general') : 'general';
   document.getElementById('post-free-lesson').checked = !!(post && post.isFreeLesson);
-  document.getElementById('post-free-with-account').checked = !!(post && post.freeWithAccount);
+  document.getElementById('post-premium-sample').checked = !!(post && post.isPremiumSample);
   galleryImages = post && post.galleryImages ? [...post.galleryImages] : [];
   renderGalleryThumbs();
   document.getElementById('gallery-status').textContent = '';
@@ -1956,7 +1954,7 @@ async function savePostForm() {
     lessonType: document.getElementById('post-lesson-type').value,
     season: document.getElementById('post-season').value,
     isFreeLesson: document.getElementById('post-free-lesson').checked,
-    freeWithAccount: document.getElementById('post-free-with-account').checked,
+    isPremiumSample: document.getElementById('post-premium-sample').checked,
     galleryImages: [...galleryImages],
     files: lessonFiles.map(f => ({ path: f.path, name: f.name || '' })),
     tags: postTags,
@@ -2230,8 +2228,7 @@ function renderAccessDrawer() {
   const pause = '<span style="color:#E09E00;">⏸️</span>';
   const rows = [];
   rows.push(`<li>${isMember ? yes : (isPaused ? pause : no)} Full curriculum library &amp; member downloads ${isMember ? '' : (isPaused ? '<span style="color:var(--gray-400);">— paused</span>' : '<span style="color:var(--gray-400);">— members only</span>')}</li>`);
-  rows.push(`<li>${yes} The 10 free Bible lessons <span style="color:var(--gray-400);">— everyone</span></li>`);
-  rows.push(`<li>${yes} The 35 free lessons (10 by email + 25 with signup) <span style="color:var(--gray-400);">— any signed-in account</span></li>`);
+  rows.push(`<li>${yes} All 35 free Bible lessons <span style="color:var(--gray-400);">— any signed-in account</span></li>`);
   rows.push(`<li>${yes} Blog &amp; free resources <span style="color:var(--gray-400);">— everyone</span></li>`);
   rows.push(`<li>${u.isAdmin ? yes : no} Admin panel (this page) ${u.isAdmin ? '' : '<span style="color:var(--gray-400);">— admins only</span>'}</li>`);
   rows.push(`<li style="color:var(--gray-400); padding-top:0.4rem;">Dashboard shows: <strong style="color:var(--gray-600);">${isMember ? 'Glory Kids Member — Active' : (isPaused ? 'Membership Paused' : 'Free Account')}</strong></li>`);

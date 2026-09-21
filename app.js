@@ -32,9 +32,8 @@ if (progressBar) {
 /* ─── STICKY NAV ──────────────────────────────────────────────── */
 const nav = document.getElementById('nav');
 if (nav) {
-  let lastScroll = 0;
-  // Hide the nav on scroll-down once past this point, reveal it on any scroll-up.
-  const HIDE_AFTER = 600;
+  // Always fixed/visible at the top — just toggles the "scrolled" style
+  // (background/blur/shrink) once the page has scrolled past the hero.
   window.addEventListener('scroll', () => {
     const scroll = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
 
@@ -43,23 +42,6 @@ if (nav) {
     } else {
       nav.classList.remove('scrolled');
     }
-
-    const menuOpen = document.querySelector('.nav__mobile.open');
-    if (!menuOpen) {
-      if (scroll > lastScroll && scroll > HIDE_AFTER) {
-        nav.classList.add('nav--hidden');    // scrolling down, past the fold
-      } else if (scroll < lastScroll) {
-        nav.classList.remove('nav--hidden');  // scrolling up
-      }
-    }
-
-    // Mirrored on <body> so any page's sticky bars (e.g. shop filter bar) can
-    // offset themselves by the nav's real height only while it's actually
-    // visible, instead of hardcoding a fixed gap that goes stale the moment
-    // the nav slides away on scroll-down.
-    document.body.classList.toggle('nav-hidden', nav.classList.contains('nav--hidden'));
-
-    lastScroll = scroll;
   }, { passive: true });
 
   // Active nav link

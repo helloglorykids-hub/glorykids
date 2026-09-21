@@ -84,11 +84,14 @@
     }
     @media(max-width:768px) { .featured-product { grid-template-columns: 1fr; padding: 1.25rem; } }
     .featured-product__cover {
-      aspect-ratio: 4 / 3; border-radius: 14px; overflow: hidden;
+      /* A4 portrait (210×297mm) — matches the actual curriculum-pack cover
+         art, so it fills the frame instead of letterboxing inside a
+         landscape box sized for a different shape. */
+      aspect-ratio: 210 / 297; border-radius: 14px; overflow: hidden;
       box-shadow: 0 14px 40px rgba(11,46,103,.22);
       background: linear-gradient(135deg, var(--primary-light), var(--gold-light));
     }
-    .featured-product__cover img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .featured-product__cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .featured-product__info h2 { font-size: 1.4rem; }
     .featured-product__includes li { font-size: .82rem; }
     .featured-product::before {
@@ -512,15 +515,16 @@
       <ul class="nav__links">
         <li><a href="free-lessons.html" class="nav__link">Free Lessons</a></li>
         <li class="nav__dropdown">
-          <a href="curriculum-packs.html" class="nav__link">Curriculum ▾</a>
+          <a href="glory-kids-curriculum.html" class="nav__link">Curriculum ▾</a>
           <div class="nav__dropdown-menu">
             <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
             <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
             <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
           </div>
         </li>
+        <li><a href="shop.html" class="nav__link">Shop Now</a></li>
         <li class="nav__dropdown">
-          <a href="blog.html" class="nav__link">Blog ▾</a>
+          <a href="blog.html" class="nav__link">Resources ▾</a>
           <div class="nav__dropdown-menu">
             <a href="blog.html#parents" class="nav__dropdown-item"><span>👨‍👩‍👧</span> For Parents</a>
             <a href="blog.html#pastors" class="nav__dropdown-item"><span>⛪</span> For Pastors</a>
@@ -532,7 +536,6 @@
         <li><a href="about.html" class="nav__link">About Us</a></li>
       </ul>
       <div class="nav__actions">
-        <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
         <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
         <a href="glory-kids-curriculum.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
       </div>
@@ -550,11 +553,11 @@
   <a href="curriculum-packs.html" class="nav__mobile-link">📦 Curriculum Packs</a>
   <a href="glory-kids-curriculum.html" class="nav__mobile-link">✨ Glory Kids Curriculum</a>
   <a href="comparison.html" class="nav__mobile-link">⚖️ Compare Platforms</a>
-  <a href="blog.html" class="nav__mobile-link">📝 Blog</a>
+  <a href="blog.html" class="nav__mobile-link">📝 Resources</a>
   <a href="faq/index.html" class="nav__mobile-link">❓ FAQ</a>
   <a href="contact.html" class="nav__mobile-link">✉️ Contact</a>
   <a href="about.html" class="nav__mobile-link">ℹ️ About Us</a>
-  <a href="shop.html" class="nav__mobile-link">🛒 Shop</a>
+  <a href="shop.html" class="nav__mobile-link">🛒 Shop Now</a>
   <a href="login.html" class="nav__mobile-link">👤 Login</a>
   <div class="nav__mobile-cta">
     <a href="glory-kids-curriculum.html#pricing" class="gk-btn gk-btn--cta gk-btn--lg" style="width:100%;justify-content:center;">✨ Join Membership · $29.99/mo</a>

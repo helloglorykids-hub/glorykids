@@ -497,7 +497,7 @@ function freeLessonCardData(post, index) {
     emoji: post.icon || '📖', image: post.featuredImage || null,
     grad: FREE_LESSON_GRAD_PALETTE[index % FREE_LESSON_GRAD_PALETTE.length],
     href: '/free-bible-lessons/' + post.slug,
-    isFreeLesson: !!post.isFreeLesson, freeWithAccount: !!post.freeWithAccount
+    isPremiumSample: !!post.isPremiumSample
   };
 }
 
@@ -520,10 +520,7 @@ function freeLessonCardHtml(lesson, index) {
       `<div class="lesson-card__thumb" style="background:linear-gradient(135deg,${lesson.grad});">` +
         (lesson.image ? `<img src="${esc(lesson.image)}" alt="${esc(lesson.title)}" class="lesson-card__img" />` : lesson.emoji) +
         `<span class="lesson-card__age">${esc(lesson.ageLabel)}</span>` +
-        (lesson.isFreeLesson ? '' :
-          lesson.freeWithAccount
-            ? '<span class="lesson-card__account" title="Free with a Glory Kids account — no payment required">🆓 Free Account</span>'
-            : '<span class="lesson-card__lock" title="Requires Glory Kids Membership">🔒 Membership</span>') +
+        (lesson.isPremiumSample ? '<span class="lesson-card__premium" title="A free sample from our paid Membership curriculum">⭐ Premium Sample</span>' : '') +
       '</div>' +
       '<div class="lesson-card__body">' +
         `<div class="lesson-card__title">${esc(lesson.title)}</div>` +
@@ -540,7 +537,15 @@ function freeLessonCardHtml(lesson, index) {
 function bakeFreeLessonsGrid(html, posts) {
   const rows = posts.filter(p => p.category === 'free_lessons' && p.slug);
   const cardsHtml = rows.map((p, i) => freeLessonCardHtml(freeLessonCardData(p, i), i)).join('');
-  return html.replace(/<div id="cardGrid"([^>]*)><\/div>/, (m, attrs) => `<div id="cardGrid"${attrs}>${cardsHtml}</div>`);
+  // Matches the div's opening tag through to the next known sibling
+  // (#noResults) rather than an empty-div shell — a previous bake already
+  // fills this div with card markup, so an "opening tag immediately
+  // followed by </div>" pattern would only ever match once, on a pristine
+  // source file, and silently no-op on every rebuild after that.
+  return html.replace(
+    /(<div id="cardGrid"[^>]*>)[\s\S]*?(\n\s*<p id="noResults")/,
+    (m, open, closeMarker) => `${open}${cardsHtml}</div>${closeMarker}`
+  );
 }
 
 (async function main() {
