@@ -222,7 +222,54 @@
 </script>
 
 <!-- ═══════════════════════════════════════════════
-     2a. THIS MONTH'S CURRICULUM + START FREE vs MEMBERSHIP
+     2a. POPULAR LESSONS — two-row lesson-cover marquee
+════════════════════════════════════════════════ -->
+<section class="lessons-carousel-section">
+  <div class="lm-inner" role="img" aria-label="A selection of Glory Kids Bible lesson covers">
+
+    <!-- Decorative framed lesson covers (not clickable). Each row holds one
+         .lm-group that is cloned by JS so the loop is seamless. Top row drifts
+         left, bottom row drifts right. -->
+    <div class="lm-row" aria-hidden="true">
+      <div class="lm-track lm-track--left">
+        <div class="lm-group">
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">OT Story</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Faith</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894930046_featured.jpg?alt=media&token=7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Jesus</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Spirit-Filled</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Miracle</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Hope</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="lm-row" aria-hidden="true">
+      <div class="lm-track lm-track--right">
+        <div class="lm-group">
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Spirit-Filled</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Hope</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Faith</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Miracle</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">OT Story</figcaption></figure>
+          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894930046_featured.jpg?alt=media&token=7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Jesus</figcaption></figure>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      var groups = document.querySelectorAll('.lessons-carousel-section .lm-track > .lm-group');
+      for (var i = 0; i < groups.length; i++) {
+        groups[i].parentNode.appendChild(groups[i].cloneNode(true));
+      }
+    }());
+    </script>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     2b. THIS MONTH'S CURRICULUM + START FREE vs MEMBERSHIP
 ════════════════════════════════════════════════ -->
 <section class="gk-section gk-section--force-dark">
   <div class="container">
@@ -299,53 +346,6 @@
       </div>
 
     </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════
-     2b. POPULAR LESSONS — two-row lesson-cover marquee
-════════════════════════════════════════════════ -->
-<section class="lessons-carousel-section">
-  <div class="lm-inner" role="img" aria-label="A selection of Glory Kids Bible lesson covers">
-
-    <!-- Decorative framed lesson covers (not clickable). Each row holds one
-         .lm-group that is cloned by JS so the loop is seamless. Top row drifts
-         left, bottom row drifts right. -->
-    <div class="lm-row" aria-hidden="true">
-      <div class="lm-track lm-track--left">
-        <div class="lm-group">
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">OT Story</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Faith</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894930046_featured.jpg?alt=media&token=7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Jesus</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Spirit-Filled</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Miracle</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Hope</figcaption></figure>
-        </div>
-      </div>
-    </div>
-
-    <div class="lm-row" aria-hidden="true">
-      <div class="lm-track lm-track--right">
-        <div class="lm-group">
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1787342040948_featured.jpg?alt=media&token=5fe401a8-383e-4638-b769-6d272a6ef895" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Spirit-Filled</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636017417_featured.jpg?alt=media&token=50b2b70a-a7a6-4f62-b6cd-079e93166e9b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Hope</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786526067191_featured.jpg?alt=media&token=ea023f3c-dbb6-4402-a835-2151e2c99d58" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Faith</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786636719452_featured.jpg?alt=media&token=431566e4-aee6-4deb-a819-dac615207049" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Miracle</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786524910495_featured.jpg?alt=media&token=814095e5-63ba-49ba-928d-e74e3364b90b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">OT Story</figcaption></figure>
-          <figure class="lm-card"><img src="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/post-images%2F1786894930046_featured.jpg?alt=media&token=7aa45b0f-cbf4-4c18-93b1-e6953e1cca0b" alt="" loading="lazy" decoding="async" /><figcaption class="lm-card__tag">Jesus</figcaption></figure>
-        </div>
-      </div>
-    </div>
-
-    <script>
-    (function () {
-      var groups = document.querySelectorAll('.lessons-carousel-section .lm-track > .lm-group');
-      for (var i = 0; i < groups.length; i++) {
-        groups[i].parentNode.appendChild(groups[i].cloneNode(true));
-      }
-    }());
-    </script>
-
   </div>
 </section>
 
