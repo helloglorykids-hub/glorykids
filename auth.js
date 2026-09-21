@@ -52,7 +52,6 @@ function updateNav(user) {
     const initials = getInitials(user.displayName || user.email);
     const photoURL  = user.photoURL;
     actions.innerHTML = `
-      <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
       <a href="dashboard.html" class="nav__link" style="font-weight:600;">My Library</a>
       <div class="nav__user" id="nav-user-menu">
         <button class="nav__user-btn" onclick="toggleUserMenu()">
@@ -86,9 +85,8 @@ function updateNav(user) {
     });
   } else {
     actions.innerHTML = `
-      <a href="shop.html" class="gk-nav-btn gk-nav-btn--ghost">🛒 Shop</a>
       <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-      <a href="glory-kids-curriculum.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Glory Kids</a>
+      <a href="glory-kids-curriculum.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
     `;
   }
 }
