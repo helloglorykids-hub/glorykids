@@ -8,6 +8,7 @@
   <meta id="metaDescriptionTag" name="description" content="" />
   <meta id="metaKeywordsTag" name="keywords" content="" />
   <link id="metaCanonicalTag" rel="canonical" href="" />
+  <meta id="metaRobotsTag" name="robots" content="" />
   <meta id="metaOgTitle" property="og:title" content="" />
   <meta id="metaOgDescription" property="og:description" content="" />
   <meta id="metaOgImage" property="og:image" content="" />
@@ -633,6 +634,9 @@
   function showNotFound() {
     document.getElementById('postLoading').style.display = 'none';
     document.getElementById('postNotFound').style.display = 'block';
+    document.title = 'Lesson Not Found | Glory Kids Ministries';
+    var robots = document.getElementById('metaRobotsTag');
+    if (robots) robots.setAttribute('content', 'noindex, nofollow');
   }
 
   function renderPost(post) {

@@ -7,6 +7,7 @@
   <title id="metaTitleTag">Loading… | Glory Kids Ministries</title>
   <meta id="metaDescriptionTag" name="description" content="" />
   <link id="metaCanonicalTag" rel="canonical" href="" />
+  <meta id="metaRobotsTag" name="robots" content="" />
   <meta id="metaOgTitle" property="og:title" content="" />
   <meta id="metaOgDescription" property="og:description" content="" />
   <meta id="metaOgImage" property="og:image" content="" />
@@ -304,6 +305,9 @@
   function showNotFound() {
     document.getElementById('pd-loading').style.display = 'none';
     document.getElementById('pd-notfound').style.display = 'block';
+    document.title = 'Product Not Found | Glory Kids Ministries';
+    var robots = document.getElementById('metaRobotsTag');
+    if (robots) robots.setAttribute('content', 'noindex, nofollow');
   }
 
   // Curriculum/bundle products came from the Curriculum Packs page; every
