@@ -81,6 +81,10 @@
   to = "/.netlify/functions/member-file"
   status = 200
 [[redirects]]
+  from = "/api/free-lesson-file"
+  to = "/.netlify/functions/free-lesson-file"
+  status = 200
+[[redirects]]
   from = "/api/curriculum"
   to = "/.netlify/functions/curriculum"
   status = 200

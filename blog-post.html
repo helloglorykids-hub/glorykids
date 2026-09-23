@@ -198,15 +198,10 @@
             </a>
           </div>
           <div id="signupLockWrapTop" class="mailerlite-box mailerlite-box--signup" style="display:none;">
-            <h3 class="signupLockHeading text-white font-bold text-lg mb-2">🔓 Get This Lesson Free</h3>
-            <p class="signupLockDesc text-slate-300 text-sm mb-4">Enter your email and we’ll send you everything you need to unlock this lesson — plus 34 more — with a free account.</p>
-            <form data-gk-form="signup-nudge" class="gk-optin-form">
-              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
-              <input type="hidden" name="redirect" class="signupLockRedirect" value="" />
-              <input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />
-              <button type="submit" class="gk-optin-form__btn">Send Me the Access Link</button>
-            </form>
-            <p class="text-slate-400 text-xs mt-3">Already ready? <a href="/signup.html" class="signupLockLink text-teal-400 font-semibold">Create your free account now →</a></p>
+            <h3 class="signupLockHeading text-white font-bold text-lg mb-2">🔓 Get All 35+ Free Bible Lessons</h3>
+            <p class="signupLockDesc text-slate-300 text-sm mb-4">Get instant access to our complete library of free children’s ministry lessons.</p>
+            <button type="button" class="signupLockCta inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition-colors">Get All 35+ Free Bible Lessons →</button>
+            <p class="text-slate-400 text-xs mt-3">Free access. No credit card required.</p>
           </div>
 
           <div id="postContent" class="prose prose-invert prose-lg max-w-none post-prose"></div>
@@ -237,15 +232,10 @@
           <!-- Free-with-account box (shown instead of both boxes above for
                lessons flagged freeWithAccount — free to any signed-in user) -->
           <div id="signupLockWrap" class="mailerlite-box mailerlite-box--signup" style="display:none;">
-            <h3 class="signupLockHeading text-white font-bold text-lg mb-2">🔓 Get This Lesson Free</h3>
-            <p class="signupLockDesc text-slate-300 text-sm mb-4">Enter your email and we’ll send you everything you need to unlock this lesson — plus 34 more — with a free account.</p>
-            <form data-gk-form="signup-nudge" class="gk-optin-form">
-              <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" />
-              <input type="hidden" name="redirect" class="signupLockRedirect" value="" />
-              <input type="email" name="email" required placeholder="you@example.com" class="gk-optin-form__email" />
-              <button type="submit" class="gk-optin-form__btn">Send Me the Access Link</button>
-            </form>
-            <p class="text-slate-400 text-xs mt-3">Already ready? <a href="/signup.html" class="signupLockLink text-teal-400 font-semibold">Create your free account now →</a></p>
+            <h3 class="signupLockHeading text-white font-bold text-lg mb-2">🔓 Get All 35+ Free Bible Lessons</h3>
+            <p class="signupLockDesc text-slate-300 text-sm mb-4">Get instant access to our complete library of free children’s ministry lessons.</p>
+            <button type="button" class="signupLockCta inline-flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base px-7 py-3.5 rounded-xl shadow-lg shadow-orange-500/30 transition-colors">Get All 35+ Free Bible Lessons →</button>
+            <p class="text-slate-400 text-xs mt-3">Free access. No credit card required.</p>
           </div>
 
           <!-- CTA box — hidden for locked lessons; the membership lock box above
@@ -442,6 +432,7 @@
 <script src="/site-settings.js" defer></script>
 <script src="/gk-forms.js" defer></script>
 <script src="/auth.js"></script>
+<script src="/free-library.js"></script>
 <script src="/app.js"></script>
 <script src="/chatbot.js"></script>
 
@@ -757,21 +748,19 @@
     // Copy varies slightly for the one flagged Premium Sample lesson — same
     // unlock mechanism (free account) as every other lesson, just framed as
     // a preview of the paid Membership curriculum rather than one of the 35.
-    function fillSignupLockBox(wrap, redirectPath) {
+    function fillSignupLockBox(wrap, onUnlocked) {
       wrap.style.display = 'block';
       var heading = wrap.querySelector('.signupLockHeading');
       var desc = wrap.querySelector('.signupLockDesc');
       if (isPremiumSample) {
         if (heading) heading.textContent = '⭐ Premium Curriculum Preview';
-        if (desc) desc.textContent = 'This lesson is a free sample from our paid Membership curriculum. Enter your email and we’ll send you a free account to unlock it — plus all 35 free lessons.';
+        if (desc) desc.textContent = 'This lesson is a free sample from our paid Membership curriculum. Get instant access to it — plus all 35 free lessons — free.';
       } else {
-        if (heading) heading.textContent = '🔓 Get This Lesson Free';
-        if (desc) desc.textContent = 'Enter your email and we’ll send you everything you need to unlock this lesson — plus 34 more — with a free account.';
+        if (heading) heading.textContent = '🔓 Get All 35+ Free Bible Lessons';
+        if (desc) desc.textContent = 'Get instant access to our complete library of free children’s ministry lessons.';
       }
-      var link = wrap.querySelector('.signupLockLink');
-      if (link) link.href = '/signup.html?redirect=' + encodeURIComponent(redirectPath);
-      var redirectField = wrap.querySelector('.signupLockRedirect');
-      if (redirectField) redirectField.value = redirectPath;
+      var cta = wrap.querySelector('.signupLockCta');
+      if (cta) cta.addEventListener('click', function () { GKFreeLibrary.requireAccess(onUnlocked); });
     }
 
     var lessonFiles = Array.isArray(post.files) ? post.files.filter(function (f) { return f && f.path; }) : [];
@@ -784,14 +773,20 @@
     var ctaBoxEl = document.getElementById('postCtaBox');
     if (ctaBoxEl) ctaBoxEl.style.display = '';
 
+    var downloadCtrl = setupMemberDownload(post, lessonFiles);
+
     if (isLesson) {
-      // Shown by default (we don't know auth state synchronously yet);
-      // setupMemberDownload() hides these once we confirm the user is
-      // actually signed in and shows the real download box instead.
-      var signupRedirect = canonicalPathFor(post);
+      // Shown by default (we don't know unlock state synchronously yet);
+      // setupMemberDownload() hides these once we confirm the visitor has
+      // unlocked the free library and shows the real download box instead.
       ['signupLockWrap', 'signupLockWrapTop'].forEach(function (id) {
         var el = document.getElementById(id);
-        if (el) fillSignupLockBox(el, signupRedirect);
+        if (el) fillSignupLockBox(el, function () {
+          ['signupLockWrap', 'signupLockWrapTop'].forEach(function (lid) {
+            var lel = document.getElementById(lid); if (lel) lel.style.display = 'none';
+          });
+          if (downloadCtrl && downloadCtrl.unlock) downloadCtrl.unlock();
+        });
       });
       var ctaBoxFwa = document.getElementById('postCtaBox');
       if (ctaBoxFwa) ctaBoxFwa.style.display = 'none';
@@ -803,8 +798,6 @@
       );
     }
     if (window.gkFormsRescan) window.gkFormsRescan();
-
-    setupMemberDownload(post, lessonFiles);
 
     // Build TOC from rendered H2s
     const headings = contentEl.querySelectorAll('h2');
@@ -887,8 +880,8 @@
     if (!wrap || !files || !files.length) return;
 
     function showLocked() {
-      // Non-members: the existing membership / free-PDF boxes already carry
-      // the pitch + email capture, so keep our download box hidden for them.
+      // Not unlocked yet: the signup-lock boxes carry the "Get All 35+"
+      // CTA, so keep our download box hidden until they unlock.
       wrap.style.display = 'none';
     }
 
@@ -909,32 +902,42 @@
       var links = document.getElementById('memberDlLinks');
       btn.disabled = true; btn.textContent = 'Preparing…';
       try {
-        var idToken = await auth.currentUser.getIdToken();
-        var res = await fetch('/api/member-file?post=' + encodeURIComponent(post.id), { headers: { Authorization: 'Bearer ' + idToken } });
+        // Free lessons need no auth at all now — any of the 35 lessons is
+        // free for anyone who's unlocked the library (or an existing
+        // signed-in account from the old model).
+        var res = await fetch('/api/free-lesson-file?post=' + encodeURIComponent(post.id));
         var data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
         links.innerHTML = (data.files || []).map(function (f) {
           return '<a href="' + f.url + '" class="block bg-[var(--color-card)] border border-white/10 rounded-lg px-4 py-3 text-white hover:border-emerald-500 transition-colors">📄 ' + (f.name || 'Download').replace(/[<>&]/g, '') + '</a>';
         }).join('');
         btn.style.display = 'none';
+        GKFreeLibrary.track('free_lesson_downloaded', { post_id: post.id });
       } catch (e) {
         btn.disabled = false; btn.textContent = '⬇ Get download links';
         links.innerHTML = '<p class="text-sm text-orange-400">' + e.message + '</p>';
       }
     }
 
-    // Resolve auth state once it settles — any signed-in user unlocks any
-    // lesson, no membership check needed.
+    // Resolve auth state once it settles — an existing signed-in account
+    // (old model) OR having unlocked the free library (new model) both
+    // grant access, no membership check needed for these 35 lessons. Only
+    // decide once: onAuthStateChanged can fire again later, and re-running
+    // showMember() would wipe out download links the visitor already
+    // revealed. The signup-lock CTA's own unlock() call bypasses decide()
+    // entirely, so this guard doesn't block that path.
     var handled = false;
     function decide(user) {
       if (handled) return; handled = true;
-      if (user) showMember(); else showLocked();
+      if (user || GKFreeLibrary.isUnlocked()) showMember(); else showLocked();
     }
     if (auth.currentUser !== null && auth.currentUser !== undefined) decide(auth.currentUser);
     else {
       var t = setTimeout(function () { decide(auth.currentUser || null); }, 2500);
       auth.onAuthStateChanged(function (u) { clearTimeout(t); decide(u); });
     }
+
+    return { unlock: showMember };
   }
 
   onFirebaseReady(loadPost);
