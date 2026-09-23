@@ -44,6 +44,15 @@ onFirebaseReady(() => {
 });
 
 /* ─── UPDATE NAV BASED ON AUTH STATE ───────────────────────── */
+// The homepage has its own on-page pricing section (#pricing-premium) —
+// send nav CTAs there so visitors see and compare plans before checkout.
+// Every other page has no such section, so fall back to the dedicated
+// pricing page instead.
+function pricingHref() {
+  const isHome = location.pathname === '/' || location.pathname.replace(/^\//, '') === 'index.html';
+  return isHome ? '#pricing-premium' : 'glory-kids-curriculum.html#pricing';
+}
+
 function updateNav(user) {
   const actions = document.querySelector('.nav__actions');
   if (!actions) return;
@@ -68,7 +77,7 @@ function updateNav(user) {
           </div>
           <div class="nav__user-dropdown-divider"></div>
           <a href="dashboard.html" class="nav__user-dropdown-item">📚 My Dashboard</a>
-          <a href="glory-kids-curriculum.html#pricing" class="nav__user-dropdown-item">✨ Upgrade to Glory Kids</a>
+          <a href="${pricingHref()}" class="nav__user-dropdown-item">✨ Upgrade to Glory Kids</a>
           <a href="free-bible-lessons.html" class="nav__user-dropdown-item">📖 Free Lessons</a>
           <div class="nav__user-dropdown-divider"></div>
           <button class="nav__user-dropdown-item nav__user-dropdown-signout" onclick="signOut()">
@@ -86,7 +95,7 @@ function updateNav(user) {
   } else {
     actions.innerHTML = `
       <a href="login.html" class="gk-nav-btn gk-nav-btn--ghost">Login</a>
-      <a href="glory-kids-curriculum.html#pricing" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
+      <a href="${pricingHref()}" class="gk-nav-btn gk-nav-btn--cta">✨ Join Membership</a>
     `;
   }
 }
