@@ -188,6 +188,11 @@ async function handleLogin(e) {
 /* ─── SIGNUP FORM ────────────────────────────────────────────── */
 async function handleSignup(e) {
   e.preventDefault();
+  // Honeypot — real visitors never see or fill this field (same pattern
+  // gk-forms.js uses elsewhere). A bot that blindly fills every input
+  // trips it; silently no-op rather than error, so it learns nothing.
+  const hp = document.getElementById('signup-hp');
+  if (hp && hp.value) return;
   clearAuthError('signup-error');
   const name     = document.getElementById('signup-name').value.trim();
   const email    = document.getElementById('signup-email').value.trim();

@@ -2184,6 +2184,15 @@ function openAccessDrawer(uid) {
   document.getElementById('access-modal').style.display = 'flex';
 }
 
+// Subscriptions tab links here before the Members tab has ever been
+// rendered, so membersCache (which the drawer reads from) may still be
+// empty — load it first in that case.
+async function openMemberProfile(uid) {
+  if (!uid) return;
+  if (!membersCache.length) await renderMembers();
+  openAccessDrawer(uid);
+}
+
 function closeAccessDrawer() {
   accessUid = null;
   document.getElementById('access-modal').style.display = 'none';
@@ -3236,16 +3245,25 @@ async function renderSubscriptions() {
     <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${active.length}</div><div class="dash-stat-card__label">Active subscriptions</div></div>
     <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">R${Math.round(mrr).toLocaleString()}</div><div class="dash-stat-card__label">Approx. MRR (ZAR)</div></div>
     <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${subs.filter(s => s.status === 'past_due').length}</div><div class="dash-stat-card__label">Past due</div></div>
+    <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${subs.filter(s => s.status === 'pending').length}</div><div class="dash-stat-card__label">Stuck at checkout</div></div>
     <div class="dash-stat-card" style="min-width:150px;"><div class="dash-stat-card__num">${legacyPayfastActive}</div><div class="dash-stat-card__label">Legacy PayFast (active)</div></div>`;
 
   tbody.innerHTML = subs.length ? subs.map(s => {
     const provider = s.pfToken ? 'PayFast' : (s.ppSubscriptionId ? 'PayPal' : '—');
+    // Pending = they clicked a plan button but never finished checkout
+    // (the record is created up front, before payment confirms). Show how
+    // long it's been stuck so you can prioritize who to follow up with.
+    const pendingDays = s.status === 'pending' && s.createdAt
+      ? Math.floor((Date.now() - s.createdAt) / 86400000) : null;
+    const nameCell = s.uid
+      ? `<a href="#" onclick="openMemberProfile('${s.uid}');return false;" style="color:inherit;text-decoration:underline dotted;">${esc(s.name || '(no name on file)')}</a>`
+      : esc(s.name || '(no name on file)');
     return `
     <tr>
-      <td>${esc(s.name || '')}<div class="post-row__meta">${esc(s.email || '')}${s.orgName ? ' · ' + esc(s.orgName) : ''}</div></td>
+      <td>${nameCell}<div class="post-row__meta">${esc(s.email || '')}${s.orgName ? ' · ' + esc(s.orgName) : ''}</div></td>
       <td>${esc(s.planKey || '—')}<div class="post-row__meta">${esc(s.frequency || '')}</div></td>
       <td>R${Number(s.priceZAR || 0).toFixed(2)}</td>
-      <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span></td>
+      <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span>${pendingDays != null ? `<div class="post-row__meta">stuck ${pendingDays === 0 ? 'today' : pendingDays + 'd ago'}</div>` : ''}</td>
       <td>${provider}</td>
       <td>${s.lastPaymentAt ? new Date(s.lastPaymentAt).toLocaleDateString() : '—'}</td>
       <td style="text-align:right;">${(s.status === 'active' || s.status === 'past_due') && (s.pfToken || s.ppSubscriptionId) ? `<button class="row-btn row-btn--danger" onclick="adminCancelSub('${s.id}')">Cancel</button>` : ''}</td>
