@@ -98,9 +98,12 @@ exports.handler = async (event) => {
     fields.last_download_links = body.downloadLinks.join('\n');
   }
   if (action === 'signup-nudge') {
+    // No account/signup step anymore — the free library unlocks instantly
+    // in-browser, so this just links back to where they can browse/download
+    // (the specific lesson they were on, if we know it, else the hub).
     fields.unlock_url = body.redirect
-      ? SITE_ORIGIN + '/signup.html?redirect=' + encodeURIComponent(body.redirect)
-      : SITE_ORIGIN + '/signup.html';
+      ? SITE_ORIGIN + body.redirect
+      : SITE_ORIGIN + '/free-bible-lessons.html';
   }
 
   const payload = { email, fields, status: 'active' };

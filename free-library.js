@@ -104,7 +104,7 @@ window.GKFreeLibrary = (function () {
     fetch('/api/mailerlite', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'signup-nudge', email: email, name: name, source: location.href })
+      body: JSON.stringify({ action: 'signup-nudge', email: email, name: name, source: location.href, redirect: location.pathname })
     }).then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (data) { return { httpOk: r.ok, data: data }; });
       })
