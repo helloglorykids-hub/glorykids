@@ -223,8 +223,13 @@
 
 <!-- ═══════════════════════════════════════════════
      2a. START FREE vs MEMBERSHIP — comparison
+     Hidden per request. display:none rather than deleted — this
+     homepage alternates section backgrounds dark/cream by sibling
+     position (:nth-of-type(even) in homepage.css); removing the
+     element outright would shift every section below it and break
+     their backgrounds. Hiding keeps its slot in the count.
 ════════════════════════════════════════════════ -->
-<section class="gk-section gk-section--force-dark">
+<section class="gk-section gk-section--force-dark" style="display:none;">
   <div class="container">
     <h2 class="gk-h2 reveal" style="text-align:center;">Start Free. Go Deeper With <span class="text-gold">Membership</span>.</h2>
 
@@ -342,7 +347,7 @@
           </li>
         </ul>
         <div class="flex flex-wrap gap-3">
-          <a href="free-bible-lessons.html" class="inline-flex items-center justify-center gap-2 flex-1 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors" style="min-width:200px;">Start Free — Try Week 1</a>
+          <a href="free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/" class="inline-flex items-center justify-center gap-2 flex-1 bg-teal-500 hover:bg-teal-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors" style="min-width:200px;">Start Free — Try Week 1</a>
           <a href="glory-kids-curriculum.html#pricing" data-membership-cta="" class="inline-flex items-center justify-center gap-2 flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors" style="min-width:200px;">Choose Your Plan — Get All 4</a>
         </div>
       </div>
