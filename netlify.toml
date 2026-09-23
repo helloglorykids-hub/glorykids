@@ -488,6 +488,25 @@
   status = 301
   force = true
 
+# Old Squarespace collection prefix (pre-dates the site's own rename to
+# "free-bible-lessons") — every slug under here already has a working
+# redirect under /free-bible-lessons/<slug>, so just re-route into that.
+[[redirects]]
+  from = "/kids-bible-lessons/*"
+  to = "/free-bible-lessons/:splat"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/kids-bible-curriculum"
+  to = "/glory-kids-curriculum.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/cart"
+  to = "/shop.html"
+  status = 301
+  force = true
+
 # --- wildcard fallbacks for old collections (keep LAST, after exact paths) ---
 [[redirects]]
   from = "/free-bible-lessons/*"
