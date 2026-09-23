@@ -381,7 +381,7 @@ function bakePostPage(template, post) {
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_ORIGIN + '/index.html' },
       post.category === 'free_lessons'
-        ? { '@type': 'ListItem', position: 2, name: 'Free Lessons', item: SITE_ORIGIN + '/free-lessons.html' }
+        ? { '@type': 'ListItem', position: 2, name: 'Free Lessons', item: SITE_ORIGIN + '/free-bible-lessons.html' }
         : { '@type': 'ListItem', position: 2, name: CATEGORY_LABELS[post.category] || 'Blog', item: SITE_ORIGIN + '/blog.html' },
       { '@type': 'ListItem', position: 3, name: post.title, item: url }
     ]
@@ -480,7 +480,7 @@ function generatePackPages(products, template) {
   return writeDetailPages('pack', rows, p => `pack/${p.slug}`, bakePackPage, template);
 }
 
-// Mirrors free-lessons.html's AGE_LABELS/GRAD_PALETTE/normalizeDynamic/
+// Mirrors free-bible-lessons.html's AGE_LABELS/GRAD_PALETTE/normalizeDynamic/
 // cardHtml() exactly, so the grid it bakes in matches what the client's own
 // JS would render for the same post.
 const FREE_LESSON_AGE_LABELS = { preschool: 'Preschool (2-5)', k2: 'K-2nd', upper35: '3rd-5th', sixplus: '6th+' };
@@ -501,7 +501,7 @@ function freeLessonCardData(post, index) {
   };
 }
 
-/* Bakes real <div class="lesson-card"> markup into free-lessons.html's empty
+/* Bakes real <div class="lesson-card"> markup into free-bible-lessons.html's empty
    #cardGrid shell — that div is normally filled in entirely by client-side
    JS after an async Firestore fetch, so Google's crawl of the raw page (or a
    render pass that times out before that fetch resolves) can see the grid
@@ -590,7 +590,7 @@ function bakeFreeLessonsGrid(html, posts) {
     const canonical = (page && page.canonicalUrl) || SITE_ORIGIN + '/' + urlPathFor(f);
     let after = applyToHtml(before, cfg, page, canonical);
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
-    if (f === 'free-lessons.html') after = bakeFreeLessonsGrid(after, livePosts);
+    if (f === 'free-bible-lessons.html') after = bakeFreeLessonsGrid(after, livePosts);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
     // Captured post-bake (so generated pages inherit the same favicon/GA4/org
     // JSON-LD as every other page) for use as the per-record template below.

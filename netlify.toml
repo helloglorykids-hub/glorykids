@@ -474,39 +474,34 @@
   force = true
 [[redirects]]
   from = "/easter-bible-lessons-for-kids"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 [[redirects]]
   from = "/kids-bible-resources"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 [[redirects]]
   from = "/freelessons/*"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 
 # --- wildcard fallbacks for old collections (keep LAST, after exact paths) ---
 [[redirects]]
   from = "/free-bible-lessons/*"
-  to = "/free-lessons.html"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/free-bible-lessons"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 [[redirects]]
   from = "/bible-lessons-by-age/*"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 [[redirects]]
   from = "/bible-lessons-by-age"
-  to = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
   status = 301
   force = true
 [[redirects]]
@@ -577,6 +572,19 @@
   from = "/pack/:slug"
   to = "/curriculum-pack.html"
   status = 200
+
+# free-lessons.html renamed to free-bible-lessons.html (stronger SEO match
+# for the "free bible lessons" head keyword) — preserve old bookmarks/links.
+[[redirects]]
+  from = "/free-lessons.html"
+  to = "/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/free-lessons"
+  to = "/free-bible-lessons.html"
+  status = 301
+  force = true
 
 # Branded 404 for any unmatched path (static files still win over this).
 [[redirects]]

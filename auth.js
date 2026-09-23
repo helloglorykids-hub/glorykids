@@ -69,7 +69,7 @@ function updateNav(user) {
           <div class="nav__user-dropdown-divider"></div>
           <a href="dashboard.html" class="nav__user-dropdown-item">📚 My Dashboard</a>
           <a href="glory-kids-curriculum.html#pricing" class="nav__user-dropdown-item">✨ Upgrade to Glory Kids</a>
-          <a href="free-lessons.html" class="nav__user-dropdown-item">📖 Free Lessons</a>
+          <a href="free-bible-lessons.html" class="nav__user-dropdown-item">📖 Free Lessons</a>
           <div class="nav__user-dropdown-divider"></div>
           <button class="nav__user-dropdown-item nav__user-dropdown-signout" onclick="signOut()">
             Sign Out

@@ -15,7 +15,7 @@
   const KB = [
     {
       keywords: ['free', 'lesson', 'lessons', 'trial'],
-      answer: "Head to our <a href=\"free-lessons.html\">Free Lessons</a> page and <a href=\"signup.html\">create a free account</a> — no credit card needed — to unlock all 35 complete, ready-to-teach Bible lessons instantly, plus a free sample from our Premium curriculum."
+      answer: "Head to our <a href=\"free-bible-lessons.html\">Free Lessons</a> page and <a href=\"signup.html\">create a free account</a> — no credit card needed — to unlock all 35 complete, ready-to-teach Bible lessons instantly, plus a free sample from our Premium curriculum."
     },
     {
       keywords: ['curriculum', 'pack', 'packs', 'series'],
@@ -116,7 +116,7 @@
     },
     {
       keywords: ['find a lesson', 'search lesson', 'looking for a lesson', 'do you have a lesson on', 'lesson about', 'lesson on'],
-      answer: "Tell me the Bible story, character, or topic you're after and I'll search our lesson library for you — or browse everything yourself on the <a href=\"free-lessons.html\">Free Lessons</a> page."
+      answer: "Tell me the Bible story, character, or topic you're after and I'll search our lesson library for you — or browse everything yourself on the <a href=\"free-bible-lessons.html\">Free Lessons</a> page."
     }
   ];
 

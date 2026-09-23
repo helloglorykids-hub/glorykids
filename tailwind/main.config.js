@@ -5,7 +5,7 @@
 module.exports = {
   content: [
     './index.html',
-    './free-lessons.html',
+    './free-bible-lessons.html',
     './comparison.html',
     './glory-kids-curriculum.html',
     './blog-post.html',
