@@ -335,6 +335,50 @@ function postPath(p) {
 function postUrl(p) { return SITE_ORIGIN + postPath(p) + '/'; }
 function packUrl(prod) { return SITE_ORIGIN + '/pack/' + encodeURIComponent(prod.slug) + '/'; }
 
+/* Google Merchant Center product feed (RSS 2.0 + g: namespace) for the
+   curriculum packs/bundles in the `products` collection. These are
+   digital downloads, not shipped goods — g:shipping is declared at
+   $0 (instant delivery, no physical shipment) rather than omitted,
+   since Merchant Center requires an explicit shipping declaration.
+   No GTIN/MPN exists for these (self-published digital curriculum),
+   so g:identifier_exists is "no" per Google's rules for that case —
+   brand + product_type substitute for a manufacturer identifier.
+   Submit this file's URL directly in Merchant Center > Products >
+   Feeds > add a "Scheduled fetch" pointing at /shopping-feed.xml. */
+function buildShoppingFeed(products) {
+  const items = products.filter(p => p.active && p.slug).map(p => {
+    const price = Number(p.priceUSD != null ? p.priceUSD : p.priceZAR || 0);
+    const desc = p.blurb || `Complete children's ministry resource — ${p.title}. Instant download, ready to teach.`;
+    const images = (p.images && p.images.length) ? p.images : [SITE_ORIGIN + '/images/glory-kids-logo.png'];
+    const productType = p.category === 'curriculum' ? 'Curriculum Packs' : (p.category === 'bundle' ? 'Bundles' : 'Shop');
+    return '  <item>\n' +
+      `    <g:id>${esc(p.slug)}</g:id>\n` +
+      `    <title>${esc(p.title)}</title>\n` +
+      `    <description>${esc(desc)}</description>\n` +
+      `    <link>${esc(packUrl(p))}</link>\n` +
+      `    <g:image_link>${esc(images[0])}</g:image_link>\n` +
+      images.slice(1, 11).map(img => `    <g:additional_image_link>${esc(img)}</g:additional_image_link>`).join('\n') +
+      (images.length > 1 ? '\n' : '') +
+      `    <g:condition>new</g:condition>\n` +
+      `    <g:availability>in_stock</g:availability>\n` +
+      `    <g:price>${price.toFixed(2)} USD</g:price>\n` +
+      `    <g:brand>Glory Kids Ministries</g:brand>\n` +
+      `    <g:product_type>${esc(productType)}</g:product_type>\n` +
+      `    <g:google_product_category>Media &gt; Books</g:google_product_category>\n` +
+      `    <g:identifier_exists>no</g:identifier_exists>\n` +
+      `    <g:shipping>\n      <g:country>US</g:country>\n      <g:service>Instant Digital Delivery</g:service>\n      <g:price>0.00 USD</g:price>\n    </g:shipping>\n` +
+      '  </item>';
+  });
+  return '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">\n' +
+    '<channel>\n' +
+    `  <title>Glory Kids Ministries — Curriculum Packs</title>\n` +
+    `  <link>${SITE_ORIGIN}/curriculum-packs.html</link>\n` +
+    `  <description>Downloadable children's ministry curriculum and Bible lesson packs.</description>\n` +
+    items.join('\n') + '\n' +
+    '</channel>\n</rss>\n';
+}
+
 /* Bakes this post's real title/description/canonical/OG/Twitter/JSON-LD into
    a copy of the (already SEO-baked) blog-post.html template, mirroring
    renderPost() in that file exactly. The client-side JS still hydrates the
@@ -645,5 +689,9 @@ function bakeFreeLessonsGrid(html, posts) {
     .map(f => `/${f}\n  X-Robots-Tag: noindex, nofollow`).join('\n');
   fs.writeFileSync(path.join(DIR, '_headers'), headers + (headers ? '\n' : ''));
 
-  console.log(`Wrote robots.txt, sitemap.xml (${urls.length} URLs), _redirects (${rlines.length}), _headers (${noindexPages.length}).`);
+  /* shopping-feed.xml — Google Merchant Center product feed */
+  const activeProducts = products.filter(p => p.active && p.slug);
+  fs.writeFileSync(path.join(DIR, 'shopping-feed.xml'), buildShoppingFeed(products));
+
+  console.log(`Wrote robots.txt, sitemap.xml (${urls.length} URLs), _redirects (${rlines.length}), _headers (${noindexPages.length}), shopping-feed.xml (${activeProducts.length} products).`);
 })().catch(e => { console.error(e); process.exit(1); });
