@@ -9,7 +9,7 @@
      ?post=<postId>&f=<i>      → { url, name }                 (one file)
 */
 'use strict';
-const { db, bucket, configured } = require('./_lib/firebase');
+const { db, bucket, configured, FieldValue } = require('./_lib/firebase');
 const { json, text } = require('./_lib/http');
 
 const TEN_MIN = 10 * 60 * 1000;
@@ -45,6 +45,25 @@ exports.handler = async (event) => {
     });
     return { name: filename, url };
   };
+
+  // Record who downloaded what — for admin visibility only (see the
+  // Free Library / Members tabs), never used to gate access. `email`
+  // identifies either an old-model signed-in account or a new
+  // free-library capture; the client sends whichever it has. Best-effort:
+  // never fail the actual download over a tracking write.
+  try {
+    const email = String(q.email || '').trim().toLowerCase().slice(0, 250);
+    await Promise.all([
+      db.collection('lessonDownloads').add({
+        postId: String(q.post), title, email, downloadedAt: Date.now()
+      }),
+      db.collection('lessonStats').doc(String(q.post)).set({
+        downloads: FieldValue.increment(1)
+      }, { merge: true })
+    ]);
+  } catch (e) {
+    console.error('lessonDownloads write failed', e && e.message);
+  }
 
   if (q.f != null) {
     const i = Math.max(0, Math.min(files.length - 1, parseInt(q.f, 10) || 0));

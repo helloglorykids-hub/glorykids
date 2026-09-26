@@ -226,6 +226,16 @@
     return snap.docs.map(docToObj).sort((a, b) => (b.lastSeenAt || 0) - (a.lastSeenAt || 0));
   }
 
+  /* ── Who downloaded what — written by /api/free-lesson-file for both
+     old-model accounts and new free-library signups (whichever email
+     identifies them). Read-only here. ─────────────────────────────── */
+  async function listDownloadsForEmail(email) {
+    if (!email) return [];
+    const snap = await db.collection('lessonDownloads')
+      .where('email', '==', String(email).trim().toLowerCase()).get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.downloadedAt || 0) - (a.downloadedAt || 0));
+  }
+
   async function addTicket({ name, email, message, transcript }) {
     const rec = {
       name, email, message,
@@ -663,7 +673,7 @@
     listUsers, getUserRecord, ensureUserRecord, updateUserRecord, deleteUserRecord,
     listPosts, listPublishedPosts, getPost, getPostBySlug, relatedPosts, savePost, deletePost,
     listPayments, addPayment, deletePayment,
-    listTickets, addTicket, updateTicket, deleteTicket, listFreeLibrarySignups,
+    listTickets, addTicket, updateTicket, deleteTicket, listFreeLibrarySignups, listDownloadsForEmail,
     listComments, listApprovedComments, addComment, approveComment, deleteComment,
     getAnalytics, slugify, gkLogActivity,
     getSiteConfig, saveSiteConfig,

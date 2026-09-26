@@ -656,7 +656,7 @@
         <div class="admin-card" style="overflow-x:auto;">
           <table class="admin-table">
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Signed up from</th><th>First seen</th><th>Last seen</th></tr>
+              <tr><th>Name</th><th>Email</th><th>Signed up from</th><th>First seen</th><th>Last seen</th><th>Downloads</th></tr>
             </thead>
             <tbody id="free-library-tbody"></tbody>
           </table>
@@ -1138,6 +1138,7 @@
     <h3 id="access-name">Member</h3>
     <div class="access-box__sub" id="access-email"></div>
     <div class="access-box__sub" id="access-meta"></div>
+    <div class="access-box__sub" id="access-downloads"></div>
 
     <div class="access-sec">
       <div class="access-sec__label">Membership plan</div>
@@ -2173,17 +2174,44 @@ async function renderFreeLibrarySignups() {
   const tbody = document.getElementById('free-library-tbody');
   let rows = [];
   try { rows = await GK.listFreeLibrarySignups(); }
-  catch (e) { tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Error: ${esc(e.message)}</td></tr>`; return; }
-  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No free library signups yet.</td></tr>'; return; }
-  tbody.innerHTML = rows.map(r => `
+  catch (e) { tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Error: ${esc(e.message)}</td></tr>`; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No free library signups yet.</td></tr>'; return; }
+  tbody.innerHTML = rows.map((r, i) => `
     <tr>
       <td>${esc(r.name || '(no name)')}</td>
       <td><a href="mailto:${esc(r.email)}" style="color:inherit;">${esc(r.email)}</a></td>
       <td style="max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${esc(r.source || '—')}</td>
       <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '—'}</td>
       <td>${r.lastSeenAt ? new Date(r.lastSeenAt).toLocaleDateString() : '—'}</td>
+      <td>${renderDownloadsCell(r.email, 'fl-dl-' + i)}</td>
     </tr>
   `).join('');
+}
+
+// Shared by the Free Library tab and the Members access drawer — a
+// click-to-expand list of which free lessons this email has downloaded.
+// Lazy-loaded on first open (ontoggle) rather than fetched up front for
+// every row, so this stays cheap as the list grows.
+function renderDownloadsCell(email, elId) {
+  if (!email) return '—';
+  return `<details id="${elId}" ontoggle="loadDownloadsOnce(this,'${esc(email).replace(/'/g, "\\'")}')">
+    <summary style="cursor:pointer; color:var(--primary); font-size:0.8rem; font-weight:600;">View downloads</summary>
+    <div class="dl-list" style="margin-top:0.4rem; font-size:0.78rem; color:var(--gray-600);">Loading…</div>
+  </details>`;
+}
+
+async function loadDownloadsOnce(detailsEl, email) {
+  if (!detailsEl.open || detailsEl.dataset.loaded) return;
+  detailsEl.dataset.loaded = '1';
+  const listEl = detailsEl.querySelector('.dl-list');
+  try {
+    const downloads = await GK.listDownloadsForEmail(email);
+    listEl.innerHTML = downloads.length
+      ? downloads.map(d => `<div>📄 ${esc(d.title || d.postId)} — ${new Date(d.downloadedAt).toLocaleDateString()}</div>`).join('')
+      : 'No downloads yet.';
+  } catch (e) {
+    listEl.textContent = 'Error: ' + e.message;
+  }
 }
 
 async function setMemberPlan(uid, plan, status) {
@@ -2244,6 +2272,7 @@ function renderAccessDrawer() {
   document.getElementById('access-email').textContent = u.email;
   document.getElementById('access-meta').textContent =
     'Joined ' + new Date(u.createdAt).toLocaleDateString() + '   ·   User ID ' + u.id;
+  document.getElementById('access-downloads').innerHTML = renderDownloadsCell(u.email, 'access-dl');
 
   // Plan buttons
   const planBtns = document.querySelectorAll('#access-plan-choice button');

@@ -904,8 +904,12 @@
       try {
         // Free lessons need no auth at all now — any of the 35 lessons is
         // free for anyone who's unlocked the library (or an existing
-        // signed-in account from the old model).
-        var res = await fetch('/api/free-lesson-file?post=' + encodeURIComponent(post.id));
+        // signed-in account from the old model). Pass along whichever
+        // email identifies them (old account or new free-library capture)
+        // purely so the admin can see who downloaded what — the server
+        // never uses it to gate access.
+        var identEmail = (auth.currentUser && auth.currentUser.email) || GKFreeLibrary.unlockedEmail() || '';
+        var res = await fetch('/api/free-lesson-file?post=' + encodeURIComponent(post.id) + (identEmail ? '&email=' + encodeURIComponent(identEmail) : ''));
         var data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Could not prepare the download.');
         links.innerHTML = (data.files || []).map(function (f) {

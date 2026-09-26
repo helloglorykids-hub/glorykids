@@ -163,6 +163,14 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Who downloaded which free lesson — admin visibility only, never
+    // used to gate access. Written only by /api/free-lesson-file
+    // (Admin SDK, bypasses these rules).
+    match /lessonDownloads/{id} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
     // Church organisations / team seats. Provisioned + mutated only by the
     // Netlify functions (Admin SDK). The owner may read their own org
     // directly; seated members read it through /api/org. Admin sees all.
