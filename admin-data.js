@@ -13,6 +13,7 @@
   function postsCol()    { return db.collection('posts'); }
   function paymentsCol() { return db.collection('payments'); }
   function ticketsCol()  { return db.collection('tickets'); }
+  function freeLibraryCol() { return db.collection('freeLibrarySignups'); }
   function commentsCol() { return db.collection('comments'); }
   function pagesCol()     { return db.collection('pages'); }
   function redirectsCol() { return db.collection('redirects'); }
@@ -216,6 +217,13 @@
   async function listTickets() {
     const snap = await ticketsCol().get();
     return snap.docs.map(docToObj).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  }
+
+  /* ── Free library (no-account) signups — written by /api/mailerlite,
+     read-only here. See freeLibrarySignups in firestore.rules. ─────── */
+  async function listFreeLibrarySignups() {
+    const snap = await freeLibraryCol().get();
+    return snap.docs.map(docToObj).sort((a, b) => (b.lastSeenAt || 0) - (a.lastSeenAt || 0));
   }
 
   async function addTicket({ name, email, message, transcript }) {
@@ -655,7 +663,7 @@
     listUsers, getUserRecord, ensureUserRecord, updateUserRecord, deleteUserRecord,
     listPosts, listPublishedPosts, getPost, getPostBySlug, relatedPosts, savePost, deletePost,
     listPayments, addPayment, deletePayment,
-    listTickets, addTicket, updateTicket, deleteTicket,
+    listTickets, addTicket, updateTicket, deleteTicket, listFreeLibrarySignups,
     listComments, listApprovedComments, addComment, approveComment, deleteComment,
     getAnalytics, slugify, gkLogActivity,
     getSiteConfig, saveSiteConfig,

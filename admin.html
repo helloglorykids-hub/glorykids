@@ -311,6 +311,7 @@
       <a href="#overview" class="admin-nav-item active" onclick="showAdminTab('overview',this)">📊 Overview</a>
       <a href="#posts" class="admin-nav-item" onclick="showAdminTab('posts',this)">📝 Blog Posts</a>
       <a href="#members" class="admin-nav-item" onclick="showAdminTab('members',this)">👥 Members</a>
+      <a href="#free-library" class="admin-nav-item" onclick="showAdminTab('free-library',this)">🌱 Free Library</a>
       <a href="#payments" class="admin-nav-item" onclick="showAdminTab('payments',this)">💳 Payments</a>
       <a href="#support" class="admin-nav-item" onclick="showAdminTab('support',this)">💬 Support</a>
       <a href="#comments" class="admin-nav-item" onclick="showAdminTab('comments',this)">🗨️ Comments</a>
@@ -644,6 +645,20 @@
               <tr><th>Name</th><th>Email</th><th>Plan</th><th>Status</th><th>Joined</th><th>Actions</th></tr>
             </thead>
             <tbody id="members-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FREE LIBRARY (no-account) SIGNUPS -->
+      <div id="admin-tab-free-library" style="display:none;">
+        <div class="admin-section-title">🌱 Free Library Signups</div>
+        <p style="color:var(--gray-500); font-size:0.85rem; margin:-0.5rem 0 1rem;">Everyone who's unlocked the 35 free lessons with just name + email — no account, so they won't appear under Members. Mirrors MailerLite's "Signup Nudge" group.</p>
+        <div class="admin-card" style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Signed up from</th><th>First seen</th><th>Last seen</th></tr>
+            </thead>
+            <tbody id="free-library-tbody"></tbody>
           </table>
         </div>
       </div>
@@ -1232,6 +1247,7 @@ function showAdminTab(name, linkEl) {
   if (linkEl) linkEl.classList.add('active');
   if (name === 'overview') renderOverview();
   if (name === 'members') renderMembers();
+  if (name === 'free-library') renderFreeLibrarySignups();
   if (name === 'payments') renderPayments();
   if (name === 'support') renderTickets();
   if (name === 'comments') renderComments();
@@ -2150,6 +2166,24 @@ async function renderMembers() {
 
   if (accessUid && !membersCache.some(u => u.id === accessUid)) closeAccessDrawer();
   else if (accessUid) renderAccessDrawer();
+}
+
+/* ── Free library (no-account) signups ───────────────────── */
+async function renderFreeLibrarySignups() {
+  const tbody = document.getElementById('free-library-tbody');
+  let rows = [];
+  try { rows = await GK.listFreeLibrarySignups(); }
+  catch (e) { tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Error: ${esc(e.message)}</td></tr>`; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty-state">No free library signups yet.</td></tr>'; return; }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${esc(r.name || '(no name)')}</td>
+      <td><a href="mailto:${esc(r.email)}" style="color:inherit;">${esc(r.email)}</a></td>
+      <td style="max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${esc(r.source || '—')}</td>
+      <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString() : '—'}</td>
+      <td>${r.lastSeenAt ? new Date(r.lastSeenAt).toLocaleDateString() : '—'}</td>
+    </tr>
+  `).join('');
 }
 
 async function setMemberPlan(uid, plan, status) {

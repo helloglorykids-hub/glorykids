@@ -21,6 +21,7 @@
    Uses MailerLite API v2 (new "MailerLite" — connect.mailerlite.com). */
 'use strict';
 const { json, parseBody } = require('./_lib/http');
+const { db, configured: firebaseConfigured } = require('./_lib/firebase');
 
 const API = 'https://connect.mailerlite.com/api';
 const KEY = process.env.MAILERLITE_API_KEY;
@@ -115,5 +116,29 @@ exports.handler = async (event) => {
     console.error('mailerlite upsert failed', r.status, r.data);
     return json(200, { ok: false, status: r.status, already });
   }
+
+  // Free-library signups create no Firebase Auth account (that's the whole
+  // point — no password, no login), so without this they'd exist only in
+  // MailerLite and never show up anywhere in the admin panel. Record a
+  // lightweight, admin-visible copy here. Doc id = sanitized email, so a
+  // repeat signup updates lastSeenAt instead of piling up duplicates.
+  if (action === 'signup-nudge' && firebaseConfigured && db) {
+    try {
+      const docId = email.replace(/[^\w.@-]+/g, '_').slice(0, 200);
+      const ref = db.collection('freeLibrarySignups').doc(docId);
+      const snap = await ref.get();
+      await ref.set({
+        email,
+        name: body.name || (snap.exists ? snap.data().name : '') || '',
+        source: body.source || (snap.exists ? snap.data().source : '') || '',
+        lastSeenAt: Date.now(),
+        createdAt: snap.exists ? snap.data().createdAt : Date.now()
+      }, { merge: true });
+    } catch (e) {
+      // Don't fail the whole signup over an admin-visibility write.
+      console.error('freeLibrarySignups write failed', e);
+    }
+  }
+
   return json(200, { ok: true, already, id: r.data && r.data.data && r.data.data.id });
 };
