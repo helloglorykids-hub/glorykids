@@ -438,6 +438,14 @@
               </div>
               <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
                 <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#17191C;">
+                  <input type="checkbox" id="post-free-with-account" style="width:auto;" /> 🔓 Free with account (unlocks for any signed-in user, not just active members)
+                </label>
+                <p style="font-size:0.78rem; color:#6b7280; margin:0.4rem 0 0; line-height:1.5;">
+                  Use this for the ~25 "free with signup" tier lessons — signing up for a free account is enough, no paid Membership required. Leave unchecked for lessons that should stay behind the paid Membership.
+                </p>
+              </div>
+              <div style="background:#fff; border:1px solid var(--gray-200); border-radius:var(--radius); padding:0.85rem 1rem; margin-bottom:1rem;">
+                <label style="display:flex; align-items:center; gap:0.5rem; font-weight:600; color:#17191C;">
                   <input type="checkbox" id="post-premium-sample" style="width:auto;" /> ⭐ Premium Sample (bonus preview from paid Membership curriculum)
                 </label>
                 <p style="font-size:0.78rem; color:#6b7280; margin:0.4rem 0 0; line-height:1.5;">
@@ -1910,6 +1918,7 @@ function showPostForm(post, presetCategory) {
   document.getElementById('post-lesson-type').value = post ? (post.lessonType || 'lesson') : 'lesson';
   document.getElementById('post-season').value = post ? (post.season || 'general') : 'general';
   document.getElementById('post-free-lesson').checked = !!(post && post.isFreeLesson);
+  document.getElementById('post-free-with-account').checked = !!(post && post.freeWithAccount);
   document.getElementById('post-premium-sample').checked = !!(post && post.isPremiumSample);
   galleryImages = post && post.galleryImages ? [...post.galleryImages] : [];
   renderGalleryThumbs();
@@ -1971,6 +1980,7 @@ async function savePostForm() {
     lessonType: document.getElementById('post-lesson-type').value,
     season: document.getElementById('post-season').value,
     isFreeLesson: document.getElementById('post-free-lesson').checked,
+    freeWithAccount: document.getElementById('post-free-with-account').checked,
     isPremiumSample: document.getElementById('post-premium-sample').checked,
     galleryImages: [...galleryImages],
     files: lessonFiles.map(f => ({ path: f.path, name: f.name || '' })),

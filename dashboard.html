@@ -577,7 +577,7 @@
     <!-- MY PURCHASES TAB -->
     <div id="tab-purchases" style="display:none;">
       <h2 style="margin-bottom:1.5rem;">My Purchases</h2>
-      <p style="color:var(--gray-500);margin-bottom:2rem;">Shop orders paid with PayFast. Re-download anytime — links refresh automatically.</p>
+      <p style="color:var(--gray-500);margin-bottom:2rem;">Re-download anytime — links refresh automatically.</p>
       <div id="purchases-list"></div>
       <div id="purchases-empty" style="text-align:center;padding:4rem 2rem;background:var(--color-card);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);">
         <div style="font-size:3rem;margin-bottom:1rem;">🛍️</div>
@@ -746,7 +746,7 @@ async function cancelMembership() {
   }
 }
 
-// Returning from PayFast after subscribing — the membership ITN may land a
+// Returning from checkout after subscribing — the membership webhook may land a
 // few seconds after the browser redirect, so re-check the plan for a short
 // while and celebrate once it flips to active.
 function maybeWelcomeNewMember() {
