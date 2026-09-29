@@ -26,7 +26,6 @@ const { json, parseBody } = require('./_lib/http');
 const PP_PLAN_IDS = require('./_lib/paypal-plan-ids');
 
 const MONTHLY_USD = Number(process.env.MEMBERSHIP_MONTHLY_USD) || 29.99;
-const ANNUAL_USD = Number(process.env.MEMBERSHIP_ANNUAL_USD) || 299;
 const CHURCH_MONTHLY_USD = Number(process.env.CHURCH_MONTHLY_USD) || 79;
 const CHURCH_ANNUAL_USD = Number(process.env.CHURCH_ANNUAL_USD) || 799;
 const CHURCH_PER_LOCATION_MONTHLY_USD = Number(process.env.CHURCH_PER_LOCATION_MONTHLY_USD) || 49;
@@ -37,7 +36,6 @@ const MEMBERSHIP_LIVE = String(process.env.MEMBERSHIP_LIVE || '').toLowerCase() 
 
 const PLANS = {
   monthly:       { frequency: 'monthly', usd: MONTHLY_USD,       label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.monthly },
-  annual:        { frequency: 'annual',  usd: ANNUAL_USD,        label: 'Glory Kids Membership — Annual',  accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.annual },
   church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true },
   'church-annual': { frequency: 'annual', usd: CHURCH_ANNUAL_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Annual',  accountPlan: 'church', ppPlanId: PP_PLAN_IDS['church-annual'], quantityPriced: true }
 };

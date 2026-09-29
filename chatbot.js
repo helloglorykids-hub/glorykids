@@ -23,7 +23,7 @@
     },
     {
       keywords: ['price', 'pricing', 'cost', 'how much', 'membership', 'glory kids', 'subscription'],
-      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> (or $299/year — save $60) and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-curriculum.html#pricing\">Membership page</a>."
+      answer: "Glory Kids Membership is just <strong>$29.99/month</strong> and unlocks our full, growing lesson library, curriculum series, activity sheets, and new lessons every week. You can see everything included on the <a href=\"glory-kids-curriculum.html#pricing\">Membership page</a>."
     },
     {
       keywords: ['church pricing', 'church plan', 'multi campus', 'multi-campus', 'nonprofit pricing', 'church license', 'kidmin team', 'church discount', 'group discount'],
