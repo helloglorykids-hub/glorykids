@@ -1025,7 +1025,12 @@
 
       <!-- SUBSCRIPTIONS -->
       <div id="admin-tab-subscriptions" style="display:none;">
-        <div class="admin-section-title">🔁 Subscriptions</div>
+        <div class="admin-section-title" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          🔁 Subscriptions
+          <button class="row-btn" style="font-size:0.8rem;font-weight:600;" onclick="checkSubsAgainstPaypal()" id="check-subs-btn">🔍 Check against PayPal</button>
+        </div>
+        <p style="font-size:0.8rem;color:var(--gray-400);margin:-0.75rem 0 1rem;">Catches subscriptions that are quietly EXPIRED/CANCELLED/SUSPENDED on PayPal's side (e.g. a plan misconfigured to bill only once) while we still show them as active.</p>
+        <div id="check-subs-result" style="margin-bottom:1rem;"></div>
         <div id="subs-summary" style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;"></div>
         <div class="admin-card" style="padding:0.5rem;">
           <table class="admin-table" id="subs-table">
@@ -3352,7 +3357,7 @@ async function renderSubscriptions() {
       <td>${nameCell}<div class="post-row__meta">${esc(s.email || '')}${s.orgName ? ' · ' + esc(s.orgName) : ''}</div></td>
       <td>${esc(s.planKey || '—')}<div class="post-row__meta">${esc(s.frequency || '')}</div></td>
       <td>R${Number(s.priceZAR || 0).toFixed(2)}</td>
-      <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span>${pendingDays != null ? `<div class="post-row__meta">stuck ${pendingDays === 0 ? 'today' : pendingDays + 'd ago'}</div>` : ''}</td>
+      <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span>${pendingDays != null ? `<div class="post-row__meta">stuck ${pendingDays === 0 ? 'today' : pendingDays + 'd ago'}</div>` : ''}${s.ppRealStatus && s.ppRealStatus !== 'ACTIVE' && (s.status === 'active' || s.status === 'past_due') ? `<div class="post-row__meta" style="color:var(--rose);font-weight:700;">⚠️ PayPal says ${esc(s.ppRealStatus)}</div>` : ''}</td>
       <td>${provider}</td>
       <td>${s.lastPaymentAt ? new Date(s.lastPaymentAt).toLocaleDateString() : '—'}</td>
       <td style="text-align:right;">${s.status === 'pending' ? `<button class="row-btn row-btn--primary" onclick="adminActivateSub('${s.id}')">Activate</button>` : ''}${(s.status === 'active' || s.status === 'past_due') && (s.pfToken || s.ppSubscriptionId) ? `<button class="row-btn row-btn--danger" onclick="adminCancelSub('${s.id}')">Cancel</button>` : ''}</td>
@@ -3367,6 +3372,40 @@ async function renderSubscriptions() {
       <td>${(o.memberEmails || []).length} / ${o.seatLimit || 0}</td>
       <td><span class="badge badge--${o.planStatus === 'active' ? 'active' : 'cancelled'}">${esc(o.planStatus || '')}</span></td>
     </tr>`).join('') : '<tr><td colspan="5" class="empty-state">No church teams yet.</td></tr>';
+}
+
+async function checkSubsAgainstPaypal() {
+  const btn = document.getElementById('check-subs-btn');
+  const out = document.getElementById('check-subs-result');
+  btn.disabled = true; btn.textContent = 'Checking…';
+  out.innerHTML = '';
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/admin-check-subscriptions', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + idToken }
+    });
+    const d = await res.json();
+    if (!res.ok) { out.innerHTML = `<div class="empty-state" style="color:var(--rose);">${esc(d.error || 'Check failed.')}</div>`; return; }
+    if (!d.checked) {
+      out.innerHTML = `<div class="empty-state">No PayPal-linked active subscriptions to check.</div>`;
+    } else if (!d.mismatches.length) {
+      out.innerHTML = `<div class="empty-state" style="color:var(--emerald,#047857);">✅ Checked ${d.checked} — all match PayPal's ACTIVE status.</div>`;
+    } else {
+      out.innerHTML = `
+        <div class="admin-card" style="padding:1rem;border:1.5px solid var(--rose);">
+          <div style="font-weight:700;color:var(--rose);margin-bottom:0.5rem;">⚠️ ${d.mismatches.length} of ${d.checked} don't match PayPal — access may lapse silently at their next renewal:</div>
+          <ul style="margin:0;padding-left:1.2rem;">
+            ${d.mismatches.map(m => `<li>${esc(m.email || m.id)} — we show <strong>${esc(m.ourStatus)}</strong>, PayPal says <strong>${esc(m.ppRealStatus)}</strong></li>`).join('')}
+          </ul>
+        </div>`;
+    }
+    renderSubscriptions();
+  } catch (e) {
+    out.innerHTML = `<div class="empty-state" style="color:var(--rose);">${esc(e.message)}</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = '🔍 Check against PayPal';
+  }
 }
 
 async function adminActivateSub(id) {
