@@ -2137,11 +2137,18 @@ let membersCache = [];
 let paymentsCache = [];
 
 async function renderMembers() {
-  const [all, payments] = await Promise.all([GK.listUsers(), GK.listPayments()]);
+  const tbody = document.getElementById('members-tbody');
+  let all, payments;
+  try {
+    [all, payments] = await Promise.all([GK.listUsers(), GK.listPayments()]);
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Couldn't load members: ${esc(e.message || e)}</td></tr>`;
+    return;
+  }
   membersCache = all.sort((a,b) => b.createdAt - a.createdAt);
   paymentsCache = payments;
-  const tbody = document.getElementById('members-tbody');
   if (membersCache.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No members yet.</td></tr>'; return; }
+  try {
   tbody.innerHTML = membersCache.map(u => {
     const planBadge = u.plan === 'glory_kids' ? '<span class="badge badge--gold">Glory Kids</span>' : '<span class="badge badge--free">Free</span>';
     const statusBadge = u.plan !== 'glory_kids' ? '' :
@@ -2165,8 +2172,8 @@ async function renderMembers() {
 
     return `
       <tr>
-        <td>${u.displayName || u.email.split('@')[0]} ${adminBadge}</td>
-        <td>${u.email}</td>
+        <td>${u.displayName || (u.email ? u.email.split('@')[0] : '(no email on file)')} ${adminBadge}</td>
+        <td>${u.email || '—'}</td>
         <td>${planBadge}</td>
         <td>${statusBadge}</td>
         <td>${new Date(u.createdAt).toLocaleDateString()}</td>
@@ -2174,6 +2181,10 @@ async function renderMembers() {
       </tr>
     `;
   }).join('');
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">Couldn't render members: ${esc(e.message || e)}</td></tr>`;
+    return;
+  }
 
   if (accessUid && !membersCache.some(u => u.id === accessUid)) closeAccessDrawer();
   else if (accessUid) renderAccessDrawer();
@@ -2225,7 +2236,12 @@ async function loadDownloadsOnce(detailsEl, email) {
 }
 
 async function setMemberPlan(uid, plan, status) {
-  await GK.updateUserRecord(uid, { plan, planStatus: status });
+  try {
+    await GK.updateUserRecord(uid, { plan, planStatus: status });
+  } catch (e) {
+    alert('Could not update this member: ' + (e.message || e));
+    return;
+  }
   const label = plan === 'glory_kids' ? (status === 'active' ? 'Glory Kids membership activated' : (status === 'paused' ? 'Glory Kids membership paused' : 'Glory Kids membership cancelled')) : 'Membership set to Free';
   gkLogActivity(uid, plan === 'glory_kids' && status === 'active' ? '✨' : (status === 'paused' ? '⏸️' : '🔻'), label);
   await renderMembers();
