@@ -3355,7 +3355,7 @@ async function renderSubscriptions() {
       <td><span class="badge badge--${s.status === 'active' ? 'active' : (s.status === 'cancelled' ? 'cancelled' : 'paused')}">${esc(s.status || '')}</span>${pendingDays != null ? `<div class="post-row__meta">stuck ${pendingDays === 0 ? 'today' : pendingDays + 'd ago'}</div>` : ''}</td>
       <td>${provider}</td>
       <td>${s.lastPaymentAt ? new Date(s.lastPaymentAt).toLocaleDateString() : '—'}</td>
-      <td style="text-align:right;">${(s.status === 'active' || s.status === 'past_due') && (s.pfToken || s.ppSubscriptionId) ? `<button class="row-btn row-btn--danger" onclick="adminCancelSub('${s.id}')">Cancel</button>` : ''}</td>
+      <td style="text-align:right;">${s.status === 'pending' ? `<button class="row-btn row-btn--primary" onclick="adminActivateSub('${s.id}')">Activate</button>` : ''}${(s.status === 'active' || s.status === 'past_due') && (s.pfToken || s.ppSubscriptionId) ? `<button class="row-btn row-btn--danger" onclick="adminCancelSub('${s.id}')">Cancel</button>` : ''}</td>
     </tr>`;
   }).join('') : '<tr><td colspan="7" class="empty-state">No subscriptions yet.</td></tr>';
 
@@ -3367,6 +3367,23 @@ async function renderSubscriptions() {
       <td>${(o.memberEmails || []).length} / ${o.seatLimit || 0}</td>
       <td><span class="badge badge--${o.planStatus === 'active' ? 'active' : 'cancelled'}">${esc(o.planStatus || '')}</span></td>
     </tr>`).join('') : '<tr><td colspan="5" class="empty-state">No church teams yet.</td></tr>';
+}
+
+async function adminActivateSub(id) {
+  const ppSubscriptionId = prompt('Stuck-checkout fix: this grants membership access immediately, as if PayPal had confirmed it.\n\nOptional — paste the PayPal subscription ID (starts with "I-") to link this record to the real payment. Leave blank to activate without linking one.', '') || '';
+  if (!confirm('Activate this membership now? The member gets instant access.')) return;
+  try {
+    const idToken = await auth.currentUser.getIdToken();
+    const res = await fetch('/api/admin-activate-subscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + idToken },
+      body: JSON.stringify({ subId: id, ppSubscriptionId: ppSubscriptionId.trim() || undefined })
+    });
+    const d = await res.json();
+    alert(res.ok ? 'Activated — the member now has access.' : (d.error || 'Could not activate.'));
+    renderSubscriptions();
+    renderOverview();
+  } catch (e) { alert(e.message); }
 }
 
 async function adminCancelSub(id) {
