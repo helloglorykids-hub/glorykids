@@ -116,6 +116,15 @@ exports.handler = async (event) => {
     console.error('mailerlite upsert failed', r.status, r.data);
     return json(200, { ok: false, status: r.status, already });
   }
+  // TEMP debug logging — tracking down why membership-welcome isn't landing
+  // people in the Members group. Remove once confirmed fixed.
+  if (action === 'membership-welcome') {
+    console.log('mailerlite membership-welcome', {
+      email,
+      sentGroups: payload.groups || [],
+      returnedGroups: (r.data && r.data.data && r.data.data.groups) || r.data
+    });
+  }
 
   // Free-library signups create no Firebase Auth account (that's the whole
   // point — no password, no login), so without this they'd exist only in
