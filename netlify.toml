@@ -431,6 +431,26 @@
   status = 301
   force = true
 
+# Another old Squarespace collection prefix for parent-facing posts, same
+# content as /christian-parenting-blogs/* above — map the one real post by
+# its exact slug, then catch any other /for-parents/* path (including
+# leftover placeholder/draft slugs) with the blog listing fallback.
+[[redirects]]
+  from = "/for-parents/child-anxiety-christian-guide"
+  to = "/blog/parents/when-your-child-has-anxietya-christian-parents-guide"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/for-parents/*"
+  to = "/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/for-parents"
+  to = "/blog.html"
+  status = 301
+  force = true
+
 # --- legal pages ---
 [[redirects]]
   from = "/privacy-policy"
@@ -480,6 +500,11 @@
   status = 301
   force = true
 [[redirects]]
+  from = "/armor-of-god-kids-curriculum-1"
+  to = "/curriculum-packs.html"
+  status = 301
+  force = true
+[[redirects]]
   from = "/heroes-of-faith-bible-curriculum"
   to = "/curriculum-packs.html"
   status = 301
@@ -491,6 +516,11 @@
   force = true
 [[redirects]]
   from = "/kids-bible-resources"
+  to = "/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/library"
   to = "/free-bible-lessons.html"
   status = 301
   force = true

@@ -2182,6 +2182,7 @@ section { padding: 5rem 0; }
   display: flex;
   gap: 16px;
   justify-content: center;
+  margin-top: 28px;
   margin-bottom: 32px;
   flex-wrap: wrap;
   animation: slideUpFade 0.8s ease-out 0.6s both;
@@ -2949,8 +2950,11 @@ section { padding: 5rem 0; }
      `top`) so the clip boundary sits above the visible wave curve, not at
      .pricing-premium's own box edge — otherwise the glow gets clipped off
      well before reaching the seam, leaving a flat, glow-less dark band
-     between the gradient above and the wave. */
-  top: -64px; left: 0; right: 0; bottom: 0;
+     between the gradient above and the wave. Extended the same way at the
+     bottom: .orb-orange-sm sits at bottom:-150px with an 80px blur, so a
+     flush bottom:0 here hard-clipped its glow mid-fade into a visible flat
+     edge instead of letting it taper away into the (dark) section below. */
+  top: -64px; left: 0; right: 0; bottom: -220px;
   pointer-events: none;
   overflow: hidden;           /* clips the orbs now that .pricing-premium is overflow:visible */
   z-index: 1;

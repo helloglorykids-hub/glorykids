@@ -1027,7 +1027,9 @@
       <div id="admin-tab-subscriptions" style="display:none;">
         <div class="admin-section-title" style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
           🔁 Subscriptions
+          <button class="row-btn" style="font-size:0.8rem;font-weight:600;" onclick="renderSubscriptions()" id="subs-refresh-btn">🔄 Refresh</button>
           <button class="row-btn" style="font-size:0.8rem;font-weight:600;" onclick="checkSubsAgainstPaypal()" id="check-subs-btn">🔍 Check against PayPal</button>
+          <span style="font-size:0.75rem;color:var(--gray-400);">Auto-refreshes every 30s while this tab is open</span>
         </div>
         <p style="font-size:0.8rem;color:var(--gray-400);margin:-0.75rem 0 1rem;">Catches subscriptions that are quietly EXPIRED/CANCELLED/SUSPENDED on PayPal's side (e.g. a plan misconfigured to bill only once) while we still show them as active.</p>
         <div id="check-subs-result" style="margin-bottom:1rem;"></div>
@@ -1254,11 +1256,15 @@ async function adminSignOut() {
   window.location.href = 'admin-login.html';
 }
 
+let subsPollInterval = null;
+
 function showAdminTab(name, linkEl) {
   document.querySelectorAll('[id^="admin-tab-"]').forEach(t => t.style.display = 'none');
   document.getElementById('admin-tab-' + name).style.display = 'block';
   document.querySelectorAll('.admin-nav-item').forEach(l => l.classList.remove('active'));
   if (linkEl) linkEl.classList.add('active');
+  if (subsPollInterval) { clearInterval(subsPollInterval); subsPollInterval = null; }
+  if (name === 'subscriptions') subsPollInterval = setInterval(renderSubscriptions, 30000);
   if (name === 'overview') renderOverview();
   if (name === 'members') renderMembers();
   if (name === 'free-library') renderFreeLibrarySignups();

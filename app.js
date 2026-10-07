@@ -190,6 +190,15 @@ if (tabBtns.length) {
       }
     });
   });
+
+  // Deep-link support: /blog.html#parents, #pastors, #kidmin (used by the
+  // header nav dropdown) select the matching tab on load instead of landing
+  // on "All Posts" with the hash doing nothing.
+  const hashTab = location.hash.replace('#', '');
+  if (hashTab) {
+    const hashBtn = document.querySelector('.tab-btn[data-tab="tab-' + hashTab + '"]');
+    if (hashBtn) hashBtn.click();
+  }
 }
 
 /* ─── FAQ ACCORDION ───────────────────────────────────────────── */
