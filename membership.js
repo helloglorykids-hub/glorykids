@@ -29,9 +29,9 @@
   var LIVE = MEMBERSHIP_LIVE || forceCheckout;
 
   var PLAN_LABEL = {
-    monthly: 'Monthly', annual: 'Annual', church: 'Church Monthly', 'church-annual': 'Church Annual'
+    monthly: 'Monthly', church: 'Church Monthly'
   };
-  var isChurchPlan = function (p) { return p === 'church' || p === 'church-annual'; };
+  var isChurchPlan = function (p) { return p === 'church'; };
 
   /* ---------- tiny modal ---------------------------------------------- */
   function injectStyles() {
@@ -221,11 +221,11 @@
     });
   }
 
-  function showChurchLocationStep(user, orgName, frequency) {
-    var planKey = frequency === 'annual' ? 'church-annual' : 'church';
+  function showChurchLocationStep(user, orgName) {
+    var planKey = 'church';
     body().innerHTML =
       '<h3>Church plan</h3>' +
-      '<p>' + (frequency === 'annual' ? '$799/year' : '$79/month') + ' includes one church location with full team access. Extra locations are +$49/mo each.</p>' +
+      '<p>$59/month includes one church location with full team access. Extra locations are +$20/mo each.</p>' +
       '<div class="gk-mem-err" id="gk-mem-err"></div>' +
       '<label for="gk-locations">Number of church locations</label>' +
       '<input id="gk-locations" type="number" min="1" step="1" value="1">' +
@@ -250,10 +250,8 @@
     open();
 
     // Church plans need the church/ministry name first, then how many
-    // locations — billing frequency (monthly vs annual) is already known
-    // from which button they clicked on the pricing page.
+    // locations.
     if (isChurchPlan(plan)) {
-      var frequency = plan === 'church-annual' ? 'annual' : 'monthly';
       if (!orgName) {
         body().innerHTML =
           '<h3>Church plan</h3>' +
@@ -266,12 +264,12 @@
           var v = (body().querySelector('#gk-org').value || '').trim();
           var err = body().querySelector('#gk-mem-err');
           if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
-          showChurchLocationStep(user, v, frequency);
+          showChurchLocationStep(user, v);
         });
         body().querySelector('#gk-org').focus();
         return;
       }
-      showChurchLocationStep(user, orgName, frequency);
+      showChurchLocationStep(user, orgName);
       return;
     }
 

@@ -1,6 +1,6 @@
 /* POST /api/paypal-subscription-start
    Header: Authorization: Bearer <Firebase ID token>
-   Body (JSON): { plan: 'monthly' | 'annual' | 'church' | 'church-annual', locations? }
+   Body (JSON): { plan: 'monthly' | 'church', locations? }
 
    PayPal Subscriptions are created CLIENT-SIDE (the PayPal JS SDK button
    calls actions.subscription.create({ plan_id }) itself — there's no signed
@@ -12,32 +12,37 @@
    the PayPal subscription — that's what ties the two records together in
    paypal-subscription-confirm.js.
 
-   Church is quantity-priced by LOCATION, not by team member: $79/mo (or
-   $799/yr) covers one church location with unlimited team members there;
-   each additional location is +$49/mo. That tier pricing lives inside the
+   Church is quantity-priced by LOCATION, not by team member: $59/mo
+   covers one church location with unlimited team members there; each
+   additional location is +$20/mo. That tier pricing lives inside the
    PayPal Plan itself (configured in the PayPal dashboard, not here) —
    `quantity` is what tells PayPal which tier price to bill. We pass
    `locations` straight through as `quantity` and treat PayPal's own
    reported subscription amount as the source of truth rather than
-   re-deriving it here, since we can't see their tier table. */
+   re-deriving it here, since we can't see their tier table.
+   IMPORTANT: the USD constants below only drive the pre-checkout estimate
+   shown in our own UI — they do NOT control what PayPal actually charges.
+   The live PayPal Plan (see _lib/paypal-plan-ids.js) must be updated (or
+   replaced) on PayPal's dashboard to match, or the estimate and the real
+   charge will disagree.
+
+   No annual church plan — removed 2026-10-08 along with the individual
+   annual plan, for the same reason (monthly income, not a lump sum). */
 'use strict';
 const { admin, db, configured } = require('./_lib/firebase');
 const { json, parseBody } = require('./_lib/http');
 const PP_PLAN_IDS = require('./_lib/paypal-plan-ids');
 
 const MONTHLY_USD = Number(process.env.MEMBERSHIP_MONTHLY_USD) || 29.99;
-const CHURCH_MONTHLY_USD = Number(process.env.CHURCH_MONTHLY_USD) || 79;
-const CHURCH_ANNUAL_USD = Number(process.env.CHURCH_ANNUAL_USD) || 799;
-const CHURCH_PER_LOCATION_MONTHLY_USD = Number(process.env.CHURCH_PER_LOCATION_MONTHLY_USD) || 49;
-const CHURCH_PER_LOCATION_ANNUAL_USD = Number(process.env.CHURCH_PER_LOCATION_ANNUAL_USD) || 588; // 49*12, no annual discount confirmed yet
+const CHURCH_MONTHLY_USD = Number(process.env.CHURCH_MONTHLY_USD) || 59;
+const CHURCH_PER_LOCATION_MONTHLY_USD = Number(process.env.CHURCH_PER_LOCATION_MONTHLY_USD) || 20;
 const CHURCH_BASE_LOCATIONS = 1;
 // Safety gate: keep this unset (or not "true") until membership billing is live.
 const MEMBERSHIP_LIVE = String(process.env.MEMBERSHIP_LIVE || '').toLowerCase() === 'true';
 
 const PLANS = {
   monthly:       { frequency: 'monthly', usd: MONTHLY_USD,       label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.monthly },
-  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true },
-  'church-annual': { frequency: 'annual', usd: CHURCH_ANNUAL_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Annual',  accountPlan: 'church', ppPlanId: PP_PLAN_IDS['church-annual'], quantityPriced: true }
+  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true }
 };
 
 exports.handler = async (event) => {

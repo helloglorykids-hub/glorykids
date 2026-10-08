@@ -11,8 +11,14 @@
 // separately found to be misconfigured with a fixed 1 billing cycle,
 // silently EXPIRING after each member's first payment instead of
 // recurring — that would have needed its own new plan either way).
+// Church Annual plan removed 2026-10-08, same reasoning.
+//
+// Church pricing changed 2026-10-08 to $59/mo base + $20/mo per extra
+// location (was $79 + $49) — new plan created on PayPal with tiered
+// pricing (tier 1: qty 1 @ $59; tier 2: qty 2+ @ $20/unit) so the total
+// comes out to $59/$79/$99/$119/$139 for 1-5 locations, scaling the same
+// way beyond that. Old $79-tier plan ID retired 2026-10-08.
 module.exports = {
   monthly: 'P-5HJ38241B3561884DNKUWMCA',
-  church: 'P-0PK840601V2046942NKUWQKQ',
-  'church-annual': 'P-74Y03914SL211573ENKUZCJQ'
+  church: 'P-1SD13426PP891502SNLD2S3Q'
 };

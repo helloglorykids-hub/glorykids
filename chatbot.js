@@ -27,7 +27,7 @@
     },
     {
       keywords: ['church pricing', 'church plan', 'multi campus', 'multi-campus', 'nonprofit pricing', 'church license', 'kidmin team', 'church discount', 'group discount'],
-      answer: "Glory Kids for Churches is $79/month (or $799/year — save $149) for one church location with full team access — unlimited leaders and volunteers included. Extra locations are +$49/month each. See <a href=\"glory-kids-curriculum.html#pricing\">Church Pricing</a> for details, or <a href=\"contact.html\">contact our team</a> for multi-site or larger ministry networks."
+      answer: "Glory Kids Church Membership is $59/month for one church location with full team access — unlimited leaders and volunteers included. Extra locations are just $20/month each. See <a href=\"glory-kids-curriculum.html#pricing\">Church Pricing</a> for details, or <a href=\"contact.html\">contact our team</a> for multi-site or larger ministry networks."
     },
     {
       keywords: ['cancel', 'pause', 'downgrade', 'unsubscribe'],
