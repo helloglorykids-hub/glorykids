@@ -314,8 +314,8 @@
   // other category (lessons, activities, etc.) came from the general Shop.
   function parentPage(category) {
     return (category === 'curriculum' || category === 'bundle')
-      ? { label: 'Curriculum Packs', href: 'curriculum-packs.html' }
-      : { label: 'Shop', href: 'shop.html' };
+      ? { label: 'Curriculum Packs', href: '/curriculum-packs.html' }
+      : { label: 'Shop', href: '/shop.html' };
   }
 
   function setMeta(p) {
@@ -445,7 +445,7 @@
     wasEl.textContent = (p.compareAtUSD && p.compareAtUSD > price) ? money(p.compareAtUSD) : '';
 
     var buyBtn = document.getElementById('pd-buy-btn');
-    buyBtn.href = 'shop.html?add=' + encodeURIComponent(p.id);
+    buyBtn.href = '/shop.html?add=' + encodeURIComponent(p.id);
 
     document.getElementById('pd-loading').style.display = 'none';
     document.getElementById('pd-content').style.display = 'block';
