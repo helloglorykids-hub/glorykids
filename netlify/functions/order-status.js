@@ -20,7 +20,9 @@ exports.handler = async (event) => {
     totalZAR: o.totalZAR,
     currency: o.totalUSD != null ? 'USD' : 'ZAR',
     items: (o.items || []).map(i => ({ title: i.title })),
-    email: o.buyerEmail
+    email: o.buyerEmail,
+    name: o.buyerName || '',
+    hasAccount: !!o.uid
   };
   if (o.status === 'paid') {
     out.downloads = (o.downloadTokens || []).map(t => ({

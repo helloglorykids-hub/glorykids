@@ -21,6 +21,15 @@
     .ty-dl a { font: 600 0.9rem Inter, system-ui, sans-serif; color: #fff; background: var(--primary, #FF4B32); padding: 0.5rem 1rem; border-radius: 999px; text-decoration: none; white-space: nowrap; }
     .ty-pending { background: #FEF0D3; color: #9a6a00; border-radius: 12px; padding: 1rem; font: 500 0.9rem Inter, system-ui, sans-serif; }
     .ty-cta { display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; border-radius: 999px; border: 1.5px solid var(--primary, #FF4B32); color: var(--primary, #FF4B32); text-decoration: none; font: 600 0.95rem Inter, system-ui, sans-serif; }
+    .ty-account { margin-top: 1.75rem; padding: 1.5rem; background: #F7F6FB; border-radius: 14px; text-align: left; }
+    .ty-account h2 { font: 700 1.05rem Poppins, system-ui, sans-serif; color: var(--navy, #1c2b3a); margin: 0 0 0.35rem; }
+    .ty-account p { color: #666; font: 400 0.88rem/1.5 Inter, system-ui, sans-serif; margin: 0 0 1rem; }
+    .ty-account input { width: 100%; box-sizing: border-box; padding: 0.7rem 0.9rem; border: 1.5px solid #ddd; border-radius: 10px; font: 400 0.92rem Inter, system-ui, sans-serif; margin-bottom: 0.65rem; }
+    .ty-account input[disabled] { background: #eee; color: #888; }
+    .ty-account button { width: 100%; padding: 0.8rem; border: none; border-radius: 999px; background: var(--primary, #FF4B32); color: #fff; font: 700 0.92rem Inter, system-ui, sans-serif; cursor: pointer; }
+    .ty-account button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .ty-account-error { color: #c0392b; font: 500 0.85rem Inter, system-ui, sans-serif; margin: 0.5rem 0 0; display: none; }
+    .ty-account-done { margin-top: 1.75rem; padding: 1.1rem; background: #EAF7EE; border-radius: 12px; color: #1e7a3c; font: 600 0.9rem Inter, system-ui, sans-serif; }
   </style>
   <!-- gk:managed:start -->
   <link rel="icon" href="https://firebasestorage.googleapis.com/v0/b/glorykidsministries-3d279.firebasestorage.app/o/site-assets%2F1788629595584_Glory_Kids_Ministry_Favicon.png?alt=media&amp;token=83c6e1b8-c7af-4308-a5aa-d025d679360e">
@@ -65,6 +74,7 @@
 <script src="admin-data.js"></script>
 <script src="site-settings.js" defer></script>
 <script src="app.js"></script>
+<script src="auth.js"></script>
 <script>
 (function () {
   var orderId = new URLSearchParams(location.search).get('order');
@@ -87,12 +97,74 @@
         '<p class="ty-text">We\'ve emailed your download links to <strong>' + (o.email || 'your inbox') + '</strong>. You can also grab them here:</p>' +
         '<div class="ty-downloads">' + (dls || '<p class="ty-text">Links are on their way to your email.</p>') + '</div>' +
         '<p class="ty-text">Signed-in members can re-download anytime from the dashboard.</p>' +
-        '<a class="ty-cta" href="dashboard.html">Go to my dashboard</a>';
+        '<a class="ty-cta" href="dashboard.html">Go to my dashboard</a>' +
+        '<div id="ty-account-slot"></div>';
+      renderAccountOffer(o);
     } else {
       card.innerHTML = '<div class="ty-icon">⌛</div><h1 class="ty-title">Payment is being confirmed</h1>' +
         '<div class="ty-pending">PayPal is still confirming this payment. This page will update automatically — ' +
         'your download links will also be emailed to you the moment it clears.</div>' +
         '<a class="ty-cta" href="shop.html">Continue shopping</a>';
+    }
+  }
+
+  // Guest buyers (no account) only have the emailed receipt as a durable
+  // copy of their download links. Offer to turn this order into an account
+  // right here, so future purchases + redownloads land in their dashboard
+  // instead of depending on a 7-day email link.
+  function renderAccountOffer(o) {
+    if (o.hasAccount || (window.auth && auth.currentUser)) return;
+    var slot = document.getElementById('ty-account-slot');
+    if (!slot) return;
+    slot.innerHTML =
+      '<div class="ty-account">' +
+        '<h2>Save this order to an account</h2>' +
+        '<p>Create a free password for <strong>' + (o.email || '') + '</strong> and this order (plus any future ones) will always be in your dashboard — no more hunting for the email.</p>' +
+        '<input type="email" id="ty-acc-email" value="' + (o.email || '') + '" disabled />' +
+        '<input type="password" id="ty-acc-pass" placeholder="Create a password (6+ characters)" autocomplete="new-password" />' +
+        '<button id="ty-acc-btn" type="button">Create my account</button>' +
+        '<p class="ty-account-error" id="ty-acc-error"></p>' +
+      '</div>';
+    document.getElementById('ty-acc-btn').addEventListener('click', function () { createAccountFromOrder(o); });
+  }
+
+  async function createAccountFromOrder(o) {
+    var pass = document.getElementById('ty-acc-pass').value;
+    var btn = document.getElementById('ty-acc-btn');
+    var errEl = document.getElementById('ty-acc-error');
+    errEl.style.display = 'none';
+    if (!pass || pass.length < 6) {
+      errEl.textContent = 'Password must be at least 6 characters.';
+      errEl.style.display = 'block';
+      return;
+    }
+    btn.disabled = true; btn.textContent = 'Creating account…';
+    try {
+      var cred = await auth.createUserWithEmailAndPassword(o.email, pass);
+      if (o.name) await cred.user.updateProfile({ displayName: o.name });
+      await GK.ensureUserRecord(cred.user, { displayName: o.name || '' });
+
+      var idToken = await cred.user.getIdToken();
+      await fetch('/api/claim-guest-orders', {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + idToken }
+      }).catch(function () {});
+
+      // Make sure this buyer is in MailerLite even if the checkout-time
+      // sync silently failed — account creation is a clear "we definitely
+      // want this email" signal.
+      fetch('/api/mailerlite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'purchase', email: o.email, name: o.name || '' })
+      }).catch(function () {});
+
+      document.getElementById('ty-account-slot').innerHTML =
+        '<div class="ty-account-done">✅ Account created! This order (and any past guest orders under this email) are now in your dashboard.</div>';
+    } catch (err) {
+      btn.disabled = false; btn.textContent = 'Create my account';
+      errEl.textContent = (window.friendlyError ? friendlyError(err.code) : null) || 'Something went wrong. Please try again.';
+      errEl.style.display = 'block';
     }
   }
 
