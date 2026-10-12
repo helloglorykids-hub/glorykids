@@ -2033,9 +2033,9 @@ const POST_CATEGORIES = [
 
 // Public URL for a post, matching blog-post.html's canonicalPathFor().
 function postPublicPath(p) {
-  if (p.category === 'free_lessons') return '/free-bible-lessons/' + encodeURIComponent(p.slug);
+  if (p.category === 'free_lessons') return '/free-bible-lessons/' + encodeURIComponent(p.slug) + '/';
   const cat = ['parents', 'pastors', 'kidmin'].includes(p.category) ? p.category : 'parents';
-  return '/blog/' + cat + '/' + encodeURIComponent(p.slug);
+  return '/blog/' + cat + '/' + encodeURIComponent(p.slug) + '/';
 }
 
 let cachedPosts = [];

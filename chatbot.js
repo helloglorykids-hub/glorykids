@@ -160,9 +160,9 @@
 
   function postUrl(post) {
     const slug = encodeURIComponent(post.slug);
-    if (post.category === 'free_lessons') return 'free-bible-lessons/' + slug;
+    if (post.category === 'free_lessons') return 'free-bible-lessons/' + slug + '/';
     const cat = BLOG_CATEGORIES.indexOf(post.category) !== -1 ? post.category : 'parents';
-    return 'blog/' + cat + '/' + slug;
+    return 'blog/' + cat + '/' + slug + '/';
   }
 
   async function loadPostsCache() {

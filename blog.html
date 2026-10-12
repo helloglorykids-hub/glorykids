@@ -187,7 +187,7 @@
             <span>10 min read</span>
           </div>
           <p class="featured-post__excerpt">Why does God let bad things happen? 9 honest, Scripture-based answers to the hardest questions kids ask about God, death, and suffering.</p>
-          <a href="/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture" class="btn btn--primary">Read Article →</a>
+          <a href="/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/" class="btn btn--primary">Read Article →</a>
         </div>
       </div>
 
@@ -355,7 +355,7 @@
           <div class="blog-card__meta"><span>${new Date(post.publishAt || post.createdAt).toLocaleDateString()}</span><span>•</span><span>${readMin} min</span></div>
           <h4 class="blog-card__title">${post.title}</h4>
           <p class="blog-card__excerpt">${post.excerpt || ''}</p>
-          <a href="/blog/${post.category}/${post.slug}" class="blog-card__link">Read Article →</a>
+          <a href="/blog/${post.category}/${post.slug}/" class="blog-card__link">Read Article →</a>
         </div>
       </div>
     `;
@@ -411,7 +411,7 @@
         .slice(0, 5);
       recentEl.innerHTML = recent.map(p => {
         const meta = CAT_META[p.category] || CAT_META.parents;
-        return `<a class="popular-post" href="/blog/${p.category}/${p.slug}">` +
+        return `<a class="popular-post" href="/blog/${p.category}/${p.slug}/">` +
           `<div><div class="popular-post__title">${p.title}</div>` +
           `<div class="popular-post__cat">${meta.label}</div></div></a>`;
       }).join('');

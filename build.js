@@ -540,7 +540,7 @@ function freeLessonCardData(post, index) {
     type: post.lessonType || 'lesson', season: post.season || 'general',
     emoji: post.icon || '📖', image: post.featuredImage || null,
     grad: FREE_LESSON_GRAD_PALETTE[index % FREE_LESSON_GRAD_PALETTE.length],
-    href: '/free-bible-lessons/' + post.slug,
+    href: '/free-bible-lessons/' + post.slug + '/',
     isPremiumSample: !!post.isPremiumSample
   };
 }
