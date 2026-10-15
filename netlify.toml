@@ -364,25 +364,31 @@
 # above the "/free-bible-lessons/*" wildcard fallback further down (which
 # would otherwise catch every new-style /free-bible-lessons/<slug> request
 # and bounce it to the listing page before it ever reaches this rule).
-# Status 200 = rewrite (address bar keeps the clean path); the real content
-# comes from blog-post.html, which reads the slug from the URL path.
+# Every real post/lesson is pre-rendered to its own static file at build
+# time (see build.js), and Netlify serves a matching static file before
+# ever consulting these redirects — so these only fire for a slug that
+# does NOT exist. Status 404 (Netlify's documented SPA pattern) still
+# serves blog-post.html's content/JS (which renders its own "not found"
+# UI and sets noindex via showNotFound()), but now with a real 404
+# header instead of a soft-404 200 — the real content comes from
+# blog-post.html, which reads the slug from the URL path.
 # ─────────────────────────────────────────────────────────────
 [[redirects]]
   from = "/free-bible-lessons/:slug"
   to = "/blog-post.html"
-  status = 200
+  status = 404
 [[redirects]]
   from = "/blog/parents/:slug"
   to = "/blog-post.html"
-  status = 200
+  status = 404
 [[redirects]]
   from = "/blog/pastors/:slug"
   to = "/blog-post.html"
-  status = 200
+  status = 404
 [[redirects]]
   from = "/blog/kidmin/:slug"
   to = "/blog-post.html"
-  status = 200
+  status = 404
 
 # --- blog / resource posts ---
 [[redirects]]
@@ -630,6 +636,10 @@
   to = "/blog-post.html"
   status = 200
 [[redirects]]
+  # NOT 404: at least one live, sitemap-listed product (added via admin) has
+  # no pre-rendered /pack/<slug> directory yet, so this fallback is still its
+  # only route to a 200. Revisit once product pre-rendering always runs
+  # before a product goes live (see product-slug-backfill memory note).
   from = "/pack/:slug"
   to = "/curriculum-pack.html"
   status = 200
