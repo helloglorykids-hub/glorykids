@@ -15,6 +15,9 @@
                       account" automation). `redirect` (the lesson's path)
                       becomes the `unlock_url` field, so the automation
                       email can link straight back to it.
+     'book-waitlist' → "Book and Journal Waitlist" group (the /hearing-gods-
+                      voice offer page's bottom waitlist signup). No other
+                      side effect — just adds the subscriber to the group.
    For 'free-lessons' / 'waitlist' the response includes { already: bool } —
    true when the email was ALREADY in that group (so the page can say
    "we already sent it" instead of "check your inbox").
@@ -32,6 +35,7 @@ const GROUP_FREE_LESSONS = process.env.MAILERLITE_GROUP_FREE_LESSONS || '1970571
 const GROUP_WAITLIST = process.env.MAILERLITE_GROUP_WAITLIST || '190369688509744308';
 // No known default — create the group in MailerLite and set this env var.
 const GROUP_SIGNUP_NUDGE = process.env.MAILERLITE_GROUP_SIGNUP_NUDGE || '';
+const GROUP_BOOK_WAITLIST = process.env.MAILERLITE_GROUP_BOOK_WAITLIST || '204317793765557799';
 const SITE_ORIGIN = 'https://www.glorykidsministry.com';
 // Active paying members. Set MAILERLITE_GROUP_MEMBERS in the env and hook your
 // "welcome" + "payment failed" automations to this group / its fields.
@@ -75,6 +79,7 @@ exports.handler = async (event) => {
   if (action === 'free-lessons') groups.add(GROUP_FREE_LESSONS);
   if (action === 'waitlist') groups.add(GROUP_WAITLIST);
   if (action === 'signup-nudge' && GROUP_SIGNUP_NUDGE) groups.add(GROUP_SIGNUP_NUDGE);
+  if (action === 'book-waitlist' && GROUP_BOOK_WAITLIST) groups.add(GROUP_BOOK_WAITLIST);
   // Membership lifecycle — same group, distinguished by the `membership_status`
   // field so you can branch automations (welcome vs payment-failed vs cancelled).
   if (action === 'membership-welcome' || action === 'membership-payment-failed' || action === 'membership-cancelled') {

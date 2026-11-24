@@ -17,6 +17,9 @@
      fires the "complete your free account" automation). An optional
      <input type="hidden" name="redirect"> carries the lesson's own URL so
      the automation email can send them straight back to it after signup.
+   - data-gk-form="book-waitlist" → MailerLite "Book and Journal Waitlist"
+     group (the /hearing-gods-voice page's bottom waitlist signup). No
+     other action.
    - on success the form is replaced with a thank-you message
      (or, if present, #success-msg is shown and the form hidden)
    Optional: define window.gkFormExtra() → object merged into data.
@@ -41,6 +44,9 @@
     'signup-nudge': {
       'new': '✅ Check your inbox — we’ve sent you a link to finish creating your free account.',
       'already': '✅ Already sent! Check your inbox (and spam folder) for the link to finish your free account.'
+    },
+    'book-waitlist': {
+      'new': '✅ You’re on the list — we’ll email you the moment the book and journals are ready.'
     },
     'newsletter': { 'new': 'You’re subscribed — check your inbox!' }
   };
@@ -77,6 +83,7 @@
       if (formId === 'free-lessons') lsSet(FREE_FLAG, '1');
       if (formId === 'waitlist') lsSet(WAIT_FLAG, '1');
       if (formId === 'signup-nudge') lsSet(NUDGE_FLAG, '1');
+      if (!(res && res.already) && typeof window.gkTrack === 'function') window.gkTrack('Lead', { form: formId });
       showNote(form, msg);
       return;
     }
@@ -116,16 +123,18 @@
 
       // The opt-in flows go straight to MailerLite (no Firestore dependency);
       // everything else goes through the generic form-submit endpoint.
-      var isOptin = formId === 'free-lessons' || formId === 'waitlist' || formId === 'signup-nudge';
+      var isOptin = formId === 'free-lessons' || formId === 'waitlist' || formId === 'signup-nudge' || formId === 'book-waitlist';
+      var utm = window.GK_UTM || {};
       var url = isOptin ? '/api/mailerlite' : '/api/form-submit';
       var body = isOptin
-        ? { action: formId, email: data.email || '', name: data.firstName || data.name || '', source: location.href, redirect: data.redirect || '' }
+        ? { action: formId, email: data.email || '', name: data.firstName || data.name || '', source: location.href, redirect: data.redirect || '', utm_source: utm.utm_source || '', utm_medium: utm.utm_medium || '', utm_campaign: utm.utm_campaign || '' }
         : {
             formId: formId,
             data: data,
             pageUrl: location.href,
             _hp: hp ? hp.value : '',
-            newsletter: formId === 'newsletter' || !!form.querySelector('input[name="newsletter"]:checked')
+            newsletter: formId === 'newsletter' || !!form.querySelector('input[name="newsletter"]:checked'),
+            utm_source: utm.utm_source || '', utm_medium: utm.utm_medium || '', utm_campaign: utm.utm_campaign || ''
           };
 
       fetch(url, {

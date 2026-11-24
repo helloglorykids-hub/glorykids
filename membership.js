@@ -29,9 +29,18 @@
   var LIVE = MEMBERSHIP_LIVE || forceCheckout;
 
   var PLAN_LABEL = {
-    monthly: 'Monthly', church: 'Church Monthly'
+    monthly: 'Monthly', individual_monthly: 'Monthly',
+    church: 'Church Monthly', church_monthly: 'Church Monthly',
+    church_annual: 'Church Annual', church_annual_founding: 'Church Annual (Founding Rate)'
   };
-  var isChurchPlan = function (p) { return p === 'church'; };
+  var CHURCH_PLANS = { church: 1, church_monthly: 1, church_annual: 1, church_annual_founding: 1 };
+  var isChurchPlan = function (p) { return !!CHURCH_PLANS[p]; };
+  var CHURCH_PLAN_COPY = {
+    church: '$59/month includes one church location with full team access. Extra locations are +$20/mo each.',
+    church_monthly: '$59/month includes one church location with full team access. Extra locations are +$20/mo each.',
+    church_annual: '$499/year (about $41/month) includes one church location with full team access. Extra locations are +$199/year each.',
+    church_annual_founding: '$399/year (locked for 2 years) includes one church location with full team access — a limited-time Founding Church rate. Extra locations are +$199/year each.'
+  };
 
   /* ---------- tiny modal ---------------------------------------------- */
   function injectStyles() {
@@ -221,11 +230,11 @@
     });
   }
 
-  function showChurchLocationStep(user, orgName) {
-    var planKey = 'church';
+  function showChurchLocationStep(user, orgName, planKey) {
+    planKey = CHURCH_PLANS[planKey] ? planKey : 'church';
     body().innerHTML =
       '<h3>Church plan</h3>' +
-      '<p>$59/month includes one church location with full team access. Extra locations are +$20/mo each.</p>' +
+      '<p>' + (CHURCH_PLAN_COPY[planKey] || CHURCH_PLAN_COPY.church) + '</p>' +
       '<div class="gk-mem-err" id="gk-mem-err"></div>' +
       '<label for="gk-locations">Number of church locations</label>' +
       '<input id="gk-locations" type="number" min="1" step="1" value="1">' +
@@ -242,8 +251,12 @@
     plan = PLAN_LABEL[plan] ? plan : 'monthly';
     var user = currentUser();
     if (!user) {
-      // Send them to sign up, then straight back into checkout for this plan.
-      var back = 'glory-kids-curriculum.html?checkout=1&plan=' + plan + '#pricing';
+      // Send them to sign up, then straight back into checkout for this plan
+      // — on whichever page they actually started on, not a hardcoded one,
+      // so campaign/landing pages don't lose their visitor to the generic
+      // curriculum page mid-funnel.
+      var page = location.pathname.split('/').pop() || 'index.html';
+      var back = page + '?checkout=1&plan=' + plan;
       location.href = 'signup.html?redirect=' + encodeURIComponent(back);
       return;
     }
@@ -264,12 +277,12 @@
           var v = (body().querySelector('#gk-org').value || '').trim();
           var err = body().querySelector('#gk-mem-err');
           if (v.length < 2) { err.textContent = 'Please enter your church or ministry name.'; err.style.display = 'block'; return; }
-          showChurchLocationStep(user, v);
+          showChurchLocationStep(user, v, plan);
         });
         body().querySelector('#gk-org').focus();
         return;
       }
-      showChurchLocationStep(user, orgName);
+      showChurchLocationStep(user, orgName, plan);
       return;
     }
 
@@ -279,6 +292,7 @@
   /* ---------- wire the page ----------------------------------------- */
   function handleCta(e, plan) {
     e.preventDefault();
+    if (typeof window.gkTrack === 'function') window.gkTrack('InitiateCheckout', { plan: plan || 'monthly' });
     if (LIVE) startCheckout(plan || 'monthly');
     else showWaitlist(plan);
   }
