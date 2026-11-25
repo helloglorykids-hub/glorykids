@@ -777,14 +777,17 @@ function buildPackLandingContent(prod, copy, allPosts, allProducts) {
   const descHtml = copy.desc.map(p => `<p>${esc(p)}</p>`).join('');
   const gapHtml = copy.gapNote ? `<p class="pack-gap-note" style="background:#FFF7E6;border:1px solid #FFD98E;border-radius:8px;padding:0.75rem 1rem;color:#7A5200;"><strong>Right now:</strong> ${esc(copy.gapNote)}</p>` : '';
 
+  const hasFiles = Array.isArray(prod.files) && prod.files.some(f => f && f.path);
   const summaryBits = [
     `${money(price)}`,
     ageRange,
     weeksLabel ? weeksLabel : null,
     'Digital download (PDF/ZIP)'
   ].filter(Boolean);
-  const summaryHtml = `<ul class="pack-landing-summary">${summaryBits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` +
-    `<a href="/shop.html?add=${encodeURIComponent(prod.id || '')}" class="btn btn--primary btn--lg">Get ${esc(prod.title)} →</a>`;
+  const buyBtnHtml = hasFiles
+    ? `<a href="/shop.html?add=${encodeURIComponent(prod.id || '')}" class="btn btn--primary btn--lg">Get ${esc(prod.title)} →</a>`
+    : `<a href="#" class="btn btn--primary btn--lg" style="pointer-events:none;opacity:0.6;cursor:default;">Coming Soon</a>`;
+  const summaryHtml = `<ul class="pack-landing-summary">${summaryBits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` + buyBtnHtml;
 
   let includedHtml = '';
   if (copy.included && copy.included.length) {
@@ -911,7 +914,18 @@ function bakePackPage(template, prod, allProducts, allPosts) {
   }
   html = setTextById(html, 'pd-price', 'span', money(price));
   if (prod.compareAtUSD && prod.compareAtUSD > price) html = setTextById(html, 'pd-price-was', 'span', money(prod.compareAtUSD));
-  html = setAttrById(html, 'pd-buy-btn', 'href', '/shop.html?add=' + encodeURIComponent(prod.id || ''));
+  // The button is live only if the product actually has files to deliver -
+  // a purchase of a pack with nothing attached would charge the buyer and
+  // then 404 on download. hasFiles is also used by buildPackLandingContent's
+  // own buy button, below.
+  const hasFiles = Array.isArray(prod.files) && prod.files.some(f => f && f.path);
+  if (hasFiles) {
+    html = setAttrById(html, 'pd-buy-btn', 'href', '/shop.html?add=' + encodeURIComponent(prod.id || ''));
+  } else {
+    html = setAttrById(html, 'pd-buy-btn', 'href', '#');
+    html = setAttrById(html, 'pd-buy-btn', 'style', 'pointer-events:none;opacity:0.6;cursor:default;');
+    html = setTextById(html, 'pd-buy-btn', 'a', 'Coming Soon');
+  }
   // Same cleanup as bakePostPage: clear (not just hide) the loading text, and
   // the not-found state's own hardcoded <h1> — left in place, every pack page
   // would carry two H1s ("We couldn't find that pack." plus the real title).
@@ -1378,6 +1392,15 @@ function bakeFreeLessonsGrid(html, posts) {
     const h = hashOf(text);
     if (seenHashes[h]) duplicatePacks.push(`${p.slug} duplicates ${seenHashes[h]}`);
     else seenHashes[h] = p.slug;
+  }
+
+  // Warn, don't fail: an empty files array is a real content gap (the buy
+  // button is already disabled for these in bakePackPage/
+  // buildPackLandingContent above), but it's a data-completeness issue for
+  // one product, not a reason to block the whole deploy.
+  const noFilesPacks = activeProducts.filter(p => !Array.isArray(p.files) || !p.files.some(f => f && f.path));
+  if (noFilesPacks.length) {
+    console.warn(`WARNING: ${noFilesPacks.length} active pack(s) have no files attached - rendered as "Coming soon" with no buy button: ${noFilesPacks.map(p => p.slug).join(', ')}`);
   }
 
   console.log(`Content check: ${freeLessonCount} published free lessons, ${livePosts.length} total posts, ${activeProducts.length} active packs.`);
