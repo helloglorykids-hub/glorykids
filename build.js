@@ -769,12 +769,13 @@ function bakeFreeLessonsGrid(html, posts) {
     getColWhere('products', 'active', true).catch(() => [])
   ]);
   if (!cfg) {
-    // Firestore unreachable (rules not deployed, outage, etc.). Don't fail the
-    // whole deploy — carry on with empty settings so robots.txt / sitemap.xml /
-    // _redirects still generate and the hand-written <head> tags in each HTML
-    // file stay as-is. Fix the rules and redeploy to restore managed SEO.
-    console.error('WARNING: could not read site/config from Firestore — building with defaults (managed SEO/favicon skipped).');
-    cfg = {};
+    // Firestore unreachable (rules not deployed, outage, etc.). Previously
+    // this fell back to building with empty settings so a Firestore outage
+    // never blocked a deploy — deliberately changed: a build that silently
+    // produces a site with no baked SEO/content is worse than Netlify just
+    // keeping the previous (good) deploy, so this now fails loud instead.
+    console.error('BUILD FAILED: could not read site/config from Firestore.');
+    process.exit(1);
   }
 
   // Editable-content docs for the marketing pages (+ pricing overrides).
@@ -881,4 +882,37 @@ function bakeFreeLessonsGrid(html, posts) {
   fs.writeFileSync(path.join(DIR, 'shopping-feed.xml'), buildShoppingFeed(products));
 
   console.log(`Wrote robots.txt, sitemap.xml (${urls.length} URLs), _redirects (${rlines.length}), _headers (${noindexPages.length}), shopping-feed.xml (${activeProducts.length} products).`);
+
+  /* ---- Fail-safe content check ----
+     A build that silently ships near-empty or missing content (a Firestore
+     read that quietly returned 0 rows, a bodyHtml field that lost its
+     content) is worse than no build at all: Netlify keeps the PREVIOUS good
+     deploy live if this script exits non-zero, so a bad read here must
+     never produce a "successful" deploy. Always print the counts, pass or
+     fail, so a healthy build's own log is a visible record of what shipped. */
+  const freeLessonCount = livePosts.filter(p => p.category === 'free_lessons').length;
+  const wc = html => stripHtml(html).split(/\s+/).filter(Boolean).length;
+  const thinLessons = livePosts
+    .map(p => ({ slug: p.slug, category: p.category, words: wc(p.bodyHtml) }))
+    .filter(p => p.words < 300);
+  const thinPacks = activeProducts
+    .map(p => ({ slug: p.slug, words: wc((p.blurb || '') + ' ' + (p.features || []).join(' ')) }))
+    .filter(p => p.words < 30);
+
+  console.log(`Content check: ${freeLessonCount} published free lessons, ${livePosts.length} total posts, ${activeProducts.length} active packs.`);
+  console.log(`  thin lesson/blog pages (<300 words): ${thinLessons.length}${thinLessons.length ? ' — ' + thinLessons.map(l => l.slug).join(', ') : ''}`);
+  console.log(`  thin pack pages (<30 words): ${thinPacks.length}${thinPacks.length ? ' — ' + thinPacks.map(l => l.slug).join(', ') : ''}`);
+
+  const failures = [];
+  if (!posts.length) failures.push('0 posts read from Firestore (fetch likely failed)');
+  if (!products.length) failures.push('0 products read from Firestore (fetch likely failed)');
+  if (freeLessonCount < 30) failures.push(`only ${freeLessonCount} published free lessons (need >= 30)`);
+  if (activeProducts.length < 9) failures.push(`only ${activeProducts.length} active packs (need >= 9)`);
+  if (thinLessons.length) failures.push(`${thinLessons.length} lesson/blog page(s) under 300 words`);
+  if (thinPacks.length) failures.push(`${thinPacks.length} pack page(s) under 30 words`);
+
+  if (failures.length) {
+    console.error('BUILD FAILED — content safety check:\n  - ' + failures.join('\n  - '));
+    process.exit(1);
+  }
 })().catch(e => { console.error(e); process.exit(1); });
