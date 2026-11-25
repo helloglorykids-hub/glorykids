@@ -282,15 +282,9 @@
       </a>
       <ul class="nav__links">
         <li><a href="free-bible-lessons.html" class="nav__link">Free Lessons</a></li>
-        <li class="nav__dropdown">
-          <a href="glory-kids-curriculum.html" class="nav__link">Curriculum ▾</a>
-          <div class="nav__dropdown-menu">
-            <a href="curriculum-packs.html" class="nav__dropdown-item"><span>📦</span> Curriculum Packs</a>
-            <a href="glory-kids-curriculum.html" class="nav__dropdown-item"><span>✨</span> Glory Kids Curriculum</a>
-            <a href="comparison.html" class="nav__dropdown-item"><span>⚖️</span> Compare Platforms</a>
-          </div>
-        </li>
-        <li><a href="shop.html" class="nav__link">Shop Now</a></li>
+        <li><a href="this-month.html" class="nav__link">This Month's Pack</a></li>
+        <li><a href="church.html" class="nav__link">For Churches</a></li>
+        <li><a href="shop.html" class="nav__link">Shop</a></li>
         <li class="nav__dropdown">
           <a href="blog.html" class="nav__link">Resources ▾</a>
           <div class="nav__dropdown-menu">
@@ -299,9 +293,7 @@
             <a href="blog.html#kidmin" class="nav__dropdown-item"><span>🌟</span> For Kidmin Leaders</a>
           </div>
         </li>
-        <li><a href="faq/index.html" class="nav__link">FAQ</a></li>
-        <li><a href="contact.html" class="nav__link">Contact</a></li>
-        <li><a href="about.html" class="nav__link">About Us</a></li>
+        <li><a href="about.html" class="nav__link">About</a></li>
       </ul>
       <div class="nav__actions" id="nav-actions-placeholder">
         <a href="login.html" class="btn" style="padding:0.55rem 1.25rem;font-size:0.875rem;border-radius:var(--radius-full);background:var(--coral);color:white;font-weight:700;">Login</a>
@@ -478,7 +470,7 @@
       <div class="upgrade-banner">
         <div>
           <h3>Unlock Everything with Glory Kids ✨</h3>
-          <p>A full, growing lesson library, curriculum series, activity sheets, and new content every week.</p>
+          <p>A full, growing lesson library, curriculum series, activity sheets, and new content as it's finished.</p>
         </div>
         <a href="glory-kids-curriculum.html#pricing" class="btn btn--primary btn--lg" style="background:var(--color-card);color:var(--coral-dark);white-space:nowrap;">
           Join for $29.99/mo →
@@ -816,10 +808,10 @@ async function renderPlanState() {
     lockDisplay = 'none';
     lockedMetaText = 'Included in your membership';
     benefits = [
-      '✅ The full, growing lesson library — new lessons every week',
+      '✅ The full, growing lesson library — new lessons added as they are finished',
       '✅ All Glory Kids Curriculum series, unlocked',
       '✅ Every activity pack, craft, and printable',
-      '✅ New content added on the 15th of each month'
+      '✅ New content added as it is finished'
     ];
   } else if (isPaused) {
     statusHtml = '<span class="active-dot" style="background:var(--gold-dark);"></span> Paused';
@@ -898,13 +890,13 @@ async function renderLibrarySection(section) {
   if (!items.length) {
     sub.textContent = isActivities
       ? 'New activity packs are added regularly. Nothing here yet — check back soon.'
-      : 'New curriculum series are published every month. Nothing here yet — check back soon.';
+      : 'New curriculum series are added as they are finished. Nothing here yet — check back soon.';
     locked.style.display = isMember ? 'none' : 'block';
     return;
   }
 
   sub.innerHTML = isMember
-    ? (isActivities ? 'Every activity pack below is included with your membership.' : 'Everything below is included with your membership. New series drop on the 15th of each month.')
+    ? (isActivities ? 'Every activity pack below is included with your membership.' : 'Everything below is included with your membership. New series are added as they are finished.')
     : 'Preview of what members get. <a href="glory-kids-curriculum.html#pricing" class="text-primary" style="font-weight:600;">Unlock everything →</a>';
   locked.style.display = isMember ? 'none' : 'block';
 
@@ -1071,7 +1063,7 @@ function refreshFreePlanNoteText() {
   const el = document.getElementById('free-plan-note-text');
   if (!el) return;
   if (_overviewOpenCount === null) { el.innerHTML = '🔓 Loading your free lesson access…'; return; }
-  el.innerHTML = `🔓 You have access to <strong>${_overviewOpenCount} free lesson${_overviewOpenCount === 1 ? '' : 's'}</strong>. Upgrade to Glory Kids Membership to unlock the full, growing lesson library, curriculum, and new lessons every week.`;
+  el.innerHTML = `🔓 You have access to <strong>${_overviewOpenCount} free lesson${_overviewOpenCount === 1 ? '' : 's'}</strong>. Upgrade to Glory Kids Membership to unlock the full, growing lesson library, curriculum, and new lessons and packs as they're finished.`;
 }
 
 function downloadLessonPack(postId, btn) {

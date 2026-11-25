@@ -469,7 +469,7 @@ function bakePostPage(template, post) {
   html = setAttrById(html, 'postSectionLink', 'href', sectionHref);
   html = setTextById(html, 'postSectionLink', 'a', sectionLabel);
   html = setTextById(html, 'postTitle', 'h1', post.title);
-  html = setTextById(html, 'postAuthor', 'strong', post.author || 'Jandre van der Walt');
+  html = setTextById(html, 'postAuthor', 'strong', post.author || 'Jandré van der Walt');
   html = setTextById(html, 'postAuthorInitials', 'span', (post.author || 'Glory Kids').trim().split(/\s+/).map(p => p[0]).join('').toUpperCase().slice(0, 2));
   html = setTextById(html, 'postDate', 'span', '📅 ' + dateStr);
   html = setTextById(html, 'postReadTime', 'span', '⏱ ' + estimateReadTime(post.bodyHtml) + ' min read');
@@ -498,7 +498,7 @@ function bakePostPage(template, post) {
     headline: post.title, description: desc, image,
     datePublished: new Date(dateP).toISOString(),
     dateModified: new Date(dateM).toISOString(),
-    author: { '@type': 'Person', name: post.author || 'Jandre van der Walt', url: SITE_ORIGIN + '/contact.html' },
+    author: { '@type': 'Person', name: post.author || 'Jandré van der Walt', url: SITE_ORIGIN + '/contact.html' },
     publisher: { '@type': 'Organization', name: 'Glory Kids Ministries', logo: { '@type': 'ImageObject', url: SITE_ORIGIN + '/images/glory-kids-logo.png' } },
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     articleBody: stripHtml(post.bodyHtml).slice(0, 5000)

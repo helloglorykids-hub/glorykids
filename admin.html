@@ -804,7 +804,12 @@
             <div class="gk-field">
               <label>Google Analytics 4 — Measurement ID</label>
               <input type="text" id="s-ga4MeasurementId" placeholder="G-XXXXXXXXXX" />
-              <div class="gk-hint">From Analytics → Admin → Data streams. The gtag.js tag is injected site-wide automatically.</div>
+              <div class="gk-hint">From Analytics → Admin → Data streams. The gtag.js tag is injected site-wide automatically, after cookie consent.</div>
+            </div>
+            <div class="gk-field">
+              <label>Meta Pixel — Pixel ID</label>
+              <input type="text" id="s-metaPixelId" placeholder="123456789012345" />
+              <div class="gk-hint">Injected site-wide automatically, after cookie consent (fires PageView). If a Meta Pixel snippet is already pasted into "Header code" below, move its ID here and remove that snippet — the Header code box runs immediately and isn't consent-gated.</div>
             </div>
             <div class="gk-field">
               <label>Google Search Console — verification token</label>
@@ -2005,7 +2010,7 @@ async function savePostForm() {
     mailerliteEmbed: document.getElementById('post-mailerlite-embed').value.trim(),
     published: document.getElementById('post-published').checked,
     publishAt,
-    author: 'Jandre van der Walt'
+    author: 'Jandré van der Walt'
   };
   await GK.savePost(post);
   hidePostForm();
@@ -2562,7 +2567,7 @@ async function loadSiteSettings() {
   document.getElementById('s-ann-enabled').checked = !!a.enabled;
   v('s-ann-text', a.text); v('s-ann-linkUrl', a.linkUrl); v('s-ann-linkLabel', a.linkLabel);
   v('s-ann-bg', a.bg || '#1f2937'); v('s-ann-fg', a.fg || '#ffffff');
-  v('s-ga4MeasurementId', c.ga4MeasurementId); v('s-gscVerification', c.gscVerification);
+  v('s-ga4MeasurementId', c.ga4MeasurementId); v('s-metaPixelId', c.metaPixelId); v('s-gscVerification', c.gscVerification);
   v('s-headCode', c.headCode); v('s-bodyEndCode', c.bodyEndCode);
   const o = c.organization || {};
   v('s-org-name', o.name || c.siteName); v('s-org-url', o.url);
@@ -2619,7 +2624,7 @@ async function saveSiteSettings() {
       text: g('s-ann-text'), linkUrl: g('s-ann-linkUrl'), linkLabel: g('s-ann-linkLabel'),
       bg: g('s-ann-bg'), fg: g('s-ann-fg')
     },
-    ga4MeasurementId: g('s-ga4MeasurementId'), gscVerification: g('s-gscVerification'),
+    ga4MeasurementId: g('s-ga4MeasurementId'), metaPixelId: g('s-metaPixelId'), gscVerification: g('s-gscVerification'),
     headCode: document.getElementById('s-headCode').value,
     bodyEndCode: document.getElementById('s-bodyEndCode').value,
     contactEmail: g('s-contactEmail'), contactPhone: g('s-contactPhone'),
