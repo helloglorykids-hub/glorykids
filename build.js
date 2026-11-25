@@ -520,11 +520,349 @@ function bakePostPage(template, post) {
   return html;
 }
 
+/* Firestore's ageRange field on a few products still says "3-12"/"3–12" —
+   the sitewide decision is 3-13 (Preschool/Elementary/Preteen), except the
+   preschool pack which is genuinely scoped to ages 3-5. This is a display-
+   time fix only (no Firestore write path from build.js); the stored field
+   itself should still be corrected in admin for full consistency. */
+function normalizeAgeRange(raw, fallback) {
+  const s = (raw || '').trim();
+  if (/3[–-]12/.test(s)) return s.replace(/3[–-]12/, '3-13');
+  if (s) return s;
+  return fallback || 'Ages 3-13';
+}
+
+function findBySlug(rows, slug) { return (rows || []).find(r => r.slug === slug); }
+function lessonLink(post) { return post ? { title: post.title, href: postUrl(post) } : null; }
+function packLink(prod) { return prod ? { title: prod.title, href: packUrl(prod) } : null; }
+
+/* Side channel for bakePackPage(): writeDetailPages() writes bake()'s
+   return value directly to disk, so bakePackPage must keep returning a
+   plain HTML string (matching bakePostPage's contract) - this is where it
+   also records word counts for the fail-safe check and duplicate-content
+   check below, keyed by slug, without changing that return type. */
+const PACK_LANDING_STATS = {};
+
+/* PHASE 5 hand-authored copy for the 9 real shop packs — the facts (price,
+   weeks, features, files) all come from Firestore; this is only the
+   marketing layer built on top of those facts; nothing here invents a
+   price, lesson count or feature the product doesn't actually have. */
+const PACK_COPY = {
+  '6-week-encounter-series': {
+    h1: '6-Week Encounter Series: Holy Spirit Curriculum for Kids Church',
+    cardTitle: '6-Week Encounter Series — Holy Spirit Curriculum',
+    cardBlurb: 'A Holy Spirit curriculum for kids church — 6 weeks of worship, activations and crafts.',
+    metaTitle: '6 Week Kids Church Curriculum | Encounter Series',
+    metaDesc: 'A 6-week Holy Spirit curriculum for kids church: worship, activations, crafts and parent take-home pages. Weeks 1-4 ready now.',
+    desc: [
+      "The 6-Week Encounter Series is a kids encounter series built around one goal: helping children ages 3-13 recognize God's voice and encounter Jesus for themselves, not just hear about Him secondhand. Each week pairs a Holy Spirit activation with games, crafts and a parent take-home page, so what happens in kids church keeps going at home.",
+      "This is a Holy Spirit curriculum for kids in the fullest sense — every week is built around giving children a real, guided encounter, not just a Bible story with an activity bolted on. Leaders get everything scripted: teaching notes, age adaptations, and activities that work whether you're running a 30-minute kids church slot or a longer midweek program."
+    ],
+    gapNote: "Weeks 1-4 are available for instant download now. Weeks 5-6 are being finished and will be added to the same download — no repurchase needed once they're ready.",
+    howTo: [
+      'Download all 4 available weekly guides right after purchase (weeks 5-6 arrive in the same download once finished).',
+      'Read through one week at a time — each guide includes teaching notes, so about 15-20 minutes of prep covers a full session.',
+      'Works for a group of 5 or 50: the games and activations scale to your room size and volunteer count.',
+      'Use it in kids church, a midweek program, or a homeschool co-op — nothing here assumes a Sunday-only schedule.',
+      'Send the parent take-home page home each week so families can keep the conversation going.',
+      "Mix and match ages: the included age adaptations flex each week's Holy Spirit activation for preschool through preteen."
+    ],
+    faqExtra: [
+      ['Are all 6 weeks included right now?', "Weeks 1-4 are ready to download the moment you purchase. Weeks 5-6 are still being finished and will be added to the same product — your original download link will include them automatically, at no extra cost."],
+    ],
+    freePreview: 'pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts',
+    relatedPacks: ['armor-of-god-kids-bible-curriculum', 'heroes-of-faith-8-week-kids-church-bible-curriculum', 'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids'],
+    relatedLessons: ['the-lords-prayer-learning-how-to-pray-kids-bible-lesson', 'jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson']
+  },
+
+  'armor-of-god-kids-bible-curriculum': {
+    h1: 'Armor of God Kids Curriculum: 6 Sunday School Lessons on Ephesians 6',
+    cardTitle: 'Armor of God Kids Curriculum',
+    cardBlurb: 'Armor of God Sunday school lessons — 6 lessons on truth, faith and standing strong in Jesus.',
+    metaTitle: 'Armor of God Kids Curriculum | 6 Lessons',
+    metaDesc: 'Armor of God kids curriculum: 6 ready-to-teach Sunday school lessons on Ephesians 6, with games, crafts and instant digital download.',
+    desc: [
+      "This armor of god kids curriculum walks children through Ephesians 6 one piece of armor at a time — truth, righteousness, peace, faith, salvation and the Word of God — across 6 complete, ready-to-teach lessons. Each one pairs straightforward teaching with hands-on games and a craft, so kids don't just hear about spiritual armor, they act it out and take something home that reminds them of it.",
+      "These armor of god Sunday school lessons were written so a volunteer with little prep time can still teach with confidence: the teaching script, game and craft for each lesson are already laid out, and the whole 6-lesson set downloads as one ZIP file right after purchase."
+    ],
+    howTo: [
+      'Download the ZIP (253 MB) right after checkout — it contains all 6 lessons.',
+      'Teach one piece of armor per session; each lesson stands on its own, so you can spread them across 6 weeks or run them back to back.',
+      'Budget about 20-30 minutes of prep per lesson — the teaching script and craft instructions are already written out.',
+      'Works for a Sunday school class, a midweek kids program, or a homeschool unit on Ephesians.',
+      'Adapt the craft and game pacing for your room — the lessons are written broadly enough to flex from preschool helpers up to preteens.'
+    ],
+    freePreview: 'armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson',
+    relatedPacks: ['heroes-of-faith-8-week-kids-church-bible-curriculum', '6-week-encounter-series', 'miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities'],
+    relatedLessons: ['david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson', 'daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson']
+  },
+
+  'preschool-bible-curriculum-15-complete-lessons-ages-3-5': {
+    h1: 'Preschool Bible Curriculum: 15 Sunday School Lessons for Ages 3-5',
+    cardTitle: 'Preschool Bible Curriculum (Ages 3-5)',
+    cardBlurb: 'Preschool Sunday school lessons, ages 3-5 — 15 complete, ready-to-print lessons.',
+    metaTitle: 'Preschool Bible Curriculum Ages 3-5 | 15 Lessons',
+    metaDesc: 'Preschool Bible curriculum for ages 3-5: 15 complete, ready-to-teach Sunday school lessons with crafts, songs and a coloring page for each one.',
+    desc: [
+      "This preschool Bible curriculum was written specifically for ages 3-5, not scaled down from an older-kids lesson. All 15 complete lessons follow the same simple structure — Bible story, key verse, discussion questions, a hands-on activity with its own supplies list, memory verse practice with movement and songs, and a matching coloring page — so a busy Sunday school teacher, homeschool parent or VBS leader can open the PDF and teach, not plan.",
+      "The 15 preschool Sunday school lessons move through Creation, Noah, Abraham, Moses, David and Goliath, Jonah, and the birth, miracles, cross and resurrection of Jesus — a real arc through the Bible's major stories, scaled to a 3-5 year old's attention span. A blank lesson template is also included so a leader can keep writing new lessons in the same format once they've worked through all 15."
+    ],
+    howTo: [
+      'Download the single PDF (100+ pages) right after checkout — all 15 lessons and the coloring pages are inside it.',
+      'Print each lesson and its supplies list ahead of time; most activities use things already in a typical classroom or kitchen drawer.',
+      'Teach one lesson per week for a straightforward 15-week run, or pick whichever Bible story fits your current series.',
+      "Keep sessions short and moving — each lesson is built around a preschooler's attention span, not a full-length children's church slot.",
+      'Send the coloring page home after each lesson as a simple, low-effort take-home reminder.',
+      'Use the blank lesson template at the back once you need lesson 16 and beyond, in the same format as the first 15.'
+    ],
+    freePreview: 'creation-bible-lesson-for-kids-god-made-everything',
+    relatedPacks: ['6-week-encounter-series', 'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids', 'miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities'],
+    relatedLessons: ['noahs-ark-trusting-gods-plan-kids-bible-lesson', 'david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson']
+  },
+
+  'heroes-of-faith-8-week-kids-church-bible-curriculum': {
+    h1: 'Heroes of Faith: 8-Week Kids Church Bible Curriculum on Courage & Faith',
+    cardTitle: 'Heroes of Faith — 8-Week Kids Church Curriculum',
+    cardBlurb: 'Heroes of faith Bible lessons for kids — 8 weeks on courage, trust and unshakable faith.',
+    metaTitle: 'Heroes of Faith Kids Curriculum | 8-Week Series',
+    metaDesc: 'Heroes of faith kids curriculum: 8 complete lessons on Old Testament heroes, with 24 crafts, parent take-homes and Preschool-Preteen versions.',
+    desc: [
+      "Heroes of Faith is an 8-week journey through eight heroes of the Old Testament, built to help kids build courage, trust and unshakable faith by watching how real people in Scripture trusted God under real pressure. Each of the 8 complete lessons comes with its own teaching, games and activities, plus 24 hands-on crafts across the series — three per lesson on average — so the Bible story turns into something kids make with their hands, not just hear.",
+      "This heroes of faith kids curriculum ships with Preschool, Elementary and Preteen versions of the material, so one purchase covers a kids church program spanning multiple age groups, plus a parent take-home sheet for every week so the story keeps being talked about after kids leave the room."
+    ],
+    howTo: [
+      'Download the ZIP (46 MB) after checkout — it contains all 8 weeks plus the Preschool, Elementary and Preteen versions.',
+      'Pick the age version that matches your room, or run two age tracks side by side from the same download.',
+      'Plan on 2-3 crafts per week — supplies lists are included so you can shop once for the whole series.',
+      'Teach the 8 heroes in order for one connected discipleship arc, or pull a single week to match a sermon series.',
+      'Send the parent take-home sheet home each week to extend the lesson into family conversation.'
+    ],
+    freePreview: 'david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson',
+    relatedPacks: ['armor-of-god-kids-bible-curriculum', '6-week-encounter-series', 'miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities'],
+    relatedLessons: ['daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson', 'jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson']
+  },
+
+  'miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities': {
+    h1: 'Miracles of Jesus: 4-Week Kids Curriculum on Jesus’s Miracles',
+    cardTitle: 'Miracles of Jesus — 4-Week Curriculum',
+    cardBlurb: 'Jesus miracles Sunday school lessons — 4 weeks of object lessons, crafts and worship.',
+    metaTitle: 'Miracles of Jesus Kids Curriculum | 4-Week Series',
+    metaDesc: "Miracles of Jesus kids curriculum: 4 weekly Bible stories on Jesus's miracles, with object lessons, crafts, a worship album and parent handouts.",
+    desc: [
+      "This miracles of Jesus kids curriculum walks children ages 3-13 through 4 weekly Bible stories centered on Jesus's miracles, each paired with an object lesson and a hands-on activity so the miracle isn't just retold, it's felt. A included worship album reinforces the week's theme in song, and Holy Spirit activation exercises give kids a moment to respond, not just listen.",
+      "These Jesus miracles Sunday school lessons were designed by children's ministry curriculum specialists for Sunday school, children's church, homeschool Bible study or a weekday program, with a leader's guide (discussion questions and teaching tips) and a parent handout for every week so the miracle gets talked about again at home."
+    ],
+    howTo: [
+      'Download all 4 weekly PDFs (72+ pages total) right after checkout.',
+      "Teach the miracles in order for a connected 4-week series, or pull a single week to match a sermon on Jesus's power.",
+      "Pair each week's object lesson with the worship album track — both are built around the same theme.",
+      'Use the leader\'s guide discussion questions to adapt the depth of conversation for preschool through preteen.',
+      'Send the parent handout home each week to extend the conversation past Sunday.'
+    ],
+    freePreview: 'jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson',
+    relatedPacks: ['heroes-of-faith-8-week-kids-church-bible-curriculum', 'armor-of-god-kids-bible-curriculum', '6-week-encounter-series'],
+    relatedLessons: ['jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson', 'resurrection-jesus-is-alive-kids-bible-lesson']
+  },
+
+  '100-page-coloring-book-journey-through-the-bible': {
+    h1: 'Bible Coloring Book for Kids: 100+ Page Journey Through the Bible',
+    cardTitle: 'Bible Coloring Book — Journey Through the Bible',
+    cardBlurb: 'A Bible coloring book for kids — 100+ pages covering the Bible’s major stories.',
+    metaTitle: 'Bible Coloring Book for Kids | 100+ Pages',
+    metaDesc: "A journey through the Bible coloring pages collection: 100+ Bible-based coloring pages for church, home or classroom, instant digital download, $5.",
+    desc: [
+      "This Bible coloring book for kids is a 100+ page collection of Bible-based coloring pages, built to reinforce key Bible stories while kids are simply coloring — no lesson prep required. It's suitable for all ages, from a toddler scribbling with a crayon to a preteen who still likes a good coloring page during a sermon.",
+      "Journey through the Bible coloring pages like this one are a low-cost, zero-prep way to keep kids engaged during a service, send something home after a lesson, or round out a classroom's craft supplies — at $5, it's an easy add-on to any children's ministry budget."
+    ],
+    howTo: [
+      'Download the PDF instantly after checkout — 100+ pages are included in one file.',
+      'Print pages as needed rather than all at once; the PDF stays on your device for repeat printing.',
+      'Hand pages out during service, Sunday school, or as a quiet-time activity at home.',
+      'Pair a page with whichever Bible story it depicts to reinforce a lesson you just taught.',
+      'Keep a few printed pages and crayons in a bag for car rides, waiting rooms, or any moment that calls for something quiet.',
+      'Suitable for any age — no reading level or classroom setup required.'
+    ],
+    faqOverrides: { ageQ: 'What age range is this coloring book for?', ageA: 'All ages — it’s suitable for toddlers through preteens, with no reading or writing required.' },
+    freePreview: 'noahs-ark-trusting-gods-plan-kids-bible-lesson',
+    relatedPacks: ['complete-easter-bundle-for-kids', 'the-story-of-easter-4-week-series', 'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids'],
+    relatedLessons: ['creation-bible-lesson-for-kids-god-made-everything', 'david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson']
+  },
+
+  'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids': {
+    h1: 'Thanksgiving Bible Lessons for Kids: Generous Hearts 4-Week Curriculum',
+    cardTitle: 'Generous Hearts — Thanksgiving Curriculum',
+    cardBlurb: 'Thanksgiving Bible lessons for kids — 4 weeks building a generosity and gratitude kids curriculum.',
+    metaTitle: 'Thanksgiving Bible Lessons for Kids | 4-Week Curriculum',
+    metaDesc: 'Generous Hearts: 4 Thanksgiving Bible lessons for kids with 12 crafts, 12 games, worship and parent handouts on gratitude and generosity.',
+    desc: [
+      "Generous Hearts is a complete 4-week Thanksgiving Bible curriculum for kids ages 3-13, built around one idea: gratitude isn't just saying thank you, it's a way of life kids can learn. Across 4 Bible lessons, 12 hands-on crafts and 12 interactive games (three of each per week), children explore God's kindness, provision and transforming love through four real Bible stories.",
+      "This generosity and gratitude kids curriculum gives Sunday school and children's church leaders object lessons, worship resources, discussion questions and a parent handout for every week, so Thanksgiving becomes a four-week discipleship series instead of a single one-off lesson."
+    ],
+    included: [
+      { title: 'Week 1: A Place at the Table', story: 'David and Mephibosheth (2 Samuel 9)', idea: "Discover the extraordinary kindness of King David as he welcomes Mephibosheth to his table — God's kindness invites us into belonging." },
+      { title: 'Week 2: Trusting God With What I Have', story: 'Elijah and the Widow (1 Kings 17:8-16)', idea: "Through Elijah and the widow, kids learn to trust God even when they feel they don't have enough." },
+      { title: 'Week 3: Gratitude Remembers and Returns to Jesus', story: 'The Ten Men with Leprosy (Luke 17:11-19)', idea: 'Ten men were healed, but only one returned to thank Jesus — true gratitude remembers the One who gave the blessing.' },
+      { title: 'Week 4: Jesus Came to Me. He Is Changing My Heart.', story: 'Jesus and Zacchaeus (Luke 19:1-10)', idea: 'When Jesus encountered Zacchaeus, everything changed — genuine encounters with Jesus inspire generosity and a new way of living.' }
+    ],
+    howTo: [
+      'Download all 5 files (4 weekly PDFs plus a bonus craft image) right after checkout.',
+      'Teach the 4 weeks in order through November for a complete Thanksgiving series, or any time gratitude fits your calendar.',
+      'Budget 2-3 crafts and games per week — supplies lists are included for each.',
+      "Use the object lessons and discussion questions to adapt depth for preschool through preteen in the same room.",
+      'Send the parent handout home each week to keep the gratitude conversation going at the dinner table.'
+    ],
+    freePreview: 'thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids',
+    relatedPacks: ['miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities', '6-week-encounter-series', 'preschool-bible-curriculum-15-complete-lessons-ages-3-5'],
+    relatedLessons: ['celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96', 'zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110']
+  },
+
+  'complete-easter-bundle-for-kids': {
+    h1: 'Easter Sunday School Curriculum Bundle for Kids Ministry',
+    cardTitle: 'Complete Easter Bundle for Kids',
+    cardBlurb: 'An Easter Sunday school curriculum bundle — full curriculum, crafts and printables in one download.',
+    metaTitle: 'Easter Curriculum Bundle for Kids Ministry',
+    metaDesc: 'Easter lessons for kids, bundled: a complete 4-week Easter curriculum plus a Bible activity pack, crafts and coloring pages — one download, $40.',
+    desc: [
+      "This Easter Sunday school curriculum bundle brings together everything a kids ministry needs for the season in one download: a complete 4-week Easter curriculum plus a standalone Bible activity pack with worksheets, coloring pages and crafts. Rather than piecing together separate Easter resources from different places, a leader gets one coordinated bundle covering the full Easter story in a single purchase.",
+      "These Easter lessons for kids work equally well in a church classroom or at home, and because it's a bundle rather than a single lesson, there's enough material here to run Holy Week programming, a one-off Easter Sunday class, or a multi-week lead-up to Resurrection Sunday from the same purchase. The standalone activity pack also travels well on its own — print it for a family gathering, a homeschool co-op, or a quiet Easter afternoon activity."
+    ],
+    howTo: [
+      'Download all 5 PDFs right after checkout — the 4-week curriculum plus the standalone activity pack.',
+      'Run the 4-week curriculum across the weeks leading up to Easter, or pull individual weeks for a shorter program.',
+      'Use the standalone Bible Activity Pack on its own for a one-off Easter Sunday class or a VBS-style event.',
+      'Print the coloring pages and crafts ahead of time — supplies for each are kept simple and classroom-friendly.',
+      'Combine with a children’s church service for Palm Sunday through Resurrection Sunday, or compress into a single Holy Week session.'
+    ],
+    freePreview: 'resurrection-jesus-is-alive-kids-bible-lesson',
+    relatedPacks: ['the-story-of-easter-4-week-series', 'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids', '100-page-coloring-book-journey-through-the-bible'],
+    relatedLessons: ['jesus-is-born-god-with-us-christmas-bible-lesson-for-kids', 'the-good-shepherd-bible-lesson-on-jesus-love-for-kids']
+  },
+
+  'the-story-of-easter-4-week-series': {
+    h1: 'The Story of Easter: 4-Week Bible Lessons for Kids',
+    cardTitle: 'The Story of Easter — 4-Week Series',
+    cardBlurb: 'Easter Bible lessons for kids, 4 week series — from Palm Sunday to the resurrection.',
+    metaTitle: 'Story of Easter Kids Curriculum | 4-Week Series',
+    metaDesc: 'Story of Easter kids curriculum: 4 complete lessons from Palm Sunday to the resurrection, with storytelling, games and crafts — teach any time of year.',
+    desc: [
+      "The Story of Easter is a 4-week series that walks kids from Palm Sunday through to the resurrection of Jesus, told as one connected story rather than four disconnected lessons. Each of the 4 complete lessons pairs engaging Bible storytelling with games, crafts and activities, built so a volunteer leader can teach with minimal prep and still cover the full arc of the Easter story in order.",
+      "These Easter Bible lessons for kids aren't locked to the week before Easter Sunday — because it's a standalone 4-week story arc, a children's ministry can run it any time of year it fits the calendar, not only during Holy Week. A homeschool family or small group can work through it just as easily as a Sunday school class."
+    ],
+    howTo: [
+      'Download all 4 weekly PDFs right after checkout.',
+      'Teach the 4 weeks in order, Palm Sunday through the resurrection, as one connected story.',
+      'Run it during Lent and Holy Week, or at any other point in the year the story fits your series calendar.',
+      'Budget light prep time per lesson — the storytelling script and activities are already written out.',
+      'Pair with a craft table or small-group discussion time to extend each week’s lesson.',
+      'Close the series on the resurrection lesson even if you spread the other three weeks out differently, so the story still lands on its intended ending.'
+    ],
+    freePreview: 'resurrection-jesus-is-alive-kids-bible-lesson',
+    relatedPacks: ['complete-easter-bundle-for-kids', 'generous-hearts-4-week-thanksgiving-bible-curriculum-for-kids', 'miracles-of-jesus-4-week-bible-curriculum-for-kids-ages-3-13-sunday-school-lessons-crafts-activities'],
+    relatedLessons: ['jesus-is-born-god-with-us-christmas-bible-lesson-for-kids', 'the-good-shepherd-bible-lesson-on-jesus-love-for-kids']
+  }
+};
+
+/* Builds the PHASE 5 landing-page content block (summary, description,
+   what's included, how to use, free preview, FAQ, related) for one pack,
+   from real product data plus the PACK_COPY marketing layer above. Returns
+   both the HTML to insert and the plain text (for the word-count/duplicate
+   checks) so neither has to re-derive the other. */
+function buildPackLandingContent(prod, copy, allPosts, allProducts) {
+  if (!copy) return { html: '', text: '' };
+  const money = n => '$' + Number(n || 0).toFixed(2).replace(/\.00$/, '');
+  const price = Number(prod.priceUSD != null ? prod.priceUSD : prod.priceZAR || 0);
+  const ageRange = normalizeAgeRange(prod.ageRange);
+  const weeksLabel = prod.weeks || null;
+
+  const descHtml = copy.desc.map(p => `<p>${esc(p)}</p>`).join('');
+  const gapHtml = copy.gapNote ? `<p class="pack-gap-note" style="background:#FFF7E6;border:1px solid #FFD98E;border-radius:8px;padding:0.75rem 1rem;color:#7A5200;"><strong>Right now:</strong> ${esc(copy.gapNote)}</p>` : '';
+
+  const summaryBits = [
+    `${money(price)}`,
+    ageRange,
+    weeksLabel ? weeksLabel : null,
+    'Digital download (PDF/ZIP)'
+  ].filter(Boolean);
+  const summaryHtml = `<ul class="pack-landing-summary">${summaryBits.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` +
+    `<a href="/shop.html?add=${encodeURIComponent(prod.id || '')}" class="btn btn--primary btn--lg">Get ${esc(prod.title)} →</a>`;
+
+  let includedHtml = '';
+  if (copy.included && copy.included.length) {
+    includedHtml = '<ol class="pack-landing-weeks">' + copy.included.map(w =>
+      `<li><strong>${esc(w.title)}</strong><br><em>${esc(w.story)}</em><p>${esc(w.idea)}</p></li>`
+    ).join('') + '</ol>';
+  } else {
+    const feats = (prod.features || []).filter(f => f && !/features:\s*$/i.test(f));
+    includedHtml = feats.length ? `<ul class="pack-landing-included">${feats.map(f => `<li>${esc(f)}</li>`).join('')}</ul>` : '';
+  }
+
+  const howToHtml = copy.howTo && copy.howTo.length
+    ? `<ol class="pack-landing-howto">${copy.howTo.map(s => `<li>${esc(s)}</li>`).join('')}</ol>`
+    : '';
+
+  const previewPost = findBySlug(allPosts, copy.freePreview);
+  const previewLink = lessonLink(previewPost);
+  const previewHtml = previewLink
+    ? `<p>Want to try a lesson first? <a href="${esc(previewLink.href)}">${esc(previewLink.title)}</a> is a free lesson in the same spirit as this pack — no purchase required.</p>`
+    : '';
+
+  // FAQ: grounded in real, known facts (price, age range, license, format,
+  // delivery) plus any pack-specific question/answer pairs above.
+  const multiCampusAnswer = 'This purchase is licensed for one teacher or classroom. For multiple classrooms or campuses, buy one license per classroom, or see Glory Kids Membership for a church license covering unlimited leaders and volunteers at one location.';
+  const faq = [
+    [copy.faqOverrides && copy.faqOverrides.ageQ || 'What age range is this for?', copy.faqOverrides && copy.faqOverrides.ageA || `Written for ${esc(ageRange)}, with notes to adapt activities up or down in age where needed.`],
+    ['How is it delivered?', 'Instantly — after checkout you get a receipt email with secure download links, and it stays available from your account dashboard.'],
+    ['What format is the download?', /zip/i.test(prod.fileNote || '') ? 'A ZIP file containing the full curriculum as printable PDFs.' : 'One or more printable PDF files.'],
+    ['Can I use it for more than one classroom or campus?', multiCampusAnswer],
+    ['How much prep time does it take?', 'Each lesson includes the teaching script, so most leaders spend 15-30 minutes reading through a session rather than writing one from scratch.'],
+  ];
+  if (copy.faqExtra) faq.push(...copy.faqExtra);
+  faq.push(['Can I get a refund after purchase?', 'Digital downloads are generally non-refundable once delivered, since the files are instantly accessible. If something is genuinely wrong with your download, contact us and we’ll make it right.']);
+  const faqHtml = `<div class="pack-landing-faq">${faq.map(([q, a]) => `<div class="faq-item"><button type="button" class="faq-question">${esc(q)}<span>+</span></button><div class="faq-answer"><p>${esc(a)}</p></div></div>`).join('')}</div>`;
+
+  const relatedPackLinks = (copy.relatedPacks || []).map(s => packLink(findBySlug(allProducts, s))).filter(Boolean);
+  const relatedLessonLinks = (copy.relatedLessons || []).map(s => lessonLink(findBySlug(allPosts, s))).filter(Boolean);
+  const relatedHtml = (relatedPackLinks.length || relatedLessonLinks.length)
+    ? '<div class="pack-landing-related">' +
+        (relatedPackLinks.length ? `<h3>Related Packs</h3><ul>${relatedPackLinks.map(l => `<li><a href="${esc(l.href)}">${esc(l.title)}</a></li>`).join('')}</ul>` : '') +
+        (relatedLessonLinks.length ? `<h3>Related Free Lessons</h3><ul>${relatedLessonLinks.map(l => `<li><a href="${esc(l.href)}">${esc(l.title)}</a></li>`).join('')}</ul>` : '') +
+      '</div>'
+    : '';
+
+  // No heading here repeating copy.h1 - the real <h1> (pd-title, set in
+  // bakePackPage) already carries that exact text; a second heading with
+  // the same string right below it would be a redundant, confusing h1/h2
+  // pair rather than a real second-level heading.
+  const html =
+    '<section class="section--light pack-landing">' +
+      '<div class="container" style="max-width:860px;">' +
+        summaryHtml + gapHtml +
+        descHtml +
+        (includedHtml ? `<h3>What's Included</h3>${includedHtml}` : '') +
+        (howToHtml ? `<h3>How to Use This Curriculum</h3>${howToHtml}` : '') +
+        previewHtml +
+        `<h3>Frequently Asked Questions</h3>${faqHtml}` +
+        relatedHtml +
+      '</div>' +
+    '</section>';
+
+  const plainText = stripHtml(
+    copy.h1 + ' ' + copy.desc.join(' ') + ' ' + (copy.gapNote || '') + ' ' +
+    includedHtml + ' ' + howToHtml + ' ' + faq.map(([q, a]) => q + ' ' + a).join(' ')
+  );
+
+  return { html, text: plainText, faq };
+}
+
 /* Same idea as bakePostPage(), mirroring curriculum-pack.html's setMeta(). */
-function bakePackPage(template, prod) {
+function bakePackPage(template, prod, allProducts, allPosts) {
   const url = packUrl(prod);
-  const title = prod.title + ' | Glory Kids Ministries';
-  const desc = (prod.blurb || '').slice(0, 160) || (`Complete children's ministry resource — ${prod.title}. Instant download, ready to teach.`);
+  const copy = PACK_COPY[prod.slug];
+  // copy.metaTitle is already a complete, under-60-char title on its own
+  // (keyword first) - appending " | Glory Kids Ministries" would blow past
+  // 60 chars, so that suffix is only for packs with no PACK_COPY entry yet.
+  const title = copy ? copy.metaTitle : (prod.title + ' | Glory Kids Ministries');
+  const desc = (copy ? copy.metaDesc : null) || (prod.blurb || '').slice(0, 160) || (`Complete children's ministry resource — ${prod.title}. Instant download, ready to teach.`);
   const image = (prod.images && prod.images[0]) || (SITE_ORIGIN + '/images/glory-kids-logo.png');
   const parent = (prod.category === 'curriculum' || prod.category === 'bundle')
     ? { label: 'Curriculum Packs', href: 'curriculum-packs.html' }
@@ -553,14 +891,19 @@ function bakePackPage(template, prod) {
     ? `<img src="${esc(galleryImg)}" alt="" />`
     : `<div class="pack-ph"><span>${esc(prod.title || '')}</span></div>`;
 
+  const ageRangeDisplay = normalizeAgeRange(prod.ageRange, prod.slug === 'preschool-bible-curriculum-15-complete-lessons-ages-3-5' ? 'Ages 3-5' : null);
+
   html = setAttrById(html, 'pd-breadcrumb-parent-link', 'href', '/' + parent.href);
   html = setTextById(html, 'pd-breadcrumb-parent-link', 'a', parent.label);
   html = setTextById(html, 'pd-breadcrumb-title', 'span', prod.title);
-  html = setTextById(html, 'pd-title', 'h1', prod.title);
+  // The on-page H1 is the keyword-rich landing-page title (PHASE 5), not the
+  // bare product name — falls back to the real title if a pack has no
+  // PACK_COPY entry yet.
+  html = setTextById(html, 'pd-title', 'h1', (copy && copy.h1) || prod.title);
   html = setTextById(html, 'pd-blurb', 'p', prod.blurb || '');
   html = setHtmlById(html, 'pd-gallery-content', 'div', galleryHtml);
   html = setHtmlById(html, 'pd-badge-row', 'div', badgesHtml);
-  html = setHtmlById(html, 'pd-age-row', 'div', prod.ageRange ? `<span class="pd-age-badge">${esc(prod.ageRange)}</span>` : '');
+  html = setHtmlById(html, 'pd-age-row', 'div', `<span class="pd-age-badge">${esc(ageRangeDisplay)}</span>`);
   if (feats.length) {
     html = setHtmlById(html, 'pd-included-list', 'div', feats.map(f => `<div class="pd-included-item">${esc(f)}</div>`).join(''));
   } else {
@@ -587,6 +930,11 @@ function bakePackPage(template, prod) {
       price: Number(prod.priceUSD != null ? prod.priceUSD : prod.priceZAR || 0),
       availability: 'https://schema.org/InStock'
     }
+    // No aggregateRating/review here — none of these products have real,
+    // attributable review data (see Item 3's testimonials findings), and
+    // fabricating one is exactly the kind of unverifiable claim being
+    // removed elsewhere, not something to add fresh on a product's own
+    // structured data.
   };
   html = html.replace(/(<script id="ldProduct"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(product) + close);
 
@@ -599,6 +947,34 @@ function bakePackPage(template, prod) {
     ]
   };
   html = html.replace(/(<script id="ldBreadcrumb"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(breadcrumb) + close);
+
+  // PHASE 5: the real landing-page content (summary, description, what's
+  // included, how to use, free preview, FAQ, related) — see
+  // buildPackLandingContent(). Falls back to nothing (just the existing
+  // product page above) for any pack with no PACK_COPY entry.
+  const landing = buildPackLandingContent(prod, copy, allPosts, allProducts);
+  html = html.replace(
+    /<!-- gk:pack-landing-content -->[\s\S]*?<!-- \/gk:pack-landing-content -->/,
+    landing.html
+  );
+  if (landing.faq && landing.faq.length) {
+    const faqJsonLd = {
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      // Matches the visible FAQ text exactly - built from the same `faq`
+      // array buildPackLandingContent() rendered into the page, not
+      // re-authored separately.
+      mainEntity: landing.faq.map(([q, a]) => ({
+        '@type': 'Question', name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a }
+      }))
+    };
+    html = html.replace('</head>', `  <script type="application/ld+json">${JSON.stringify(faqJsonLd)}</script>\n</head>`);
+  }
+
+  PACK_LANDING_STATS[prod.slug] = {
+    words: landing.text ? landing.text.split(/\s+/).filter(Boolean).length : 0,
+    text: landing.text || ''
+  };
 
   return html;
 }
@@ -639,9 +1015,10 @@ function generatePostPages(posts, template) {
   return total;
 }
 
-function generatePackPages(products, template) {
+function generatePackPages(products, template, posts) {
   const rows = products.filter(p => p.active && p.slug);
-  return writeDetailPages('pack', rows, p => `pack/${p.slug}`, bakePackPage, template);
+  const bake = (tmpl, row) => bakePackPage(tmpl, row, products, posts);
+  return writeDetailPages('pack', rows, p => `pack/${p.slug}`, bake, template);
 }
 
 // Mirrors free-bible-lessons.html's AGE_LABELS/GRAD_PALETTE/normalizeDynamic/
@@ -718,18 +1095,20 @@ function packCardHtml(p) {
   let badges = '';
   if (p.weeks) badges += `<span class="pack-weeks-badge">${esc(p.weeks)}</span>`;
   if (p.featured) badges += '<span class="pack-new-badge">⭐ Bestseller</span>';
-  const ages = p.ageRange ? `<span class="age-badge">${esc(p.ageRange)}</span>` : '';
+  const ageDisplay = normalizeAgeRange(p.ageRange, p.slug === 'preschool-bible-curriculum-15-complete-lessons-ages-3-5' ? 'Ages 3-5' : null);
+  const ages = `<span class="age-badge">${esc(ageDisplay)}</span>`;
   const flist = p.features || [];
   let feats = flist.slice(0, 4).map(f => `<div class="pack-what-item">${esc(f)}</div>`).join('');
   if (flist.length > 4) feats += `<div class="pack-what-item" style="color:var(--gray-400);">+ ${flist.length - 4} more</div>`;
   const detailHref = '/pack/' + encodeURIComponent(p.slug || p.id);
+  const copy = PACK_COPY[p.slug];
   return (
     `<a href="${esc(detailHref)}" class="pack-card-full reveal" style="text-decoration:none;">` +
       `<div class="pack-header-img" style="background:linear-gradient(140deg,${g[0]},${g[1]});">${cover}${badges}</div>` +
       '<div class="pack-body">' +
         (ages ? `<div class="pack-age-row">${ages}</div>` : '') +
-        `<h3>${esc(p.title || '')}</h3>` +
-        `<p>${esc(p.blurb || '')}</p>` +
+        `<h3>${esc((copy && copy.cardTitle) || p.title || '')}</h3>` +
+        `<p>${esc((copy && copy.cardBlurb) || p.blurb || '')}</p>` +
         (feats ? `<div class="pack-what"><div class="pack-what-title">What's included</div><div class="pack-what-list">${feats}</div></div>` : '<div class="pack-what"></div>') +
         '<div class="pack-price-row">' +
           `<div><span class="pack-price">${esc(money(price))}</span>${was}<div class="pack-price-note">Instant download</div></div>` +
@@ -821,7 +1200,7 @@ function bakeFreeLessonsGrid(html, posts) {
      blog and pack detail URL used to rewrite to the same template with an
      empty canonical link, filled in only by client-side JS. */
   const postPagesWritten = blogPostTemplate ? generatePostPages(livePosts, blogPostTemplate) : 0;
-  const packPagesWritten = curriculumPackTemplate ? generatePackPages(products, curriculumPackTemplate) : 0;
+  const packPagesWritten = curriculumPackTemplate ? generatePackPages(products, curriculumPackTemplate, livePosts) : 0;
   console.log(`Generated ${postPagesWritten} post page(s) and ${packPagesWritten} pack page(s) with baked-in canonical tags.`);
 
   /* robots.txt */
@@ -895,13 +1274,33 @@ function bakeFreeLessonsGrid(html, posts) {
   const thinLessons = livePosts
     .map(p => ({ slug: p.slug, category: p.category, words: wc(p.bodyHtml) }))
     .filter(p => p.words < 300);
+  // PHASE 5: real baked landing-page word count (PACK_LANDING_STATS, filled
+  // in by bakePackPage/buildPackLandingContent above) — not just blurb +
+  // features, now that each pack has a full landing page. 400-word floor
+  // per Item 2 (up from the earlier 30-word placeholder).
   const thinPacks = activeProducts
-    .map(p => ({ slug: p.slug, words: wc((p.blurb || '') + ' ' + (p.features || []).join(' ')) }))
-    .filter(p => p.words < 30);
+    .map(p => ({ slug: p.slug, words: (PACK_LANDING_STATS[p.slug] && PACK_LANDING_STATS[p.slug].words) || 0 }))
+    .filter(p => p.words < 400);
+
+  // Duplicate-content check: hash each pack's landing text and flag any
+  // two packs that ended up with the same (or near-identical) content -
+  // catches a copy-paste mistake between PACK_COPY entries before it ships.
+  const crypto = require('crypto');
+  const hashOf = s => crypto.createHash('sha1').update(s.toLowerCase().replace(/\s+/g, ' ').trim()).digest('hex');
+  const seenHashes = {};
+  const duplicatePacks = [];
+  for (const p of activeProducts) {
+    const text = (PACK_LANDING_STATS[p.slug] && PACK_LANDING_STATS[p.slug].text) || '';
+    if (!text) continue;
+    const h = hashOf(text);
+    if (seenHashes[h]) duplicatePacks.push(`${p.slug} duplicates ${seenHashes[h]}`);
+    else seenHashes[h] = p.slug;
+  }
 
   console.log(`Content check: ${freeLessonCount} published free lessons, ${livePosts.length} total posts, ${activeProducts.length} active packs.`);
   console.log(`  thin lesson/blog pages (<300 words): ${thinLessons.length}${thinLessons.length ? ' — ' + thinLessons.map(l => l.slug).join(', ') : ''}`);
-  console.log(`  thin pack pages (<30 words): ${thinPacks.length}${thinPacks.length ? ' — ' + thinPacks.map(l => l.slug).join(', ') : ''}`);
+  console.log(`  thin pack pages (<400 words): ${thinPacks.length}${thinPacks.length ? ' — ' + thinPacks.map(l => l.slug + ' (' + l.words + ')').join(', ') : ''}`);
+  console.log(`  duplicate-content pack pages: ${duplicatePacks.length}${duplicatePacks.length ? ' — ' + duplicatePacks.join(', ') : ''}`);
 
   const failures = [];
   if (!posts.length) failures.push('0 posts read from Firestore (fetch likely failed)');
@@ -909,7 +1308,8 @@ function bakeFreeLessonsGrid(html, posts) {
   if (freeLessonCount < 30) failures.push(`only ${freeLessonCount} published free lessons (need >= 30)`);
   if (activeProducts.length < 9) failures.push(`only ${activeProducts.length} active packs (need >= 9)`);
   if (thinLessons.length) failures.push(`${thinLessons.length} lesson/blog page(s) under 300 words`);
-  if (thinPacks.length) failures.push(`${thinPacks.length} pack page(s) under 30 words`);
+  if (thinPacks.length) failures.push(`${thinPacks.length} pack page(s) under 400 words: ${thinPacks.map(l => l.slug).join(', ')}`);
+  if (duplicatePacks.length) failures.push(`duplicate pack content: ${duplicatePacks.join(', ')}`);
 
   if (failures.length) {
     console.error('BUILD FAILED — content safety check:\n  - ' + failures.join('\n  - '));
