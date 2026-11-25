@@ -172,12 +172,20 @@ export default async (request, context) => {
       return context.next();
     }
 
+    // Normalize ONLY for the map lookup (never the fallback target, which
+    // keeps whatever the visitor actually requested): strip one trailing
+    // slash so "/blog/" matches the same entry as "/blog", then fall back
+    // to a lowercase match so "/About" or "/BLOG" still hits the map.
+    let lookupPath = url.pathname;
+    if (lookupPath.length > 1 && lookupPath.endsWith('/')) lookupPath = lookupPath.slice(0, -1);
+    const mapped = OLD_DOMAIN_MAP[lookupPath] || OLD_DOMAIN_MAP[lookupPath.toLowerCase()];
+
     // Covers every old-domain request, mapped or not: a known old slug/hub
     // goes to its specific new page; anything else (a made-up path, an
-    // asset, a trailing-slash or capitalization variant) still gets exactly
-    // one 301, to the same path on the new domain. url.search is appended
-    // in both branches so a query string always survives the redirect.
-    const mapped = OLD_DOMAIN_MAP[url.pathname];
+    // asset, a trailing-slash or capitalization variant not in the map)
+    // still gets exactly one 301, to the same path on the new domain.
+    // url.search is appended in both branches so a query string always
+    // survives the redirect.
     const target = mapped
       ? (mapped.includes('?') ? mapped : mapped + url.search)
       : (NEW_ORIGIN + url.pathname + url.search);
