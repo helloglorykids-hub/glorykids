@@ -20,5 +20,15 @@
 // way beyond that. Old $79-tier plan ID retired 2026-10-08.
 module.exports = {
   monthly: 'P-5HJ38241B3561884DNKUWMCA',
-  church: 'P-1SD13426PP891502SNLD2S3Q'
+  church: 'P-1SD13426PP891502SNLD2S3Q',
+
+  // Church ANNUAL billing (incl. the limited-time Founding rate) — added for
+  // the $499/yr church license + $399/yr founding offer. These Plan IDs
+  // don't exist yet: an annual PayPal Billing Plan has to be created in the
+  // PayPal dashboard first (see config/pricing.js for the prices/dates to
+  // use), then its ID set as these Netlify env vars. Until that's done,
+  // paypal-subscription-start.js below returns a clear "being set up" error
+  // for these two plan keys instead of charging the wrong amount.
+  church_annual: process.env.PAYPAL_PLAN_CHURCH_ANNUAL || null,
+  church_annual_founding: process.env.PAYPAL_PLAN_CHURCH_ANNUAL_FOUNDING || null
 };

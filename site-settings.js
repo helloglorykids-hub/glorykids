@@ -221,6 +221,99 @@
     window.gtag('config', id);
   }
 
+  /* ---------- feature: Meta Pixel ----------
+     Reads cfg.metaPixelId — a small addition alongside the existing
+     ga4MeasurementId field, same admin pattern (Site Settings → Tracking
+     & verification). Fires PageView on load; ViewContent/Lead/
+     InitiateCheckout/Purchase are fired from the specific pages/flows
+     that need them via window.gkTrack(event, params). */
+  function applyMetaPixel(cfg) {
+    var id = cfg.metaPixelId;
+    if (!id || window.__gkPixel) return;
+    window.__gkPixel = true;
+    /* eslint-disable */
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    /* eslint-enable */
+    window.fbq('init', id);
+    window.fbq('track', 'PageView');
+  }
+
+  /* ---------- feature: cookie consent gate ----------
+     Gates GA4 + Meta Pixel behind consent. Shown to every visitor (this
+     codebase has no geo-IP lookup to detect "UK/EU visitor" specifically,
+     so showing it to everyone is the safe superset rather than guessing).
+     A prior choice is remembered in localStorage. */
+  var CONSENT_KEY = 'gk_consent_v1';
+  function getConsent() { try { return window.localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } }
+  function setConsent(v) { try { window.localStorage.setItem(CONSENT_KEY, v); } catch (e) {} }
+
+  function applyConsent(cfg, onGranted) {
+    var existing = getConsent();
+    if (existing === 'granted') { onGranted(); return; }
+    if (existing === 'denied') return;
+
+    function showBanner() {
+      if (document.getElementById('gk-consent-bar')) return;
+      var bar = document.createElement('div');
+      bar.id = 'gk-consent-bar';
+      bar.style.cssText = 'position:fixed;left:0;right:0;bottom:0;z-index:1300;background:#17191C;color:#fff;' +
+        'font:500 13.5px/1.5 Poppins,system-ui,sans-serif;padding:14px 20px;display:flex;flex-wrap:wrap;' +
+        'align-items:center;justify-content:center;gap:12px;box-shadow:0 -4px 20px rgba(0,0,0,.25);';
+      bar.innerHTML =
+        '<span style="max-width:560px;">We use cookies for analytics to improve your experience. ' +
+        '<a href="privacy-policy.html" style="color:#FFB000;text-decoration:underline;">Privacy Policy</a></span>' +
+        '<span style="display:flex;gap:8px;">' +
+        '<button type="button" id="gk-consent-decline" style="background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer;">Decline</button>' +
+        '<button type="button" id="gk-consent-accept" style="background:#FF4B32;border:0;color:#fff;border-radius:8px;padding:8px 16px;font-weight:700;cursor:pointer;">Accept</button>' +
+        '</span>';
+      document.body.appendChild(bar);
+      document.getElementById('gk-consent-accept').onclick = function () {
+        setConsent('granted'); bar.remove(); onGranted();
+      };
+      document.getElementById('gk-consent-decline').onclick = function () {
+        setConsent('denied'); bar.remove();
+      };
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showBanner);
+    else showBanner();
+  }
+
+  /* ---------- feature: UTM capture ----------
+     Stores utm_source/medium/campaign from the URL into a first-party
+     cookie for 30 days, so MailerLite signups and order/subscription
+     records can be attributed even if the visitor lands on a different
+     page before converting. */
+  function captureUtm() {
+    var params = new URLSearchParams(window.location.search);
+    var keys = ['utm_source', 'utm_medium', 'utm_campaign'];
+    var has = keys.some(function (k) { return params.get(k); });
+    var utm = {};
+    if (has) {
+      keys.forEach(function (k) { utm[k] = params.get(k) || ''; });
+      try {
+        document.cookie = 'gk_utm=' + encodeURIComponent(JSON.stringify(utm)) + ';max-age=' + (30 * 24 * 3600) + ';path=/;SameSite=Lax';
+      } catch (e) {}
+    } else {
+      try {
+        var m = document.cookie.match(/(?:^|;\s*)gk_utm=([^;]+)/);
+        if (m) utm = JSON.parse(decodeURIComponent(m[1]));
+      } catch (e) {}
+    }
+    window.GK_UTM = utm;
+  }
+
+  /* window.gkTrack(event, params) — fires the same event to GA4 and Meta
+     Pixel if/when each is loaded and consented. Safe to call even if
+     neither is set up yet (becomes a no-op). */
+  window.gkTrack = function (event, params) {
+    try { if (window.gtag) window.gtag('event', event, params || {}); } catch (e) {}
+    try { if (window.fbq) window.fbq('track', event, params || {}); } catch (e) {}
+  };
+
   /* ---------- feature: announcement bar ---------- */
   function applyAnnouncement(cfg) {
     var a = cfg.announcement || {};
@@ -407,7 +500,15 @@
     if (applyVisibilityGuard(page)) return;
 
     applyIcons(cfg);
-    applyGA4(cfg);
+    captureUtm();
+    applyConsent(cfg, function () {
+      applyGA4(cfg);
+      applyMetaPixel(cfg);
+      var content = document.body.getAttribute('data-gk-content');
+      if (content === 'church' || content === 'this-month') {
+        window.gkTrack('ViewContent', { content_name: content });
+      }
+    });
     applyCodeInjection(cfg);
     applySeo(cfg, page);
     applySchema(cfg);

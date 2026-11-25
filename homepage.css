@@ -424,7 +424,8 @@ section + .gk-section { border-top: 1px solid rgba(0,155,160,0.18); }
 .gk-light-section .contact-info-card, .gk-light-section .form-card,
 .gk-light-section .faq-mini-card, .gk-light-section .inquiry-btn,
 .gk-light-section .faq-item, .gk-light-section .featured-post,
-.gk-light-section .legal__card, .gk-light-section #cmpScrollArea {
+.gk-light-section .legal__card, .gk-light-section #cmpScrollArea,
+.gk-light-section .gk-btn--cta {
   --color-white: #FFF9ED;
   --color-text-primary: #FFF9ED;
   --color-text-secondary: #B7C0D4;

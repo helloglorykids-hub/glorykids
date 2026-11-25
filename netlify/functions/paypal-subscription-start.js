@@ -36,13 +36,27 @@ const PP_PLAN_IDS = require('./_lib/paypal-plan-ids');
 const MONTHLY_USD = Number(process.env.MEMBERSHIP_MONTHLY_USD) || 29.99;
 const CHURCH_MONTHLY_USD = Number(process.env.CHURCH_MONTHLY_USD) || 59;
 const CHURCH_PER_LOCATION_MONTHLY_USD = Number(process.env.CHURCH_PER_LOCATION_MONTHLY_USD) || 20;
+const CHURCH_ANNUAL_USD = Number(process.env.CHURCH_ANNUAL_USD) || 499;
+const CHURCH_ANNUAL_FOUNDING_USD = Number(process.env.CHURCH_ANNUAL_FOUNDING_USD) || 399;
+const CHURCH_PER_LOCATION_ANNUAL_USD = Number(process.env.CHURCH_PER_LOCATION_ANNUAL_USD) || 199;
+// Mirrors config/pricing.js founding.endsAt / founding.maxSeats — keep both in sync.
+const FOUNDING_ENDS_AT = process.env.FOUNDING_ENDS_AT || '2026-12-01T23:59:00+02:00';
 const CHURCH_BASE_LOCATIONS = 1;
 // Safety gate: keep this unset (or not "true") until membership billing is live.
 const MEMBERSHIP_LIVE = String(process.env.MEMBERSHIP_LIVE || '').toLowerCase() === 'true';
 
 const PLANS = {
   monthly:       { frequency: 'monthly', usd: MONTHLY_USD,       label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.monthly },
-  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true }
+  // Alias for pages that use the spec's plan-key naming — same plan.
+  individual_monthly: { frequency: 'monthly', usd: MONTHLY_USD, label: 'Glory Kids Membership — Monthly', accountPlan: 'glory_kids', ppPlanId: PP_PLAN_IDS.monthly },
+  church:        { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true },
+  church_monthly: { frequency: 'monthly', usd: CHURCH_MONTHLY_USD, perLocationUsd: CHURCH_PER_LOCATION_MONTHLY_USD, label: 'Glory Kids for Churches — Monthly', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church, quantityPriced: true },
+  // NEW — annual church billing. ppPlanId is null until a real annual
+  // PayPal Billing Plan is created and PAYPAL_PLAN_CHURCH_ANNUAL* is set
+  // (see _lib/paypal-plan-ids.js); until then this returns a 503 "being
+  // set up" error rather than charging the wrong amount.
+  church_annual: { frequency: 'annual', usd: CHURCH_ANNUAL_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Annual', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church_annual, quantityPriced: true },
+  church_annual_founding: { frequency: 'annual', usd: CHURCH_ANNUAL_FOUNDING_USD, perLocationUsd: CHURCH_PER_LOCATION_ANNUAL_USD, label: 'Glory Kids for Churches — Founding Annual', accountPlan: 'church', ppPlanId: PP_PLAN_IDS.church_annual_founding, quantityPriced: true, foundingOnly: true }
 };
 
 exports.handler = async (event) => {
@@ -77,6 +91,9 @@ exports.handler = async (event) => {
   const planKey = (body.plan || 'monthly').toLowerCase();
   const plan = PLANS[planKey];
   if (!plan) return json(400, { error: 'That plan isn’t available yet.' });
+  if (plan.foundingOnly && Date.now() >= new Date(FOUNDING_ENDS_AT).getTime()) {
+    return json(409, { error: 'The Founding Church rate has ended — please choose the standard annual or monthly plan.', foundingEnded: true });
+  }
   if (!plan.ppPlanId) {
     console.error('paypal-subscription-start: missing PAYPAL_PLAN_* env for', planKey);
     return json(503, { error: 'Membership checkout is being set up — please try again shortly.' });
