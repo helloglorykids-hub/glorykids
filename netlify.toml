@@ -146,6 +146,2028 @@
   status = 200
 
 # ─────────────────────────────────────────────────────────────
+# Direct 1-hop fixes for real old-domain traffic (old-pages.csv Search
+# Console export, ~150 URLs with real clicks). Each of these collapses
+# what would otherwise be a 2-4 hop chain (old-domain -> new-domain same
+# path -> old-slug-to-new-slug mapping -> Netlify trailing-slash
+# normalization) into a single 301 straight to the final URL. Must stay
+# ABOVE the generic old-domain catch-all below so these specific rules
+# win first. A handful of previously-unmapped old slugs (craft variants,
+# a few duplicate old URLs for the same lesson) are mapped here to the
+# closest existing lesson - flagged for review, not guessed silently.
+# ─────────────────────────────────────────────────────────────
+# --- generated: old-domain direct-to-final 1-hop fixes (old-pages.csv) ---
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/"
+  to = "https://www.glorykidsministry.com/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/armor-of-god-kids-curriculum"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/armor-of-god-kids-curriculum-1"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/bible-activities-for-kids/blog-post-title-two-t5my5-k4xmd-ksl9t"
+  # activities.html is itself hidden (visible:false -> its own 302 to "/"),
+  # so redirecting there would still be 2 hops - go straight to "/".
+  to = "https://www.glorykidsministry.com/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
+  to = "https://www.glorykidsministry.com/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/christian-parenting-blogs/blog-post-title-two-t5my5-k4xmd-h3ygn"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/christian-parenting-blogs/child-anxiety-christian-guide"
+  to = "https://www.glorykidsministry.com/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/christian-parenting-blogs/child-questions-about-god"
+  to = "https://www.glorykidsministry.com/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/christian-parenting-blogs/family-devotions-kids-engaged"
+  to = "https://www.glorykidsministry.com/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/contact"
+  to = "https://www.glorykidsministry.com/contact.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/easter-bible-lessons-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons//creation-bible-lesson-genesis-1-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons//share-gods-love-evangelism-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/abraham-bible-lesson-trusting-promises"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/adam-and-eve-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/god-is-me-in-every-season"
+  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/pentecost-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/freelessons/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/glory-kids-membership-1"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html#pricing"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/heroes-of-faith-bible-curriculum"
+  to = "/pack/heroes-of-faith-8-week-kids-church-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-curriculum"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-david-and-goliath"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth"
+  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/heart-of-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-prayer-teaching-children-the-lords-prayer"
+  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/the-good-samaritan"
+  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://www.childrensministrylessons.com/kids-bible-resources"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+
+# --- same mappings, other 3 host variants (http/https x apex/www) - so old-domain -> final is ONE hop regardless of which host form a backlink or browser uses, not only https://www ---
+[[redirects]]
+  from = "https://childrensministrylessons.com/armor-of-god-kids-curriculum"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/armor-of-god-kids-curriculum-1"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/bible-activities-for-kids/blog-post-title-two-t5my5-k4xmd-ksl9t"
+  to = "https://www.glorykidsministry.com/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
+  to = "https://www.glorykidsministry.com/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/christian-parenting-blogs/blog-post-title-two-t5my5-k4xmd-h3ygn"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/christian-parenting-blogs/child-anxiety-christian-guide"
+  to = "https://www.glorykidsministry.com/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/christian-parenting-blogs/child-questions-about-god"
+  to = "https://www.glorykidsministry.com/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/christian-parenting-blogs/family-devotions-kids-engaged"
+  to = "https://www.glorykidsministry.com/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/contact"
+  to = "https://www.glorykidsministry.com/contact.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/easter-bible-lessons-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons//creation-bible-lesson-genesis-1-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons//share-gods-love-evangelism-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/abraham-bible-lesson-trusting-promises"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/adam-and-eve-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/god-is-me-in-every-season"
+  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/pentecost-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/freelessons/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/glory-kids-membership-1"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html#pricing"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/heroes-of-faith-bible-curriculum"
+  to = "/pack/heroes-of-faith-8-week-kids-church-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-curriculum"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-david-and-goliath"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth"
+  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/heart-of-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-prayer-teaching-children-the-lords-prayer"
+  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/the-good-samaritan"
+  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "https://childrensministrylessons.com/kids-bible-resources"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/armor-of-god-kids-curriculum"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/armor-of-god-kids-curriculum-1"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/bible-activities-for-kids/blog-post-title-two-t5my5-k4xmd-ksl9t"
+  to = "https://www.glorykidsministry.com/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
+  to = "https://www.glorykidsministry.com/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/christian-parenting-blogs/blog-post-title-two-t5my5-k4xmd-h3ygn"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/christian-parenting-blogs/child-anxiety-christian-guide"
+  to = "https://www.glorykidsministry.com/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/christian-parenting-blogs/child-questions-about-god"
+  to = "https://www.glorykidsministry.com/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/christian-parenting-blogs/family-devotions-kids-engaged"
+  to = "https://www.glorykidsministry.com/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/contact"
+  to = "https://www.glorykidsministry.com/contact.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/easter-bible-lessons-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons//creation-bible-lesson-genesis-1-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons//share-gods-love-evangelism-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/abraham-bible-lesson-trusting-promises"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/adam-and-eve-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/god-is-me-in-every-season"
+  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/pentecost-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/freelessons/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/glory-kids-membership-1"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html#pricing"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/heroes-of-faith-bible-curriculum"
+  to = "/pack/heroes-of-faith-8-week-kids-church-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-curriculum"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-david-and-goliath"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth"
+  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/heart-of-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-prayer-teaching-children-the-lords-prayer"
+  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/the-good-samaritan"
+  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://childrensministrylessons.com/kids-bible-resources"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/armor-of-god-kids-curriculum"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/armor-of-god-kids-curriculum-1"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/bible-activities-for-kids/blog-post-title-two-t5my5-k4xmd-ksl9t"
+  to = "https://www.glorykidsministry.com/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
+  to = "https://www.glorykidsministry.com/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
+  to = "https://www.glorykidsministry.com/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
+  to = "https://www.glorykidsministry.com/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/christian-parenting-blogs/blog-post-title-two-t5my5-k4xmd-h3ygn"
+  to = "https://www.glorykidsministry.com/blog.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/christian-parenting-blogs/child-anxiety-christian-guide"
+  to = "https://www.glorykidsministry.com/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/christian-parenting-blogs/child-questions-about-god"
+  to = "https://www.glorykidsministry.com/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/christian-parenting-blogs/family-devotions-kids-engaged"
+  to = "https://www.glorykidsministry.com/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/contact"
+  to = "https://www.glorykidsministry.com/contact.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/easter-bible-lessons-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons//creation-bible-lesson-genesis-1-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons//share-gods-love-evangelism-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/abraham-bible-lesson-trusting-promises"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/adam-and-eve-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/god-is-me-in-every-season"
+  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/pentecost-bible-lesson-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/freelessons/free-bible-lessons"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/glory-kids-membership-1"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html#pricing"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/heroes-of-faith-bible-curriculum"
+  to = "/pack/heroes-of-faith-8-week-kids-church-bible-curriculum/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-curriculum"
+  to = "https://www.glorykidsministry.com/glory-kids-curriculum.html"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/childrens-ministry-lesson-on-jonah-and-the-whale-obedience-mercy"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/courage-and-trust-kids-lesson-on-joshua-19-for-school-and-life"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/daniel-in-the-lions-den-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/elijah-and-the-ravens-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-david-and-goliath"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/free-bible-lesson-on-the-prodigal-son"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/god-is-with-me-in-every-season"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth"
+  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/harvest-time-gathering-gods-goodness-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/heart-of-thanksgiving-bible-lesson"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/jesus-light-shines-through-us-kids-bible-lesson-reflective-mirror-craft"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-emmanuel-teaching-children-that-jesus-is-god-with-us"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-armor-of-god"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-peace-jesus-calms-the-storm-bible-story"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/kids-ministry-lesson-on-prayer-teaching-children-the-lords-prayer"
+  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/noahs-ark-kids-lesson"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/parable-of-the-good-shepherd"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/serve-like-jesus-kids-bible-lesson-with-hero-helper-hands-craft"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-activity-gratitude-jar-craft"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/thanksgiving-bible-lesson-for-kids-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/the-good-samaritan"
+  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/trusting-gods-promises-with-abraham-bible-lesson"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/you-are-gods-masterpiece-bible-lesson-mirror-of-purpose-craft"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-lessons/zacchaeus-bible-lesson-for-kids"
+  to = "https://www.glorykidsministry.com/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
+  status = 301
+  force = true
+[[redirects]]
+  from = "http://www.childrensministrylessons.com/kids-bible-resources"
+  to = "https://www.glorykidsministry.com/free-bible-lessons.html"
+  status = 301
+  force = true
+
+# ─────────────────────────────────────────────────────────────
 # Old domain → new domain (childrensministrylessons.com cutover).
 # The old domain is a Netlify domain alias, which by default just
 # SERVES this site rather than redirecting. These rules force every
@@ -185,177 +2207,177 @@
 # --- individual free-lesson pages ---
 [[redirects]]
   from = "/free-bible-lessons/adam-and-eve-for-kids"
-  to = "/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us"
+  to = "/free-bible-lessons/adam-and-eve-for-kids-gods-love-our-choices-and-grace-that-never-stops-following-us/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/teaching-kids-obedience-bible-lessons-children-ministry"
-  to = "/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson"
+  to = "/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/noahs-ark-kids-lesson"
-  to = "/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson"
+  to = "/free-bible-lessons/noahs-ark-trusting-gods-plan-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/pentecost-bible-lesson-kids"
-  to = "/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts"
+  to = "/free-bible-lessons/pentecost-bible-lesson-for-kids-holy-spirit-activity-crafts/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/paul-and-silas-in-prison-kids-bible-story"
-  to = "/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts"
+  to = "/free-bible-lessons/free-paul-and-silas-in-prison-bible-lesson-for-kids-acts/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/good-shepherd-lost-sheep-bible-lesson"
-  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids"
+  to = "/free-bible-lessons/the-good-shepherd-bible-lesson-on-jesus-love-for-kids/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/fruits-of-the-spirit-bible-lesson-for-kids"
-  to = "/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids"
+  to = "/free-bible-lessons/the-fruit-of-the-spirit-bible-lesson-for-kids/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/elijah-and-the-ravens-bible-lesson"
-  to = "/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116"
+  to = "/free-bible-lessons/elijah-and-the-ravens-god-provides-kids-bible-lesson-1-kings-17116/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/thanksgiving-gratitude-generosity-kids-lesson"
-  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids"
+  to = "/free-bible-lessons/thanks-giving-bible-lesson-on-gratitude-and-generosity-for-kids/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/zacchaeus-bible-lesson-for-kids"
-  to = "/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110"
+  to = "/free-bible-lessons/zacchaeus-jesus-welcomes-everyone-kids-bible-lesson-luke-19110/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/gods-word-stands-forever-unshakable-truth-bible-lesson"
-  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408"
+  to = "/free-bible-lessons/gods-word-stands-forever-bible-lesson-for-kids-isaiah-408/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/harvest-bible-lesson-kids-matthew-9"
-  to = "/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738"
+  to = "/free-bible-lessons/harvest-time-gods-harvest-is-ready-kids-bible-lesson-matthew-93738/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/joseph-his-colorful-coat-bible-lesson-for-kids"
-  to = "/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745"
+  to = "/free-bible-lessons/joseph-and-his-colorful-coat-trusting-god-through-hard-times-genesis-3745/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/abraham-bible-lesson-trusting-promises"
-  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12"
+  to = "/free-bible-lessons/abraham-trusting-gods-promises-kids-bible-lesson-genesis-12/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/gods-masterpiece-bible-lesson-kids-purpose"
-  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210"
+  to = "/free-bible-lessons/you-are-gods-masterpiece-identity-purpose-kids-bible-lesson-ephesians-210/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/serve-like-jesus-bible-lesson-kids"
-  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415"
+  to = "/free-bible-lessons/serve-like-jesus-bible-lesson-on-serving-others-for-kids-john-131415/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/jesus-light-of-world-bible-lesson-kids"
-  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812"
+  to = "/free-bible-lessons/light-of-the-world-bible-lesson-for-kids-john-812/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/gratitude-psalm-136-bible-lesson-kids"
-  to = "/free-bible-lessons/thankfulness-gratitude-bible-lesson-for-kids-psalm-136"
+  to = "/free-bible-lessons/thankfulness-gratitude-bible-lesson-for-kids-psalm-136/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/back-to-school-courage-trust-joshua-1-9"
-  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19"
+  to = "/free-bible-lessons/back-to-school-blessings-courage-trust-kids-bible-lesson-joshua-19/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/share-gods-love-evangelism-kids-lesson"
-  to = "/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738"
+  to = "/free-bible-lessons/fruits-of-evangelism-teaching-kids-to-share-gods-love-matthew-93738/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/harvest-psalm-96-gratitude-lesson-kids"
-  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96"
+  to = "/free-bible-lessons/celebrating-harvest-blessings-thankful-hearts-kids-bible-lesson-psalm-96/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/god-is-with-me-in-every-season"
-  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111"
+  to = "/free-bible-lessons/god-is-with-me-in-every-season-kids-bible-lesson-ecclesiastes-3111/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/creation-bible-lesson-genesis-1-kids"
-  to = "/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything"
+  to = "/free-bible-lessons/creation-bible-lesson-for-kids-god-made-everything/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/jesus-feeds-the-5000-bible-lesson-for-kids-miracle-of-provision"
-  to = "/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson"
+  to = "/free-bible-lessons/jesus-feeds-the-5000-a-miracle-of-gods-provision-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/moses-the-red-sea-bible-lesson-for-kids"
-  to = "/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson"
+  to = "/free-bible-lessons/moses-the-red-sea-god-makes-a-way-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/resurrection-bible-lesson-for-kids-jesus-is-alive"
-  to = "/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson"
+  to = "/free-bible-lessons/resurrection-jesus-is-alive-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/christmas-birth-jesus-emmanuel-kids-lesson"
-  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids"
+  to = "/free-bible-lessons/jesus-is-born-god-with-us-christmas-bible-lesson-for-kids/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/lords-prayer-bible-lesson-kids-matthew-6"
-  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson"
+  to = "/free-bible-lessons/the-lords-prayer-learning-how-to-pray-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/jesus-calms-storm-peace-bible-lesson-kids"
-  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson"
+  to = "/free-bible-lessons/jesus-calms-the-storm-teaching-kids-gods-peace-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/daniel-in-the-lions-den-kids-lesson"
-  to = "/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson"
+  to = "/free-bible-lessons/daniel-in-the-lions-den-teaching-kids-gods-protection-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/jonah-whale-bible-lesson-obedience-mercy-kids"
-  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson"
+  to = "/free-bible-lessons/jonah-and-the-whale-teaching-kids-obedience-and-gods-mercy-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/free-bible-lesson-on-the-prodigal-son"
-  to = "/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson"
+  to = "/free-bible-lessons/the-prodigal-son-teaching-kids-forgiveness-homecoming-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/free-bible-lesson-on-david-and-goliath"
-  to = "/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson"
+  to = "/free-bible-lessons/david-goliath-teaching-kids-courage-and-faith-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/kids-ministry-lesson-on-armor-of-god"
-  to = "/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson"
+  to = "/free-bible-lessons/armor-of-god-teaching-kids-spiritual-strength-kids-bible-lesson/"
   status = 301
   force = true
 [[redirects]]
   from = "/free-bible-lessons/good-samaritan-bible-lesson-love-kindness-kids"
-  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037"
+  to = "/free-bible-lessons/the-good-samaritan-teaching-kids-to-love-like-jesus-kids-bible-lesson-luke-103037/"
   status = 301
   force = true
 
@@ -393,47 +2415,47 @@
 # --- blog / resource posts ---
 [[redirects]]
   from = "/childrens-ministry-resources-for-pastors/how-to-teach-bible-lessons-kids"
-  to = "/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work"
+  to = "/blog/kidmin/how-to-teach-bible-lessons-to-kids-10-proven-strategies-that-work/"
   status = 301
   force = true
 [[redirects]]
   from = "/childrens-ministry-resources-for-pastors/behavior-management-kids-church"
-  to = "/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work"
+  to = "/blog/kidmin/behavior-management-in-kids-church-strategies-that-actually-work/"
   status = 301
   force = true
 [[redirects]]
   from = "/childrens-ministry-resources-for-pastors/faith-conversations-with-kids"
-  to = "/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments"
+  to = "/blog/parents/faith-conversations-with-kids-how-to-talk-about-god-in-everyday-moments/"
   status = 301
   force = true
 [[redirects]]
   from = "/childrens-ministry-resources-for-pastors/best-sunday-school-games-kids"
-  to = "/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love"
+  to = "/blog/parents/best-sunday-school-games-for-kids-25-engaging-games-your-class-will-love/"
   status = 301
   force = true
 [[redirects]]
   from = "/childrens-ministry-resources-for-pastors/how-to-volunteer-childrens-ministry"
-  to = "/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started"
+  to = "/blog/kidmin/how-to-volunteer-in-childrens-ministry-your-complete-guide-to-getting-started/"
   status = 301
   force = true
 [[redirects]]
   from = "/christian-parenting-blogs/family-devotions-kids-engaged"
-  to = "/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged"
+  to = "/blog/parents/family-devotions-that-stick-5-minute-routines-that-keep-kids-actually-engaged/"
   status = 301
   force = true
 [[redirects]]
   from = "/christian-parenting-blogs/teach-child-prayer"
-  to = "/blog/parents/how-to-teach-your-child-about-prayer"
+  to = "/blog/parents/how-to-teach-your-child-about-prayer/"
   status = 301
   force = true
 [[redirects]]
   from = "/christian-parenting-blogs/child-anxiety-christian-guide"
-  to = "/blog/parents/when-your-child-has-anxietya-christian-parents-guide"
+  to = "/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
   status = 301
   force = true
 [[redirects]]
   from = "/christian-parenting-blogs/child-questions-about-god"
-  to = "/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture"
+  to = "/blog/parents/when-kids-ask-hard-questions-about-god-9-honest-answers-from-scripture/"
   status = 301
   force = true
 
@@ -443,7 +2465,7 @@
 # leftover placeholder/draft slugs) with the blog listing fallback.
 [[redirects]]
   from = "/for-parents/child-anxiety-christian-guide"
-  to = "/blog/parents/when-your-child-has-anxietya-christian-parents-guide"
+  to = "/blog/parents/when-your-child-has-anxietya-christian-parents-guide/"
   status = 301
   force = true
 [[redirects]]
@@ -501,18 +2523,22 @@
   status = 301
   force = true
 [[redirects]]
+  # Was the generic /curriculum-packs.html hub — these two products have their
+  # own pack page now, and landing old search traffic on a hub instead of the
+  # actual matching product is exactly the "redirects to a generic hub"
+  # pattern Search Console / old-pages.csv flagged (95 + 4 clicks).
   from = "/armor-of-god-kids-curriculum"
-  to = "/curriculum-packs.html"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
   status = 301
   force = true
 [[redirects]]
   from = "/armor-of-god-kids-curriculum-1"
-  to = "/curriculum-packs.html"
+  to = "/pack/armor-of-god-kids-bible-curriculum/"
   status = 301
   force = true
 [[redirects]]
   from = "/heroes-of-faith-bible-curriculum"
-  to = "/curriculum-packs.html"
+  to = "/pack/heroes-of-faith-8-week-kids-church-bible-curriculum/"
   status = 301
   force = true
 [[redirects]]

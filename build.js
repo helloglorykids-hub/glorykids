@@ -193,10 +193,19 @@ function managedBlock(cfg, page, canonical, selfManaged, pageTitleFallback, page
     if (og) L.push(`<meta name="twitter:image" content="${esc(og)}">`);
   }
   if (cfg.twitterHandle) L.push(`<meta name="twitter:site" content="${esc(cfg.twitterHandle)}">`);
+  // GA4/Meta Pixel are gated behind cookie consent (see site-settings.js's
+  // applyConsent/applyGA4/applyMetaPixel, which handle the banner and the
+  // not-yet-decided case). This baked copy only fires early when consent
+  // was already granted on a prior visit, as a faster-than-site-settings.js
+  // head start; it sets the same window.__gkGA4/__gkPixel flags so
+  // site-settings.js doesn't load either one a second time.
   if (cfg.ga4MeasurementId) {
     const id = cfg.ga4MeasurementId;
-    L.push(`<script async src="https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}"></script>`);
-    L.push(`<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');</script>`);
+    L.push(`<script>try{if(localStorage.getItem('gk_consent_v1')==='granted'){window.__gkGA4=true;var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}';document.head.appendChild(s);window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments);};window.gtag('js',new Date());window.gtag('config','${id}');}}catch(e){}</script>`);
+  }
+  if (cfg.metaPixelId) {
+    const pid = cfg.metaPixelId;
+    L.push(`<script>try{if(localStorage.getItem('gk_consent_v1')==='granted'){window.__gkPixel=true;!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');window.fbq('init','${pid}');window.fbq('track','PageView');}}catch(e){}</script>`);
   }
   const org = cfg.organization || {};
   if (org.name || cfg.siteName) {
@@ -305,13 +314,45 @@ const CONTENT_PAGE_IDS = {
 };
 
 /* ---- helpers for baking per-record meta into a self-managed template ---- */
+// Order-independent: finds the tag by id regardless of where id sits among
+// its attributes, then sets `attr` within just that tag (also regardless of
+// position) — a fixed "id first, then attr" order silently fails to match
+// (and so silently no-ops) on a tag like <a href="…" class="…" id="…">.
 function setAttrById(html, id, attr, value) {
-  const re = new RegExp(`(<[^>]*\\bid="${id}"[^>]*\\s${attr}=")[^"]*(")`);
-  return html.replace(re, (m, pre, post) => pre + esc(value) + post);
+  const tagRe = new RegExp(`<[a-zA-Z0-9]+\\b[^>]*\\bid="${id}"[^>]*>`);
+  return html.replace(tagRe, tag => {
+    const attrRe = new RegExp(`(\\b${attr}=")[^"]*(")`);
+    if (attrRe.test(tag)) return tag.replace(attrRe, (m, pre, post) => pre + esc(value) + post);
+    return tag.replace(/^<([a-zA-Z0-9]+)/, (m, t) => `<${t} ${attr}="${esc(value)}"`);
+  });
 }
+// id="..." may appear anywhere in the opening tag (most of these elements
+// have class/style before id, not after) — \b...\bid= rather than a fixed
+// "<tag id=" position, or this silently fails to match and leaves the
+// element empty, exactly the bug this exists to fix.
 function setTextById(html, id, tag, text) {
-  const re = new RegExp(`(<${tag} id="${id}"[^>]*>)[\\s\\S]*?(</${tag}>)`);
+  const re = new RegExp(`(<${tag}\\b[^>]*\\bid="${id}"[^>]*>)[\\s\\S]*?(</${tag}>)`);
   return html.replace(re, (m, open, close) => open + esc(text) + close);
+}
+// Same as setTextById, but for fields that are themselves markup (post body,
+// badge/image fragments) — inserted raw, not HTML-escaped.
+function setHtmlById(html, id, tag, innerHtml) {
+  const re = new RegExp(`(<${tag}\\b[^>]*\\bid="${id}"[^>]*>)[\\s\\S]*?(</${tag}>)`);
+  return html.replace(re, (m, open, close) => open + (innerHtml || '') + close);
+}
+// Forces an element's inline style to a given display value, regardless of
+// whatever display:none/display:block it currently has (or lacks).
+function setDisplayById(html, id, value) {
+  const withStyle = new RegExp(`(<[^>]*\\bid="${id}"[^>]*\\bstyle=")[^"]*(")`);
+  if (withStyle.test(html)) {
+    return html.replace(withStyle, (m, pre, post) => `${pre}display:${value};${post}`);
+  }
+  const noStyle = new RegExp(`(<[^>]*\\bid="${id}")([^>]*>)`);
+  return html.replace(noStyle, (m, pre, rest) => `${pre} style="display:${value};"${rest}`);
+}
+function estimateReadTime(bodyHtml) {
+  const words = stripHtml(bodyHtml).split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
 }
 function stripHtml(html) { return String(html || '').replace(/<[^>]+>/g, ' ').trim(); }
 
@@ -379,13 +420,18 @@ function buildShoppingFeed(products) {
     '</channel>\n</rss>\n';
 }
 
-/* Bakes this post's real title/description/canonical/OG/Twitter/JSON-LD into
-   a copy of the (already SEO-baked) blog-post.html template, mirroring
-   renderPost() in that file exactly. The client-side JS still hydrates the
-   article body — only the <head> tags need to exist server-side, since an
-   empty canonical in the raw HTML is what let Google pick its own canonical
-   across these near-identical URLs (GSC: "Duplicate, Google chose different
-   canonical" / "Duplicate without user-selected canonical"). */
+/* Bakes this post's real title/description/canonical/OG/Twitter/JSON-LD, AND
+   the actual visible article (H1, author/date, badges, featured image, body)
+   into a copy of the (already SEO-baked) blog-post.html template, mirroring
+   renderPost() in that file exactly. The body used to be filled in only by
+   client-side JS after an async Firestore fetch, so a crawler reading the
+   raw HTML saw an empty #postContent and an empty <h1> — "Loading article…"
+   with no indexable text (GSC: "Crawled - currently not indexed"; also the
+   cause of an empty canonical letting Google pick its own, across these
+   near-identical URLs — "Duplicate, Google chose different canonical" /
+   "Duplicate without user-selected canonical"). The client's loadPost() still
+   runs on visit and re-renders the same markup — this only changes what a
+   non-JS fetch (or a crawler that times out before hydration) sees. */
 function bakePostPage(template, post) {
   const url = postUrl(post);
   const seoTitle = (post.seoTitle || post.title) + ' | Glory Kids Ministries';
@@ -405,6 +451,45 @@ function bakePostPage(template, post) {
   html = setAttrById(html, 'metaTwitterTitle', 'content', post.title);
   html = setAttrById(html, 'metaTwitterDescription', 'content', desc);
   html = setAttrById(html, 'metaTwitterImage', 'content', image);
+
+  // ---- the visible article itself (mirrors renderPost()'s DOM writes) ----
+  const dateStr = new Date(post.publishAt || post.createdAt || Date.now())
+    .toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const isFreeLesson = post.category === 'free_lessons';
+  const sectionLabel = isFreeLesson ? 'Free Lessons' : (CATEGORY_LABELS[post.category] || 'Blog');
+  const sectionHref = isFreeLesson ? '/free-bible-lessons.html' : ('/blog.html#' + (BLOG_CATEGORIES.includes(post.category) ? post.category : 'parents'));
+  const badgesHtml = [`<span class="post-cat-badge">${esc(CATEGORY_LABELS[post.category] || post.category || '')}</span>`]
+    .concat((post.tags || []).slice(0, 3).map(t => `<span class="post-cat-badge post-cat-badge--secondary">${esc(t)}</span>`))
+    .join('');
+  const featuredImageHtml = image
+    ? `<img src="${esc(image)}" alt="${esc(post.title)}" class="w-full h-full object-cover" decoding="async" fetchpriority="high" />`
+    : esc(post.icon || '📖');
+
+  html = setTextById(html, 'postBreadcrumbTitle', 'span', post.title);
+  html = setAttrById(html, 'postSectionLink', 'href', sectionHref);
+  html = setTextById(html, 'postSectionLink', 'a', sectionLabel);
+  html = setTextById(html, 'postTitle', 'h1', post.title);
+  html = setTextById(html, 'postAuthor', 'strong', post.author || 'Jandre van der Walt');
+  html = setTextById(html, 'postAuthorInitials', 'span', (post.author || 'Glory Kids').trim().split(/\s+/).map(p => p[0]).join('').toUpperCase().slice(0, 2));
+  html = setTextById(html, 'postDate', 'span', '📅 ' + dateStr);
+  html = setTextById(html, 'postReadTime', 'span', '⏱ ' + estimateReadTime(post.bodyHtml) + ' min read');
+  html = setHtmlById(html, 'postBadges', 'div', badgesHtml);
+  html = setHtmlById(html, 'postFeaturedImage', 'div', featuredImageHtml);
+  html = setHtmlById(html, 'postContent', 'div', post.bodyHtml || '');
+  if (isFreeLesson && post.excerpt) {
+    html = setTextById(html, 'postDescription', 'p', post.excerpt);
+    html = setDisplayById(html, 'postDescription', 'block');
+  }
+  // Reveal the real article by default; loadPost() still re-renders the same
+  // content on visit (needed for interactivity: TOC, gallery, unlock state).
+  // The loading/not-found placeholder TEXT is cleared (not just hidden) on a
+  // page that demonstrably exists — a crawler that reads raw HTML text
+  // should never see "Loading article…" or "We couldn't find that post" for
+  // a real, published post.
+  html = setDisplayById(html, 'postLoading', 'none');
+  html = setHtmlById(html, 'postLoading', 'div', '');
+  html = setHtmlById(html, 'postNotFound', 'div', '');
+  html = setDisplayById(html, 'postWrap', 'block');
 
   const dateP = post.publishAt || post.createdAt || Date.now();
   const dateM = post.updatedAt || post.createdAt || dateP;
@@ -456,6 +541,41 @@ function bakePackPage(template, prod) {
   html = setAttrById(html, 'metaTwitterTitle', 'content', title);
   html = setAttrById(html, 'metaTwitterDescription', 'content', desc);
   html = setAttrById(html, 'metaTwitterImage', 'content', image);
+
+  // ---- the visible product page itself (mirrors renderProduct()'s DOM writes) ----
+  const feats = (prod.features || []).filter(Boolean);
+  const price = Number(prod.priceUSD != null ? prod.priceUSD : prod.priceZAR || 0);
+  const money = n => '$' + Number(n || 0).toFixed(2).replace(/\.00$/, '');
+  let badgesHtml = prod.weeks ? `<span class="pd-weeks-badge">${esc(prod.weeks)}</span>` : '<span></span>';
+  if (prod.featured) badgesHtml += '<span class="pd-bestseller-badge">⭐ Bestseller</span>';
+  const galleryImg = (prod.images && prod.images[0]) || '';
+  const galleryHtml = galleryImg
+    ? `<img src="${esc(galleryImg)}" alt="" />`
+    : `<div class="pack-ph"><span>${esc(prod.title || '')}</span></div>`;
+
+  html = setAttrById(html, 'pd-breadcrumb-parent-link', 'href', '/' + parent.href);
+  html = setTextById(html, 'pd-breadcrumb-parent-link', 'a', parent.label);
+  html = setTextById(html, 'pd-breadcrumb-title', 'span', prod.title);
+  html = setTextById(html, 'pd-title', 'h1', prod.title);
+  html = setTextById(html, 'pd-blurb', 'p', prod.blurb || '');
+  html = setHtmlById(html, 'pd-gallery-content', 'div', galleryHtml);
+  html = setHtmlById(html, 'pd-badge-row', 'div', badgesHtml);
+  html = setHtmlById(html, 'pd-age-row', 'div', prod.ageRange ? `<span class="pd-age-badge">${esc(prod.ageRange)}</span>` : '');
+  if (feats.length) {
+    html = setHtmlById(html, 'pd-included-list', 'div', feats.map(f => `<div class="pd-included-item">${esc(f)}</div>`).join(''));
+  } else {
+    html = setDisplayById(html, 'pd-included-wrap', 'none');
+  }
+  html = setTextById(html, 'pd-price', 'span', money(price));
+  if (prod.compareAtUSD && prod.compareAtUSD > price) html = setTextById(html, 'pd-price-was', 'span', money(prod.compareAtUSD));
+  html = setAttrById(html, 'pd-buy-btn', 'href', '/shop.html?add=' + encodeURIComponent(prod.id || ''));
+  // Same cleanup as bakePostPage: clear (not just hide) the loading text, and
+  // the not-found state's own hardcoded <h1> — left in place, every pack page
+  // would carry two H1s ("We couldn't find that pack." plus the real title).
+  html = setDisplayById(html, 'pd-loading', 'none');
+  html = setHtmlById(html, 'pd-loading', 'div', '');
+  html = setHtmlById(html, 'pd-notfound', 'div', '');
+  html = setDisplayById(html, 'pd-content', 'block');
 
   const product = {
     '@context': 'https://schema.org', '@type': 'Product',
@@ -578,6 +698,56 @@ function freeLessonCardHtml(lesson, index) {
   );
 }
 
+// Mirrors curriculum-packs.html's gradFor()/money()/packCard() exactly — the
+// #packs grid there was 100% client-rendered (GK.listActiveProducts().then()
+// after up to ~4s of polling for GK to exist, THEN a static-fallback array if
+// that never resolves) with a literal "Loading packs…" placeholder as the
+// only raw-HTML content. Same bug class as the free-lessons grid above, just
+// never given the same fix: a crawler reading raw HTML saw zero pack links
+// out of this page, and zero pack-page inbound links from here.
+const PACK_GRID_GRADS = [['#66249A', '#00BFC4'], ['#FF4B32', '#FFB000'], ['#0B2E67', '#00BFC4'], ['#FFB000', '#66249A'], ['#00BFC4', '#7ED6A5'], ['#E13C24', '#009BA0']];
+function gradFor(s) { let h = 0; for (let i = 0; i < (s || '').length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return PACK_GRID_GRADS[h % PACK_GRID_GRADS.length]; }
+function packCardHtml(p) {
+  const price = Number(p.priceUSD != null ? p.priceUSD : p.priceZAR || 0);
+  const money = n => '$' + Number(n || 0).toFixed(2).replace(/\.00$/, '');
+  const was = (p.compareAtUSD && p.compareAtUSD > price) ? `<span class="pack-price-was">${esc(money(p.compareAtUSD))}</span>` : '';
+  const g = gradFor(p.title || p.id || '');
+  const cover = (p.images && p.images[0])
+    ? `<img src="${esc(p.images[0])}" alt="" loading="lazy">`
+    : `<div class="pack-ph"><span>${esc(p.title || '')}</span></div>`;
+  let badges = '';
+  if (p.weeks) badges += `<span class="pack-weeks-badge">${esc(p.weeks)}</span>`;
+  if (p.featured) badges += '<span class="pack-new-badge">⭐ Bestseller</span>';
+  const ages = p.ageRange ? `<span class="age-badge">${esc(p.ageRange)}</span>` : '';
+  const flist = p.features || [];
+  let feats = flist.slice(0, 4).map(f => `<div class="pack-what-item">${esc(f)}</div>`).join('');
+  if (flist.length > 4) feats += `<div class="pack-what-item" style="color:var(--gray-400);">+ ${flist.length - 4} more</div>`;
+  const detailHref = '/pack/' + encodeURIComponent(p.slug || p.id);
+  return (
+    `<a href="${esc(detailHref)}" class="pack-card-full reveal" style="text-decoration:none;">` +
+      `<div class="pack-header-img" style="background:linear-gradient(140deg,${g[0]},${g[1]});">${cover}${badges}</div>` +
+      '<div class="pack-body">' +
+        (ages ? `<div class="pack-age-row">${ages}</div>` : '') +
+        `<h3>${esc(p.title || '')}</h3>` +
+        `<p>${esc(p.blurb || '')}</p>` +
+        (feats ? `<div class="pack-what"><div class="pack-what-title">What's included</div><div class="pack-what-list">${feats}</div></div>` : '<div class="pack-what"></div>') +
+        '<div class="pack-price-row">' +
+          `<div><span class="pack-price">${esc(money(price))}</span>${was}<div class="pack-price-note">Instant download</div></div>` +
+          '<span class="btn btn--primary">View Curriculum →</span>' +
+        '</div>' +
+      '</div>' +
+    '</a>'
+  );
+}
+function bakePacksGrid(html, products) {
+  const rows = products.filter(p => p.active && p.slug && (p.category === 'curriculum' || p.category === 'bundle'));
+  const cardsHtml = rows.map(packCardHtml).join('');
+  return html.replace(
+    /(<div class="pack-grid-full" id="packs">)[\s\S]*?(<!-- CUSTOM CURRICULUM -->)/,
+    (m, open, marker) => `${open}${cardsHtml}</div>\n  </div>\n</section>\n\n${marker}`
+  );
+}
+
 function bakeFreeLessonsGrid(html, posts) {
   const rows = posts.filter(p => p.category === 'free_lessons' && p.slug);
   const cardsHtml = rows.map((p, i) => freeLessonCardHtml(freeLessonCardData(p, i), i)).join('');
@@ -635,6 +805,7 @@ function bakeFreeLessonsGrid(html, posts) {
     let after = applyToHtml(before, cfg, page, canonical);
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
     if (f === 'free-bible-lessons.html') after = bakeFreeLessonsGrid(after, livePosts);
+    if (f === 'curriculum-packs.html') after = bakePacksGrid(after, products);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
     // Captured post-bake (so generated pages inherit the same favicon/GA4/org
     // JSON-LD as every other page) for use as the per-record template below.
@@ -679,6 +850,22 @@ function bakeFreeLessonsGrid(html, posts) {
   htmlFiles.forEach(f => {
     const page = pageByPath[f];
     if (page && page.visible === false) rlines.push(`/${f}  /  302`);
+  });
+  /* Collapse Netlify's automatic extensionless duplicate: every top-level
+     *.html file is ALSO served at its extension-less path with its own 200
+     and no redirect (confirmed live: /about.html and /about both 200,
+     identical content, zero hops) — that's an uncontrolled duplicate URL for
+     every sitemap page, which is exactly the shape of GSC's "Duplicate,
+     Google chose different canonical" complaint. Every internal link and the
+     sitemap already point at the .html form, so that stays canonical; this
+     just 301s the extensionless shadow into it instead of leaving it as a
+     second live 200. Same eligibility filter as the sitemap loop below, so
+     this list can never drift from what's actually indexable. */
+  htmlFiles.forEach(f => {
+    const page = pageByPath[f];
+    if (page && (page.visible === false || page.noindex)) return;
+    if (f.includes('/') || f === 'index.html' || /template/.test(f) || SITEMAP_EXCLUDE.has(f)) return;
+    rlines.push(`/${f.slice(0, -'.html'.length)}  /${f}  301`);
   });
   fs.writeFileSync(path.join(DIR, '_redirects'), rlines.join('\n') + '\n');
 
