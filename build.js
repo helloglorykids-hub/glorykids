@@ -432,7 +432,7 @@ function buildShoppingFeed(products) {
    "Duplicate without user-selected canonical"). The client's loadPost() still
    runs on visit and re-renders the same markup — this only changes what a
    non-JS fetch (or a crawler that times out before hydration) sees. */
-function bakePostPage(template, post) {
+function bakePostPage(template, post, allPosts, allProducts) {
   const url = postUrl(post);
   const seoTitle = (post.seoTitle || post.title) + ' | Glory Kids Ministries';
   const desc = post.seoDescription || post.excerpt || '';
@@ -516,6 +516,49 @@ function bakePostPage(template, post) {
     ]
   };
   html = html.replace(/(<script id="ldBreadcrumb"[^>]*>)[\s\S]*?(<\/script>)/, (m, open, close) => open + JSON.stringify(breadcrumb) + close);
+
+  // Internal linking: #relatedPostsGrid was 100% client-rendered
+  // (GK.relatedPosts(...).then(renderRelated)) - a crawler reading raw HTML
+  // saw zero related-lesson links out of every one of these pages. Bake the
+  // same same-category selection server-side (client JS still re-renders
+  // the identical markup on visit). Also link to a relevant pack, for any
+  // lesson a PACK_COPY entry actually names as its free preview or a
+  // related lesson - real association, not a guess.
+  if (Array.isArray(allPosts)) {
+    const sameCategory = allPosts.filter(p => p.category === post.category && p.id !== post.id && p.slug);
+    // Falls back to any other post when a category is too sparse to supply
+    // 3 on its own (e.g. a single-post category) - still real posts, just
+    // not all the same topic, rather than showing nothing.
+    const related = sameCategory.length >= 3 ? sameCategory.slice(0, 3) : [
+      ...sameCategory,
+      ...allPosts.filter(p => p.category !== post.category && p.id !== post.id && p.slug)
+    ].slice(0, 3);
+    if (related.length) {
+      const cardsHtml = related.map(p => {
+        const thumb = p.featuredImage
+          ? `<img src="${esc(p.featuredImage)}" alt="${esc(p.title)}" loading="lazy" decoding="async" />`
+          : `<span class="text-2xl">${esc(p.icon || '📖')}</span>`;
+        return `<a href="${esc(postUrl(p))}" class="related-post-card"><div class="related-post-card__thumb">${thumb}</div><span class="related-post-card__title">${esc(p.title)}</span></a>`;
+      }).join('');
+      html = setHtmlById(html, 'relatedPostsGrid', 'div', cardsHtml);
+      html = setDisplayById(html, 'relatedPostsWrap', 'block');
+    }
+  }
+  if (Array.isArray(allProducts)) {
+    const relevantPackSlug = Object.keys(PACK_COPY).find(slug => {
+      const c = PACK_COPY[slug];
+      return c.freePreview === post.slug || (c.relatedLessons || []).includes(post.slug);
+    });
+    const relevantPack = relevantPackSlug && findBySlug(allProducts, relevantPackSlug);
+    if (relevantPack) {
+      const packLinkHtml = `<a href="${esc(packUrl(relevantPack))}" class="related-post-card related-post-card--pack"><div class="related-post-card__thumb">📦</div><span class="related-post-card__title">Get the full pack: ${esc(relevantPack.title)}</span></a>`;
+      if (html.includes('id="relatedPostsGrid"')) {
+        html = html.replace(/(<div class="grid grid-cols-1 sm:grid-cols-3 gap-5" id="relatedPostsGrid">)([\s\S]*?)(<\/div>)/,
+          (m, open, inner, close) => `${open}${inner}${packLinkHtml}${close}`);
+        html = setDisplayById(html, 'relatedPostsWrap', 'block');
+      }
+    }
+  }
 
   return html;
 }
@@ -1020,11 +1063,12 @@ function writeDetailPages(root, rows, relDirFor, bake, template) {
   return n;
 }
 
-function generatePostPages(posts, template) {
+function generatePostPages(posts, template, products) {
   let total = 0;
+  const bake = (tmpl, row) => bakePostPage(tmpl, row, posts, products);
   for (const cat of ['free-bible-lessons', 'blog/parents', 'blog/pastors', 'blog/kidmin']) {
     const rows = posts.filter(p => p.slug && postPath(p) === `/${cat}/${p.slug}`);
-    total += writeDetailPages(cat, rows, p => `${cat}/${p.slug}`, bakePostPage, template);
+    total += writeDetailPages(cat, rows, p => `${cat}/${p.slug}`, bake, template);
   }
   return total;
 }
@@ -1296,7 +1340,7 @@ function bakeFreeLessonsGrid(html, posts) {
      "Duplicate, Google chose different canonical": every free-bible-lessons,
      blog and pack detail URL used to rewrite to the same template with an
      empty canonical link, filled in only by client-side JS. */
-  const postPagesWritten = blogPostTemplate ? generatePostPages(livePosts, blogPostTemplate) : 0;
+  const postPagesWritten = blogPostTemplate ? generatePostPages(livePosts, blogPostTemplate, products) : 0;
   const packPagesWritten = curriculumPackTemplate ? generatePackPages(products, curriculumPackTemplate, livePosts) : 0;
   console.log(`Generated ${postPagesWritten} post page(s) and ${packPagesWritten} pack page(s) with baked-in canonical tags.`);
 
