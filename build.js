@@ -1118,6 +1118,87 @@ function packCardHtml(p) {
     '</a>'
   );
 }
+/* Finds the <tag ...> immediately preceding `fromIdx` and returns the full
+   balanced inner content up to its matching close tag (handling nested
+   tags of the SAME name) — same technique as the content-audit script
+   used to verify this, just needed here to EXTRACT real FAQ answer text
+   rather than just measure it. */
+function extractBalanced(html, startIdx, tag) {
+  let depth = 1, pos = startIdx;
+  const openRe = new RegExp(`<${tag}\\b[^>]*>`, 'gi');
+  const closeRe = new RegExp(`</${tag}>`, 'gi');
+  while (depth > 0) {
+    openRe.lastIndex = pos; closeRe.lastIndex = pos;
+    const om = openRe.exec(html);
+    const cm = closeRe.exec(html);
+    if (!cm) return null;
+    if (om && om.index < cm.index) { depth++; pos = om.index + om[0].length; }
+    else { depth--; pos = cm.index + cm[0].length; if (depth === 0) return { text: html.slice(startIdx, cm.index), endIdx: pos }; }
+  }
+}
+
+/* Pulls real question/answer pairs straight out of a page's own visible FAQ
+   markup, so the FAQPage JSON-LD this generates can only ever match the
+   visible text exactly — there is no separately hand-typed copy of the FAQ
+   content that could drift from what's actually on the page. */
+function extractFaqPairs(html, qPattern, answerOpenPattern, answerTag) {
+  const pairs = [];
+  const qRe = new RegExp(qPattern, 'g');
+  let m;
+  while ((m = qRe.exec(html))) {
+    const q = unesc(m[1]).trim();
+    const aRe = new RegExp(answerOpenPattern);
+    const rest = html.slice(m.index);
+    const aMatch = aRe.exec(rest);
+    if (!aMatch) continue;
+    const start = m.index + aMatch.index + aMatch[0].length;
+    const result = extractBalanced(html, start, answerTag);
+    if (!result) continue;
+    const text = stripHtml(result.text).replace(/\s+/g, ' ').trim();
+    if (q && text) pairs.push([q, text]);
+  }
+  return pairs;
+}
+
+function faqPageJsonLd(pairs) {
+  return {
+    '@context': 'https://schema.org', '@type': 'FAQPage',
+    mainEntity: pairs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } }))
+  };
+}
+// Idempotent: this runs on every build (every Netlify deploy), so it must
+// first remove any instance IT already inserted of the same @type, or
+// re-running it would stack a fresh duplicate on top every single time.
+function injectJsonLd(html, obj) {
+  const type = obj['@type'];
+  const stripRe = new RegExp(`\\s*<script type="application/ld\\+json">\\{"@context":"https://schema\\.org","@type":"${type}"[\\s\\S]*?</script>\\n?`, 'g');
+  html = html.replace(stripRe, '');
+  return html.replace(/<\/head>/i, `  <script type="application/ld+json">${JSON.stringify(obj)}</script>\n</head>`);
+}
+
+/* Homepage: adds FAQPage schema extracted from the page's own visible FAQ
+   section - WebSite schema already existed by hand (a plain, spaced-JSON
+   block right before the managed block) and is left alone rather than
+   duplicated. */
+function bakeHomepageSchema(html) {
+  const pairs = extractFaqPairs(html, '<button class="faq-question">([^<]*)<span>\\+</span></button>', '<div class="faq-answer">', 'div');
+  if (pairs.length) html = injectJsonLd(html, faqPageJsonLd(pairs));
+  return html;
+}
+
+/* The dedicated FAQ page already had a hand-written FAQPage block - but it
+   was a paraphrase, not the real visible text (and had drifted: it still
+   said "ages 3-12" after the sitewide 3-13 fix). Strip that one out first,
+   then inject one extracted straight from the current visible
+   faq-item__q / faq-item__answer markup, which can't drift out of sync
+   since there's no second copy to maintain. */
+function bakeFaqPageSchema(html) {
+  html = html.replace(/<!-- FAQPage structured data for SEO -->\n<script type="application\/ld\+json">\n[\s\S]*?\n<\/script>\n/, '');
+  const pairs = extractFaqPairs(html, '<span class="faq-item__q">([^<]*)</span>', 'class="faq-item__answer">', 'div');
+  if (pairs.length) html = injectJsonLd(html, faqPageJsonLd(pairs));
+  return html;
+}
+
 function bakePacksGrid(html, products) {
   const rows = products.filter(p => p.active && p.slug && (p.category === 'curriculum' || p.category === 'bundle'));
   const cardsHtml = rows.map(packCardHtml).join('');
@@ -1186,6 +1267,8 @@ function bakeFreeLessonsGrid(html, posts) {
     if (CONTENT_PAGE_IDS[f]) after = applyContent(after, contentDocs[CONTENT_PAGE_IDS[f]]);
     if (f === 'free-bible-lessons.html') after = bakeFreeLessonsGrid(after, livePosts);
     if (f === 'curriculum-packs.html') after = bakePacksGrid(after, products);
+    if (f === 'index.html') after = bakeHomepageSchema(after);
+    if (f === 'faq/index.html') after = bakeFaqPageSchema(after);
     if (after !== before) { fs.writeFileSync(full, after); changed++; }
     // Captured post-bake (so generated pages inherit the same favicon/GA4/org
     // JSON-LD as every other page) for use as the per-record template below.
